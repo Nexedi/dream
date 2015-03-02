@@ -32,8 +32,8 @@ def main():
     #loop in the schedule to print the results
     schedule=[]
     for record in J.schedule:
-        schedule.append([record[0].objName,record[1]])
-        print J.name, "got into", record[0].objName, "at", record[1] 
+        schedule.append([record["station"].objName,record["entranceTime"]])
+        print J.name, "got into", record["station"].objName, "at", record["entranceTime"] 
     ExcelHandler.outputTrace('TRACE')
     return schedule
 

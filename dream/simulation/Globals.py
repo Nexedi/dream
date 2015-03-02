@@ -218,7 +218,8 @@ def setWIP(entityList):
             if entity.currentStation:   
                 object=entity.currentStation                        #identify the object
                 object.getActiveObjectQueue().append(entity)        #append the entity to its Queue
-                entity.schedule.append([object,G.env.now])              #append the time to schedule so that it can be read in the result
+                entity.schedule.append({"station": object,
+                                        "entranceTime": G.env.now}) #append the time to schedule so that it can be read in the result
             
         
         # if the entity is of type Job/OrderComponent/Order/Mould
@@ -257,7 +258,8 @@ def setWIP(entityList):
                     object.next.append(nextObject)
             
             entity.remainingRoute.pop(0)                        # remove data from the remaining route.   
-            entity.schedule.append([object,G.env.now])              #append the time to schedule so that it can be read in the result
+            entity.schedule.append({"station": object,
+                                    "entranceTime": G.env.now}) #append the time to schedule so that it can be read in the result
 
         # if the currentStation of the entity is of type Machine then the entity 
         #     must be processed first and then added to the pendingEntities list

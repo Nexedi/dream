@@ -33,12 +33,12 @@ def main(test=0):
     if test:
         returnSchedule=[]
         for record in J.schedule:
-            returnSchedule.append([record[0].objName,record[1]])
+            returnSchedule.append([record["station"].objName,record["entranceTime"]])
         return returnSchedule
     
     # print the results
     for record in J.schedule:
-        print J.name, "got into", record[0].objName, "at", record[1]
+        print J.name, "got into", record["station"].objName, "at", record["entranceTime"]
 
 if __name__ == '__main__':
     main()              

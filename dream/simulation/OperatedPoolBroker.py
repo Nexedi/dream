@@ -159,7 +159,8 @@ class Broker(ObjectInterruption):
                     if self.victim.expectedSignals['brokerIsSet']:
                         self.sendSignal(receiver=self.victim, signal=self.victim.brokerIsSet)
                     # update the schedule of the operator
-                    self.victim.currentOperator.schedule.append([self.victim, self.env.now])
+                    self.victim.currentOperator.schedule.append({"station": self.victim,
+                                                                 "entranceTime": self.env.now})
                     
                     # wait till the processing is over
                     self.expectedSignals['isCalled']=1
@@ -187,8 +188,6 @@ class Broker(ObjectInterruption):
                         # TODO: this wont work for the moment. The actions that follow must be performed by all operated brokers. 
                         
                         self.victim.printTrace(self.victim.currentOperator.objName, finishWork=self.victim.id)
-                        # update the schedule of the operator
-                        self.victim.currentOperator.schedule[-1].append(self.env.now)
                         # the victim current operator must be cleared after the operator is released
                         self.timeLastOperationEnded = self.env.now
                         self.victim.currentOperator.workingStation=None

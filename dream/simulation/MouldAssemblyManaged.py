@@ -178,7 +178,7 @@ class MouldAssemblyManaged(MachineManagedJob):
         temp_activeObjectQueue=list(activeObjectQueue)
         for element in temp_activeObjectQueue:
             # update their schedule
-            element.schedule[-1].append(self.env.now)
+            element.schedule[-1]["exitTime"] = self.env.now
             # remove the elements
             activeObjectQueue.remove(element)
         del temp_activeObjectQueue[:]
