@@ -722,6 +722,7 @@
     "dateFormat": "%Y/%m/%d", 
     "ke_url": "http: //git.erp5.org/gitweb/dream.git/blob_plain/HEAD: /dream/KnowledgeExtraction/Mockup_Processingtimes.xls", 
     "maxSimTime": -1, 
+    "name": "CapacityProjectComparisonRolling.json", 
     "numberOfReplications": "1", 
     "processTimeout": 20, 
     "seed": 1, 
@@ -1302,7 +1303,7 @@
       [
         "SMF", 
         "80", 
-        "0", 
+        "1000", 
         null
       ], 
       [
