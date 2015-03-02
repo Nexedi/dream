@@ -302,8 +302,10 @@ class Operator(ObjectResource):
                   'entranceTime':record["entranceTime"]})
                 if record.get("exitTime", None) != None:
                     json['results']['schedule'][-1]["exitTime"] = record["exitTime"]
-                # if record.get("entity", None):
-                    # json['results']['schedule'][-1]["entityId"] = record["entity"].id
+                if record.get("entity", None):
+                    json['results']['schedule'][-1]["entityId"] = record["entity"].id
+                if record.get("task_id", None):
+                    json['results']['schedule'][-1]["task_id"] = record["task_id"]
         G.outputJSON['elementList'].append(json)
     
     #===========================================================================
