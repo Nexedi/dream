@@ -262,8 +262,6 @@ def ImportInput(input, algorithmAttributes):
         G.Excess[sp] = {}
         for week in G.WeekList:
             G.Excess[sp][week] = 0
-
-    print G.orders            
               
 if __name__ == '__main__':
     ImportInput()        
