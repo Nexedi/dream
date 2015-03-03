@@ -79,10 +79,10 @@ class CreateCapacityStations(plugin.InputPreparationPlugin):
                              "priority": priority
                          }           
                 
-        # add also a CapacityStationController
-        # XXX some of the attributes should be inputted by the user 
+        # add also a CapacityStationController       
+        dueDateThreshold=data['general'].get('dueDateThreshold',14)
         data['graph']['node']['CSC']={
-            "dueDateThreshold": 14, 
+            "dueDateThreshold": dueDateThreshold, 
             "name": "CSC", 
             "prioritizeIfCanFinish": 1, 
             "interval": "1", 
