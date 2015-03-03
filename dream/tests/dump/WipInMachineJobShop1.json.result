@@ -26,22 +26,27 @@
     "schedule": [
      {
       "entranceTime": 0, 
+      "exitTime": 1.0, 
       "stationId": "M1"
      }, 
      {
       "entranceTime": 1.0, 
+      "exitTime": 1.0, 
       "stationId": "Q3"
      }, 
      {
       "entranceTime": 1.0, 
+      "exitTime": 4.0, 
       "stationId": "M3"
      }, 
      {
       "entranceTime": 4.0, 
+      "exitTime": 4.0, 
       "stationId": "Q2"
      }, 
      {
       "entranceTime": 4.0, 
+      "exitTime": 6.0, 
       "stationId": "M2"
      }, 
      {
