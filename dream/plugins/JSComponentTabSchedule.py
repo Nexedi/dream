@@ -8,13 +8,51 @@ import datetime
 
 class JSComponentTabSchedule(plugin.OutputPreparationPlugin, TimeSupportMixin):
   '''outputs the Job Schedules in tabular format'''
+  def findParentOrderById(self, ID):
+    '''returns the parent order of the component with id == ID'''
+    orders = self.data["input"]["BOM"].get("productionOrders", [])
+    for order in orders:
+      components = order.get("componentsList", [])
+      for component in components:
+        if ID == component["id"]:
+          return order
+    return {}
+    
+  # XXX hard-coded; class of the resources
+  OPERATOR_CLASS_SET = set(["Dream.Operator"])
+  def findOperatorByTaskId(self, ID):
+    '''returns the id of the operator that has performed a certain task'''
+    # XXX searching in the last solution only
+    # XXX synchronize with the solution that is used by postprocess method
+    resultElements=self.data['result']['result_list'][-1]['elementList']
+    for element in resultElements:
+      if element.get("_class", None) in self.OPERATOR_CLASS_SET:
+        schedule = element["results"].get("schedule", [])
+        for step in schedule:
+          taskId = step.get("task_id", None)
+          if taskId == ID:
+            return element.get("id", "")
+    return ""
+
+  # XXX hard-coded; class of the active stations
+  STATION_CLASS_SET = set(["Dream.MouldAssembly", "Dream.MachineJobShop"])
+  def isActiveStation(self, ID):
+    '''returns True if station is an active station'''
+    resultElements=self.data['result']['result_list'][-1]['elementList']
+    for element in resultElements:
+      if element.get("_class", None) in self.STATION_CLASS_SET:
+        if  element.get("id", None) == ID:
+          return True
+    return False
+
   # XXX hard-coded; class of the order components 
   COMPONENT_CLASS_SET = set(["Dream.Mould", "Dream.OrderComponent", "Dream.OrderDesign"])
   def postprocess(self, data):
     """Post process the job schedules and formats to be presented in tabular format
     """
+    self.data = data
     numberOfReplications = int(data['general']['numberOfReplications'])
-
+    '''Time definition'''
     strptime = datetime.datetime.strptime
     # read the current date and define dateFormat from it
     try:
@@ -25,14 +63,13 @@ class JSComponentTabSchedule(plugin.OutputPreparationPlugin, TimeSupportMixin):
       data['general']['dateFormat']='%Y/%m/%d'
     self.initializeTimeSupport(data)
     date_format = '%d-%m-%Y %H:%M'
-    
-    
-
+    '''reading results'''
     resultElements=data['result']['result_list'][-1]['elementList']
     # create the titles row
     result = data['result']['result_list'][-1]
     result[self.configuration_dict['output_id']] = [['Job ID',
                                                      'Order',
+                                                     'Due Date',
                                                      'Task ID',
                                                      'Station ID',
                                                      'Entrance Time',
@@ -41,9 +78,11 @@ class JSComponentTabSchedule(plugin.OutputPreparationPlugin, TimeSupportMixin):
     for element in resultElements:
       if element.get("_class",None) in self.COMPONENT_CLASS_SET:
         elementId = element.get("id", None)
-        # due date                    ????
-        # order                       ????
-        
+        order = self.findParentOrderById(elementId)
+        # due date
+        dueDate = order.get("dueDate", None)
+        # order
+        orderName = order.get("name", None)
         '''schedule'''
         results = element.get("results", {})
         schedule = results.get("schedule", [])
@@ -53,21 +92,25 @@ class JSComponentTabSchedule(plugin.OutputPreparationPlugin, TimeSupportMixin):
             entranceTime = step.get("entranceTime", None)
             exitTime = step.get("exitTime", None)
             # processing time
+            processingTime = 0
             if exitTime != None:
-              processingTime = exitTime - entranceTime
+              processingTime = round(exitTime - entranceTime, 2)
             # stationId
             stationId = step.get("stationId", None)
-            # operator                    ????
-            
             # task_id
             task_id = step.get("task_id", None)
-            if task_id:
-              print "task_id", task_id
+            # operator
+            operatorId = ""
+            if self.isActiveStation(stationId):
+              operatorId = self.findOperatorByTaskId(task_id)
+            # if there is a taskId defined or the station is an assembly station (order decomposition is presented)
+            if task_id or stationId.startswith("ASSM"):
               result[self.configuration_dict['output_id']].append([elementId,
-                                                                   "",
+                                                                   orderName,
+                                                                   self.convertToFormattedRealWorldTime(dueDate),
                                                                    task_id,
                                                                    stationId,
                                                                    self.convertToFormattedRealWorldTime(entranceTime),
                                                                    processingTime,
-                                                                   ""])
+                                                                   operatorId])
     return data
