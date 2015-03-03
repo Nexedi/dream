@@ -576,14 +576,24 @@ class Machine(CoreObject):
                         assert eventTime==self.env.now, 'interruptionEnd received later than created'
                         self.printTrace(self.id, interruptionEnd=str(eventTime))
                         self.interruptionEnd=self.env.event()
+                        # try to signal the Giver, otherwise wait until it is requested
+                        if self.signalGiver():
+                            break
                     if self.loadOperatorAvailable in receivedEvent:
                         transmitter, eventTime=self.loadOperatorAvailable.value
                         assert eventTime==self.env.now,'loadOperatorAvailable received later than created'
                         self.printTrace(self.id,loadOperatorAvailable=str(eventTime))
                         self.loadOperatorAvailable=self.env.event()
-                    # try to signal the Giver, otherwise wait until it is requested
-                    if self.signalGiver():
-                        break
+                        # try to signal the Giver, otherwise wait until it is requested
+                        if self.signalGiver():
+                            from Globals import G
+                            # XXX cleaner implementation needed
+                            # if there is router that is not skilled break
+                            if G.Router:
+                                if not 'Skilled' in str(G.Router.__class__):
+                                    break
+                            # else continue, the giver should also check
+                            continue
                 if self.initialWIP in receivedEvent:
                     transmitter, eventTime=self.initialWIP.value
                     assert transmitter==self.env, 'initialWIP was not sent by the Environment'
