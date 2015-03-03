@@ -75,14 +75,6 @@ class SkilledRouter(Router):
             self.expectedSignals['isCalled']=1
             
             yield self.isCalled
-            # wait till there are no more events, the machines must be blocked
-            while 1:
-                if self.env.now==self.env.peek():
-                    self.printTrace('', 'there are MORE events for now')
-                    yield self.env.timeout(0)
-                else:
-                    self.printTrace('','there are NO more events for now')
-                    break
             
             transmitter, eventTime=self.isCalled.value
             self.isCalled=self.env.event()
