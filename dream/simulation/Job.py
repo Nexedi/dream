@@ -111,10 +111,14 @@ class Job(Entity):                                  # inherits from the Entity c
                     
                 json['results']['schedule']=[]
                 i=0
-                for record in self.schedule:               
+                for record in self.schedule:
                     json['results']['schedule'].append({})                                  # dictionary holding time and 
                     json['results']['schedule'][i]['stationId']=record["station"].id        # id of the Object
                     json['results']['schedule'][i]['entranceTime']=record["entranceTime"]   # time entering the Object
+                    if record.get("exitTime", None) != None:
+                        json['results']['schedule'][i]['exitTime'] = record['exitTime']
+                    if record.get("task_id", None) != None:
+                        json['results']['schedule'][i]['task_id'] = record['task_id']
                     i+=1             
                 G.outputJSON['elementList'].append(json)
     
