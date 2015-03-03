@@ -149,7 +149,7 @@
   }
 
   function convertToAbsolutePosition(gadget, x, y) {
-    var zoom_level = gadget.props.zoom_level * 1.1111,
+    var zoom_level = gadget.props.zoom_level,
       canvas_size_x = $(gadget.props.main).width(),
       canvas_size_y = $(gadget.props.main).height(),
       size_x = $(gadget.props.element).find('.dummy_window').width() *
@@ -162,7 +162,7 @@
   }
 
   function convertToRelativePosition(gadget, x, y) {
-    var zoom_level = gadget.props.zoom_level * 1.1111,
+    var zoom_level = gadget.props.zoom_level,
       canvas_size_x = $(gadget.props.main).width(),
       canvas_size_y = $(gadget.props.main).height(),
       size_x = $(gadget.props.element).find('.dummy_window').width() *
@@ -240,11 +240,11 @@
   function updateNodeStyle(gadget, element_id) {
     // Update node size according to the zoom level
     // XXX does nothing for now
-    var zoom_level = gadget.props.zoom_level * 1.1111,
+    var zoom_level = gadget.props.zoom_level,
       element = $(gadget.props.element).find("#" + element_id),
       new_value;
     $.each(gadget.props.style_attr_list, function (i, j) {
-      new_value = $(gadget.props.element).find('.dummy_window').css(j)
+      new_value = element.css(j)
         .replace('px', '') * zoom_level + 'px';
       element.css(j, new_value);
     });
@@ -734,7 +734,6 @@
       coordinate
     );
 
-    // XXX make node template an option, or use CSS from class_definition
     /*jslint nomen: true*/
     domElement = domParser.parseFromString(
       node_template({
@@ -755,6 +754,9 @@
       coordinate.left,
       coordinate.top
     );
+    if (class_definition.css) {
+      box.css(class_definition.css);
+    }
     box.css("top", absolute_position[1]);
     box.css("left", absolute_position[0]);
     updateNodeStyle(gadget, dom_element_id);

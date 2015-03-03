@@ -17,7 +17,8 @@
   border: 1px solid lightgray;
   box-shadow: 1px 1px 2px #aaa;
   min-width:7em;
-  height:3em;
+  min-height:6em;
+  box-sizing: border-box;
   z-index: 10001;
   color: gray;
   font-family:serif;
@@ -29,46 +30,4 @@
   text-align: center;
   padding-top: 1.3em;
   cursor: move;
-}
-
-.Dream-Source, .Dream-BatchSource {
-  border: 1px solid #bbc;
-  background-color:#ffe;
-  background-image: linear-gradient(to bottom, #ffe 0%, #dde 100%);
-}
-
-.Dream-Machine, .Dream-MachineJobShop, .Dream-BatchScrapMachine, .Dream-MachineManagedJob, .Dream-MouldAssembly {
-  border: 1px solid #cbc;
-  background-color: #fef;
-  background-image: linear-gradient(to bottom, #fef 0%, #ede 100%);
-}
-
-.Dream-Queue, .Dream-QueueJobShop, .Dream-LineClearance, .Dream-QueueManagedJob, .Dream-ConditionalBuffer, .Dream-OrderDecomposition, .Dream-MouldAssemblyBuffer {
-  border: 1px solid #bcc;
-  background-color:#eff;
-  background-image: linear-gradient(to bottom, #eff 0%, #dee 100%);
-}
-
-.Dream-Exit, .Dream-ExitJobShop {
-  border: 1px solid #ccb;
-  background-color:#eef;
-  background-image: linear-gradient(to bottom, #eef 0%, #dde 100%);
-}
-
-.Dream-EventGenerator {
-  border: 1px solid #cba;
-  background-color:#fdc;
-  background-image: linear-gradient(to bottom, #fdc 0%, #ecb 100%);
-}
-
-.Dream-BatchDecomposition, .Dream-BatchDecompositionStartTime, .Dream-BatchReassembly {
-  border: 1px solid #bcb;
-  background-color:#dfd;
-  background-image: linear-gradient(to bottom, #dfd 0%, #cec 100%);
-}
-
-.Dream-Repairman {
-  border: 1px solid #cbb;
-  background-color:#fdd;
-  background-image: linear-gradient(to bottom, #fdd 0%, #dcc 100%);
 }

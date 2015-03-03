@@ -74,8 +74,9 @@ path, ._jsPlumb_endpoint {
 
 .window, .dummy_window {
     border:1px solid lightgray;
-    width:100px;
-    height:64px;
+    width: 80px;
+    height: 80px;
+    box-sizing: border-box;
     position:absolute;
     color:black;
     font-family:serif;
