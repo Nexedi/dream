@@ -16,38 +16,47 @@
     "schedule": [
      {
       "entranceTime": 1.5, 
+      "exitTime": 1.5, 
       "stationId": "OD0"
      }, 
      {
       "entranceTime": 1.5, 
+      "exitTime": 1.5, 
       "stationId": "QCAM"
      }, 
      {
       "entranceTime": 1.5, 
+      "exitTime": 4.0, 
       "stationId": "CAM1"
      }, 
      {
       "entranceTime": 4.0, 
+      "exitTime": 7.5, 
       "stationId": "QMILL"
      }, 
      {
       "entranceTime": 7.5, 
+      "exitTime": 10.0, 
       "stationId": "MILL1"
      }, 
      {
       "entranceTime": 10.0, 
+      "exitTime": 10.3, 
       "stationId": "QEDM"
      }, 
      {
       "entranceTime": 10.3, 
+      "exitTime": 12.8, 
       "stationId": "EDM"
      }, 
      {
       "entranceTime": 12.8, 
+      "exitTime": 12.8, 
       "stationId": "AB1"
      }, 
      {
       "entranceTime": 12.8, 
+      "exitTime": 12.8, 
       "stationId": "MA1"
      }
     ]
@@ -62,38 +71,47 @@
     "schedule": [
      {
       "entranceTime": 2.0999999999999996, 
+      "exitTime": 2.0999999999999996, 
       "stationId": "OD0"
      }, 
      {
       "entranceTime": 2.0999999999999996, 
+      "exitTime": 3.1, 
       "stationId": "QCAM"
      }, 
      {
       "entranceTime": 3.1, 
+      "exitTime": 3.5, 
       "stationId": "CAM2"
      }, 
      {
       "entranceTime": 3.5, 
+      "exitTime": 3.5, 
       "stationId": "QMILL"
      }, 
      {
       "entranceTime": 3.5, 
+      "exitTime": 7.7, 
       "stationId": "MILL2"
      }, 
      {
       "entranceTime": 7.7, 
+      "exitTime": 9.1, 
       "stationId": "QEDM"
      }, 
      {
       "entranceTime": 9.1, 
+      "exitTime": 10.3, 
       "stationId": "EDM"
      }, 
      {
       "entranceTime": 10.3, 
+      "exitTime": 14.500000000000002, 
       "stationId": "AB1"
      }, 
      {
       "entranceTime": 14.500000000000002, 
+      "exitTime": 14.500000000000002, 
       "stationId": "MA2"
      }
     ]
@@ -108,38 +126,47 @@
     "schedule": [
      {
       "entranceTime": 1.5, 
+      "exitTime": 1.5, 
       "stationId": "OD0"
      }, 
      {
       "entranceTime": 1.5, 
+      "exitTime": 1.5, 
       "stationId": "QCAM"
      }, 
      {
       "entranceTime": 1.5, 
+      "exitTime": 3.1, 
       "stationId": "CAM2"
      }, 
      {
       "entranceTime": 3.1, 
+      "exitTime": 3.1, 
       "stationId": "QMILL"
      }, 
      {
       "entranceTime": 3.1, 
+      "exitTime": 7.5, 
       "stationId": "MILL1"
      }, 
      {
       "entranceTime": 7.5, 
+      "exitTime": 7.5, 
       "stationId": "QEDM"
      }, 
      {
       "entranceTime": 7.5, 
+      "exitTime": 9.1, 
       "stationId": "EDM"
      }, 
      {
       "entranceTime": 9.1, 
+      "exitTime": 12.8, 
       "stationId": "AB1"
      }, 
      {
       "entranceTime": 12.8, 
+      "exitTime": 12.8, 
       "stationId": "MA1"
      }
     ]
@@ -154,38 +181,47 @@
     "schedule": [
      {
       "entranceTime": 2.0999999999999996, 
+      "exitTime": 2.0999999999999996, 
       "stationId": "OD0"
      }, 
      {
       "entranceTime": 2.0999999999999996, 
+      "exitTime": 4.0, 
       "stationId": "QCAM"
      }, 
      {
       "entranceTime": 4.0, 
+      "exitTime": 5.0, 
       "stationId": "CAM2"
      }, 
      {
       "entranceTime": 5.0, 
+      "exitTime": 7.7, 
       "stationId": "QMILL"
      }, 
      {
       "entranceTime": 7.7, 
+      "exitTime": 8.2, 
       "stationId": "MILL2"
      }, 
      {
       "entranceTime": 8.2, 
+      "exitTime": 12.8, 
       "stationId": "QEDM"
      }, 
      {
       "entranceTime": 12.8, 
+      "exitTime": 14.500000000000002, 
       "stationId": "EDM"
      }, 
      {
       "entranceTime": 14.500000000000002, 
+      "exitTime": 14.500000000000002, 
       "stationId": "AB1"
      }, 
      {
       "entranceTime": 14.500000000000002, 
+      "exitTime": 14.500000000000002, 
       "stationId": "MA2"
      }
     ]
@@ -384,14 +420,17 @@
     "schedule": [
      {
       "entranceTime": 12.8, 
+      "exitTime": 13.8, 
       "stationId": "MA1"
      }, 
      {
       "entranceTime": 13.8, 
+      "exitTime": 13.8, 
       "stationId": "QIM"
      }, 
      {
       "entranceTime": 13.8, 
+      "exitTime": 16.3, 
       "stationId": "IM"
      }, 
      {
@@ -410,14 +449,17 @@
     "schedule": [
      {
       "entranceTime": 14.500000000000002, 
+      "exitTime": 16.5, 
       "stationId": "MA2"
      }, 
      {
       "entranceTime": 16.5, 
+      "exitTime": 16.5, 
       "stationId": "QIM"
      }, 
      {
       "entranceTime": 16.5, 
+      "exitTime": 17.3, 
       "stationId": "IM"
      }, 
      {
@@ -624,10 +666,12 @@
     "schedule": [
      {
       "entranceTime": 0, 
+      "exitTime": 0.0, 
       "stationId": "Q0"
      }, 
      {
       "entranceTime": 0.0, 
+      "exitTime": 1.5, 
       "stationId": "CAD1"
      }, 
      {
@@ -646,10 +690,12 @@
     "schedule": [
      {
       "entranceTime": 0, 
+      "exitTime": 0.0, 
       "stationId": "Q0"
      }, 
      {
       "entranceTime": 0.0, 
+      "exitTime": 2.0999999999999996, 
       "stationId": "CAD2"
      }, 
      {

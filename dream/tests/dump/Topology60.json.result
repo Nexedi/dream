@@ -55,18 +55,22 @@
     "schedule": [
      {
       "entranceTime": 0, 
+      "exitTime": 40.0, 
       "stationId": "Q1"
      }, 
      {
       "entranceTime": 40.0, 
+      "exitTime": 50.0, 
       "stationId": "M2"
      }, 
      {
       "entranceTime": 50.0, 
+      "exitTime": 70.0, 
       "stationId": "Q3"
      }, 
      {
       "entranceTime": 70.0, 
+      "exitTime": 100.0, 
       "stationId": "EDM"
      }, 
      {
@@ -86,18 +90,22 @@
     "schedule": [
      {
       "entranceTime": 0, 
+      "exitTime": 0, 
       "stationId": "Q1"
      }, 
      {
       "entranceTime": 0, 
+      "exitTime": 40.0, 
       "stationId": "M2"
      }, 
      {
       "entranceTime": 40.0, 
+      "exitTime": 50.0, 
       "stationId": "Q3"
      }, 
      {
       "entranceTime": 50.0, 
+      "exitTime": 70.0, 
       "stationId": "EDM"
      }, 
      {
@@ -117,18 +125,22 @@
     "schedule": [
      {
       "entranceTime": 0, 
+      "exitTime": 0, 
       "stationId": "Q1"
      }, 
      {
       "entranceTime": 0, 
+      "exitTime": 20.0, 
       "stationId": "M1"
      }, 
      {
       "entranceTime": 20.0, 
+      "exitTime": 20.0, 
       "stationId": "Q3"
      }, 
      {
       "entranceTime": 20.0, 
+      "exitTime": 30.0, 
       "stationId": "EDM"
      }, 
      {
@@ -148,18 +160,22 @@
     "schedule": [
      {
       "entranceTime": 0, 
+      "exitTime": 20.0, 
       "stationId": "Q1"
      }, 
      {
       "entranceTime": 20.0, 
+      "exitTime": 30.0, 
       "stationId": "M1"
      }, 
      {
       "entranceTime": 30.0, 
+      "exitTime": 30.0, 
       "stationId": "Q3"
      }, 
      {
       "entranceTime": 30.0, 
+      "exitTime": 50.0, 
       "stationId": "EDM"
      }, 
      {
@@ -179,10 +195,12 @@
     "schedule": [
      {
       "entranceTime": 0, 
+      "exitTime": 30.0, 
       "stationId": "Q1"
      }, 
      {
       "entranceTime": 30.0, 
+      "exitTime": 60.0, 
       "stationId": "M1"
      }, 
      {

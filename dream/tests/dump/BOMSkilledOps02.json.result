@@ -16,10 +16,12 @@
     "schedule": [
      {
       "entranceTime": 0, 
+      "exitTime": 5.0, 
       "stationId": "AB1"
      }, 
      {
       "entranceTime": 5.0, 
+      "exitTime": 5.0, 
       "stationId": "MA1"
      }
     ]
@@ -34,18 +36,22 @@
     "schedule": [
      {
       "entranceTime": 0, 
+      "exitTime": 0.0, 
       "stationId": "Q1"
      }, 
      {
       "entranceTime": 0.0, 
+      "exitTime": 2.0, 
       "stationId": "M1"
      }, 
      {
       "entranceTime": 2.0, 
+      "exitTime": 5.0, 
       "stationId": "AB1"
      }, 
      {
       "entranceTime": 5.0, 
+      "exitTime": 5.0, 
       "stationId": "MA1"
      }
     ]
@@ -60,18 +66,22 @@
     "schedule": [
      {
       "entranceTime": 0, 
+      "exitTime": 2.0, 
       "stationId": "Q1"
      }, 
      {
       "entranceTime": 2.0, 
+      "exitTime": 5.0, 
       "stationId": "M2"
      }, 
      {
       "entranceTime": 5.0, 
+      "exitTime": 5.0, 
       "stationId": "AB1"
      }, 
      {
       "entranceTime": 5.0, 
+      "exitTime": 5.0, 
       "stationId": "MA1"
      }
     ]
@@ -214,6 +224,7 @@
     "schedule": [
      {
       "entranceTime": 5.0, 
+      "exitTime": 6.0, 
       "stationId": "MA1"
      }, 
      {

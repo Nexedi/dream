@@ -10,14 +10,17 @@
     "schedule": [
      {
       "entranceTime": 1.0, 
+      "exitTime": 1.0, 
       "stationId": "OD0"
      }, 
      {
       "entranceTime": 1.0, 
+      "exitTime": 1.0, 
       "stationId": "Q1"
      }, 
      {
       "entranceTime": 1.0, 
+      "exitTime": 2.0, 
       "stationId": "M1"
      }, 
      {
@@ -36,14 +39,17 @@
     "schedule": [
      {
       "entranceTime": 1.0, 
+      "exitTime": 1.0, 
       "stationId": "OD0"
      }, 
      {
       "entranceTime": 1.0, 
+      "exitTime": 1.0, 
       "stationId": "Q2"
      }, 
      {
       "entranceTime": 1.0, 
+      "exitTime": 2.0, 
       "stationId": "M2"
      }, 
      {
@@ -162,10 +168,12 @@
     "schedule": [
      {
       "entranceTime": 0, 
+      "exitTime": 0, 
       "stationId": "Q0"
      }, 
      {
       "entranceTime": 0, 
+      "exitTime": 1.0, 
       "stationId": "M0"
      }, 
      {

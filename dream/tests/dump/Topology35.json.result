@@ -10,18 +10,22 @@
     "schedule": [
      {
       "entranceTime": 0, 
+      "exitTime": 0, 
       "stationId": "Q1"
      }, 
      {
       "entranceTime": 0, 
+      "exitTime": 0.25, 
       "stationId": "M1"
      }, 
      {
       "entranceTime": 0.25, 
+      "exitTime": 0.25, 
       "stationId": "Q2"
      }, 
      {
       "entranceTime": 0.25, 
+      "exitTime": 1.25, 
       "stationId": "M2"
      }, 
      {
@@ -40,18 +44,22 @@
     "schedule": [
      {
       "entranceTime": 0, 
+      "exitTime": 0, 
       "stationId": "Q2"
      }, 
      {
       "entranceTime": 0, 
+      "exitTime": 0.25, 
       "stationId": "M2"
      }, 
      {
       "entranceTime": 0.25, 
+      "exitTime": 1.25, 
       "stationId": "Q2"
      }, 
      {
       "entranceTime": 1.25, 
+      "exitTime": 2.25, 
       "stationId": "M2"
      }, 
      {
