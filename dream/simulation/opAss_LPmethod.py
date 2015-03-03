@@ -11,6 +11,10 @@ def opAss_LP(machineList, PBlist, PBskills, previousAssignment={}, weightFactors
     import copy
     import glob
     import os 
+    import time
+    from Globals import G
+
+    startPulp=time.time()
 
     machines = machineList.keys()
     sumWIP = float(sum([machineList[mach]['WIP'] for mach in machines ]))
@@ -185,7 +189,8 @@ def opAss_LP(machineList, PBlist, PBskills, previousAssignment={}, weightFactors
     files = glob.glob('*.lp')
     for f in files:
         os.remove(f)
-        
+    
+    G.totalPulpTime+=time.time()-startPulp
     return PBallocation
     
         

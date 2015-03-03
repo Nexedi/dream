@@ -124,6 +124,7 @@ class G:
     pendingEntities=[]
     env=simpy.Environment()
 
+    totalPulpTime=0     # temporary to track how much time PuLP needs to run 
     
 # =======================================================================
 # method to move entities exceeding a certain safety stock
