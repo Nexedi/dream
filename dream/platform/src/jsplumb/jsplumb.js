@@ -145,6 +145,7 @@
       edge_data.destination = getNodeId(gadget, connection.targetId);
       gadget.props.data.graph.edge[connection.id] = edge_data;
     }
+    checkNodeConstraint(gadget,getNodeId(gadget, connection.targetId));
     gadget.notifyDataChanged();
   }
 
@@ -292,6 +293,23 @@
     });
 
     gadget.notifyDataChanged();
+  }
+    
+  function checkNodeConstraint(gadget, node_id) {
+    var element_id = gadget.props.node_id_to_dom_element_id[node_id],
+      element = $(gadget.props.element).find("#" + element_id),
+      jsplumb_instance = gadget.props.jsplumb_instance,
+      node_class = gadget.props.data.graph.node[node_id]._class;
+    if (jsplumb_instance.getConnections({target:element_id}).length === 0 &&
+        node_class.toLowerCase().search('source') === -1) {
+      var warning = $("<div></div>").attr({
+        "class": "alert_no_input ui-btn-icon-notext ui-icon-alert",
+        "title": "No input defined!"
+      });
+      element.append(warning);
+    } else {
+     element.find(".alert_no_input").remove();
+    }
   }
 
   function updateElementData(gadget, node_id, data) {
@@ -899,6 +917,9 @@
       });
       $.each(this.props.data.graph.edge, function (key, value) {
         addEdge(gadget, key, value);
+      });
+      $.each(this.props.data.graph.node, function (key, value) {
+        checkNodeConstraint(gadget, key);
       });
 
       return RSVP.all([
