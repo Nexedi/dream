@@ -38,7 +38,7 @@ class BatchesShift(ReadShiftFromSpreadsheet):
         if node['_class']=='Dream.Operator':
             allString+=node_id
             allString+=','
-    print allString
+
     # if in machine shift there is a 
     for element in operatorshiftData:
         if element[1] in ['ALL','All','all']:
