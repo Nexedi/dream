@@ -700,6 +700,12 @@
                     "description": "Total assembly Space in square meters",
                     "type": "number",
                     "default": 100
+                },
+                "dueDateThreshold": {
+                    "default": "14",
+                    "description": "The number of dates for due date threshold",
+                    "title": "dueDateThreshold",
+                    "type": "string"
                 }
             }
         }
