@@ -587,9 +587,12 @@ class Machine(CoreObject):
                         # try to signal the Giver, otherwise wait until it is requested
                         if self.signalGiver():
                             from Globals import G
+                            # XXX cleaner implementation needed
+                            # if there is router that is not skilled break
                             if G.Router:
                                 if not 'Skilled' in str(G.Router.__class__):
                                     break
+                            # else continue, the giver should also check
                             continue
                 if self.initialWIP in receivedEvent:
                     transmitter, eventTime=self.initialWIP.value
