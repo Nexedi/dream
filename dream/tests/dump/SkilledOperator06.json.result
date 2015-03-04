@@ -116,6 +116,88 @@
    "family": "Buffer", 
    "id": "Q2", 
    "results": {}
+  }, 
+  {
+   "_class": "Dream.SkilledRouter", 
+   "id": "SkilledRouter757421", 
+   "results": {
+    "solutionList": [
+     {
+      "allocation": {
+       "O1": "M1", 
+       "O2": "M2"
+      }, 
+      "time": 0
+     }, 
+     {
+      "allocation": {
+       "O1": "M1", 
+       "O2": "M2"
+      }, 
+      "time": 10.0
+     }, 
+     {
+      "allocation": {
+       "O1": "M1", 
+       "O2": "M2"
+      }, 
+      "time": 20.0
+     }, 
+     {
+      "allocation": {
+       "O1": "M1", 
+       "O2": "M2"
+      }, 
+      "time": 30.0
+     }, 
+     {
+      "allocation": {
+       "O1": "M1", 
+       "O2": "M2"
+      }, 
+      "time": 40.0
+     }, 
+     {
+      "allocation": {
+       "O1": "M1", 
+       "O2": "M2"
+      }, 
+      "time": 50.0
+     }, 
+     {
+      "allocation": {
+       "O1": "M1", 
+       "O2": "M2"
+      }, 
+      "time": 60.0
+     }, 
+     {
+      "allocation": {
+       "O1": "M1", 
+       "O2": "M2"
+      }, 
+      "time": 70.0
+     }, 
+     {
+      "allocation": {
+       "O1": "M1", 
+       "O2": "M2"
+      }, 
+      "time": 80.0
+     }, 
+     {
+      "allocation": {
+       "O1": "M1", 
+       "O2": "M2"
+      }, 
+      "time": 90.0
+     }, 
+     {
+      "allocation": {}, 
+      "time": 100.0
+     }
+    ]
+   }
   }
  ], 
  "general": {

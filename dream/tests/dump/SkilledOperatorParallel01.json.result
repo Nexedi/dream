@@ -189,6 +189,102 @@
      ]
     ]
    }
+  }, 
+  {
+   "_class": "Dream.SkilledRouter", 
+   "id": "SkilledRouter589161", 
+   "results": {
+    "solutionList": [
+     {
+      "allocation": {
+       "PB1": "M1", 
+       "PB2": "M2"
+      }, 
+      "time": 0
+     }, 
+     {
+      "allocation": {
+       "PB1": "M1", 
+       "PB2": "M2"
+      }, 
+      "time": 10.0
+     }, 
+     {
+      "allocation": {
+       "PB1": "M1", 
+       "PB2": "M2"
+      }, 
+      "time": 20.0
+     }, 
+     {
+      "allocation": {
+       "PB1": "M1", 
+       "PB2": "M2"
+      }, 
+      "time": 30.0
+     }, 
+     {
+      "allocation": {
+       "PB1": "M1", 
+       "PB2": "M2"
+      }, 
+      "time": 40.0
+     }, 
+     {
+      "allocation": {
+       "PB1": "M1", 
+       "PB2": "M2"
+      }, 
+      "time": 50.0
+     }, 
+     {
+      "allocation": {
+       "PB1": "M1", 
+       "PB2": "M2"
+      }, 
+      "time": 60.0
+     }, 
+     {
+      "allocation": {
+       "PB1": "M1", 
+       "PB2": "M2"
+      }, 
+      "time": 70.0
+     }, 
+     {
+      "allocation": {
+       "PB1": "M1", 
+       "PB2": "M2"
+      }, 
+      "time": 80.0
+     }, 
+     {
+      "allocation": {
+       "PB1": "M1", 
+       "PB2": "M2"
+      }, 
+      "time": 90.0
+     }, 
+     {
+      "allocation": {
+       "PB1": "M1", 
+       "PB2": "M2"
+      }, 
+      "time": 100.0
+     }, 
+     {
+      "allocation": {
+       "PB1": "M1", 
+       "PB2": "M2"
+      }, 
+      "time": 110.0
+     }, 
+     {
+      "allocation": {}, 
+      "time": 120.0
+     }
+    ]
+   }
   }
  ], 
  "general": {
