@@ -229,7 +229,7 @@
 		  "output_id": "operator_gantt"
 		}, 
 		"gadget": "Output_viewGantt", 
-		"title": "Operator Schedule", 
+		"title": "Operator Schedule Gantt", 
 		"type": "object_view"
 	  }, 
       "view_queue_stats": {
@@ -254,6 +254,14 @@
         }, 
         "gadget": "Output_viewGraph", 
         "title": "Operator Utilization", 
+        "type": "object_view"
+      },
+      "view_download_spreadsheet": {
+        "configuration": {
+          "output_id": "operator_spreadsheet"
+        }, 
+        "gadget": "Output_viewDownloadFile", 
+        "title": "Operator Schedule Spreadsheet", 
         "type": "object_view"
       }
     }, 
@@ -284,6 +292,10 @@
         {
           "_class": "dream.plugins.BatchesOperatorGantt.BatchesOperatorGantt", 
           "output_id": "operator_gantt"
+        },
+        {
+          "_class": "dream.plugins.BatchesOperatorSpreadsheet.BatchesOperatorSpreadsheet", 
+          "output_id": "operator_spreadsheet"
         }
 	  ]
     }, 
