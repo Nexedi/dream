@@ -49,6 +49,7 @@ class SkilledRouter(Router):
         # Flag used to notify the need to wait for endedLastProcessing signal
         waitEndProcess=False
         self.outputSolutions=outputSolutions
+        self.id='SkilledRouter01'
         
     #===========================================================================
     #                         the initialize method
