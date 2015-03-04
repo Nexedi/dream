@@ -246,7 +246,16 @@ class MouldAssembly(MachineJobShop):
             processDistType=processingTime.keys()[0]
             procTime=float(processingTime[processDistType].get('mean', 0))
             processOpType=firstStep.get('operationType',{}).get('Processing','not found') # can be manual/automatic
-            
+            # task_id
+            task_id = firstStep.get('task_id', None)
+            # sequence
+            sequence = firstStep.get('sequence', None)
+            # operator
+            operator = firstStep.get('operator', {})
+            # technology
+            technology = firstStep.get('technology', None)
+            # quantity
+            quantity = firstStep.get('quantity', None)
             # setup operation
             setupTime=firstStep.get('setupTime',None)
             if setupTime:
@@ -257,13 +266,30 @@ class MouldAssembly(MachineJobShop):
                 setTime=float(setupTime[setupDistType].get('mean', 0))
                 setupOpType=firstStep.get('operationType',{}).get('Setup','not found') # can be manual/automatic
                 # update the first step of the route with the activeObjects id as sole element of the stationIdsList
-                route.insert(0, {'stationIdsList':[str(self.id)],'processingTime':{str(processDistType):{'mean':str(procTime)}},\
-                                                                 'setupTime':{str(setupDistType):{'mean':str(setupTime)}},
-                                                                 'operationType':{'Processing':processOpType,'Setup':setupOpType}})
+                route.insert(0, {'stationIdsList':[str(self.id)],
+                                 'processingTime':{str(processDistType):{'mean':str(procTime)}},\
+                                 'setupTime':{str(setupDistType):{'mean':str(setupTime)}},
+                                 'operationType':{'Processing':processOpType,'Setup':setupOpType}})
             else:
                 # update the first step of the route with the activeObjects id as sole element of the stationIdsList
-                route.insert(0, {'stationIdsList':[str(self.id)],'processingTime':{str(processDistType):{'mean':str(procTime)}},
+                route.insert(0, {'stationIdsList':[str(self.id)],
+                                 'processingTime':{str(processDistType):{'mean':str(procTime)}},
                                  'operationType':{'Processing':processOpType}})
+            # if there is task_id then add it to the route
+            if task_id:
+                route[0]["task_id"] = task_id
+            # if there is sequence then add it to the route
+            if sequence:
+                route[0]["sequence"] = sequence
+            # if there is operator then add it to the route
+            if operator:
+                route[0]["operator"] = operator
+            # if there is technology then add it to the route
+            if technology:
+                route[0]["technology"] = technology
+            # if there is quantity then add it to the route
+            if quantity!=None:
+                route[0]["quantity"] = quantity
             #Below it is to assign an exit if it was not assigned in JSON
             #have to talk about it with NEX
             exitAssigned=False
