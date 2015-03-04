@@ -29,17 +29,17 @@ class MergeSteps(plugin.InputPreparationPlugin):
           technology = step["technology"]
           technology = technology.split("-")[0]
           # XXX loadType is always manual for this pilot
-          step["operationType"] = {"Load" : "Manual"}
+          step["operationType"] = {"Load" : 1}
           '''processingType + operator for processing'''
           # if the operator is defined as automatic or
           # XXX if the technology is EDM
           # then set the processing type as automatic and remove the operator property
           if step["operator"] == "Automatic"\
               or step["technology"] == "EDM":
-            step["operationType"]["Processing"] = "Automatic"
+            step["operationType"]["Processing"] = 0
             step.pop("operator")
           else:
-            step["operationType"]["Processing"] = "Manual"
+            step["operationType"]["Processing"] = 1
             tempOperator = copy.deepcopy(step["operator"])
             step["operator"] = {}
             step["operator"]["processing"] = [tempOperator]
@@ -68,9 +68,9 @@ class MergeSteps(plugin.InputPreparationPlugin):
               step["setupTime"] = stepToMerge["processingTime"]
             # setupType + operator for setup
             if stepToMerge["operator"] == "Automatic":
-              step["operationType"]["Setup"] = "Automatic"
+              step["operationType"]["Setup"] = 0
             else:
-              step["operationType"]["Setup"] = "Manual"
+              step["operationType"]["Setup"] = 1
               try:
                 tempOperator = copy.deepcopy(step["operator"])
               except:
