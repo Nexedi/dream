@@ -49,7 +49,7 @@ class MouldAssemblyBuffer(ConditionalBuffer):
         ConditionalBuffer.__init__(self, id=id, name=name, capacity=capacity,
                                  isDummy=isDummy, schedulingRule=schedulingRule)
     
-    assemblyValidTypes=set(['Mold Base', 'Mold Insert', 'Slider', 'Misc', 'Z-standards', 'K-Standards'])
+    assemblyValidTypes=set(['Mold Base', 'Mold Insert', 'Slider', 'Misc', 'Electrode','Z-Standards', 'K-Standards'])
     assemblyInvalidTypes=set(['Mold','Injection Molding Part'])
     # =======================================================================
     # extends the default get entity

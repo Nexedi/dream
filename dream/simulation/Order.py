@@ -34,7 +34,7 @@ from Job import Job
 class Order(Job):
     type="Order"
     # XX define which are the valid assembly types - for which components should the order be searching for 
-    assemblyValidTypes=set(['Mold Base', 'Mold Insert', 'Slider', 'Misc', 'Z-standards', 'K-Standards'])
+    assemblyValidTypes=set(['Mold Base', 'Mold Insert', 'Slider', 'Misc', 'Electrode','Z-Standards', 'K-Standards'])
     assemblyInvalidTypes=set(['Mold','Injection Molding Part'])
     def __init__(self, id=None, 
                         name=None, 
