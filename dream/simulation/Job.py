@@ -295,7 +295,7 @@ class Job(Entity):                                  # inherits from the Entity c
     #===========================================================================
     def findCandidateReceiver(self):
         from Globals import G
-        router=G.Router
+        router=G.RouterList[0]
         # initiate the local list variable available receivers
         availableReceivers=[x for x in self.candidateReceivers\
                                         if not x in router.occupiedReceivers]

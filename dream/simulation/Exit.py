@@ -108,7 +108,7 @@ class Exit(CoreObject):
         # if the entity is in the G.pendingEntities list then remove it from there
         from Globals import G
 #         G.pendingEntities[:]=(entity for entity in G.pendingEntities if not entity is activeEntity)
-        if G.Router:
+        if G.RouterList:
             if activeEntity in G.pendingEntities:
                 G.pendingEntities.remove(activeEntity)
 #         if activeEntity in G.EntityList:

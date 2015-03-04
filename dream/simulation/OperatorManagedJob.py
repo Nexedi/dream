@@ -84,7 +84,7 @@ class OperatorManagedJob(Operator):
     #===========================================================================
     def findAvailableEntity(self):
         from Globals import G
-        router=G.Router
+        router=G.RouterList[0]
         # if the candidateEntities and the entitiesWithOccupiedReceivers lists are identical then return None 
         if len(set(self.candidateEntities).intersection(router.entitiesWithOccupiedReceivers))==len(self.candidateEntities):
             return None
@@ -106,7 +106,7 @@ class OperatorManagedJob(Operator):
     #===========================================================================
     def findCandidateEntity(self):
         from Globals import G
-        router=G.Router
+        router=G.RouterList[0]
         # pick a candidateEntity
         candidateEntity=self.findAvailableEntity()
         if not candidateEntity:

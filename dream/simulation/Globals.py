@@ -76,10 +76,7 @@ class G:
     outputJSONFile=None
     
     numberOfEntities = 0
-    
-    #object that routes the operators in the model
-    Router=None 
-    
+       
     #                define the lists of each object type
     SourceList=[]
     MachineList=[]

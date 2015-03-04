@@ -257,16 +257,16 @@ class Machine(CoreObject):
         if (self.operatorPool!='None'):
             from Globals import G
             # if there is no router
-            if not G.Router:
+            if not G.RouterList:
                 # TODO if the dedicatedOperator flag is raised then create a SkilledRouter (temp)
                 if self.dedicatedOperator:
                     self.router=SkilledRouter()
                 else:
                     self.router=Router()
-                G.Router=self.router
+                G.RouterList[0]=self.router
             # otherwise set the already existing router as the machines Router
             else:
-                self.router=G.Router
+                self.router=G.RouterList[0]
     #===========================================================================
     # initialise broker if needed
     #===========================================================================
@@ -507,7 +507,7 @@ class Machine(CoreObject):
                 yield self.env.process(self.release())                 
                 from Globals import G
                 # append the entity that was stopped to the pending ones
-                if G.Router:
+                if G.RouterList:
                     G.pendingEntities.append(self.currentEntity)
                 #===========================================================
                 # # request a resource after the interruption
@@ -581,8 +581,8 @@ class Machine(CoreObject):
                         if self.signalGiver():
                             # XXX cleaner implementation needed
                             # if there is skilled router the giver should also check
-                            if G.Router:
-                                if 'Skilled' in str(G.Router.__class__):
+                            if G.RouterList:
+                                if 'Skilled' in str(G.RouterList[0].__class__):
                                     continue
                             break
                     if self.loadOperatorAvailable in receivedEvent:
@@ -594,8 +594,8 @@ class Machine(CoreObject):
                         if self.signalGiver():
                             # XXX cleaner implementation needed
                             # if there is router that is not skilled break
-                            if G.Router:
-                                if not 'Skilled' in str(G.Router.__class__):
+                            if G.RouterList:
+                                if not 'Skilled' in str(G.RouterList[0].__class__):
                                     break
                             # else continue, the giver should also check
                             continue
@@ -889,7 +889,7 @@ class Machine(CoreObject):
             except IndexError:
                 pass
             from Globals import G
-            if G.Router:
+            if G.RouterList:
                 # the just processed entity is added to the list of entities 
                 # pending for the next processing
                 G.pendingEntities.append(activeObjectQueue[0])
@@ -1095,7 +1095,7 @@ class Machine(CoreObject):
         activeEntity=CoreObject.getEntity(self)          # run the default method   
         # after the machine receives an entity, it must be removed from the pendingEntities list
         from Globals import G
-        if G.Router:
+        if G.RouterList:
             if activeEntity in G.pendingEntities:
                 G.pendingEntities.remove(activeEntity)
         return activeEntity
@@ -1141,7 +1141,7 @@ class Machine(CoreObject):
         activeEntity=entity
         
         from Globals import G
-        router = G.Router
+        router = G.RouterList[0]
         # if the entity is in a machines who's broker waits for operator then
         if self in router.pendingMachines:
             activeEntity.proceed=True
@@ -1177,11 +1177,11 @@ class Machine(CoreObject):
             # if the Router is expecting for signal send it
             from Globals import G
             from SkilledOperatorRouter import SkilledRouter
-            if G.Router.__class__ is SkilledRouter:
-                if G.Router.expectedFinishSignals:
-                    if self.id in G.Router.expectedFinishSignalsDict:
-                        signal=G.Router.expectedFinishSignalsDict[self.id]
-                        self.sendSignal(receiver=G.Router, signal=signal)
+            if G.RouterList[0].__class__ is SkilledRouter:
+                if G.RouterList[0].expectedFinishSignals:
+                    if self.id in G.RouterList[0].expectedFinishSignalsDict:
+                        signal=G.RouterList[0].expectedFinishSignalsDict[self.id]
+                        self.sendSignal(receiver=G.RouterList[0], signal=signal)
         self.broker.invoke()
         self.toBeOperated = False
         

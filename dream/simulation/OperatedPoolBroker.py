@@ -96,10 +96,10 @@ class Broker(ObjectInterruption):
                         # add the currentEntity to the pendingEntities
                         if not self.victim.currentEntity in G.pendingEntities:
                             G.pendingEntities.append(self.victim.currentEntity)
-                        if not G.Router.invoked and G.Router.expectedSignals['isCalled']:
+                        if not G.RouterList[0].invoked and G.RouterList[0].expectedSignals['isCalled']:
                             self.victim.printTrace(self.victim.id, signal='router (broker)')
-                            self.sendSignal(receiver=G.Router, signal=G.Router.isCalled)
-                            G.Router.invoked=True
+                            self.sendSignal(receiver=G.RouterList[0], signal=G.RouterList[0].isCalled)
+                            G.RouterList[0].invoked=True
                             
                         self.waitForOperator=True
                         self.victim.printTrace(self.victim.id, waitEvent='(resourceIsAvailable broker)')
@@ -118,7 +118,7 @@ class Broker(ObjectInterruption):
                 # else if the Router is already invoked for allocating purposes wait until a resource is allocated to the victim's operatorPool
                 # wait only if there is no current operator
                 # XXX discuss this
-                elif G.Router.invoked and G.Router.allocation and not self.victim.currentOperator:
+                elif G.RouterList[0].invoked and G.RouterList[0].allocation and not self.victim.currentOperator:
                     self.waitForOperator=True
                     self.victim.printTrace(self.victim.id, waitEvent='(resourceIsAvailable broker)')
                     
@@ -178,10 +178,10 @@ class Broker(ObjectInterruption):
                         
                         # TODO: signalling the router must be done more elegantly, router must be set as global variable
                         # if the router is already invoked then do not signal it again
-                        if not G.Router.invoked and G.Router.expectedSignals['isCalled']:
+                        if not G.RouterList[0].invoked and G.RouterList[0].expectedSignals['isCalled']:
                             self.victim.printTrace(self.victim.id, signal='router (broker)')
-                            G.Router.invoked=True
-                            self.sendSignal(receiver=G.Router, signal=G.Router.isCalled)
+                            G.RouterList[0].invoked=True
+                            self.sendSignal(receiver=G.RouterList[0], signal=G.RouterList[0].isCalled)
                         # TODO: signalling the router will give the chance to it to take the control, but when will it eventually receive it. 
                         #     after signalling the broker will signal it's victim that it has finished it's processes 
                         # TODO: this wont work for the moment. The actions that follow must be performed by all operated brokers. 

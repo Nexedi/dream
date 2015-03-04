@@ -42,7 +42,7 @@ class SkilledRouter(Router):
     # TODO: we should maybe define a global schedulingRule criterion that will be 
     #         chosen in case of multiple criteria for different Operators
     # ======================================================================= 
-    def __init__(self,sorting=False, outputSolutions=False):
+    def __init__(self,sorting=False, outputSolutions=True):
         Router.__init__(self)
         # Flag used to notify the need for re-allocation of skilled operators to operatorPools
         self.allocation=False

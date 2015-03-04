@@ -128,7 +128,7 @@ class Operator(ObjectResource):
     #===========================================================================
     def sortStations(self):
         from Globals import G
-        router=G.Router
+        router=G.RouterList[0]
         candidateMachines=self.candidateStations
         # for the candidateMachines
         if candidateMachines:

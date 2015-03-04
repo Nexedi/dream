@@ -66,12 +66,12 @@ class MachineManagedJob(MachineJobShop):
     def createRouter(self):
         #create a Router
         from Globals import G
-        if not G.Router:
+        if not G.RouterList:
             self.router=RouterManaged()
-            G.Router=self.router          
+            G.RouterList[0]=self.router          
         # otherwise set the already existing router as the machines Router
         else:
-            self.router=G.Router
+            self.router=G.RouterList[0]
             
     #===========================================================================
     # initialize broker if needed
