@@ -42,12 +42,13 @@ class SkilledRouter(Router):
     # TODO: we should maybe define a global schedulingRule criterion that will be 
     #         chosen in case of multiple criteria for different Operators
     # ======================================================================= 
-    def __init__(self,sorting=False):
+    def __init__(self,sorting=False, outputSolutions=False):
         Router.__init__(self)
         # Flag used to notify the need for re-allocation of skilled operators to operatorPools
         self.allocation=False
         # Flag used to notify the need to wait for endedLastProcessing signal
         waitEndProcess=False
+        self.outputSolutions=outputSolutions
         
     #===========================================================================
     #                         the initialize method
@@ -59,6 +60,7 @@ class SkilledRouter(Router):
         self.pendingQueues=[]
         self.pendingMachines=[]
         self.previousSolution={}
+        self.solutionList=[]
         
     # =======================================================================
     #                          the run method
@@ -163,6 +165,13 @@ class SkilledRouter(Router):
                                   self.operators, previousAssignment=self.previousSolution)
 #                 print '-------'
 #                 print self.env.now, solution
+                
+                if self.outputSolutions:
+                    self.solutionList.append({
+                        "time":self.env.now,
+                        "allocation":solution
+                    })
+                
                 # XXX assign the operators to operatorPools
                 # pendingStations/ available stations not yet given operator
                 self.pendingStations=[]
@@ -277,4 +286,22 @@ class SkilledRouter(Router):
         Router.exitActions(self)
         self.allocation=False
         self.waitEndProcess=False
+    
+    def postProcessing(self):
+        if self.outputSolutions:
+            self.solutionList.append({
+                    "time":self.env.now,
+                    "allocation":{}
+                })
+    
+    def outputResultsJSON(self):
+        if self.outputSolutions:
+            from Globals import G
+            json = {'_class': 'Dream.%s' % self.__class__.__name__,
+                    'id': self.id,
+                    'results': {}}
+            json['results']['solutionList'] = self.solutionList
+            G.outputJSON['elementList'].append(json)
+    
+    
     

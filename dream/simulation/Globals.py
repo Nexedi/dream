@@ -47,6 +47,7 @@ class G:
     EntityList=[]                   #a list that holds all the Entities 
     ObjectResourceList=[]
     ObjectInterruptionList=[]
+    RouterList=[]
     
     numberOfReplications=1          #the number of replications default=1git 
     confidenceLevel=0.9             #the confidence level default=90%

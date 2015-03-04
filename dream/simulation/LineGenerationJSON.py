@@ -572,7 +572,7 @@ def setTopology():
 #            initializes all the objects that are in the topology
 # ===========================================================================
 def initializeObjects():
-    for element in G.ObjList + G.ObjectResourceList + G.EntityList + G.ObjectInterruptionList:
+    for element in G.ObjList + G.ObjectResourceList + G.EntityList + G.ObjectInterruptionList+G.RouterList:
         element.initialize()
 
 # ===========================================================================
@@ -655,13 +655,9 @@ def main(argv=[], input_data=None):
             G.env.run(until=G.maxSimTime)
         
         #carry on the post processing operations for every object in the topology       
-        for element in G.ObjList:
+        for element in G.ObjList+G.ObjectResourceList+G.RouterList:
             element.postProcessing()
-            
-        #carry on the post processing operations for every model resource in the topology       
-        for model_resource in G.ObjectResourceList:
-            model_resource.postProcessing()
-            
+                       
         # added for debugging, print the Route of the Jobs on the same G.traceFile
         PrintRoute.outputRoute()
             
@@ -682,7 +678,7 @@ def main(argv=[], input_data=None):
     
         
     #output data to JSON for every object in the topology         
-    for object in G.ObjectResourceList + G.EntityList + G.ObjList:
+    for object in G.ObjectResourceList + G.EntityList + G.ObjList+G.RouterList:
         object.outputResultsJSON()
         
     # output the trace as encoded if it is set on

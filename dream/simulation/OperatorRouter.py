@@ -52,6 +52,8 @@ class Router(ObjectInterruption):
         self.preemptiveOperators=[]                  # list of preemptiveOperators that should preempt their machines
         self.criticalQueues=[]
         self.pending=[]                              # list of entities that require operators now
+        from Globals import G
+        G.RouterList.append(self)
         
     #===========================================================================
     #                         the initialize method
