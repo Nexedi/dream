@@ -10,10 +10,12 @@ class BatchesOperatorSpreadsheet(plugin.OutputPreparationPlugin):
     rowIndex=0
     scheduleFile = xlwt.Workbook() 
     scheduleSheet = scheduleFile.add_sheet('Operator Schedule', cell_overwrite_ok=True)
-    scheduleSheet.write(rowIndex,0,'Operator')
-    scheduleSheet.write(rowIndex,1,'Machine')
-    scheduleSheet.write(rowIndex,2,'Start Time')
-    scheduleSheet.write(rowIndex,3,'End Time')
+    headingStyle=xlwt.easyxf("font: bold on; borders: bottom dashed;font: color red;") 
+    PBstyle=xlwt.easyxf("font: bold on;font: color red;")    
+    scheduleSheet.write(rowIndex,0,'Operator',headingStyle)
+    scheduleSheet.write(rowIndex,1,'Machine',headingStyle)
+    scheduleSheet.write(rowIndex,2,'Start Time',headingStyle)
+    scheduleSheet.write(rowIndex,3,'End Time',headingStyle)
     rowIndex+=1
     
     # get the result the the router gives
@@ -55,7 +57,7 @@ class BatchesOperatorSpreadsheet(plugin.OutputPreparationPlugin):
     
     # output the results in excel
     for operator in normalizedSchedule.keys():
-        scheduleSheet.write(rowIndex,0,operator)
+        scheduleSheet.write(rowIndex,0,operator,PBstyle)
         for record in normalizedSchedule[operator]:
             # skip the records that have 'None'
             if not record[0]:
