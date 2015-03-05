@@ -142,7 +142,8 @@ class InsertQueues(plugin.InputPreparationPlugin):
               if assemblyIDlist:
                 route.append({"stationIdsList": assemblyIDlist,
                               "sequence": assembly_sequence,
-                              "task_id": assembly_task_id})
+                              "task_id": assembly_task_id,
+                              "technology": "ASSM"})
 
           index+=1
     return data
