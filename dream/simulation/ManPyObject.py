@@ -66,14 +66,16 @@ class ManPyObject(object):
     #===========================================================================
     @staticmethod
     def signalRouter(receiver=None):
+        from Globals import G
         # if an operator is not assigned to the receiver then do not signal the receiver but the Router
         try:
-            # XXX in the case of dedicatedOperator assignedOperators must be always True in order to avoid invoking the Router
+            # in the case of skilled router there is no need to signal
+            if 'Skilled' in str(G.RouterList[0].__class__):
+                return False
             if not receiver.assignedOperator or\
                    (receiver.isPreemptive and len(receiver.Res.users)>0):
                 if receiver.isLoadRequested():
                     try:
-                        from Globals import G
                         if not G.RouterList[0].invoked and G.RouterList[0].expectedSignals['isCalled']:
 #                             self.printTrace(self.id, signal='router')
                             G.RouterList[0].invoked=True
