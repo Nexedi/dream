@@ -315,9 +315,9 @@ class Router(ObjectInterruption):
                 for candidateOperator in candidateOperators:
                     # XXX not generic enough - find an other way to initiate skilledRouter and incorporate also setup and load
                     if candidateOperator.skillDict:
-                        if (station.id in candidateOperator.skillDict["process"] and station in self.pendingMachines) or\
-                           (station.id in candidateOperator.skillDict["setup"] and station in candidateMachines) or\
-                           ((station.id in candidateOperator.skillDict["process"] and station in candidateMachines) and \
+                        if (station.id in candidateOperator.skillDict["process"].get("stationIdList",[]) and station in self.pendingMachines) or\
+                           (station.id in candidateOperator.skillDict["setup"].get("stationIdList",[]) and station in candidateMachines) or\
+                           ((station.id in candidateOperator.skillDict["process"].get("stationIdList",[]) and station in candidateMachines) and \
                             not station.getActiveObjectQueue()):
                             if not station in candidateOperator.candidateStations:
                                 candidateOperator.candidateStations.append(station)
@@ -411,14 +411,71 @@ class Router(ObjectInterruption):
             operator.candidateEntities.sort(key=lambda x:x.responsibleForCurrentStep()==operator,reverse=True)
             # pick an entity and a station
             if operator.candidateEntities:
-                operator.candidateEntity=operator.candidateEntities[0]
-                # if the entities currentStation is machine
-                if operator.candidateEntity.currentStation in self.pendingMachines:
-                    operator.candidateStation=operator.candidateEntity.currentStation
-                elif operator.candidateEntity.currentStation in self.pendingQueues:
-                    for station in operator.candidateStations:
-                        if station in operator.candidateEntity.currentStation.next:
-                            operator.candidateStation=station
-                            break
-                occupiedStations.append(operator.candidateStation)
-                occupiedEntities.append(operator.candidateEntity)
+                # an operator may be able to operate a machine in its skillDict but at the same time he may not be eligible to perform the task required as described by operator.candidateEntities[0].remainingRoute[0].get("technology", None)
+                # in other words, he may be able to work on a WORK station but at the same time he may not be eligible to perform a QUAL quality control on that station 
+                # reset the candidateEntity of the operator
+                operator.candidateEntity = None
+                # scan the entities in the candidateEntities list of the operator
+                for index, entity in enumerate(operator.candidateEntities):
+                    # find the entity's the last started task_id
+                    try:
+                        last_task_id = entity.schedule[-1].get("task_id", None)
+                    except IndexError:
+                        last_task_id = None
+                    # if the last task is defined
+                    if last_task_id:
+                        # find the corresponding step within the entity's router
+                        for step in entity.route:
+                            if step.get("task_id", ) == last_task_id:
+                                if step.get("technology", None):
+                                    lastStep = step
+                                    break
+                                else:
+                                    continue
+                        # if the entity lies in a Machine
+                        if entity.currentStation in self.pendingMachines:
+                            requestedTechnology = lastStep.get("technology",None)
+                        # if the entity lies in a queue
+                        else:
+                            requestedTechnology = entity.remainingRoute[0].get("technology", None)
+                        # if there is a requested technology defined
+                        if requestedTechnology:
+                            # if the requested technology is in the operators skillDict
+                            # XXX needs refining (an operator may have INJM in Process but the candidate entity may need setup
+                            if requestedTechnology in operator.skillDict["process"].get("technologyList", []) or\
+                               requestedTechnology in operator.skillDict["setup"].get("technologyList", []):
+                               operator.candidateEntity=operator.candidateEntities[index]
+                               break
+                            else:
+                                continue
+                    # otherwise
+                    else:
+                        operator.candidateEntity=operator.candidateEntities[index]
+                        break
+                # if there is a candidateEntity chosen
+
+                if operator.candidateEntity:
+                    # if the entities currentStation is machine
+                    if operator.candidateEntity.currentStation in self.pendingMachines:
+                        operator.candidateStation=operator.candidateEntity.currentStation
+                    elif operator.candidateEntity.currentStation in self.pendingQueues:
+                        for station in operator.candidateStations:
+                            if station in operator.candidateEntity.currentStation.next:
+                                operator.candidateStation=station
+                                break
+                    occupiedStations.append(operator.candidateStation)
+                    occupiedEntities.append(operator.candidateEntity)
+
+                # operator.candidateEntity = operator.candidateEntities[0]
+                # print operator.id, self.env.now, [ent.id for ent in operator.candidateEntities]
+                # print self.env.now, operator.id, operator.candidateEntity.id
+                # # if the entities currentStation is machine
+                # if operator.candidateEntity.currentStation in self.pendingMachines:
+                    # operator.candidateStation=operator.candidateEntity.currentStation
+                # elif operator.candidateEntity.currentStation in self.pendingQueues:
+                    # for station in operator.candidateStations:
+                        # if station in operator.candidateEntity.currentStation.next:
+                            # operator.candidateStation=station
+                            # break
+                # occupiedStations.append(operator.candidateStation)
+                # occupiedEntities.append(operator.candidateEntity)
