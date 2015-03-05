@@ -120,15 +120,14 @@ class Broker(ObjectInterruption):
                 # XXX discuss this
                 elif G.RouterList[0].invoked and G.RouterList[0].allocation and not self.victim.currentOperator:
                     self.waitForOperator=True
-                    self.victim.printTrace(self.victim.id, waitEvent='(resourceIsAvailable broker)')
+                    self.victim.printTrace(self.victim.id, waitEvent='(resourceIsAvailable broker)')                 
                     
-                    self.expectedSignals['resourceAvailable']=1
-                    
-                    yield self.resourceAvailable
-
-                    transmitter, eventTime=self.resourceAvailable.value
-                    self.resourceAvailable=self.env.event()
-                    self.waitForOperator=False
+                    if not self.victim.operatorPool.checkIfResourceIsAvailable():
+                        self.expectedSignals['resourceAvailable']=1
+                        yield self.resourceAvailable
+                        transmitter, eventTime=self.resourceAvailable.value
+                        self.resourceAvailable=self.env.event()
+                        self.waitForOperator=False
                 #===============================================================
                 
                 
