@@ -82,12 +82,15 @@
                "O2": {
                     "interruptions": {}, 
                     "skillDict": {
-                         "load": [], 
-                         "process": [
-                              "M0", 
-                              "MA1"
-                         ], 
-                         "setup": []
+                         "load": {}, 
+                         "process": {
+                              "stationIdList": [
+                                   "M0", 
+                                   "MA1"
+                              ],
+                              "technologyList": []
+                         },
+                         "setup": {}
                     }, 
                     "_class": "Dream.Operator", 
                     "capacity": 1, 
@@ -96,14 +99,17 @@
                "O1": {
                     "interruptions": {}, 
                     "skillDict": {
-                         "load": [], 
-                         "process": [
-                              "M0", 
-                              "M1", 
-                              "M2", 
-                              "MA1"
-                         ], 
-                         "setup": []
+                         "load": {}, 
+                         "process": {
+                              "stationIdList": [
+                                   "M0", 
+                                   "M1", 
+                                   "M2", 
+                                   "MA1"
+                              ],
+                              "technologyList": []
+                         },
+                         "setup": {} 
                     }, 
                     "_class": "Dream.Operator", 
                     "capacity": 1, 

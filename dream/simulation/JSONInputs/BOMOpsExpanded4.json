@@ -626,7 +626,7 @@
                                    "name": "OrderDesign2"
                               }, 
                               {
-                                   "componentType": "Z-standards", 
+                                   "componentType": "Z-Standards", 
                                    "route": [
                                         {
                                              "stationIdsList": [
@@ -1668,7 +1668,7 @@
           }
      }, 
      "general": {
-          "console": "No", 
+          "console": "Yes", 
           "numberOfReplications": "1", 
           "trace": "No", 
           "confidenceLevel": "0.95", 
