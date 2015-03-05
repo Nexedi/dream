@@ -93,9 +93,11 @@ class ReadJSShifts(plugin.InputPreparationPlugin, TimeSupportMixin):
               breakStart, breakEnd = timePair
               timeStartList.append(breakEnd)
               timeEndList.insert(0, breakStart)
-
         #if it is the current row is an extended row for the information belonging to a resource, and no resource name is entered
-        entityID = line[0].split("-")[0]
+        if line[0]:
+          entityID = line[0].split("-")[0]
+        else:
+          entityID = ""
         if str(entityID) == '': 
           #take it as a continuation for the last entered resource
           for index, start in enumerate(timeStartList):
@@ -124,7 +126,7 @@ class ReadJSShifts(plugin.InputPreparationPlugin, TimeSupportMixin):
 
       #sorts the list in case the records were not entered in correct ascending order
       for info in shiftPattern:
-          shiftPattern[info].sort(key=itemgetter(0))
+        shiftPattern[info].sort(key=itemgetter(0))
       
       for node, node_data in nodes.items():
         if node in shiftPattern:
