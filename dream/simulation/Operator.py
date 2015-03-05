@@ -83,8 +83,8 @@ class Operator(ObjectResource):
         self.skillDict = skillDict
         # if there is a skillDict add the stations defined to the operators coreObjectIds
         if skillDict:
-            for operation_stations in skillDict.values():
-                for station in operation_stations:
+            for operation_data in skillDict.values():
+                for station in operation_data.get("stationIdList", []):
                     if not station in self.coreObjectIds:
                         # append the station ID to the correObjectIds
                         self.coreObjectIds.append(station)

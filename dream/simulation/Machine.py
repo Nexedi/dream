@@ -715,7 +715,7 @@ class Machine(CoreObject):
                 yield self.env.process(self.release())
             elif (self.currentOperator):
                 if self.currentOperator.skillDict:
-                    if not self.id in self.currentOperator.skillDict["process"]:
+                    if not self.id in self.currentOperator.skillDict["process"].get("stationIdList",[]):
                         yield self.env.process(self.release())
 
             #===================================================================
