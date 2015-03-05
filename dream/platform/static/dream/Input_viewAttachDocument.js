@@ -1,5 +1,5 @@
 /*global rJS, RSVP, promiseEventListener, promiseReadAsDataURL,
-         initGadgetMixin */
+         initGadgetMixin, $, setTimeout */
 (function(window, rJS, RSVP, promiseEventListener, promiseReadAsDataURL, initGadgetMixin) {
     "use strict";
     var gadget_klass = rJS(window);
@@ -29,7 +29,16 @@
                 _data: JSON.stringify(data)
             });
         }).push(function() {
-            button.disabled = false;
+            // XXX quick way to get a popup message
+            $.mobile.loading("show", {
+                text: "File uploaded",
+                textVisible: true,
+                textonly: true
+            });
+            setTimeout(function() {
+                $.mobile.loading("hide");
+                button.disabled = false;
+            }, 1e3);
         });
     }).declareMethod("render", function(options) {
         this.props.jio_key = options.id;
