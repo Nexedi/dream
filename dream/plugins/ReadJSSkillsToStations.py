@@ -35,7 +35,16 @@ class ReadJSSkillsToStations(UpdateStationList.UpdateStationList):
                 if station.startswith(self.getStationInitials(tech))\
                     and data["graph"]["node"][station]["_class"] in self.STATION_CLASS_SET:
                   stationList.append(station)
-            skillDict[operation] = stationList
+            '''
+            the skillDict has the form of
+            {"load": {"stationIdList": []
+                      "technologyList": []},
+             "process": {"stationIdList": ["WORK1, "WORK2"]
+                         "technologyList": ["MAN"]}}     # He cannot perform though QUAL quality control on the same station
+            '''
+            skillDict[operation] = {}
+            skillDict[operation]["stationIdList"] = stationList
+            skillDict[operation]["technologyList"] = [technology.split("-")[0] for technology in technologyList]
           nodes[ID]["skillDict"] = skillDict
         
     return data
