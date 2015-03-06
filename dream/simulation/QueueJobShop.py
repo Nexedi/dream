@@ -106,6 +106,13 @@ class QueueJobShop(Queue):
     def getEntity(self):
         activeEntity=Queue.getEntity(self)
         activeEntity.currentStep = activeEntity.remainingRoute.pop(0)      #remove data from the remaining route of the entity
+        # update the task_id of the current schedule step dict
+        # find the currentStep within the entity's route
+        if activeEntity.currentStep:
+            try:
+                activeEntity.schedule[-1]["task_id"] = activeEntity.currentStep["task_id"]
+            except KeyError:
+                pass
         return activeEntity
     
     #===========================================================================

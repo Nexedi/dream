@@ -60,12 +60,16 @@ class MachineJobShop(Machine):
         self.stpRng=RandomNumberGenerator(self, setupTime)
         # check if there is a need for manual processing
         self.checkForManualOperation(type='Setup',entity=activeEntity)
-        # if there is currentOperator then update the taskId of corresponding step of their schedule according to the task_id of the first remaining route step
-        if self.currentOperator:
-            taskId = activeEntity.remainingRoute[0].get("task_id", None)
-            if taskId:
-                self.currentOperator.schedule[-1]["task_id"] = taskId
         activeEntity.currentStep = activeEntity.remainingRoute.pop(0)      #remove data from the remaining route of the entity
+        if activeEntity.currentStep:
+            # update the task_id of the currentStep dict within the schedule
+            try:
+                activeEntity.schedule[-1]["task_id"] = activeEntity.currentStep["task_id"]
+                # if there is currentOperator then update the taskId of corresponding step of their schedule according to the task_id of the currentStep
+                if self.currentOperator:
+                    self.currentOperator.schedule[-1]["task_id"] = activeEntity.currentStep["task_id"]
+            except KeyError:
+                pass
         return activeEntity
     
     #===========================================================================
