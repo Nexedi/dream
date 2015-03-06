@@ -184,7 +184,7 @@ class Broker(ObjectInterruption):
                     self.isCalled=self.env.event()
                 
                 # The operator is released (the router is not called in the case of skilled ops that work constantly on the same machine)
-                if not self.victim.checkForDedicatedOperators():
+                if not self.victim.currentOperator.operatorDedicatedTo==self.victim:
                     if not self.victim.isOperated():
                         # signal the other brokers waiting for the same operators that they are now free
                         # also signal the stations that were not requested to receive because the operator was occupied
