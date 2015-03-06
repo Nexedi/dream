@@ -53,7 +53,7 @@ class ReadJSShifts(plugin.InputPreparationPlugin, TimeSupportMixin):
         # if all the records of that line are none then continue
         toContinue = False
         for record in line:
-          if record != None:
+          if record != None and record!='':
             toContinue = True
             break
         if not toContinue:
@@ -64,12 +64,12 @@ class ReadJSShifts(plugin.InputPreparationPlugin, TimeSupportMixin):
         timeEndList = []
         #if no shift start was given, assume standard 8:00
         startTime = line[2]
-        if startTime == '':
+        if startTime == '' or startTime == None:
           startTime = "08:00"
         shiftStart = self.convertToSimulationTime(strptime("%s %s" % (line[1], startTime), '%Y/%m/%d %H:%M'))
         #if no shift end was given, assume standard 18:00
         endTime = line[3]
-        if endTime == '':
+        if endTime == '' or endTime == None:
           endTime = "18:00"
         shiftEnd = self.convertToSimulationTime(strptime("%s %s" % (line[1], endTime), '%Y/%m/%d %H:%M'))
         timePair = self.correctTimePair(shiftStart, shiftEnd)
