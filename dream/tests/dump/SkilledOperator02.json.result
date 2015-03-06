@@ -84,7 +84,7 @@
     "schedule": [
      {
       "entranceTime": 0, 
-      "exitTime": 17.0, 
+      "exitTime": 20.0, 
       "stationId": "M1"
      }, 
      {
