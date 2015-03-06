@@ -53,7 +53,7 @@ class JSComponentGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
             if not taskId:
               task_to_display = record['stationId']
             else:
-              task_to_display = record['stationId']+"; "+taskId
+              task_to_display = taskId + "; " + record['stationId']
             # get the exitTime from the record
             exitTime = record.get("exitTime", None)
             if exitTime == None:
