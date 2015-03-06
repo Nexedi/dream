@@ -91,49 +91,35 @@ class Broker(ObjectInterruption):
                     self.timeWaitForOperatorStarted=self.env.now
                     #===============================================================
                     from Globals import G
-                    # if the victim does not have a dedicated operator
-                    if not self.victim.checkForDedicatedOperators():
-                        # if the victim already holds an entity that means that the machine's operation type
-                        #     is no Load or setup, in that case the router is already invoked and the machine is already assigned an operator
-                        if not self.victimQueueIsEmpty():
-                            # add the currentEntity to the pendingEntities
-                            if not self.victim.currentEntity in G.pendingEntities:
-                                G.pendingEntities.append(self.victim.currentEntity)
-                            if not G.RouterList[0].invoked and G.RouterList[0].expectedSignals['isCalled']:
-                                self.victim.printTrace(self.victim.id, signal='router (broker)')
-                                self.sendSignal(receiver=G.RouterList[0], signal=G.RouterList[0].isCalled)
-                                G.RouterList[0].invoked=True
-                                
-                            self.waitForOperator=True
-                            self.victim.printTrace(self.victim.id, waitEvent='(resourceIsAvailable broker)')
+
+                    # if the victim already holds an entity that means that the machine's operation type
+                    #     is no Load or setup, in that case the router is already invoked and the machine is already assigned an operator
+                    if not self.victimQueueIsEmpty():
+                        # add the currentEntity to the pendingEntities
+                        if not self.victim.currentEntity in G.pendingEntities:
+                            G.pendingEntities.append(self.victim.currentEntity)
+                        if not G.RouterList[0].invoked and G.RouterList[0].expectedSignals['isCalled']:
+                            self.victim.printTrace(self.victim.id, signal='router (broker)')
+                            self.sendSignal(receiver=G.RouterList[0], signal=G.RouterList[0].isCalled)
+                            G.RouterList[0].invoked=True
                             
-                            self.expectedSignals['resourceAvailable']=1
-                            
-                            yield self.resourceAvailable
-    
-                            transmitter, eventTime=self.resourceAvailable.value
-                            self.resourceAvailable=self.env.event()
-                            # remove the currentEntity from the pendingEntities
-                            if self.victim.currentEntity in G.pendingEntities:
-                                G.pendingEntities.remove(self.victim.currentEntity)
-                            self.waitForOperator=False
-                            self.victim.printTrace(self.victim.id, resourceAvailable='(broker)')
-                    # else if the Router is already invoked for allocating purposes wait until a resource is allocated to the victim's operatorPool
-                    # wait only if there is no current operator
-                    # XXX discuss this
-                    elif G.RouterList[0].invoked and G.RouterList[0].allocation and not self.victim.currentOperator:
                         self.waitForOperator=True
-                        self.victim.printTrace(self.victim.id, waitEvent='(resourceIsAvailable broker)')                 
+                        self.victim.printTrace(self.victim.id, waitEvent='(resourceIsAvailable broker)')
                         
-                        if not self.victim.operatorPool.checkIfResourceIsAvailable():
-                            self.expectedSignals['resourceAvailable']=1
-                            yield self.resourceAvailable
-                            transmitter, eventTime=self.resourceAvailable.value
-                            self.resourceAvailable=self.env.event()
-                            self.waitForOperator=False
+                        self.expectedSignals['resourceAvailable']=1
+                        
+                        yield self.resourceAvailable
+
+                        transmitter, eventTime=self.resourceAvailable.value
+                        self.resourceAvailable=self.env.event()
+                        # remove the currentEntity from the pendingEntities
+                        if self.victim.currentEntity in G.pendingEntities:
+                            G.pendingEntities.remove(self.victim.currentEntity)
+                        self.waitForOperator=False
+                        self.victim.printTrace(self.victim.id, resourceAvailable='(broker)')
+                        self.waitForOperator=False
                     #===============================================================
-                    
-                    
+
                     assert self.victim.operatorPool.checkIfResourceIsAvailable(), 'there is no available operator to request'
                     # set the available resource as the currentOperator
                     currentOperator=None
