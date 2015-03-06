@@ -35,7 +35,7 @@
 
 					}
 				},
-				"name" : "Machine",
+				"name" : "Machine1",
 				"processingTime" : {
 					"distribution" : "Fixed",
 					"Fixed" : {
@@ -64,7 +64,7 @@
 
 					}
 				},
-				"name" : "Machine",
+				"name" : "Machine2",
 				"processingTime" : {
 					"distribution" : "Fixed",
 					"Fixed" : {
