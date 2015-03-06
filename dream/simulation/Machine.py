@@ -419,6 +419,14 @@ class Machine(CoreObject):
             self.totalOperationTime=self.totalSetupTime
         elif type=='Processing':
             self.totalOperationTime=self.totalWorkingTime
+            # if there are task_ids defined for each step
+            if self.currentEntity.schedule[-1].get("task_id", None):
+                # if exit Time is defined for the previous step of the schedule then add a new step for processing (the previous step is setup and is concluded)
+                if self.currentEntity.schedule[-1].get("exitTime", None):
+                    # define a new schedule step for processing
+                    self.currentEntity.schedule.append({"station":self,
+                                                        "entranceTime": self.env.now,
+                                                        "task_id": self.currentEntity.currentStep["task_id"]})
         # variables dedicated to hold the processing times, the time when the Entity entered, 
         # and the processing time left
         # get the operation time, tinMStarts holds the processing time of the machine
@@ -865,6 +873,10 @@ class Machine(CoreObject):
             self.totalWorkingTime=self.totalOperationTime
         elif type=='Setup':
             self.totalSetupTime=self.totalOperationTime
+            # if there are task_ids defined for each step
+            if activeEntity.schedule[-1].get("task_id", None):
+                # if the setup is finished then record an exit time for the setup
+                activeEntity.schedule[-1]["exitTime"] = self.env.now
         # reseting variables used by operation() process
         self.totalOperationTime=None
         self.timeLastOperationStarted=None
