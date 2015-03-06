@@ -83,13 +83,11 @@
     ], 
     "schedule": [
      {
-      "entityId": "P1", 
       "entranceTime": 0, 
       "exitTime": 17.0, 
       "stationId": "M1"
      }, 
      {
-      "entityId": "P1", 
       "entranceTime": 20.0, 
       "exitTime": 22.0, 
       "stationId": "M2"
