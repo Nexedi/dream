@@ -277,6 +277,11 @@ class Operator(ObjectResource):
         self.Waiting.append(100*self.totalWaitingTime/MaxSimtime)
         self.Working.append(100*self.totalWorkingTime/MaxSimtime)
         self.OffShift.append(100*self.totalOffShiftTime/MaxSimtime)
+        
+         # in the last element of the schedule if there is no exit time set it to now
+        if self.schedule:
+            if not self.schedule[-1].get('exitTime',None):
+                self.schedule[-1]['exitTime']=G.maxSimTime
 
     # =======================================================================
     #                    outputs results to JSON File
