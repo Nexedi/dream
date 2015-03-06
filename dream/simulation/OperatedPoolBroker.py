@@ -163,7 +163,6 @@ class Broker(ObjectInterruption):
                     # if the victim holds an entity (load is already performed)
                     if self.victim.getActiveObjectQueue():
                         activeEntity = self.victim.getActiveObjectQueue()[0]
-                        # print self.env.now, "the victim", self.victim.id, "holds an entity and requests an operator"
                         # update the entity value of the schedule current step dict
                         if self.victim.currentOperator.schedule[-1].get("entity", None) == None:
                             self.victim.currentOperator.schedule[-1]["entity"] = activeEntity
@@ -171,8 +170,6 @@ class Broker(ObjectInterruption):
                         try:
                             if activeEntity.currentStep:
                                 if activeEntity.currentStep.get("task_id", None):
-                                    # print "               ", self.env.now
-                                    # print "         broker is updating the task_id of the operator", self.victim.currentOperator.id, activeEntity.currentStep["task_id"]
                                     self.victim.currentOperator.schedule[-1]["task_id"] = activeEntity.currentStep["task_id"]
                         except AttributeError:
                             pass

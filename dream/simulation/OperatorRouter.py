@@ -417,6 +417,14 @@ class Router(ObjectInterruption):
                 operator.candidateEntity = None
                 # scan the entities in the candidateEntities list of the operator
                 for index, entity in enumerate(operator.candidateEntities):
+                    # if entity.currentStation in self.pendingMachines:
+                        # try:
+                            # requestedTechnology = entity.currentStep.get("technology", None)
+                        # except AttributeError:
+                            # requestedTechnology = None
+                    # else:
+                        # requestedTechnology = entity.remainingRoute[0].get("technology", None)
+                    
                     # find the entity's the last started task_id
                     try:
                         last_task_id = entity.schedule[-1].get("task_id", None)
@@ -442,6 +450,11 @@ class Router(ObjectInterruption):
                         if requestedTechnology:
                             # if the requested technology is in the operators skillDict
                             # XXX needs refining (an operator may have INJM in Process but the candidate entity may need setup
+                            # if entity.currentStation in self.pendingMachines:
+                                # pass
+                            # else:
+                                # pass
+                                
                             if requestedTechnology in operator.skillDict["process"].get("technologyList", []) or\
                                requestedTechnology in operator.skillDict["setup"].get("technologyList", []):
                                operator.candidateEntity=operator.candidateEntities[index]
@@ -453,7 +466,6 @@ class Router(ObjectInterruption):
                         operator.candidateEntity=operator.candidateEntities[index]
                         break
                 # if there is a candidateEntity chosen
-
                 if operator.candidateEntity:
                     # if the entities currentStation is machine
                     if operator.candidateEntity.currentStation in self.pendingMachines:
@@ -465,17 +477,3 @@ class Router(ObjectInterruption):
                                 break
                     occupiedStations.append(operator.candidateStation)
                     occupiedEntities.append(operator.candidateEntity)
-
-                # operator.candidateEntity = operator.candidateEntities[0]
-                # print operator.id, self.env.now, [ent.id for ent in operator.candidateEntities]
-                # print self.env.now, operator.id, operator.candidateEntity.id
-                # # if the entities currentStation is machine
-                # if operator.candidateEntity.currentStation in self.pendingMachines:
-                    # operator.candidateStation=operator.candidateEntity.currentStation
-                # elif operator.candidateEntity.currentStation in self.pendingQueues:
-                    # for station in operator.candidateStations:
-                        # if station in operator.candidateEntity.currentStation.next:
-                            # operator.candidateStation=station
-                            # break
-                # occupiedStations.append(operator.candidateStation)
-                # occupiedEntities.append(operator.candidateEntity)
