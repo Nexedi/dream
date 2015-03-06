@@ -372,21 +372,11 @@ class CoreObject(ManPyObject):
         # the entity enters a new object
         activeEntity.schedule.append({"station": self,
                                       "entranceTime": self.env.now})
-        # update the task_id of the current schedule step dict
-        # find the currentStep within the entity's route
-        try:
-            if activeEntity.remainingRoute:
-                try:
-                    activeEntity.schedule[-1]["task_id"] = activeEntity.remainingRoute[0]["task_id"]
-                except KeyError:
-                    pass
-        except AttributeError:
-            pass
         
         #update variables
         activeEntity.currentStation=self
         self.timeLastEntityEntered=self.env.now
-        self.nameLastEntityEntered=activeEntity.name      # this holds the name of the last entity that got into object      
+        self.nameLastEntityEntered=activeEntity.name      # this holds the name of the last entity that got into object
         # update the next list of the object
         self.updateNext(activeEntity)
         self.outputTrace(activeEntity.name, "got into "+self.objName)
