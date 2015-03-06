@@ -78,8 +78,6 @@ class Broker(ObjectInterruption):
             self.expectedSignals['isCalled']=1
             
             yield self.isCalled
-#             if self.victim.id=='St2M0':
-#                 print self.env.now, self.victim.id, 'Broker Called',self.invokeType
             transmitter, eventTime=self.isCalled.value
             assert eventTime==self.env.now, 'the broker should be granted control instantly'
             self.isCalled=self.env.event()
@@ -150,8 +148,6 @@ class Broker(ObjectInterruption):
                     
                     with self.victim.operatorPool.getResource(self.victim.currentOperator).request() as request:
                         yield request
-                        if self.victim.id=='St2M0':
-                            print 1
                         # update the operator workingStation
                         self.victim.currentOperator.workingStation=self.victim
                         self.victim.printTrace(self.victim.currentOperator.objName, startWork=self.victim.id)
@@ -185,22 +181,16 @@ class Broker(ObjectInterruption):
                         self.expectedSignals['isCalled']=1
                     
                         yield self.isCalled
-#                         if self.victim.id=='St2M0':
-#                             print self.env.now, self.victim.id, 'Broker Called 2', self.invokeType    
     
                         transmitter, eventTime=self.isCalled.value
                         assert eventTime==self.env.now, 'the broker should be granted control instantly'
                         self.isCalled=self.env.event()
                 
             if self.invokeType=='release':   
-#                 if self.victim.id=='St2M0':
-#                     print 2
                 # The operator is released (the router is not called in the case of skilled 
                 # ops that work constantly on the same machine)
                 if not self.victim.currentOperator.operatorDedicatedTo==self.victim:
                     if not self.victim.isOperated():
-#                         if self.victim.id=='St2M0':
-#                             print 3
                         # signal the other brokers waiting for the same operators that they are now free
                         # also signal the stations that were not requested to receive because the operator was occupied
                         
