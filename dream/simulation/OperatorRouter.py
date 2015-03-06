@@ -452,17 +452,31 @@ class Router(ObjectInterruption):
                         if requestedTechnology:
                             # if the requested technology is in the operators skillDict
                             # XXX needs refining (an operator may have INJM in Process but the candidate entity may need setup
-                            # if entity.currentStation in self.pendingMachines:
-                                # pass
-                            # else:
-                                # pass
-                                
-                            if requestedTechnology in operator.skillDict["process"].get("technologyList", []) or\
-                               requestedTechnology in operator.skillDict["setup"].get("technologyList", []):
-                               operator.candidateEntity=operator.candidateEntities[index]
-                               break
+                            # if the entity is in a station
+                            if entity.currentStation in self.pendingMachines and\
+                               entity.schedule[-1].get("station", None)==entity.currentStation:
+                                # setup type (no exitTime is defined yet for the last step of the schedule)
+                                if entity.schedule[-1].get("exitTime", "None")=="None":
+                                    if requestedTechnology in operator.skillDict["setup"].get("technologyList", []):
+                                        operator.candidateEntity=operator.candidateEntities[index]
+                                        break
+                                # process type (exit time is defined for the last step of the schedule; setup step is concluded)
+                                if entity.schedule[-1].get("exitTime", "None")!="None" or\
+                                   not entity.currentStep.get("setupTime", {}):
+                                    if requestedTechnology in operator.skillDict["process"].get("technologyList", []):
+                                        operator.candidateEntity=operator.candidateEntities[index]
+                                        break
+                            # if the entity is in a queue
                             else:
-                                continue
+                                if entity.remainingRoute[0].get("setupTime", {}):
+                                    if requestedTechnology in operator.skillDict["setup"].get("technologyList", []):
+                                        operator.candidateEntity=operator.candidateEntities[index]
+                                        break
+                                else:
+                                    if requestedTechnology in operator.skillDict["process"].get("technologyList", []):
+                                        operator.candidateEntity=operator.candidateEntities[index]
+                                        break
+                            continue
                     # otherwise
                     else:
                         operator.candidateEntity=operator.candidateEntities[index]
