@@ -70,6 +70,8 @@ class Job(Entity):                                  # inherits from the Entity c
 #                 initialProcessingType=initialProcessing.get('operationType',0)
             self.initialOperationTypes={"Setup":initialSetupType,
                                         "Processing":initialProcessingType}
+        # the current step of the job
+        self.currentStep = None
 
     # =======================================================================
     # outputs results to JSON File 
@@ -126,6 +128,8 @@ class Job(Entity):                                  # inherits from the Entity c
     # initializes all the Entity for a new simulation replication 
     # =======================================================================
     def initialize(self):
+        # reset the currentStep
+        self.currentStep = None
         currentStationWellDefined=False
         # if the currentStation is defined and the route is given in the BOM
         if self.currentStation and self.routeInBOM:

@@ -105,7 +105,7 @@ class QueueJobShop(Queue):
     # =======================================================================     
     def getEntity(self):
         activeEntity=Queue.getEntity(self)
-        activeEntity.remainingRoute.pop(0)      #remove data from the remaining route of the entity
+        activeEntity.currentStep = activeEntity.remainingRoute.pop(0)      #remove data from the remaining route of the entity
         return activeEntity
     
     #===========================================================================

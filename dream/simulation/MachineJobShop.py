@@ -65,7 +65,7 @@ class MachineJobShop(Machine):
             taskId = activeEntity.remainingRoute[0].get("task_id", None)
             if taskId:
                 self.currentOperator.schedule[-1]["task_id"] = taskId
-        removedStep = activeEntity.remainingRoute.pop(0)      #remove data from the remaining route of the entity
+        activeEntity.currentStep = activeEntity.remainingRoute.pop(0)      #remove data from the remaining route of the entity
         return activeEntity
     
     #===========================================================================
