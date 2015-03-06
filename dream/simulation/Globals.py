@@ -255,20 +255,13 @@ def setWIP(entityList):
                 # append only if not already in the list
                 if nextObject not in object.next:
                     object.next.append(nextObject)
-            # update the task_id of the current schedule step dict
-            # find the currentStep within the entity's route
-            try:
-                currentTaskId = None
-                if entity.remainingRoute:
-                    currentTaskId = entity.remainingRoute[0].get("task_id", None)
-            except AttributeError:
-                pass
-            entity.remainingRoute.pop(0)                        # remove data from the remaining route.   
+            entity.currentStep = entity.remainingRoute.pop(0)                        # remove data from the remaining route.   
             entity.schedule.append({"station": object,
                                     "entranceTime": G.env.now}) #append the time to schedule so that it can be read in the result
-            # if there is currentTaskId then append it to the schedule
-            if currentTaskId:
-                entity.schedule[-1]["task_id"] = currentTaskId
+            # if there is currentStep task_id  then append it to the schedule
+            if entity.currentStep:
+                if entity.currentStep.get("task_id", None):
+                    entity.schedule[-1]["task_id"] = entity.currentStep["task_id"]
         # if the currentStation of the entity is of type Machine then the entity 
         #     must be processed first and then added to the pendingEntities list
         #     Its hot flag is not raised        
