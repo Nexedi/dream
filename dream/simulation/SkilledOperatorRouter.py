@@ -178,6 +178,20 @@ class SkilledRouter(Router):
                 self.pendingStations=[]
                 from Globals import findObjectById
                 # apply the solution
+                
+                # loop through the stations. If there is a station that should change operator
+                # set the operator dedicated to None and also release operator
+                for station in G.MachineList:
+                    # obtain the operator and the station
+                    if station.currentOperator:
+                        operator=station.currentOperator
+                        previousAssignment=self.previousSolution.get(operator.id,None)
+                        currentAssignment=solution.get(operator.id,None)
+                        if (not previousAssignment == currentAssignment):
+                            operator.operatorDedicatedTo=None
+                            if not station.isProcessing:
+                                station.releaseOperator()
+                
                 # loop through the entries in the solution dictionary
                 for operatorID in solution.keys():
                     # obtain the operator and the station
