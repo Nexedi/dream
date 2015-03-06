@@ -1156,6 +1156,7 @@ class Machine(CoreObject):
     #                   prepare the machine to be operated
     # =======================================================================
     def requestOperator(self):
+        self.broker.invokeType='request'
         self.broker.invoke()
         self.toBeOperated = True
     
@@ -1177,6 +1178,7 @@ class Machine(CoreObject):
             operator.timeLastShiftEnded=self.env.now      
             operator.unAssign()     # set the flag operatorAssignedTo to None     
             operator.workingStation=None  
+            self.toBeOperated = False
             self.outputTrace(operator.name, "released from "+ self.objName)
         # XXX in case of skilled operators which stay at the same station should that change
         elif not operator.operatorDedicatedTo==self:
@@ -1186,13 +1188,14 @@ class Machine(CoreObject):
             # if the Router is expecting for signal send it
             from Globals import G
             from SkilledOperatorRouter import SkilledRouter
+            self.toBeOperated = False
             if G.RouterList[0].__class__ is SkilledRouter:
                 if G.RouterList[0].expectedFinishSignals:
                     if self.id in G.RouterList[0].expectedFinishSignalsDict:
                         signal=G.RouterList[0].expectedFinishSignalsDict[self.id]
                         self.sendSignal(receiver=G.RouterList[0], signal=signal)
+        self.broker.invokeType='release'
         self.broker.invoke()
-        self.toBeOperated = False
         
     # =======================================================================
     #       check if the machine is currently operated by an operator
