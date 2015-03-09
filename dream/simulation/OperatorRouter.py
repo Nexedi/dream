@@ -388,7 +388,6 @@ class Router(ObjectInterruption):
         for operator in self.candidateOperators:
             # first sort the candidateStations according to their waiting time
             operator.sortStations()
-            
             # then find all the candidateEntities
             operator.candidateEntities=[]
             for station in operator.candidateStations:
@@ -402,8 +401,6 @@ class Router(ObjectInterruption):
                                  and not predecessor.getActiveObjectQueue()[0] in occupiedEntities\
                                  and not predecessor.getActiveObjectQueue()[0] in operator.candidateEntities:
                                 operator.candidateEntities.append(predecessor.getActiveObjectQueue()[0])
-#                             operator.candidateEntities+=[x for x in predecessor.getActiveObjectQueue()
-#                                                        if x in self.pending and not x in occupiedEntities]
             # sort candidateEntities according to the scheduling rule of the operator
             operator.sortEntities()
             # if the operator is of the preemptives then there is a need to sort for critical orders
@@ -419,39 +416,24 @@ class Router(ObjectInterruption):
                 operator.candidateEntity = None
                 # scan the entities in the candidateEntities list of the operator
                 for index, entity in enumerate(operator.candidateEntities):
-                    # if entity.currentStation in self.pendingMachines:
-                        # try:
-                            # requestedTechnology = entity.currentStep.get("technology", None)
-                        # except AttributeError:
-                            # requestedTechnology = None
-                    # else:
-                        # requestedTechnology = entity.remainingRoute[0].get("technology", None)
-                    
-                    # find the entity's the last started task_id
+                    # find the requested technology for the next step
                     try:
-                        last_task_id = entity.schedule[-1].get("task_id", None)
-                    except IndexError:
-                        last_task_id = None
-                    # if the last task is defined
-                    if last_task_id:
-                        # find the corresponding step within the entity's router
-                        for step in entity.route:
-                            if step.get("task_id", ) == last_task_id:
-                                if step.get("technology", None):
-                                    lastStep = step
-                                    break
-                                else:
-                                    continue
-                        # if the entity lies in a Machine
+                        
                         if entity.currentStation in self.pendingMachines:
-                            requestedTechnology = lastStep.get("technology",None)
-                        # if the entity lies in a queue
+                            requestedTechnology = entity.currentStep.get("technology", None)
                         else:
                             requestedTechnology = entity.remainingRoute[0].get("technology", None)
+                    except AttributeError:
+                        requestedTechnology = None
+                    try:
+                        task_id = entity.currentStep.get("task_id", None)
+                    except AttributeError:
+                        task_id = None
+                    # if task_id is defined for the steps of the entities route
+                    # XXX not very clean - reconsider
+                    if task_id:
                         # if there is a requested technology defined
                         if requestedTechnology:
-                            # if the requested technology is in the operators skillDict
-                            # XXX needs refining (an operator may have INJM in Process but the candidate entity may need setup
                             # if the entity is in a station
                             if entity.currentStation in self.pendingMachines and\
                                entity.schedule[-1].get("station", None)==entity.currentStation:
@@ -468,10 +450,12 @@ class Router(ObjectInterruption):
                                         break
                             # if the entity is in a queue
                             else:
+                                # if the next step requires setup
                                 if entity.remainingRoute[0].get("setupTime", {}):
                                     if requestedTechnology in operator.skillDict["setup"].get("technologyList", []):
                                         operator.candidateEntity=operator.candidateEntities[index]
                                         break
+                                # or else if not seutp time is defined then directly process without setup
                                 else:
                                     if requestedTechnology in operator.skillDict["process"].get("technologyList", []):
                                         operator.candidateEntity=operator.candidateEntities[index]
