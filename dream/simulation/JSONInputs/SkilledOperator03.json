@@ -92,7 +92,7 @@
                "SkilledRouter01": {
                     "_class": "dream.simulation.SkilledOperatorRouter.SkilledRouter", 
                     "name": "SkilledRouter01",
-					"outputSolutions":1,
+					"outputSolutions":0,
 					"weightFactors":[2, 1, 0, 2, 1, 1]
                }	
           }, 
