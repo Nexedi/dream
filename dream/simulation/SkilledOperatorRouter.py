@@ -42,15 +42,19 @@ class SkilledRouter(Router):
     # TODO: we should maybe define a global schedulingRule criterion that will be 
     #         chosen in case of multiple criteria for different Operators
     # ======================================================================= 
-    def __init__(self,sorting=False, outputSolutions=True):
+    def __init__(self,id='SkilledRouter01',name='SkilledRouter01',sorting=False,outputSolutions=True,
+                 weightFactors=[2, 1, 0, 2, 1, 1], tool={},**kw):
         Router.__init__(self)
         # Flag used to notify the need for re-allocation of skilled operators to operatorPools
         self.allocation=False
         # Flag used to notify the need to wait for endedLastProcessing signal
         waitEndProcess=False
         self.outputSolutions=outputSolutions
-        self.id='SkilledRouter01'
-        
+        self.id=id
+        self.name=name
+        self.weightFactors=weightFactors
+        self.tool=tool
+                
     #===========================================================================
     #                         the initialize method
     #===========================================================================
@@ -163,7 +167,8 @@ class SkilledRouter(Router):
                 #     as it doesn't support zero WIP levels
                 #===================================================================
                 solution=opAss_LP(self.availableStationsDict, self.availableOperatorList, 
-                                  self.operators, previousAssignment=self.previousSolution)
+                                  self.operators, previousAssignment=self.previousSolution,
+                                  weightFactors=self.weightFactors,Tool=self.tool)
 #                 print '-------'
 #                 print self.env.now, solution
                 

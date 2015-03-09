@@ -39,7 +39,7 @@ class Router(ObjectInterruption):
     #     The Broker is initiated within the Machine and considered as 
     #                black box for the ManPy end Developer
     # ======================================================================= 
-    def __init__(self):
+    def __init__(self,id='Router01',name='Router01',**kw):
         ObjectInterruption.__init__(self)
         self.type = "Router"
         self.isInitialized=False
@@ -52,6 +52,8 @@ class Router(ObjectInterruption):
         self.preemptiveOperators=[]                  # list of preemptiveOperators that should preempt their machines
         self.criticalQueues=[]
         self.pending=[]                              # list of entities that require operators now
+        self.id=id
+        self.name=name
         from Globals import G
         G.RouterList.append(self)
         

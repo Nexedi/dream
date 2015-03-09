@@ -15,7 +15,6 @@ def opAss_LP(machineList, PBlist, PBskills, previousAssignment={}, weightFactors
     from Globals import G
 
     startPulp=time.time()
-
     machines = machineList.keys()
     sumWIP = float(sum([machineList[mach]['WIP'] for mach in machines ]))
         

@@ -274,7 +274,8 @@ def createObjectInterruptions():
             inputDict=dict(element)        
             # create the ObjectInterruption
             objectInterruption=objectType(**inputDict)
-            G.ObjectInterruptionList.append(objectInterruption)
+            if not 'OperatorRouter' in str(objectType):
+                G.ObjectInterruptionList.append(objectInterruption)
     
     # search inside the nodes for encapsulated ObjectInterruptions (failures etc)
     # ToDo this will be cleaned a lot if we update the JSON notation:
@@ -339,6 +340,8 @@ def createObjectInterruptions():
                               thresholdTimeIsOnShift=thresholdTimeIsOnShift)
             G.ObjectInterruptionList.append(SS)
             G.ShiftSchedulerList.append(SS)
+            
+           
 
 
 # ===========================================================================
