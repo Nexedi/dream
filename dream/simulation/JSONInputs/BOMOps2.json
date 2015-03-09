@@ -90,6 +90,10 @@
                     "_class": "Dream.Operator", 
                     "capacity": 1, 
                     "name": "Operator1"
+               },
+               "R1": {
+                    "_class": "dream.simulation.OperatorRouter.Router", 
+                    "name": "OperatorRouter"
                }
           }, 
           "edge": {

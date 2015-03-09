@@ -84,7 +84,12 @@
                     "capacity": 1, 
                     "name": "Operator1",
 					"ouputSchedule":1
-               }
+               }, 
+               "SkilledRouter01": {
+                    "_class": "dream.simulation.SkilledOperatorRouter.SkilledRouter", 
+                    "name": "SkilledRouter01",
+					"outputSolutions":1
+               }			  
           }, 
           "edge": {
                "1": {
