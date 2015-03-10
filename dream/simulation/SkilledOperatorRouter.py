@@ -164,7 +164,7 @@ class SkilledRouter(Router):
                         
                 LPFlag=True
                 if self.checkCondition:
-                    LPFlag=self.checkIfAllocationShouldBeCalled()  
+                    LPFlag=self.checkIfAllocationShouldBeCalled() 
                     # in case there are not available stations or operators there is no need to call the LP
                     if (not self.availableStationsDict) or (not self.availableOperatorList):
                         LPFlag=False
@@ -324,6 +324,10 @@ class SkilledRouter(Router):
         
     def checkIfAllocationShouldBeCalled(self):
         from Globals import G
+        # loop through the operators. If for one the shift ended or started right now allocation is needed
+        for operator in G.OperatorsList:
+            if operator.timeLastShiftEnded==self.env.now or operator.timeLastShiftStarted==self.env.now:
+                return True
         # loop through the machines
         for machine in G.MachineList:
             # if one machine is starved more than 30 then allocation is needed
