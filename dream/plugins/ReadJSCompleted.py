@@ -26,9 +26,26 @@ class ReadJSCompleted(plugin.InputPreparationPlugin):
         routeConcluded = True
         route = component.get("route", [])
         for index, step in enumerate(route):
-          completed = step.get("completed", "No")
-          if completed == "No" or completed == "":
-            routeConcluded = False
+          completed = step.get("completed", [])
+          '''if the step consists of two sub_steps (Setup - Process) then check if only one of them is concluded'''
+          for ind in range(len(completed)):
+            if completed[ind] == "No" or completed[ind] == "":
+              routeConcluded = False
+              ''''if the index is bigger than 0 (1,2,..) it means that there is not only processing but also setup or other types of operations to be performed. Check if the components is already in the WIP. if not add it to it and keep the operation processing time for the remainingProcessingTime'''
+              if ind>1:
+                if not component["id"] in wip.keys():
+                  processingTime = step.get("processingTime", {"Fixed":{"meam":0}})
+                  # the distribution of the processing time is supposed to be fixed (see ReadJSWorkPlan))
+                  processingTime = float(processingTime["Fixed"].get("mean",0))
+                  wip[component["id"]] = {
+                    "task_id": step["task_id"], 
+                    "station": step["technology"],
+                    "remainingProcessingTime": processingTime,
+                    "sequence": step["sequence"]
+                  }
+              break
+              '''XXX keep in mind that task_id of setup will not correspond to valid task_ids after pre_processing'''
+          if not routeConcluded:
             # check the WIP and see if the current part already resides there
             if not component["id"] in wip.keys():
               # if there is a previous task
@@ -41,7 +58,7 @@ class ReadJSCompleted(plugin.InputPreparationPlugin):
                   "sequence": previousStep["sequence"]
                 }
             break
-        if routeConcluded:
+        else:
           wip[component["id"]] = {
             "task_id": step["task_id"],
              "station": step["technology"],
