@@ -432,7 +432,7 @@ def createWIP():
                                         if stepSeq=='':
                                             stepSeq=0                   # if the seq is ''>OrderDecomposition then 0
                                         # if the entityCurrentSeq is found and the id of the holding Station is in the steps stationIdsList
-                                        if int(stepSeq)==int(entityCurrentSeq) and element['id'] in step['stationIdsList']:
+                                        if int(stepSeq)==entityCurrentSeq and element['id'] in step['stationIdsList']:
                                             ind=i                       # hold the index 
                                             solution=True               # the solution isfound
                                             break
