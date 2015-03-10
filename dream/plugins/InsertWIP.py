@@ -25,9 +25,16 @@ class InsertWIP(plugin.InputPreparationPlugin):
         "sequence": work.get("sequence", None),
         "task_id": work.get("task_id", None)
       })
+      # operator
       operator = work.get("operator", None)
       if operator:
         wip[-1]["operator"]=operator
+      # remaining Processing Time
+      remainingProcessingTime = work.get("remainingProcessingTime", 0)
+      # XXX the time is considered to be provided as a single value
+      if remainingProcessingTime:
+        # XXX hard-coded distribution of type Fixed - reconsider for stochastic analyis
+        wip[-1]["remainingProcessingTime"] = {"Fixed": {"mean": remainingProcessingTime}}
       node["wip"] = wip
     return data
 
