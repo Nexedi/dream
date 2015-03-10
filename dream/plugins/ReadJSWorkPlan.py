@@ -59,12 +59,12 @@ class ReadJSWorkPlan(plugin.InputPreparationPlugin):
         sequence = line[4]
         processingTime = float(line[-5])
         operator = line[5].replace(" ","").split("-")[0]
-        partsneeded = line[-4]
+        requiredParts = line[-4]
         # if there are requested parts then split them
-        if partsneeded:
-          partsneeded = partsneeded.replace(" ","").split(';')
+        if requiredParts:
+          requiredParts = requiredParts.replace(" ","").split(';')
         else:
-          partsneeded = [""]
+          requiredParts = []
         technology = line[3]
         quantity = int(line[6])
         completed = line[-1]
@@ -74,7 +74,7 @@ class ReadJSWorkPlan(plugin.InputPreparationPlugin):
           "sequence": sequence,
           "processingTime": {"Fixed":{"mean":processingTime*quantity}},
           "operator": operator,
-          "partsneeded": partsneeded,
+          "requiredParts": requiredParts,
           "technology": technology,
           "quantity": quantity,
           "completed": completed
