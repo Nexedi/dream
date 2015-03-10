@@ -42,10 +42,14 @@ class Mould(Job):                                  # inherits from the Job class
                  orderDate=0, 
                  extraPropertyDict=None,
                  order=None, 
+                 remainingProcessingTime={}, 
+                 remainingSetupTime={},
                  currentStation=None,
                  isCritical=False,**kw):
         Job.__init__(self, id, name, route=route, priority=priority, dueDate=dueDate, orderDate=orderDate, 
-                     extraPropertyDict=extraPropertyDict, isCritical=isCritical,currentStation=currentStation)
+                     extraPropertyDict=extraPropertyDict, isCritical=isCritical,
+                     remainingProcessingTime=remainingProcessingTime, remainingSetupTime=remainingSetupTime,
+                     currentStation=currentStation)
         self.order=order            # parent order of the order component
         # TODO: in case the order is not given as argument (when the component is given as WIP) have to give a manager as argument
         #     or create the initiate the parent order not as WIP 
