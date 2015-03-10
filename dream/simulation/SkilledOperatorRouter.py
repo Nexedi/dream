@@ -83,7 +83,7 @@ class SkilledRouter(Router):
             self.expectedSignals['isCalled']=1
             
             yield self.isCalled
-            
+
             transmitter, eventTime=self.isCalled.value
             self.isCalled=self.env.event()
             self.printTrace('','=-'*15)
@@ -324,19 +324,22 @@ class SkilledRouter(Router):
         
     def checkIfAllocationShouldBeCalled(self):
         from Globals import G
-        # loop through the operators. If for one the shift ended or started right now allocation is needed
-        for operator in G.OperatorsList:
-            if operator.timeLastShiftEnded==self.env.now or operator.timeLastShiftStarted==self.env.now:
-#                 pass
+        # loop through the operators and the machines. 
+        # If for one the shift ended or started right now allocation is needed
+        for obj in G.OperatorsList+G.MachineList:
+            
+            if (obj.timeLastShiftEnded==self.env.now) or (obj.timeLastShiftStarted==self.env.now):
                 return True
         # loop through the machines
         for machine in G.MachineList:
             # if one machine is starved more than 30 then allocation is needed
-            if (self.env.now-machine.timeLastEntityEnded>=30) and (not machine.isProcessing):
-#                 pass
+            if (self.env.now-machine.timeLastEntityLeft>=30) and (not machine.getActiveObjectQueue()):
                 return True
-            previousList=self.getPreviousList(machine)
-            parallelMachinesList=self.getParallelMachinesList(machine)
+            # check for the previous buffer. If it is more than 80% full allocation is needed 
+            previousQueue=self.getPreviousQueue(machine)
+            if previousQueue:
+                if float(len(previousQueue.getActiveObjectQueue()))/float(previousQueue.capacity)>=0.8:
+                    return True
         return False   
     
     def postProcessing(self):
@@ -365,6 +368,17 @@ class SkilledRouter(Router):
             previousList.append(predecessor)
             predecessor=predecessor.previous[0]
         return previousList
+    
+    # for a machine gets the previous queue (if any)
+    def getPreviousQueue(self, machine):
+        predecessor=machine.previous[0]
+        while 1:
+            if "Source" in str(predecessor.__class__):
+                return None
+            if "Queue" in str(predecessor.__class__) or "Clearance" in str(predecessor.__class__):
+                return predecessor
+            predecessor=predecessor.previous[0]
+
     
     # for a machine gets a list with the parallel machines
     def getParallelMachinesList(self, machine):
