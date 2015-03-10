@@ -32,9 +32,11 @@ class ReadJSSkillsToStations(UpdateStationList.UpdateStationList):
             for technology in technologyList:
               tech = technology.split("-")[0]
               for station in data["graph"]["node"]:
-                if station.startswith(self.getStationInitials(tech))\
-                    and data["graph"]["node"][station]["_class"] in self.STATION_CLASS_SET:
-                  stationList.append(station)
+                for initial in self.getStationInitials(tech):
+                  if station.startswith(initial)\
+                      and data["graph"]["node"][station]["_class"] in self.STATION_CLASS_SET:
+                    stationList.append(station)
+                    break
             '''
             the skillDict has the form of
             {"load": {"stationIdList": []
