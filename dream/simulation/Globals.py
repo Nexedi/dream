@@ -286,7 +286,7 @@ def setWIP(entityList):
         if G.env.now==0 and entity.currentStation:
             if entity.currentStation.class_name:
                 stationClass=entity.currentStation.__class__.__name__
-                if stationClass in ['Machine', 'BatchScrapMachine', 'MachineJobShop','BatchDecomposition', 'BatchReassembly','M3',
+                if stationClass in ['Machine', 'BatchScrapMachine', 'MachineJobShop','BatchDecomposition', 'BatchReassembly','M3','MouldAssembly',
                                     'BatchReassemblyBlocking','BatchDecompositionBlocking','BatchScrapMachineAfterDecompose',
                                     'BatchDecompositionStartTime']:
                     entity.currentStation.currentEntity=entity
