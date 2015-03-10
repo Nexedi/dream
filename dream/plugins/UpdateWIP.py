@@ -103,7 +103,11 @@ class UpdateWIP(SplitRoute.SplitRoute):
           if designComplete:
             # # if the component is not a mould then put in the second step of its route (the first is OrderDecomposition - it shouldn't be there)
             if not any(station.startswith("E") for station in route[-1]["stationIdsList"]):
-              insertWIPitem = [True, 1]
+              # if there is order decomposition in the route then start at the second step
+              if any(station.startswith("OD") for station in route[-1]["stationIdsList"]):
+                insertWIPitem = [True, 1]
+              else:
+                insertWIPitem = [True, 0]
           # # if the design is not complete 
           else:
             # # if the component is design then put it at the start of its route (the start of it's route is QCAD - it should be placed there)
