@@ -182,8 +182,11 @@ class Job(Entity):                                  # inherits from the Entity c
         # find the sequence of the next step in the route of the activeEntity
         nextSequence=self.nextStepSequence()
         # if no sequence is provided then return true
-        if nextSequence==None:
+        if nextSequence==None or nextSequence=="":
             return True
+        else:
+#             print nextSequence
+            nextSequence = int(nextSequence)
         # flag that decides if the entity can proceed to the next station in its route
         mayProceed=False
         # find the required parts for the next step in the route (if any)
@@ -193,9 +196,11 @@ class Job(Entity):                                  # inherits from the Entity c
             # for each requested part
             for part in requiredParts:
                 # retrieve the current step sequence of the requiredPart
-                partCurrentSeq=part.currentStepSequence()
+                partCurrentSeq=int(part.currentStepSequence())
                 # retrieve the next step sequence of the requiredParts
                 partNextSeq=part.nextStepSequence()
+                if partNextSeq:
+                   partNextSeq = int(partNextSeq) 
                 # if there is no next step sequence (route finished)
                 # it means that the part has exhausted its route 
                 # if the sequence of the required part next step is smaller than the sequence of activeEntity's next step
