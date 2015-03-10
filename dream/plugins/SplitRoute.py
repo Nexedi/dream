@@ -49,7 +49,7 @@ class SplitRoute(plugin.InputPreparationPlugin):
           component["_class"] = "Dream.Mould" # XXX hard-coded value
         # otherwise we have a normal component, update the _class attribute accordingly
         else:
-          component["class"] = "Dream.OrderComponent" # XXX hard-coded value
+          component["_class"] = "Dream.OrderComponent" # XXX hard-coded value
       for design in componentsToAdd:
         orderComponents.append(design)
     return data
