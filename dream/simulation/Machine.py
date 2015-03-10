@@ -544,6 +544,8 @@ class Machine(CoreObject):
                 break
             # if no interruption occurred the processing in M1 is ended 
             else:
+                if self.processOperatorUnavailable.triggered:
+                    self.processOperatorUnavailable=self.env.event() 
                 operationNotFinished=False
     
     # =======================================================================
