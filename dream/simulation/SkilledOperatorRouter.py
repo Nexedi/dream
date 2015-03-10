@@ -43,7 +43,7 @@ class SkilledRouter(Router):
     #         chosen in case of multiple criteria for different Operators
     # ======================================================================= 
     def __init__(self,id='SkilledRouter01',name='SkilledRouter01',sorting=False,outputSolutions=True,
-                 weightFactors=[2, 1, 0, 2, 1, 1], tool={},**kw):
+                 weightFactors=[2, 1, 0, 2, 1, 1], tool={},checkCondition=False,**kw):
         Router.__init__(self)
         # Flag used to notify the need for re-allocation of skilled operators to operatorPools
         self.allocation=False
@@ -54,6 +54,7 @@ class SkilledRouter(Router):
         self.name=name
         self.weightFactors=weightFactors
         self.tool=tool
+        self.checkCondition=checkCondition
                 
     #===========================================================================
     #                         the initialize method
@@ -159,6 +160,11 @@ class SkilledRouter(Router):
                 for operator in G.OperatorsList:
                     if operator.available and operator.onShift:
                         self.availableOperatorList.append(operator.id)
+                        
+                        
+                LPFlag=True
+                if self.checkCondition:
+                    LPFlag=self.checkIfAllocationShouldBeCalled()        
                 #===================================================================
                 # # XXX run the LP assignment algorithm
                 # #     should return a list of correspondences
@@ -166,9 +172,12 @@ class SkilledRouter(Router):
                 # TODO: a constant integer must be added to all WIP before provided to the opAss_LP
                 #     as it doesn't support zero WIP levels
                 #===================================================================
-                solution=opAss_LP(self.availableStationsDict, self.availableOperatorList, 
-                                  self.operators, previousAssignment=self.previousSolution,
-                                  weightFactors=self.weightFactors,Tool=self.tool)
+                if LPFlag:
+                    solution=opAss_LP(self.availableStationsDict, self.availableOperatorList, 
+                                      self.operators, previousAssignment=self.previousSolution,
+                                      weightFactors=self.weightFactors,Tool=self.tool)
+                else:
+                    solution={}
 #                 print '-------'
 #                 print self.env.now, solution
                 
@@ -306,6 +315,10 @@ class SkilledRouter(Router):
         Router.exitActions(self)
         self.allocation=False
         self.waitEndProcess=False
+        
+    def checkIfAllocationShouldBeCalled(self):
+        print '*'*10
+        return True
     
     def postProcessing(self):
         if self.outputSolutions:
