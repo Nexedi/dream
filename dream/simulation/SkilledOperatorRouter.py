@@ -164,7 +164,11 @@ class SkilledRouter(Router):
                         
                 LPFlag=True
                 if self.checkCondition:
-                    LPFlag=self.checkIfAllocationShouldBeCalled()        
+                    LPFlag=self.checkIfAllocationShouldBeCalled()  
+                    # in case there are not available stations or operators there is no need to call the LP
+                    if (not self.availableStationsDict) or (not self.availableOperatorList):
+                        LPFlag=False
+                        
                 #===================================================================
                 # # XXX run the LP assignment algorithm
                 # #     should return a list of correspondences
@@ -173,10 +177,12 @@ class SkilledRouter(Router):
                 #     as it doesn't support zero WIP levels
                 #===================================================================
                 if LPFlag:
+#                     print self.env.now, 'LP called'
                     solution=opAss_LP(self.availableStationsDict, self.availableOperatorList, 
                                       self.operators, previousAssignment=self.previousSolution,
                                       weightFactors=self.weightFactors,Tool=self.tool)
                 else:
+#                     print self.env.now, 'no need to call LP'
                     solution={}
 #                 print '-------'
 #                 print self.env.now, solution
@@ -317,8 +323,13 @@ class SkilledRouter(Router):
         self.waitEndProcess=False
         
     def checkIfAllocationShouldBeCalled(self):
-        print '*'*10
-        return True
+        from Globals import G
+        # loop through the machines
+        for machine in G.MachineList:
+            # if one machine is starved more than 30 then allocation is needed
+            if (self.env.now-machine.timeLastEntityEnded>=30) and (not machine.isProcessing):
+                return True
+        return False   
     
     def postProcessing(self):
         if self.outputSolutions:
