@@ -60,7 +60,7 @@ class MergeSteps(plugin.InputPreparationPlugin):
             technologySequence.pop(-1)
             stepToMerge = route[idxToMerge]
             # parts needed
-            step["partsneeded"] = stepToMerge["partsneeded"]
+            step["requiredParts"] = stepToMerge["requiredParts"]
             # technology
             step["technology"] = technology
             # setupTime
@@ -80,6 +80,12 @@ class MergeSteps(plugin.InputPreparationPlugin):
               step["operator"]["load"] = route[idxToMerge]["operator"]["load"]
               if tempOperator:
                 step["operator"]["processing"] = tempOperator["processing"]
+            '''find out if the setup is completed, but no processing is performed yet; in that case the part should be placed in WIP (though the route is not split yet) '''
+            step["completed"] = [stepToMerge["completed"][0], step["completed"]]
+          else:
+            '''make the completed attribute a list '''
+            step["completed"] = [step["completed"]]
+            
           technologySequence.append(technology)
           # append the (updated) step to the temporary route 
           updatedRoute.append(step)
