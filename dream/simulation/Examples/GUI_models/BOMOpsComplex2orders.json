@@ -398,10 +398,6 @@
           "input_id": "wip_spreadsheet"
         }, 
         {
-          "_class": "dream.plugins.ReadJSCompleted.ReadJSCompleted", 
-          "input_id": ""
-        }, 
-        {
           "_class": "dream.plugins.MergeSteps.MergeSteps", 
           "input_id": ""
         }, 
@@ -409,6 +405,10 @@
           "_class": "dream.plugins.SplitRoute.SplitRoute", 
           "input_id": ""
         }, 
+        {
+          "_class": "dream.plugins.ReadJSCompleted.ReadJSCompleted", 
+          "input_id": ""
+        },
         {
           "_class": "dream.plugins.UpdateStationList.UpdateStationList", 
           "input_id": ""
