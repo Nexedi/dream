@@ -327,12 +327,16 @@ class SkilledRouter(Router):
         # loop through the operators. If for one the shift ended or started right now allocation is needed
         for operator in G.OperatorsList:
             if operator.timeLastShiftEnded==self.env.now or operator.timeLastShiftStarted==self.env.now:
+#                 pass
                 return True
         # loop through the machines
         for machine in G.MachineList:
             # if one machine is starved more than 30 then allocation is needed
             if (self.env.now-machine.timeLastEntityEnded>=30) and (not machine.isProcessing):
+#                 pass
                 return True
+            previousList=self.getPreviousList(machine)
+            parallelMachinesList=self.getParallelMachinesList(machine)
         return False   
     
     def postProcessing(self):
@@ -350,6 +354,38 @@ class SkilledRouter(Router):
                     'results': {}}
             json['results']['solutionList'] = self.solutionList
             G.outputJSON['elementList'].append(json)
+    
+    # for a machine gets the decomposition and the buffer (if any)
+    def getPreviousList(self, machine):
+        previousList=[]
+        predecessor=machine.previous[0]
+        while 1:
+            if "Reassembly" in str(predecessor.__class__) or "Source" in str(predecessor.__class__):
+                break
+            previousList.append(predecessor)
+            predecessor=predecessor.previous[0]
+        return previousList
+    
+    # for a machine gets a list with the parallel machines
+    def getParallelMachinesList(self, machine):
+        alreadyConsidered=[machine]
+        parallelMachinesList=[]
+        previousObject=machine.previous[0]
+        while 1:
+            if "Reassembly" in str(previousObject.__class__) or "Source" in str(previousObject.__class__)\
+                        or "Queue" in str(previousObject.__class__) or "Clearance" in str(previousObject.__class__):
+                break
+            alreadyConsidered.append(previousObject)
+            previousObject=previousObject.previous[0]
+        for nextObject in previousObject.next:
+            while 1:
+                if nextObject in alreadyConsidered:
+                    break
+                if "Machine" in str(nextObject.__class__) or "M3" in str(nextObject.__class__):
+                    parallelMachinesList.append(nextObject)
+                    break
+                nextObject=nextObject.next[0]
+        return parallelMachinesList
     
     
     
