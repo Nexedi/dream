@@ -57,6 +57,14 @@ class UpdateWIP(SplitRoute.SplitRoute):
           # # check if the entity has left the station
           toBeRemoved = False
           if remainingProcessingTime:
+            # if the workstation provided is not a valid station but instead the name of a technology (this happens only with EDM, INJM, and MILL that have setup and processing seperate)
+            if not workStation in last_step.get("stationIdsList", []):
+              if workStation == last_step.get("technology", None):
+                # try to find a not occupied station and set it as the workstation instead of the technology name given.
+                occupiedStations = [wipPart["station"] for wipPart in wip.values()]
+                for nodeId in last_step['stationIdsList']:
+                  if not nodeId in occupiedStations:
+                    workStation = nodeId
             currentStation = workStation
             current_step = last_step
             # if the current step is part of a design route then the current WIP must be removed and replaced by a similar with the Design name
@@ -132,7 +140,6 @@ class UpdateWIP(SplitRoute.SplitRoute):
       assert wip.pop(entityID, None), "while trying to remove WIP that has concluded it's route, nothing is removed"
   
 
-      
     return data
 
 if __name__ == '__main__':
