@@ -19,7 +19,7 @@ class ACO(plugin.ExecutionPlugin):
     result, = ant['result']['result_list']  #read the result as JSON
     #loop through the elements
     for element in result['elementList']:
-        element_family = element['family']
+        element_family = element.get('family', None)
         #id the class is Job
         if element_family == 'Job':
             results=element['results']
@@ -51,17 +51,17 @@ class ACO(plugin.ExecutionPlugin):
         collated[node_id] = list(node_class.getSupportedSchedulingRules())
     assert collated
 
-    max_results = data['general']['numberOfSolutions']
+    max_results = int(data['general'].get('numberOfSolutions',0))
     assert max_results >= 1
 
     ants = [] #list of ants for keeping track of their performance
 
     # Number of times new ants are to be created, i.e. number of generations (a
     # generation can have more than 1 ant)
-    for i in range(data["general"]["numberOfGenerations"]):
+    for i in range(int(data["general"]["numberOfGenerations"])):
         scenario_list = [] # for the distributor
         # number of ants created per generation
-        for j in range(data["general"]["numberOfAntsPerGenerations"]):
+        for j in range(int(data["general"]["numberOfAntsPerGenerations"])):
             # an ant dictionary to contain rule to queue assignment information
             ant = {}
             # for each of the machines, rules are randomly picked from the
