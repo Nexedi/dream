@@ -45,7 +45,9 @@ class UpdateWIP(SplitRoute.SplitRoute):
           # # extract WIP information
           workStation = work["station"]
           remainingProcessingTime = float(work.get("remainingProcessingTime",0))
+          remainingSetupTime = float(work.get('remainingSetupTime', 0))
           task_id = work["task_id"]
+          sequence = work.get('sequence', 0)
           assert len(route)>0, "the OrderComponent must have a route defined with length more than 0"
           assert task_id, "there must be a task_id defined for the OrderComponent in the WIP"
           # # get the step identified by task_id, hold the step_index to see if the entity's route is concluded
@@ -57,6 +59,22 @@ class UpdateWIP(SplitRoute.SplitRoute):
           # # check if the entity has left the station
           toBeRemoved = False
           if remainingProcessingTime:
+            # if the last_step is not found (the step identified from the wip corresponds to a setup and the task_id of that task is merged to the task_id of the following normal processing task) - this can happen for INJM, MILL, and EDM technologies that correspond to SETUP and normal PROCESSING
+            if not last_step:
+              # find the step that follows (normal processing)
+              for step in route:
+                # the sequences must differ maximum one
+                if int(sequence)+1 == int(step.get('sequence',0)):
+                  # and the corresponding step must have a defined technology
+                  if step.get('technology', None):
+                    # the station defined by the WIP must start with the technology initials (only INJM, EDM, and MILL)
+                    if workStation.startswith(step['technology']):
+                      last_step = step
+                      # the time defined as remaining processing time is remainingSetupTime
+                      remainingSetupTime = remainingProcessingTime
+                      # and the remainingProcessingTime should be extracted from the step
+                      remainingProcessingTime = step.get('processingTime', 0)
+                      break
             # if the workstation provided is not a valid station but instead the name of a technology (this happens only with EDM, INJM, and MILL that have setup and processing seperate)
             if not workStation in last_step.get("stationIdsList", []):
               if workStation == last_step.get("technology", None):
@@ -99,7 +117,16 @@ class UpdateWIP(SplitRoute.SplitRoute):
             wip[componentID]["sequence"] = current_step["sequence"]
             wip[componentID]["task_id"] = current_step["task_id"]
             if remainingProcessingTime:
-              wip[componentID]["remainingProcessingTime"] = {"Fixed": {"mean": remainingProcessingTime}}
+              if isinstance(remainingProcessingTime, dict):
+                wip[componentID]["remainingProcessingTime"] = remainingProcessingTime
+              else:
+                wip[componentID]["remainingProcessingTime"] = {"Fixed": {"mean": remainingProcessingTime}}
+            # if there is remainingSetupTime
+            if remainingSetupTime:
+              if isinstance(remainingSetupTime, dict):
+                wip[componentID]["remainingSetupTime"] = remainingSetupTime
+              else:
+                wip[componentID]["remainingSetupTime"] = {"Fixed": {"mean": remainingSetupTime}}
       # if the entity is not recognized within the current WIP then check if it should be created
       # first the flag designComplete and the completedComponents list must be updated 
       for component in orderComponents:
