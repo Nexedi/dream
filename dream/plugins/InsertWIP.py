@@ -11,8 +11,8 @@ class InsertWIP(plugin.InputPreparationPlugin):
   def preprocess(self, data):
     """ updates the Work in Process of each station according to the BOM
     """
-    wip = data["input"]["BOM"].get("WIP", {})
-    for partID, work in wip.iteritems():
+    WIP = data["input"]["BOM"].get("WIP", {})
+    for partID, work in WIP.iteritems():
       stationID = work.get("station", None)
       if not stationID:
         break
@@ -20,6 +20,24 @@ class InsertWIP(plugin.InputPreparationPlugin):
       if not node:
         break
       wip = node.get("wip", [])
+      endOfRoute = False # flag to signal that the part should not be injected as WIP
+      mouldCreated = False # flag to signal that the mould of the same order is created
+      # if the part lies in an assembly buffer
+      if data['graph']['node'][stationID]['_class'] == 'Dream.MouldAssemblyBuffer':
+        # find the order it belongs to
+        for order in data['input']['BOM']['productionOrders']:
+          for component in order.get('componentsList', []):
+            if component.get('id',None) == partID:
+              # if the part is of class OrderComponent (and NOT Mould)
+              if component.get('_class', None) == 'Dream.OrderComponent':
+                endOfRoute = True
+            # find the Mould component of the order and see it is already in the WIP
+            if component.get('_class', None) == 'Dream.Mould':
+              if component.get('id', None) in WIP.keys():
+                mouldCreated = True
+      # if the part reached the end of its route (an assembly buffer) and the mould is already created
+      if endOfRoute and mouldCreated:
+        continue
       wip.append({
         "id": partID,
         "sequence": work.get("sequence", None),
