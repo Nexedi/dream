@@ -49,6 +49,7 @@ class InsertWIP(plugin.InputPreparationPlugin):
         wip[-1]["operator"]=operator
       # remaining Processing Time
       remainingProcessingTime = work.get("remainingProcessingTime", 0)
+      remainingSetupTime = work.get('remainingSetupTime', 0)
       # XXX the time is considered to be provided as a single value
       if remainingProcessingTime:
         if isinstance(remainingProcessingTime, dict):
@@ -56,6 +57,13 @@ class InsertWIP(plugin.InputPreparationPlugin):
         else:
           # XXX hard-coded distribution of type Fixed - reconsider for stochastic analyis
           wip[-1]["remainingProcessingTime"] = {"Fixed": {"mean": remainingProcessingTime}}
+      # XXX the time is considered to be provided as a single value
+      if remainingSetupTime:
+        if isinstance(remainingSetupTime, dict):
+          wip[-1]["remainingSetupTime"] = remainingSetupTime
+        else:
+          # XXX hard-coded distribution of type Fixed - reconsider for stochastic analyis
+          wip[-1]["remainingSetupTime"] = {"Fixed": {"mean": remainingSetupTime}}
       node["wip"] = wip
     return data
 
