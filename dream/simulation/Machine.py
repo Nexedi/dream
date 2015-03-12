@@ -309,6 +309,13 @@ class Machine(CoreObject):
     #===========================================================================
     def checkInitialOperationTypes(self):
         pass
+        
+    #===========================================================================
+    # get the initial operation times (setup/processing); 
+    # XXX initialy only setup time is calculated here
+    #===========================================================================
+    def calculateInitialOperationTimes(self):
+        pass
     
     #===========================================================================
     # method controlling if there is a need to yield 
@@ -679,6 +686,8 @@ class Machine(CoreObject):
             else:
                 # find out if the initialWIP requires manual operations (manual/setup)
                 self.checkInitialOperationTypes()
+                # calculate initial processing and setup times
+                self.calculateInitialOperationTimes()
             # TODO: the Machine receive the entity after the operator is available
             #     the canAcceptAndIsRequested method checks only in case of Load type of operation
             

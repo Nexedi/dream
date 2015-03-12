@@ -100,22 +100,29 @@ class MachineJobShop(Machine):
     def calculateProcessingTime(self):
         # this is only for processing of the initial wip
         if self.isProcessingInitialWIP:
-            # read the setup/processing time from the first entry of the full route
-            activeEntity=self.getActiveObjectQueue()[0]
-            #if the entity has its route defined in the BOM then remainingProcessing/SetupTime is provided
-            # XX consider moving setupUPtime update to checkForManualOperationTypes as Setup is performed before Processing
-            if activeEntity.routeInBOM:
-                processingTime=self.getOperationTime(activeEntity.remainingProcessingTime)
-                setupTime=self.getOperationTime(activeEntity.remainingSetupTime)
-            else:   # other wise these should be read from the route
-                processingTime=activeEntity.route[0].get('processingTime',{})
-                processingTime=self.getOperationTime(processingTime)
-                setupTime=activeEntity.route[0].get('setupTime',{})
-                setupTime=self.getOperationTime(setupTime)
-            self.rng=RandomNumberGenerator(self, processingTime)
-            self.procTime=self.rng.generateNumber()
-            self.stpRng=RandomNumberGenerator(self, setupTime)
-        return self.procTime    #this is the processing time for this unique entity 
+            self.procTime = self.rng.generateNumber()
+        return self.procTime    #this is the processing time for this unique entity  
+    
+    #===========================================================================
+    # get the initial operation times (setup/processing); 
+    # XXX initialy only setup time is calculated here
+    #===========================================================================
+    def calculateInitialOperationTimes(self):
+        # read the setup/processing time from the first entry of the full route
+        activeEntity=self.getActiveObjectQueue()[0]
+        #if the entity has its route defined in the BOM then remainingProcessing/SetupTime is provided
+        # XX consider moving setupUPtime update to checkForManualOperationTypes as Setup is performed before Processing
+        if activeEntity.routeInBOM:
+            processingTime=self.getOperationTime(activeEntity.remainingProcessingTime)
+            setupTime=self.getOperationTime(activeEntity.remainingSetupTime)
+        else:   # other wise these should be read from the route
+            processingTime=activeEntity.route[0].get('processingTime',{})
+            processingTime=self.getOperationTime(processingTime)
+            setupTime=activeEntity.route[0].get('setupTime',{})
+            setupTime=self.getOperationTime(setupTime)
+        self.rng=RandomNumberGenerator(self, processingTime)
+        self.stpRng=RandomNumberGenerator(self, setupTime)
+                
     
     # =======================================================================
     # checks if the Queue can accept an entity       
