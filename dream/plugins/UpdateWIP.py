@@ -112,7 +112,7 @@ class UpdateWIP(SplitRoute.SplitRoute):
             # # if the component is not a mould then put in the second step of its route (the first is OrderDecomposition - it shouldn't be there)
             if not any(station.startswith("E") for station in route[-1]["stationIdsList"]):
               # if there is order decomposition in the route then start at the second step
-              if any(station.startswith("OD") for station in route[-1]["stationIdsList"]):
+              if any(station.startswith("OD") for station in route[0]["stationIdsList"]):
                 insertWIPitem = [True, 1]
               else:
                 insertWIPitem = [True, 0]
@@ -125,7 +125,7 @@ class UpdateWIP(SplitRoute.SplitRoute):
           if len(completedComponents) == len(orderComponents)-2:
             # # if the component is a mould then put it in the first step of it's route (the first step of it's route is Assembly, it should be there)
             if any(station.startswith("E") for station in route[-1]["stationIdsList"]):
-              insertWIPitem = True [True, 0]
+              insertWIPitem = [True, 0]
               
           if insertWIPitem[0]:
             if not wip.get(componentID, {}):
