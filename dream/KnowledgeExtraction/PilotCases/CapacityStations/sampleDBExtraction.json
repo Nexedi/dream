@@ -1,0 +1,191 @@
+{
+     "operations": {
+          "WELD": {
+               "name": "WELD", 
+               "intervalCapacity": [
+                    250, 
+                    350, 
+                    450, 
+                    550, 
+                    650, 
+                    0, 
+                    0
+               ]
+          }, 
+          "MCH": {
+               "name": "MCH", 
+               "intervalCapacity": [
+                    310, 
+                    410, 
+                    510, 
+                    610, 
+                    710, 
+                    0, 
+                    0
+               ]
+          }, 
+          "EEP": {
+               "name": "EEP", 
+               "intervalCapacity": [
+                    345, 
+                    445, 
+                    545, 
+                    645, 
+                    745, 
+                    0, 
+                    0
+               ]
+          }, 
+          "ASBTST": {
+               "name": "ASBTST", 
+               "intervalCapacity": [
+                    420, 
+                    350, 
+                    380, 
+                    480, 
+                    560, 
+                    0, 
+                    0
+               ]
+          }, 
+          "PAINT": {
+               "name": "PAINT", 
+               "intervalCapacity": [
+                    415, 
+                    515, 
+                    615, 
+                    715, 
+                    815, 
+                    0, 
+                    0
+               ]
+          }, 
+          "CNC": {
+               "name": "CNC", 
+               "intervalCapacity": [
+                    270, 
+                    370, 
+                    470, 
+                    570, 
+                    670, 
+                    0, 
+                    0
+               ]
+          }, 
+          "PPASB": {
+               "name": "PPASB", 
+               "intervalCapacity": [
+                    380, 
+                    300, 
+                    580, 
+                    680, 
+                    780, 
+                    0, 
+                    0
+               ]
+          }, 
+          "SMF": {
+               "name": "SMF", 
+               "intervalCapacity": [
+                    180, 
+                    300, 
+                    400, 
+                    500, 
+                    600, 
+                    0, 
+                    0
+               ]
+          }
+     }, 
+     "orders": [
+          {
+               "orderID": "Tade", 
+               "customer": "t1", 
+               "floorSpaceRequired": 400, 
+               "sequence": [
+                    {
+                         "SMF": {
+                              "operation": "SMF", 
+                              "earliestStart": "2014-08-25", 
+                              "task_id": "ID-001", 
+                              "requiredCapacity": 30
+                         }
+                    }, 
+                    {
+                         "WELD": {
+                              "operation": "WELD", 
+                              "earliestStart": "2014-08-26", 
+                              "task_id": "ID-002", 
+                              "requiredCapacity": 15
+                         }
+                    }, 
+                    {
+                         "CNC": {
+                              "operation": "CNC", 
+                              "earliestStart": "2014-08-27", 
+                              "task_id": "ID-003", 
+                              "requiredCapacity": 45
+                         }
+                    }, 
+                    {
+                         "MCH": {
+                              "operation": "MCH", 
+                              "earliestStart": "2014-08-28", 
+                              "task_id": "ID-004", 
+                              "requiredCapacity": 25
+                         }
+                    }, 
+                    {
+                         "EEP": {
+                              "operation": "EEP", 
+                              "earliestStart": "2014-08-29", 
+                              "task_id": "ID-005", 
+                              "requiredCapacity": 15
+                         }
+                    }, 
+                    {
+                         "PPASB": {
+                              "operation": "PPASB", 
+                              "earliestStart": "2014-08-30", 
+                              "task_id": "ID-006", 
+                              "requiredCapacity": 25
+                         }
+                    }, 
+                    {
+                         "PAINT": {
+                              "operation": "PAINT", 
+                              "earliestStart": "2014-08-31", 
+                              "task_id": "ID-007", 
+                              "requiredCapacity": 35
+                         }
+                    }, 
+                    {
+                         "ASBTST": {
+                              "operation": "ASBTST", 
+                              "earliestStart": "2014-09-01", 
+                              "task_id": "ID-008", 
+                              "requiredCapacity": 45
+                         }
+                    }
+               ], 
+               "dueDate": "2014-08-25", 
+               "orderName": "italy", 
+               "orderDate": "2014-08-19"
+          }
+     ], 
+     "WIP": {
+          "WELD_idTade": {
+               "order_id": "Tade", 
+               "buffered": 10.0, 
+               "operation": "WELD"
+          }, 
+          "ID-001": {
+               "End date": "None", 
+               "Total Capacity required": 30, 
+               "Capacity required": 10, 
+               "order_id": "Tade", 
+               "operation": "SMF", 
+               "Start date": "2015-03-13"
+          }
+     }
+}
