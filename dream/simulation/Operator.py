@@ -265,11 +265,11 @@ class Operator(ObjectResource):
             
         # if the Operator is currently working we have to count the time of this work    
         if len(self.getResourceQueue())>0:
-            self.totalWorkingTime+=self.env.now-self.timeLastOperationStarted
+            self.totalWorkingTime+=G.maxSimTime-self.timeLastOperationStarted
         
         # if the Operator is currently off-shift we have to count the time of this work    
         if not self.onShift and len(self.getResourceQueue())==0:
-            self.totalOffShiftTime+=self.env.now-self.timeLastShiftEnded
+            self.totalOffShiftTime+=G.maxSimTime-self.timeLastShiftEnded
                 
         # Operator was idle when he was not in any other state
         self.totalWaitingTime=MaxSimtime-self.totalWorkingTime-self.totalOffShiftTime   
