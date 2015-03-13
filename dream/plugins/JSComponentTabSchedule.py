@@ -24,7 +24,7 @@ class JSComponentTabSchedule(plugin.OutputPreparationPlugin, TimeSupportMixin):
     '''returns the id of the operator that has performed a certain task'''
     # XXX searching in the last solution only
     # XXX synchronize with the solution that is used by postprocess method
-    resultElements=self.data['result']['result_list'][-1]['elementList']
+    resultElements=self.result['elementList']
     for element in resultElements:
       if element.get("_class", None) in self.OPERATOR_CLASS_SET:
         schedule = element["results"].get("schedule", [])
@@ -38,7 +38,7 @@ class JSComponentTabSchedule(plugin.OutputPreparationPlugin, TimeSupportMixin):
   STATION_CLASS_SET = set(["Dream.MouldAssembly", "Dream.MachineJobShop"])
   def isActiveStation(self, ID):
     '''returns True if station is an active station'''
-    resultElements=self.data['result']['result_list'][-1]['elementList']
+    resultElements=self.result['elementList']
     for element in resultElements:
       if element.get("_class", None) in self.STATION_CLASS_SET:
         if  element.get("id", None) == ID:
@@ -63,54 +63,56 @@ class JSComponentTabSchedule(plugin.OutputPreparationPlugin, TimeSupportMixin):
       data['general']['dateFormat']='%Y/%m/%d'
     self.initializeTimeSupport(data)
     date_format = '%d-%m-%Y %H:%M'
+    
     '''reading results'''
-    resultElements=data['result']['result_list'][-1]['elementList']
-    # create the titles row
-    result = data['result']['result_list'][-1]
-    result[self.configuration_dict['output_id']] = [['Job ID',
-                                                     'Order',
-                                                     'Due Date',
-                                                     'Task ID',
-                                                     'Station ID',
-                                                     'Entrance Time',
-                                                     'Processing Time',
-                                                     'Operator']]
-    for element in resultElements:
-      if element.get("_class",None) in self.COMPONENT_CLASS_SET:
-        elementId = element.get("id", None)
-        order = self.findParentOrderById(elementId)
-        # due date
-        dueDate = order.get("dueDate", None)
-        # order
-        orderName = order.get("name", None)
-        '''schedule'''
-        results = element.get("results", {})
-        schedule = results.get("schedule", [])
-        if schedule:
-          for step in schedule:
-            # entranceTime
-            entranceTime = step.get("entranceTime", None)
-            exitTime = step.get("exitTime", None)
-            # processing time
-            processingTime = 0
-            if exitTime != None:
-              processingTime = round(exitTime - entranceTime, 2)
-            # stationId
-            stationId = step.get("stationId", None)
-            # task_id
-            task_id = step.get("task_id", None)
-            # operator
-            operatorId = ""
-            if self.isActiveStation(stationId):
-              operatorId = self.findOperatorByTaskId(task_id)
-            # if there is a taskId defined or the station is an assembly station (order decomposition is presented)
-            if task_id or stationId.startswith("ASSM"):
-              result[self.configuration_dict['output_id']].append([elementId,
-                                                                   orderName,
-                                                                   self.convertToFormattedRealWorldTime(dueDate),
-                                                                   task_id,
-                                                                   stationId,
-                                                                   self.convertToFormattedRealWorldTime(entranceTime),
-                                                                   processingTime,
-                                                                   operatorId])
+    for result in data['result']['result_list']:
+      self.result = result
+      resultElements=result['elementList']
+      # create the titles row
+      result[self.configuration_dict['output_id']] = [['Job ID',
+                                                       'Order',
+                                                       'Due Date',
+                                                       'Task ID',
+                                                       'Station ID',
+                                                       'Entrance Time',
+                                                       'Processing Time',
+                                                       'Operator']]
+      for element in resultElements:
+        if element.get("_class",None) in self.COMPONENT_CLASS_SET:
+          elementId = element.get("id", None)
+          order = self.findParentOrderById(elementId)
+          # due date
+          dueDate = order.get("dueDate", None)
+          # order
+          orderName = order.get("name", None)
+          '''schedule'''
+          results = element.get("results", {})
+          schedule = results.get("schedule", [])
+          if schedule:
+            for step in schedule:
+              # entranceTime
+              entranceTime = step.get("entranceTime", None)
+              exitTime = step.get("exitTime", None)
+              # processing time
+              processingTime = 0
+              if exitTime != None:
+                processingTime = round(exitTime - entranceTime, 2)
+              # stationId
+              stationId = step.get("stationId", None)
+              # task_id
+              task_id = step.get("task_id", None)
+              # operator
+              operatorId = ""
+              if self.isActiveStation(stationId):
+                operatorId = self.findOperatorByTaskId(task_id)
+              # if there is a taskId defined or the station is an assembly station (order decomposition is presented)
+              if task_id or stationId.startswith("ASSM"):
+                result[self.configuration_dict['output_id']].append([elementId,
+                                                                     orderName,
+                                                                     self.convertToFormattedRealWorldTime(dueDate),
+                                                                     task_id,
+                                                                     stationId,
+                                                                     self.convertToFormattedRealWorldTime(entranceTime),
+                                                                     processingTime,
+                                                                     operatorId])
     return data
