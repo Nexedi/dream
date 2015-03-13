@@ -10,13 +10,28 @@ class PostProcessOrderLateness(plugin.OutputPreparationPlugin, TimeSupportMixin)
     for result in data['result']['result_list']:
       order_lateness_dict = result[self.configuration_dict["output_id"]] = {}
       for obj in result['elementList']:
-        if obj.get('_class') == "Dream.OrderDesign": # XXX How to find orders ?
-          dueDate, = [order['dueDate'] for order in data['input']['BOM']['productionOrders'] if order['id'] == obj['id']]
-          order_lateness_dict[obj["id"]] = {
-            "dueDate": self.convertToFormattedRealWorldTime(dueDate),
-            "delay": obj["results"].get("delay", 0), 
-            "completionDate": self.convertToFormattedRealWorldTime(obj["results"]["completionTime"])
-          }
+        if obj.get('_class') == "Dream.Mould": # XXX How to find orders ?
+          orderFound = False
+          for order in data['input']['BOM']['productionOrders']:
+            for component in order.get('componentsList', []):
+              if component.get('id',None) == obj.get('id', None):
+                orderFound = True
+                break
+            if orderFound:
+              dueDate = order.get('dueDate', None)
+              if obj['results'].get('schedule', []):
+                order_lateness_dict[order['id']] = {
+                  'dueDate': self.convertToFormattedRealWorldTime(dueDate),
+                  'delay': obj['results'].get('delay', 0),
+                  'completionDate': self.convertToFormattedRealWorldTime(obj["results"]["completionTime"])
+                }
+              else:
+                order_lateness_dict[order['id']] = {
+                  'dueDate': self.convertToFormattedRealWorldTime(dueDate),
+                  'delay': 1000,
+                  'completionDate': 'Unfinished'
+                }
+              break
         if obj.get('_class') == "Dream.CapacityProject": # XXX How to find orders ?
           dueDate, = [order['dueDate'] for order in data['input']['BOM']['productionOrders'] if order['id'] == obj['id']]
           if obj["results"]["schedule"]:
