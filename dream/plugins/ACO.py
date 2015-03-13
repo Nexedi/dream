@@ -8,6 +8,7 @@ import operator
 import xmlrpclib
 
 from dream.simulation.Queue import Queue
+from dream.simulation.Operator import Operator
 from dream.simulation.Globals import getClassFromName
 
 class ACO(plugin.ExecutionPlugin):
@@ -47,7 +48,7 @@ class ACO(plugin.ExecutionPlugin):
     collated = dict()
     for node_id, node in data['graph']['node'].items():
       node_class = getClassFromName(node['_class'])
-      if issubclass(node_class, Queue):
+      if issubclass(node_class, Queue) or issubclass(node_class, Operator):
         collated[node_id] = list(node_class.getSupportedSchedulingRules())
     assert collated
 
