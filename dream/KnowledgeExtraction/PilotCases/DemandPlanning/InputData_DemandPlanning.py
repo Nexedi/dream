@@ -39,8 +39,7 @@ def generateDemandPlanning(input_url, PPOSQuantity=1000, PlannedWeek=1, PPOSToBe
     """
     # id is given as an integer and minus one
     # ToDo we have to standardize data
-    PPOSToBeDisaggregated='PPOS'+str(PPOSToBeDisaggregated+1)
-
+#     PPOSToBeDisaggregated='PPOS'+str(PPOSToBeDisaggregated+'1')
     
     # Read data from the exported Excel file from RapidMiner and call the Import_Excel object of the KE tool to import this data in the tool
 
@@ -213,10 +212,10 @@ def generateDemandPlanning(input_url, PPOSQuantity=1000, PlannedWeek=1, PPOSToBe
         PPOSProfile[t]=dictb
         PPOSProfileString=json.dumps(PPOSProfile, indent=5)
         t+=1
-
+    
     #write json file
     PPOSProfileFile.write(PPOSProfileString)
-
+    
     import StringIO
     out = StringIO.StringIO()
     book.save(out)
