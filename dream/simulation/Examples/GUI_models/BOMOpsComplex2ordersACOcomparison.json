@@ -51,10 +51,10 @@
           "type": "number"
         }, 
         "seed": {
-          "default": "", 
+          "default": 10, 
           "description": "When using the same seed, the random number generator produce the same sequence of numbers", 
           "title": "Seed for random number generator", 
-          "type": "string"
+          "type": "number"
         }, 
         "timeUnit": {
           "default": "hour", 
@@ -1045,7 +1045,7 @@
     "numberOfReplications": "1", 
     "numberOfSolutions": "2", 
     "processTimeout": 10, 
-    "seed": "", 
+    "seed": 10, 
     "timeUnit": "hour", 
     "trace": "Yes"
   }, 
