@@ -67,8 +67,12 @@ class ACO(plugin.ExecutionPlugin):
             ant = {}
             # for each of the machines, rules are randomly picked from the
             # options list
+            seedPlus = 0
+            seed = data['general'].get('seed', 10)
             for k in collated.keys():
+                random.seed(seed+seedPlus)
                 ant[k] = random.choice(collated[k])
+                seedPlus +=1
             # TODO: function to calculate ant id. Store ant id in ant dict
             ant_key = repr(ant)
             # if the ant was not already tested, only then test it
