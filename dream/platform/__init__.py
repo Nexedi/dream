@@ -34,10 +34,21 @@ import os.path
 import logging
 import simpy
 
-from flask import Flask, jsonify, redirect, url_for
+from flask import Flask
 from flask import request
+from flask import jsonify, redirect, url_for
+from flask.json import JSONEncoder
 
 app = Flask(__name__)
+
+class InfinityJSONEncoder(JSONEncoder):
+  # we don't serialise inf, as javascript does not load it.
+  def iterencode(self, *args, **kw):
+    for j in JSONEncoder.iterencode(self, *args, **kw):
+      if "Infinity" in str(j): # XXX the replace should not be so "global"
+        j = j.replace("Infinity", str(2**64))
+      yield j
+app.json_encoder = InfinityJSONEncoder
 
 @app.route("/")
 def front_page():
