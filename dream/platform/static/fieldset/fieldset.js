@@ -42,6 +42,9 @@
                 if (property_definition.type === "number") {
                     return gadget.declareGadget("../number_field/index.html");
                 }
+                if (property_definition.type === "integer") {
+                    return gadget.declareGadget("../integer_field/index.html");
+                }
                 if (property_definition.enum) {
                     return gadget.declareGadget("../list_field/index.html");
                 }
