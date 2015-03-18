@@ -83,11 +83,6 @@
       }
     }, 
     "input": {
-      "debug": {
-        "gadget": "Input_viewDebugJson", 
-        "title": "Debug JSON", 
-        "type": "object_view"
-      }, 
       "view": {
         "gadget": "Input_viewProductionLine", 
         "title": "Production Line", 
