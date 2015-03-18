@@ -207,8 +207,8 @@ class Operator(ObjectResource):
                     processingTime=step.get('processingTime',{})
                     if processingTime:
                         RPT+=float(processingTime.get('Fixed',{}).get('mean',0))           
-                entity.remainingProcessingTime=RPT
-            activeObjectQ.sort(key=lambda x: x.remainingProcessingTime, reverse=True)     
+                entity.totalRemainingProcessingTime=RPT
+            activeObjectQ.sort(key=lambda x: x.totalRemainingProcessingTime, reverse=True)     
         #if the schedulingRule is to sort Entities according to longest processing time first in the next station
         elif criterion=="LPT":
             for entity in activeObjectQ:
@@ -238,8 +238,8 @@ class Operator(ObjectResource):
                     processingTime=step.get('processingTime',{})
                     if processingTime:
                         RPT+=float(processingTime.get('Fixed',{}).get('mean',0))              
-                entity.remainingProcessingTime=RPT
-            activeObjectQ.sort(key=lambda x: (x.dueDate-x.remainingProcessingTime))  
+                entity.totalRemainingProcessingTime=RPT
+            activeObjectQ.sort(key=lambda x: (x.dueDate-x.totalRemainingProcessingTime))  
         #if the schedulingRule is to sort Entities based on the length of the following Queue
         elif criterion=="WINQ":
             from Globals import G
