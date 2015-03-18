@@ -85,7 +85,7 @@
     "input": {
       "debug": {
         "gadget": "Input_viewDebugJson", 
-        "title": "Debug JSON", 
+        "title": "Edit Configuration",
         "type": "object_view"
       }, 
       "view": {
