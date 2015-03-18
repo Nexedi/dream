@@ -69,6 +69,8 @@ class ACO(plugin.ExecutionPlugin):
             # options list
             seedPlus = 0
             seed = data['general'].get('seed', 10)
+            if seed == '' or seed == ' ' or seed == None:
+                seed = 10
             for k in collated.keys():
                 random.seed(seed+seedPlus)
                 ant[k] = random.choice(collated[k])
