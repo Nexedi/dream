@@ -327,12 +327,12 @@ def createObjectInterruptions():
             shiftPattern=list(shift.get('shiftPattern', []))
             # patch to correct if input has end of shift at the same time of start of next shift
             # TODO check if the backend should be able to handle this
-            for index, element in enumerate(shiftPattern):
-                if element is shiftPattern[-1]:
+            for index, record in enumerate(shiftPattern):
+                if record is shiftPattern[-1]:
                     break
                 next = shiftPattern[index + 1]
-                if element[1]==next[0]:
-                    element[1]=next[1]
+                if record[1]==next[0]:
+                    record[1]=next[1]
                     shiftPattern.remove(next)
             endUnfinished=bool(int(shift.get('endUnfinished', 0)))
             receiveBeforeEndThreshold=float(shift.get('receiveBeforeEndThreshold', 0))
