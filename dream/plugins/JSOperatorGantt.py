@@ -75,6 +75,9 @@ class JSOperatorGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
                 entranceTime=entranceTime,
                 duration=exitTime-entranceTime,
               )
+              if task_id == 'off-shift':
+                task_dict[operatorId+task_id+str(k)]['color'] = 'grey'
+                
       # return the result to the gadget
       result[self.configuration_dict['output_id']] = dict(
         time_unit=self.getTimeUnitText(),
