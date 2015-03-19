@@ -13,3 +13,4 @@ trace*.xls
 npm-debug.log
 node_modules/
 tmp/
+*~
