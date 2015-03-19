@@ -103,6 +103,7 @@ class CoreObject(ManPyObject):
         self.totalFailureTime=0                         #holds the total failure time
         self.totalWaitingTime=0                         #holds the total waiting time
         self.totalWorkingTime=0                         #holds the total working time
+        self.totalBreakTime=0                           #holds the total break time
         self.totalOffShiftTime=0                        #holds the total off-shift time
         self.completedJobs=0                            #holds the number of completed jobs 
         # ============================== Entity related attributes =================================

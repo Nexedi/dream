@@ -246,6 +246,7 @@ def createObjectInterruptions():
     G.ObjectInterruptionList=[]
     G.ScheduledMaintenanceList=[]
     G.FailureList=[]
+    G.BreakList=[]
     G.ShiftSchedulerList=[]
     G.EventGeneratorList=[]
     G.CapacityStationControllerList=[]
@@ -285,6 +286,7 @@ def createObjectInterruptions():
     from dream.simulation.Failure import Failure
     from dream.simulation.PeriodicMaintenance import PeriodicMaintenance    
     from dream.simulation.ShiftScheduler import ShiftScheduler
+    from dream.simulation.Break import Break
     for (element_id, element) in nodes.iteritems():
         element['id'] = element_id
         scheduledMaintenance=element.get('interruptions',{}).get('scheduledMaintenance', {})
@@ -340,9 +342,17 @@ def createObjectInterruptions():
                               thresholdTimeIsOnShift=thresholdTimeIsOnShift)
             G.ObjectInterruptionList.append(SS)
             G.ShiftSchedulerList.append(SS)
-            
-           
+        br=element.get('interruptions',{}).get('break', None)
+        # if there are failures assigned 
+        # initiate them   
+        if br:
+            victim=Globals.findObjectById(element['id'])
+            endUnfinished=bool(int(br.get('endUnfinished', 1)))
+            deteriorationType=br.get('deteriorationType', 'constant')
 
+            BR=Break(victim=victim, distribution=br,endUnfinished=endUnfinished,deteriorationType=deteriorationType)
+            G.ObjectInterruptionList.append(BR)
+            G.FailureList.append(BR)
 
 # ===========================================================================
 #                       creates the entities that are wip

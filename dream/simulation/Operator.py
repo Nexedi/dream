@@ -105,6 +105,7 @@ class Operator(ObjectResource):
         self.timeLastShiftStarted=0                     #holds the time that the last shift of the object started
         self.timeLastShiftEnded=0                       #holds the time that the last shift of the object ended
         self.candidateStation=None      #holds the candidate receiver of the entity the resource will work on - used by router
+        self.totalBreakTime=0
         
     @staticmethod
     def getSupportedSchedulingRules():
