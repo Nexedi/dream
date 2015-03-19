@@ -37,12 +37,27 @@ class JSComponentGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
       for element in resultElements:
         if element['_class'] in self.COMPONENT_CLASS_SET:
           componentId=element['id']
+          
+          order_id = "bug_order_not_found"
+          # add the order
+          for order in data['input']['BOM']['productionOrders']:
+            for component in order.get('componentsList', []):
+              if component['id'] == componentId:
+                order_id = order['id']
+                if order_id not in task_dict:
+                  task_dict[order_id] = dict(
+                    id=order_id,
+                    text=order.get('name', order_id),
+                    type='project',
+                    open=True)
+                break
           # add the component in the task_dict
           task_dict[element['id']] = dict(
             id=componentId,
             text=componentId,
-            type='component',
-            open=False)
+            type='project',
+            open=False,
+            parent=order_id)
       
           k=1
           
