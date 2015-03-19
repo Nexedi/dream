@@ -20,12 +20,16 @@ class PostProcessOrderLateness(plugin.OutputPreparationPlugin, TimeSupportMixin)
             if orderFound:
               dueDate = order.get('dueDate', None)
               if obj['results'].get('schedule', []):
+                completed = isinstance(obj["results"]["completionTime"], (int, float))
                 order_lateness_dict[order['id']] = {
                   'dueDate': self.convertToFormattedRealWorldTime(dueDate),
-                  'delay': obj['results'].get('delay', 0),
-                  'completionDate': self.convertToFormattedRealWorldTime(obj["results"]["completionTime"])
+                  # XXX do we want to format to another time unit ? days ?
+                  'delay': (obj["results"]["completionTime"] - dueDate) if completed else None, # XXX manpy outputs delay, but it is sometimes wrong
+                  'manpy_delay': obj['results'].get('delay'),
+                  'completionDate': self.convertToFormattedRealWorldTime(obj["results"]["completionTime"]) if completed else obj["results"]["completionTime"],
                 }
               else:
+                # if order is not processed at all, it has no schedule.
                 order_lateness_dict[order['id']] = {
                   'dueDate': self.convertToFormattedRealWorldTime(dueDate),
                   'delay': 1000,
