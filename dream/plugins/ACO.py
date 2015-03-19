@@ -33,8 +33,6 @@ class ACO(plugin.ExecutionPlugin):
   def run(self, data):
     """Preprocess the data.
     """
-    self.logger.info("run: %s " % (pformat(data)))
-
     distributor_url = data['general'].get('distributorURL')
     distributor = None
     if distributor_url:
