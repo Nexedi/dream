@@ -47,6 +47,10 @@ class ObjectResource(ManPyObject):
         
     def initialize(self):
         from Globals import G
+        # flag that shows if the resource is on shift
+        self.onShift=True
+        # flag that shows if the resource is on break
+        self.onBreak=False
         self.env=G.env
         self.timeLastOperationStarted=0    #holds the time that the last repair was started        
         self.Res=simpy.Resource(self.env, capacity=self.capacity)
@@ -67,7 +71,7 @@ class ObjectResource(ManPyObject):
     # =======================================================================       
     def checkIfResourceIsAvailable(self,callerObject=None): 
         # return true if the operator is idle and on shift
-        return len(self.Res.users)<self.capacity and self.onShift and (not self.isLocked)
+        return len(self.Res.users)<self.capacity and self.onShift and (not self.isLocked) and (not self.onBreak)
     
        
     # =======================================================================

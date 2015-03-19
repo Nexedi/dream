@@ -17,13 +17,13 @@
 # along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
 # ===========================================================================
 '''
-Created on 9 Nov 2012
+Created on 19 Mar 2015
 
 @author: George
 '''
 
 '''
-models the failures that servers can have
+models the breaks that CoreObjects or ObjectResources can have
 '''
 
 # from SimPy.Simulation import now, Process, hold, request, release
@@ -41,7 +41,7 @@ class Break(ObjectInterruption):
         self.rngTTR=RandomNumberGenerator(self, distribution.get('TTR',{'Fixed':{'mean':10}}))
         self.type="Break"
         
-        # shows how the time to failure is measured
+        # shows how the time to break is measured
         # 'constant' means it counts not matter the state of the victim
         self.deteriorationType=deteriorationType
         self.endUnfinished=endUnfinished
@@ -52,7 +52,7 @@ class Break(ObjectInterruption):
         self.victimEndsProcess=self.env.event()       
         
     # =======================================================================
-    #    The run method for the failure which has to served by a repairman
+    #    The run method for the break which has to served by a repairman
     # =======================================================================
     def run(self):     
         from CoreObject import CoreObject
@@ -62,25 +62,25 @@ class Break(ObjectInterruption):
             # if the time that the victim is off-shift should not be counted
             timeToBreak=self.rngTTB.generateNumber()
             remainingTimeToBreak=timeToBreak
-            failureNotTriggered=True
+            breakNotTriggered=True
             
-            # if time to failure counts not matter the state of the victim
+            # if time to break counts not matter the state of the victim
             if self.deteriorationType=='constant':
                 yield self.env.timeout(remainingTimeToBreak)
-#             # if time to failure counts only in onShift time
+#             # if time to break counts only in onShift time
 #             elif self.deteriorationType=='onShift':
-#                 while failureNotTriggered:
+#                 while breakNotTriggered:
 #                     timeRestartedCounting=self.env.now
 #                     self.isWaitingForVictimOffShift=True
 #                     
 #                     self.expectedSignals['victimOffShift']=1
 #                     
-#                     receivedEvent=yield self.env.timeout(remainingTimeToFailure) | self.victimOffShift 
-#                     # the failure should receive a signal if there is a shift-off triggered
+#                     receivedEvent=yield self.env.timeout(remainingTimeToBreak) | self.victimOffShift 
+#                     # the break should receive a signal if there is a shift-off triggered
 #                     if self.victimOffShift in receivedEvent:
-#                         assert self.victim.onShift==False, 'shiftFailure cannot recalculate TTB if the victim is onShift'
+#                         assert self.victim.onShift==False, 'break cannot recalculate TTB if the victim is onShift'
 #                         self.victimOffShift=self.env.event()
-#                         remainingTimeToFailure=remainingTimeToFailure-(self.env.now-timeRestartedCounting)   
+#                         remainingTimeToBreak=remainingTimeToBreak-(self.env.now-timeRestartedCounting)   
 #                         # wait for the shift to start again
 #                         self.isWaitingForVictimOnShift=True
 #                         
@@ -90,12 +90,12 @@ class Break(ObjectInterruption):
 # 
 #                         self.isWaitingForVictimOnShift=False
 #                         self.victimOnShift=self.env.event()
-#                         assert self.victim.onShift==True, 'the victim of shiftFailure must be onShift to continue counting the TTB'
+#                         assert self.victim.onShift==True, 'the victim of break must be onShift to continue counting the TTB'
 #                     else:
 #                         self.isWaitingForVictimOffShift=False
-#                         failureNotTriggered=False
+#                         breakNotTriggered=False
 # 
-#             # if time to failure counts only in working time
+#             # if time to break counts only in working time
 #             elif self.deteriorationType=='working':
 #                 # wait for victim to start process
 #                 
@@ -104,16 +104,16 @@ class Break(ObjectInterruption):
 #                 yield self.victimStartsProcess
 # 
 #                 self.victimStartsProcess=self.env.event()
-#                 while failureNotTriggered:
+#                 while breakNotTriggered:
 #                     timeRestartedCounting=self.env.now
 #                     
 #                     self.expectedSignals['victimEndsProcess']=1
 #                     
-#                     # wait either for the failure or end of process
-#                     receivedEvent=yield self.env.timeout(remainingTimeToFailure) | self.victimEndsProcess 
+#                     # wait either for the break or end of process
+#                     receivedEvent=yield self.env.timeout(remainingTimeTobreak) | self.victimEndsProcess 
 #                     if self.victimEndsProcess in receivedEvent:
 #                         self.victimEndsProcess=self.env.event()
-#                         remainingTimeToFailure=remainingTimeToFailure-(self.env.now-timeRestartedCounting)
+#                         remainingTimeTobreak=remainingTimeTobreak-(self.env.now-timeRestartedCounting)
 #                         
 #                         self.expectedSignals['victimStartsProcess']=1
 #                         
@@ -122,15 +122,15 @@ class Break(ObjectInterruption):
 #                         # wait for victim to start again processing
 #                         self.victimStartsProcess=self.env.event()
 #                     else:
-#                         failureNotTriggered=False
+#                         breakNotTriggered=False
             
                 
             # interrupt the victim
             # if the victim is station
             if issubclass(self.victim.__class__, CoreObject):
-                # if the mode is to end current work before going off-shift and there is current work, 
+                # if the mode is to end current work before going to break and there is current work, 
                 # wait for victimEndedLastProcessing or victimFailed
-                # signal before going off-shift
+                # signal before going into break
                 if self.endUnfinished and self.victim.isProcessing:
                     self.victim.isWorkingOnTheLast=True
                     self.waitingSignal=True
@@ -143,15 +143,6 @@ class Break(ObjectInterruption):
                     elif self.victimFailed in receivedEvent:
                         transmitter, eventTime=self.victimFailed.value
                         self.victimFailed=self.env.event()
-                # sometimes the time to end the last process may overcome the time to restart theshift
-                # so off-shift should not happen at such a case
-                if len(self.remainingShiftPattern)>1:
-                    if self.env.now>=self.remainingShiftPattern[1][0]:
-                        self.remainingShiftPattern.pop(0)                
-                        # if there is no more shift data break the loop
-                        if len(self.remainingShiftPattern)==0:
-                            break
-                        continue
                 self.interruptVictim()
             # if the victim is operator
             elif issubclass(self.victim.__class__, ObjectResource):
@@ -165,31 +156,32 @@ class Break(ObjectInterruption):
                 if self.victim.schedule:
                     if not self.victim.schedule[-1].get("exitTime", None):
                         self.victim.schedule[-1]["exitTime"] = self.env.now
-                self.victim.schedule.append({"station": {'id':'off-shift'},
+                self.victim.schedule.append({"station": {'id':'on-break'},
                                              "entranceTime": self.env.now})
                 self.requestAllocation()
 
             
             self.victim.Up=False
-            self.victim.timeBreakStarted=self.env.now           
-            self.outputTrace(self.victim.name,"starts breaj")
-            # update the failure time
+            self.victim.timeBreakStarted=self.env.now     
+            self.victim.onBreak=True                        # get the victim on break     
+            self.outputTrace(self.victim.name,"starts break")
+            # update the break time
             breakTime=self.env.now                
                                 
             yield self.env.timeout(self.rngTTR.generateNumber())    # wait until the repairing process is over
             
-            # add the failure
+            # add the break
             # if victim is off shift add only the fail time before the shift ended
             if not self.victim.onShift and breakTime < self.victim.timeLastShiftEnded:
                 self.victim.totalBreakTime+=self.victim.timeLastShiftEnded-breakTime
-            # if the victim was off shift since the start of the failure add nothing
+            # if the victim was off shift since the start of the break add nothing
             elif not self.victim.onShift and breakTime >= self.victim.timeLastShiftEnded:
                 pass
             # if victim was off shift in the start of the fail time, add on
             elif self.victim.onShift and breakTime < self.victim.timeLastShiftStarted:
                 self.victim.totalBreakTime+=self.env.now-self.victim.timeLastShiftStarted
                 # this can happen only if deteriorationType is constant
-                assert self.deteriorationType=='constant', 'object got failure while off-shift and deterioration type not constant' 
+                assert self.deteriorationType=='constant', 'object got break while off-shift and deterioration type not constant' 
             else:
                 self.victim.totalBreakTime+=self.env.now-breakTime   
 
@@ -201,4 +193,6 @@ class Break(ObjectInterruption):
                         self.victim.schedule[-1]["exitTime"] = self.env.now
                 self.requestAllocation()
             
+            self.victim.timeBreakEnded=self.env.now     
+            self.victim.onBreak=False                        # get the victim on break     
             self.outputTrace(self.victim.name,"returns from break")

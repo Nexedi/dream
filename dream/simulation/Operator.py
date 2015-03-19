@@ -97,8 +97,6 @@ class Operator(ObjectResource):
         
     def initialize(self):
         ObjectResource.initialize(self)
-        # flag that shows if the resource is on shift
-        self.onShift=True
         self.totalWorkingTime=0         #holds the total working time
         self.totalWaitingTime=0         #holds the total waiting time
         self.totalOffShiftTime=0        #holds the total off-shift time
