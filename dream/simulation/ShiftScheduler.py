@@ -91,6 +91,7 @@ class ShiftScheduler(ObjectInterruption):
 
         while 1:
             if not self.victim.onShift:
+                assert self.remainingShiftPattern[0][0] > self.env.now, "Incorrect shift defined for %s (%s)" % (self.env.now, self.shiftPattern)
                 yield self.env.timeout(float(self.remainingShiftPattern[0][0]-self.env.now))    # wait for the onShift
                 # if the victim is CoreObject reactivate it. Else ask the router for allocation of operators
                 # TODO more generic implementation
