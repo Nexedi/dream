@@ -3,130 +3,16 @@
  "component_gantt": {
   "task_list": [
    {
-    "id": "3.122.052.01.00", 
-    "open": false, 
-    "text": "3.122.052.01.00", 
-    "type": "component"
+    "id": "W134188", 
+    "open": true, 
+    "text": "Gelenkstangen 50/0\u00b0/180\u00b0", 
+    "type": "project"
    }, 
    {
-    "id": "3.122.052.01.00-01", 
-    "open": false, 
-    "text": "3.122.052.01.00-01", 
-    "type": "component"
-   }, 
-   {
-    "id": "3.122.052.01.00-02", 
-    "open": false, 
-    "text": "3.122.052.01.00-02", 
-    "type": "component"
-   }, 
-   {
-    "id": "3.122.052.01.00-03", 
-    "open": false, 
-    "text": "3.122.052.01.00-03", 
-    "type": "component"
-   }, 
-   {
-    "id": "3.122.052.01.00-04", 
-    "open": false, 
-    "text": "3.122.052.01.00-04", 
-    "type": "component"
-   }, 
-   {
-    "id": "3.122.052.01.00-05", 
-    "open": false, 
-    "text": "3.122.052.01.00-05", 
-    "type": "component"
-   }, 
-   {
-    "id": "3.122.052.01.00-06", 
-    "open": false, 
-    "text": "3.122.052.01.00-06", 
-    "type": "component"
-   }, 
-   {
-    "id": "3.122.052.01.00-07", 
-    "open": false, 
-    "text": "3.122.052.01.00-07", 
-    "type": "component"
-   }, 
-   {
-    "id": "3.122.052.01.00-08", 
-    "open": false, 
-    "text": "3.122.052.01.00-08", 
-    "type": "component"
-   }, 
-   {
-    "id": "3.122.052.01.00-09", 
-    "open": false, 
-    "text": "3.122.052.01.00-09", 
-    "type": "component"
-   }, 
-   {
-    "id": "3.122.052.01.00-10", 
-    "open": false, 
-    "text": "3.122.052.01.00-10", 
-    "type": "component"
-   }, 
-   {
-    "id": "3.122.052.01.00-11", 
-    "open": false, 
-    "text": "3.122.052.01.00-11", 
-    "type": "component"
-   }, 
-   {
-    "id": "3.122.052.01.00-12", 
-    "open": false, 
-    "text": "3.122.052.01.00-12", 
-    "type": "component"
-   }, 
-   {
-    "id": "3.122.052.01.00-13", 
-    "open": false, 
-    "text": "3.122.052.01.00-13", 
-    "type": "component"
-   }, 
-   {
-    "id": "3.122.052.01.00-E01", 
-    "open": false, 
-    "text": "3.122.052.01.00-E01", 
-    "type": "component"
-   }, 
-   {
-    "id": "3.122.052.01.00-E02", 
-    "open": false, 
-    "text": "3.122.052.01.00-E02", 
-    "type": "component"
-   }, 
-   {
-    "id": "3.122.052.01.00_D", 
-    "open": false, 
-    "text": "3.122.052.01.00_D", 
-    "type": "component"
-   }, 
-   {
-    "id": "PE001068A", 
-    "open": false, 
-    "text": "PE001068A", 
-    "type": "component"
-   }, 
-   {
-    "id": "PE001068A-01", 
-    "open": false, 
-    "text": "PE001068A-01", 
-    "type": "component"
-   }, 
-   {
-    "id": "PE001068A-02", 
-    "open": false, 
-    "text": "PE001068A-02", 
-    "type": "component"
-   }, 
-   {
-    "id": "PE001068A-03", 
-    "open": false, 
-    "text": "PE001068A-03", 
-    "type": "component"
+    "id": "W134239", 
+    "open": true, 
+    "text": "Spalttopf C80", 
+    "type": "project"
    }, 
    {
     "duration": 2.0, 
@@ -1057,6 +943,153 @@
     "start_date": "24-02-2015 00:24", 
     "stop_date": "24-02-2015 00:24", 
     "text": "ID-00018; ASSM1"
+   }, 
+   {
+    "id": "PE001068A", 
+    "open": false, 
+    "parent": "W134188", 
+    "text": "PE001068A", 
+    "type": "project"
+   }, 
+   {
+    "id": "PE001068A-01", 
+    "open": false, 
+    "parent": "W134188", 
+    "text": "PE001068A-01", 
+    "type": "project"
+   }, 
+   {
+    "id": "PE001068A-02", 
+    "open": false, 
+    "parent": "W134188", 
+    "text": "PE001068A-02", 
+    "type": "project"
+   }, 
+   {
+    "id": "PE001068A-03", 
+    "open": false, 
+    "parent": "W134188", 
+    "text": "PE001068A-03", 
+    "type": "project"
+   }, 
+   {
+    "id": "3.122.052.01.00", 
+    "open": false, 
+    "parent": "W134239", 
+    "text": "3.122.052.01.00", 
+    "type": "project"
+   }, 
+   {
+    "id": "3.122.052.01.00-01", 
+    "open": false, 
+    "parent": "W134239", 
+    "text": "3.122.052.01.00-01", 
+    "type": "project"
+   }, 
+   {
+    "id": "3.122.052.01.00-02", 
+    "open": false, 
+    "parent": "W134239", 
+    "text": "3.122.052.01.00-02", 
+    "type": "project"
+   }, 
+   {
+    "id": "3.122.052.01.00-03", 
+    "open": false, 
+    "parent": "W134239", 
+    "text": "3.122.052.01.00-03", 
+    "type": "project"
+   }, 
+   {
+    "id": "3.122.052.01.00-04", 
+    "open": false, 
+    "parent": "W134239", 
+    "text": "3.122.052.01.00-04", 
+    "type": "project"
+   }, 
+   {
+    "id": "3.122.052.01.00-05", 
+    "open": false, 
+    "parent": "W134239", 
+    "text": "3.122.052.01.00-05", 
+    "type": "project"
+   }, 
+   {
+    "id": "3.122.052.01.00-06", 
+    "open": false, 
+    "parent": "W134239", 
+    "text": "3.122.052.01.00-06", 
+    "type": "project"
+   }, 
+   {
+    "id": "3.122.052.01.00-07", 
+    "open": false, 
+    "parent": "W134239", 
+    "text": "3.122.052.01.00-07", 
+    "type": "project"
+   }, 
+   {
+    "id": "3.122.052.01.00-08", 
+    "open": false, 
+    "parent": "W134239", 
+    "text": "3.122.052.01.00-08", 
+    "type": "project"
+   }, 
+   {
+    "id": "3.122.052.01.00-09", 
+    "open": false, 
+    "parent": "W134239", 
+    "text": "3.122.052.01.00-09", 
+    "type": "project"
+   }, 
+   {
+    "id": "3.122.052.01.00-10", 
+    "open": false, 
+    "parent": "W134239", 
+    "text": "3.122.052.01.00-10", 
+    "type": "project"
+   }, 
+   {
+    "id": "3.122.052.01.00-11", 
+    "open": false, 
+    "parent": "W134239", 
+    "text": "3.122.052.01.00-11", 
+    "type": "project"
+   }, 
+   {
+    "id": "3.122.052.01.00-12", 
+    "open": false, 
+    "parent": "W134239", 
+    "text": "3.122.052.01.00-12", 
+    "type": "project"
+   }, 
+   {
+    "id": "3.122.052.01.00-13", 
+    "open": false, 
+    "parent": "W134239", 
+    "text": "3.122.052.01.00-13", 
+    "type": "project"
+   }, 
+   {
+    "id": "3.122.052.01.00-E01", 
+    "open": false, 
+    "parent": "W134239", 
+    "text": "3.122.052.01.00-E01", 
+    "type": "project"
+   }, 
+   {
+    "id": "3.122.052.01.00-E02", 
+    "open": false, 
+    "parent": "W134239", 
+    "text": "3.122.052.01.00-E02", 
+    "type": "project"
+   }, 
+   {
+    "id": "3.122.052.01.00_D", 
+    "open": false, 
+    "parent": "W134239", 
+    "text": "3.122.052.01.00_D", 
+    "type": "project"
    }
   ], 
   "time_unit": "hour"
@@ -5189,6 +5222,7 @@
     "text": "ID-00021 CAD1 3.122.052.01.00_D"
    }, 
    {
+    "color": "grey", 
     "duration": 16.0, 
     "entranceTime": 3.0, 
     "id": "W1off-shift3", 
@@ -5209,6 +5243,7 @@
     "text": "ID-00021 CAD1 3.122.052.01.00_D"
    }, 
    {
+    "color": "grey", 
     "duration": 73.0, 
     "entranceTime": 27.0, 
     "id": "W1off-shift5", 
