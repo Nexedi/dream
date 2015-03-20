@@ -40,10 +40,6 @@ class Break(ObjectInterruption):
         self.rngTTB=RandomNumberGenerator(self, distribution.get('TTB',{'Fixed':{'mean':100}}))
         self.rngTTR=RandomNumberGenerator(self, distribution.get('TTR',{'Fixed':{'mean':10}}))
         self.type="Break"
-        
-        # shows how the time to break is measured
-        # 'constant' means it counts not matter the state of the victim
-        self.deteriorationType=deteriorationType
         self.endUnfinished=endUnfinished
 
     def initialize(self):
@@ -62,68 +58,9 @@ class Break(ObjectInterruption):
             # if the time that the victim is off-shift should not be counted
             timeToBreak=self.rngTTB.generateNumber()
             remainingTimeToBreak=timeToBreak
-            breakNotTriggered=True
             
-            # if time to break counts not matter the state of the victim
-            if self.deteriorationType=='constant':
-                yield self.env.timeout(remainingTimeToBreak)
-#             # if time to break counts only in onShift time
-#             elif self.deteriorationType=='onShift':
-#                 while breakNotTriggered:
-#                     timeRestartedCounting=self.env.now
-#                     self.isWaitingForVictimOffShift=True
-#                     
-#                     self.expectedSignals['victimOffShift']=1
-#                     
-#                     receivedEvent=yield self.env.timeout(remainingTimeToBreak) | self.victimOffShift 
-#                     # the break should receive a signal if there is a shift-off triggered
-#                     if self.victimOffShift in receivedEvent:
-#                         assert self.victim.onShift==False, 'break cannot recalculate TTB if the victim is onShift'
-#                         self.victimOffShift=self.env.event()
-#                         remainingTimeToBreak=remainingTimeToBreak-(self.env.now-timeRestartedCounting)   
-#                         # wait for the shift to start again
-#                         self.isWaitingForVictimOnShift=True
-#                         
-#                         self.expectedSignals['victimOnShift']=1
-#                         
-#                         yield self.victimOnShift
-# 
-#                         self.isWaitingForVictimOnShift=False
-#                         self.victimOnShift=self.env.event()
-#                         assert self.victim.onShift==True, 'the victim of break must be onShift to continue counting the TTB'
-#                     else:
-#                         self.isWaitingForVictimOffShift=False
-#                         breakNotTriggered=False
-# 
-#             # if time to break counts only in working time
-#             elif self.deteriorationType=='working':
-#                 # wait for victim to start process
-#                 
-#                 self.expectedSignals['victimStartsProcess']=1
-#                 
-#                 yield self.victimStartsProcess
-# 
-#                 self.victimStartsProcess=self.env.event()
-#                 while breakNotTriggered:
-#                     timeRestartedCounting=self.env.now
-#                     
-#                     self.expectedSignals['victimEndsProcess']=1
-#                     
-#                     # wait either for the break or end of process
-#                     receivedEvent=yield self.env.timeout(remainingTimeTobreak) | self.victimEndsProcess 
-#                     if self.victimEndsProcess in receivedEvent:
-#                         self.victimEndsProcess=self.env.event()
-#                         remainingTimeTobreak=remainingTimeTobreak-(self.env.now-timeRestartedCounting)
-#                         
-#                         self.expectedSignals['victimStartsProcess']=1
-#                         
-#                         yield self.victimStartsProcess
-# 
-#                         # wait for victim to start again processing
-#                         self.victimStartsProcess=self.env.event()
-#                     else:
-#                         breakNotTriggered=False
-            
+            yield self.env.timeout(remainingTimeToBreak)
+           
                 
             # interrupt the victim
             # if the victim is station
