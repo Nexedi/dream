@@ -56,7 +56,7 @@ class Break(ObjectInterruption):
     def run(self):     
         from CoreObject import CoreObject
         from ObjectResource import ObjectResource
-
+        
         while 1:
             # if the victim is off-shift wait for the victim to become on-shift
             if not self.victim.onShift:
@@ -133,23 +133,23 @@ class Break(ObjectInterruption):
             self.outputTrace(self.victim.name,"starts break")
             # update the break time
             breakTime=self.env.now                
-                                
-            yield self.env.timeout(self.rngTTR.generateNumber())    # wait until the repairing process is over
-                       
-            # add the break
-            # if victim is off shift add only the fail time before the shift ended
-            if not self.victim.onShift and breakTime < self.victim.timeLastShiftEnded:
-                self.victim.totalBreakTime+=self.victim.timeLastShiftEnded-breakTime
-            # if the victim was off shift since the start of the break add nothing
-            elif not self.victim.onShift and breakTime >= self.victim.timeLastShiftEnded:
-                pass
-            # if victim was off shift in the start of the fail time, add on
-            elif self.victim.onShift and breakTime < self.victim.timeLastShiftStarted:
-                self.victim.totalBreakTime+=self.env.now-self.victim.timeLastShiftStarted
-                # this can happen only if deteriorationType is constant
-                assert self.deteriorationType=='constant', 'object got break while off-shift and deterioration type not constant' 
+
+            self.expectedSignals['victimOffShift']=1
+            self.isWaitingForVictimOffShift=True
+            
+            # wait for the break or the end off shift of the victim
+            receivedEvent = yield self.env.any_of([self.env.timeout(self.rngTTR.generateNumber()),self.victimOffShift])
+
+            # if the victim became off shift the break is considered over and 
+            # the loop should start again (to wait on-shift etc)
+            if self.victimOffShift in receivedEvent:
+                transmitter, eventTime=self.victimOffShift.value
+                assert eventTime==self.env.now, 'victimOffShift was triggered earlier, not now'
+                # reset the signalparam of the victimOffShift event
+                self.victimOffShift=self.env.event()
+                self.outputTrace(self.victim.name,"went off-shift so not on break anymore") 
             else:
-                self.victim.totalBreakTime+=self.env.now-breakTime   
+                self.outputTrace(self.victim.name,"returns from break")    
 
             if issubclass(self.victim.__class__, CoreObject): 
                 self.reactivateVictim()                 # re-activate the victim in case it was interrupted
@@ -160,5 +160,5 @@ class Break(ObjectInterruption):
                 self.requestAllocation()
             
             self.victim.timeLastBreakEnded=self.env.now     
+            self.victim.totalBreakTime+=self.env.now-breakTime  
             self.victim.onBreak=False                        # get the victim on break     
-            self.outputTrace(self.victim.name,"returns from break")
