@@ -4759,6 +4759,9 @@
     "off_shift_ratio": [
      89.0
     ], 
+    "on_break_ratio": [
+     0.0
+    ], 
     "schedule": [
      {
       "entityId": "3.122.052.01.00_D", 
@@ -4799,6 +4802,9 @@
    "id": "W2", 
    "results": {
     "off_shift_ratio": [
+     0.0
+    ], 
+    "on_break_ratio": [
      0.0
     ], 
     "schedule": [
@@ -4936,6 +4942,9 @@
    "id": "W3", 
    "results": {
     "off_shift_ratio": [
+     0.0
+    ], 
+    "on_break_ratio": [
      0.0
     ], 
     "schedule": [
@@ -5103,6 +5112,9 @@
     "off_shift_ratio": [
      0.0
     ], 
+    "on_break_ratio": [
+     0.0
+    ], 
     "schedule": [
      {
       "entityId": "PE001068A-01", 
@@ -5212,6 +5224,9 @@
     "off_shift_ratio": [
      0.0
     ], 
+    "on_break_ratio": [
+     0.0
+    ], 
     "schedule": [
      {
       "entityId": "PE001068A-02", 
@@ -5300,6 +5315,9 @@
     "off_shift_ratio": [
      0.0
     ], 
+    "on_break_ratio": [
+     0.0
+    ], 
     "schedule": [], 
     "waiting_ratio": [
      100.0
@@ -5315,6 +5333,9 @@
    "id": "W7", 
    "results": {
     "off_shift_ratio": [
+     0.0
+    ], 
+    "on_break_ratio": [
      0.0
     ], 
     "schedule": [], 

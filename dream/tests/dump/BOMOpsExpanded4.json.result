@@ -950,6 +950,9 @@
     "off_shift_ratio": [
      0.0
     ], 
+    "on_break_ratio": [
+     0.0
+    ], 
     "waiting_ratio": [
      25.49019607843135
     ], 
@@ -966,6 +969,9 @@
     "off_shift_ratio": [
      0.0
     ], 
+    "on_break_ratio": [
+     0.0
+    ], 
     "waiting_ratio": [
      21.568627450980394
     ], 
@@ -980,6 +986,9 @@
    "id": "O3", 
    "results": {
     "off_shift_ratio": [
+     0.0
+    ], 
+    "on_break_ratio": [
      0.0
     ], 
     "waiting_ratio": [

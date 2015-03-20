@@ -1046,6 +1046,9 @@
     "off_shift_ratio": [
      0.0
     ], 
+    "on_break_ratio": [
+     0.0
+    ], 
     "waiting_ratio": [
      0.0
     ], 
@@ -1062,6 +1065,9 @@
     "off_shift_ratio": [
      0.0
     ], 
+    "on_break_ratio": [
+     0.0
+    ], 
     "waiting_ratio": [
      62.634408602150536
     ], 
@@ -1076,6 +1082,9 @@
    "id": "OP3", 
    "results": {
     "off_shift_ratio": [
+     0.0
+    ], 
+    "on_break_ratio": [
      0.0
     ], 
     "waiting_ratio": [

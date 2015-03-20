@@ -153,6 +153,9 @@
     "off_shift_ratio": [
      0.0
     ], 
+    "on_break_ratio": [
+     0.0
+    ], 
     "waiting_ratio": [
      100.0
     ], 
@@ -167,6 +170,9 @@
    "id": "O2", 
    "results": {
     "off_shift_ratio": [
+     0.0
+    ], 
+    "on_break_ratio": [
      0.0
     ], 
     "waiting_ratio": [

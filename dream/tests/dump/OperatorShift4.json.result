@@ -53,6 +53,9 @@
     "off_shift_ratio": [
      50.0
     ], 
+    "on_break_ratio": [
+     0.0
+    ], 
     "waiting_ratio": [
      0.0
     ], 

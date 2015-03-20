@@ -883,6 +883,9 @@
     "off_shift_ratio": [
      0.0
     ], 
+    "on_break_ratio": [
+     0.0
+    ], 
     "waiting_ratio": [
      0.5847953216374352
     ], 
@@ -897,6 +900,9 @@
    "id": "OP2", 
    "results": {
     "off_shift_ratio": [
+     0.0
+    ], 
+    "on_break_ratio": [
      0.0
     ], 
     "waiting_ratio": [
