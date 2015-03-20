@@ -1196,9 +1196,12 @@ class Machine(CoreObject):
                 operator.schedule[-1]["exitTime"] = self.env.now
             elif not operator.schedule[-1]["station"].get("id", None)== "off-shift":
                 operator.schedule[-1]["exitTime"] = self.env.now
-        # operator.schedule[-1]["entity"] = self.getActiveObjectQueue()[0]
-        if not self.currentOperator.onShift:
-            operator.timeLastShiftEnded=self.env.now      
+        # if the operator becomes unavailable
+        if (not self.currentOperator.onShift) or self.currentOperator.onBreak:
+            if not self.currentOperator.onShift:
+                operator.timeLastShiftEnded=self.env.now  
+            if self.currentOperator.onBreak:
+                operator.timeLastBreakStarted=self.env.now   
             operator.unAssign()     # set the flag operatorAssignedTo to None     
             operator.workingStation=None  
             self.toBeOperated = False
