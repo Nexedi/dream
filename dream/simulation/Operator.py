@@ -279,7 +279,7 @@ class Operator(ObjectResource):
             if self.onShift:
                 self.totalBreakTime+=self.env.now-self.timeLastBreakStarted
             # if object is off shift add only the break time before the shift ended
-            if not self.onShift and self.timeBreakStarted < self.timeLastShiftEnded:
+            if not self.onShift and self.timeLastBreakStarted < self.timeLastShiftEnded:
                 self.totalBreakTime+=self.timeLastShiftEnded-self.timeLastBreakStarted    
                 
         # Operator was idle when he was not in any other state
