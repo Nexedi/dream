@@ -348,12 +348,11 @@ def createObjectInterruptions():
         if br:
             victim=Globals.findObjectById(element['id'])
             endUnfinished=bool(int(br.get('endUnfinished', 1)))
-            deteriorationType=br.get('deteriorationType', 'constant')
             offShiftAnticipation=br.get('offShiftAnticipation',0)
-            BR=Break(victim=victim, distribution=br,endUnfinished=endUnfinished,deteriorationType=deteriorationType,
+            BR=Break(victim=victim, distribution=br,endUnfinished=endUnfinished,
                      offShiftAnticipation=offShiftAnticipation)
             G.ObjectInterruptionList.append(BR)
-            G.FailureList.append(BR)
+            G.BreakList.append(BR)
 
 # ===========================================================================
 #                       creates the entities that are wip

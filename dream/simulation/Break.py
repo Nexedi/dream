@@ -34,13 +34,15 @@ from ObjectInterruption import ObjectInterruption
 
 class Break(ObjectInterruption):
     
-    def __init__(self, id='',name='',victim=None, distribution={},deteriorationType='constant',
+    def __init__(self, id='',name='',victim=None, distribution={},
                  endUnfinished=True,offShiftAnticipation=0,**kw):
         ObjectInterruption.__init__(self,id,name,victim=victim)
         self.rngTTB=RandomNumberGenerator(self, distribution.get('TTB',{'Fixed':{'mean':100}}))
         self.rngTTR=RandomNumberGenerator(self, distribution.get('TTR',{'Fixed':{'mean':10}}))
         self.type="Break"
+        # end current wip before going to break
         self.endUnfinished=endUnfinished
+        # if the break is close to end of shift below a limit it will be suspended
         self.offShiftAnticipation=offShiftAnticipation
 
     def initialize(self):
