@@ -55,13 +55,30 @@ class Break(ObjectInterruption):
         from ObjectResource import ObjectResource
 
         while 1:
-            # if the time that the victim is off-shift should not be counted
+            # if the victim is off-shift wait for the victim to become on-shift
+            if not self.victim.onShift:
+                self.isWaitingForVictimOnShift=True
+                self.expectedSignals['victimOnShift']=1
+                yield self.victimOnShift
+                self.victimOnShift=self.env.event()                
+                
             timeToBreak=self.rngTTB.generateNumber()
             remainingTimeToBreak=timeToBreak
             
-            yield self.env.timeout(remainingTimeToBreak)
-           
-                
+            self.expectedSignals['victimOffShift']=1
+            self.isWaitingForVictimOffShift=True
+            
+            # wait for the break or the end off shift of the victim
+            receivedEvent = yield self.env.any_of([self.env.timeout(remainingTimeToBreak),self.victimOffShift])
+            
+            # if the victim became off shift the loop should start again (to wait on-shift etc)
+            if self.victimOffShift in receivedEvent:
+                transmitter, eventTime=self.victimOffShift.value
+                assert eventTime==self.env.now, 'victimOffShift was triggered earlier, not now'
+                # reset the signalparam of the victimOffShift event
+                self.victimOffShift=self.env.event()
+                continue
+          
             # interrupt the victim
             # if the victim is station
             if issubclass(self.victim.__class__, CoreObject):
