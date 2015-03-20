@@ -54,6 +54,7 @@ class CoreObject(ManPyObject):
         self.WaitingForLoadOperator=[]
         self.Loading = []
         self.SettingUp =[]
+        self.OnBreak =[]
         
         # list that holds the objectInterruptions that have this element as victim
         self.objectInterruptions=[]
@@ -639,7 +640,15 @@ class CoreObject(ManPyObject):
             # if object is off shift add only the fail time before the shift ended
             if not self.onShift and self.timeLastFailure < self.timeLastShiftEnded:
                 self.totalFailureTime+=self.timeLastShiftEnded-self.timeLastFailure            
-        
+
+        # if the Operator is on break we have to add this break time to its total break time
+        if self.onBreak: 
+            if self.onShift:
+                self.totalBreakTime+=self.env.now-self.timeLastBreakStarted
+            # if object is off shift add only the break time before the shift ended
+            if not self.onShift and self.timeLastBreakStarted < self.timeLastShiftEnded:
+                self.totalBreakTime+=self.timeLastShiftEnded-self.timeLastBreakStarted    
+    
         #if the object is off shift,add this to the off-shift time
         if activeObject.onShift==False:
             # if we ran the simulation for infinite time we have to identify the last event
@@ -654,7 +663,7 @@ class CoreObject(ManPyObject):
             self.totalOffShiftTime+=now-self.timeLastShiftEnded 
                 
         #object was idle when it was not in any other state    
-        activeObject.totalWaitingTime=MaxSimtime-activeObject.totalWorkingTime-activeObject.totalBlockageTime-activeObject.totalFailureTime-activeObject.totalLoadTime-activeObject.totalSetupTime-self.totalOffShiftTime
+        activeObject.totalWaitingTime=MaxSimtime-activeObject.totalWorkingTime-activeObject.totalBlockageTime-activeObject.totalFailureTime-activeObject.totalLoadTime-activeObject.totalSetupTime-self.totalOffShiftTime-self.totalBreakTime
         
         if activeObject.totalBlockageTime<0 and activeObject.totalBlockageTime>-0.00001:  #to avoid some effects of getting negative cause of rounding precision
             self.totalBlockageTime=0  
@@ -671,6 +680,7 @@ class CoreObject(ManPyObject):
         activeObject.Loading.append(100*self.totalLoadTime/MaxSimtime)
         activeObject.SettingUp.append(100*self.totalSetupTime/MaxSimtime)
         activeObject.OffShift.append(100*self.totalOffShiftTime/MaxSimtime)
+        activeObject.OnBreak.append(100*self.totalBreakTime/MaxSimtime)
         activeObject.WipStat.append(self.wipStatList.tolist())   
        
     # =======================================================================

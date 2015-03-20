@@ -1245,6 +1245,7 @@ class Machine(CoreObject):
         json['results']['off_shift_ratio'] = self.OffShift
         json['results']['setup_ratio'] = self.SettingUp
         json['results']['loading_ratio'] = self.Loading
+        json['results']['break_ratio'] = self.OnBreak
 
         G.outputJSON['elementList'].append(json)
 
