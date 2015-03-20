@@ -343,7 +343,7 @@ def createObjectInterruptions():
             G.ObjectInterruptionList.append(SS)
             G.ShiftSchedulerList.append(SS)
         br=element.get('interruptions',{}).get('break', None)
-        # if there are failures assigned 
+        # if there are breaks assigned 
         # initiate them   
         if br:
             victim=Globals.findObjectById(element['id'])
