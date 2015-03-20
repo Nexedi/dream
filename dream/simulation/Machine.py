@@ -497,7 +497,7 @@ class Machine(CoreObject):
                     transmitter, eventTime=self.interruptionEnd.value
                     assert eventTime==self.env.now, 'the interruptionEnd was received later than anticipated'
                     self.interruptionEnd=self.env.event()
-                    if self.Up and self.onShift:
+                    if self.checkIfActive():
                         break
                     self.postInterruptionActions()                      # execute interruption actions
                     #===========================================================
@@ -816,7 +816,7 @@ class Machine(CoreObject):
                                 assert eventTime==self.env.now, 'the victim of the failure is not the object that received it'
                                 self.interruptionEnd=self.env.event()
                                 # if there is no other interruption
-                                if self.Up and self.onShift:
+                                if self.checkIfActive():
                                     # Machine is back to blocked state
                                     self.isBlocked=True
                                     break
