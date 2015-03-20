@@ -159,10 +159,8 @@ class Break(ObjectInterruption):
                 self.victim.schedule.append({"station": {'id':'on-break'},
                                              "entranceTime": self.env.now})
                 self.requestAllocation()
-
             
-            self.victim.Up=False
-            self.victim.timeBreakStarted=self.env.now     
+            self.victim.timeLastBreakStarted=self.env.now     
             self.victim.onBreak=True                        # get the victim on break     
             self.outputTrace(self.victim.name,"starts break")
             # update the break time
@@ -193,6 +191,6 @@ class Break(ObjectInterruption):
                         self.victim.schedule[-1]["exitTime"] = self.env.now
                 self.requestAllocation()
             
-            self.victim.timeBreakEnded=self.env.now     
+            self.victim.timeLastBreakEnded=self.env.now     
             self.victim.onBreak=False                        # get the victim on break     
             self.outputTrace(self.victim.name,"returns from break")

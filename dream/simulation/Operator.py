@@ -46,6 +46,7 @@ class Operator(ObjectResource):
         self.Waiting=[]             # holds the percentage of waiting time 
         self.Working=[]             # holds the percentage of working time 
         self.OffShift=[]             # holds the percentage of working time 
+        self.OnBreak=[]             # holds the percentage of break time 
 
     
         # the following attributes are not used by the Repairman
@@ -104,6 +105,8 @@ class Operator(ObjectResource):
         self.timeLastShiftEnded=0                       #holds the time that the last shift of the object ended
         self.candidateStation=None      #holds the candidate receiver of the entity the resource will work on - used by router
         self.totalBreakTime=0
+        self.timeLastBreakStarted=0
+        self.timeLastBreakEnded=0
         
     @staticmethod
     def getSupportedSchedulingRules():
@@ -270,13 +273,22 @@ class Operator(ObjectResource):
         # if the Operator is currently off-shift we have to count the time of this work    
         if not self.onShift and len(self.getResourceQueue())==0:
             self.totalOffShiftTime+=G.maxSimTime-self.timeLastShiftEnded
+            
+        # if the Operator is on break we have to add this break time to its total break time
+        if self.onBreak: 
+            if self.onShift:
+                self.totalBreakTime+=self.env.now-self.timeLastBreakStarted
+            # if object is off shift add only the break time before the shift ended
+            if not self.onShift and self.timeBreakStarted < self.timeLastShiftEnded:
+                self.totalBreakTime+=self.timeLastShiftEnded-self.timeLastBreakStarted    
                 
         # Operator was idle when he was not in any other state
-        self.totalWaitingTime=MaxSimtime-self.totalWorkingTime-self.totalOffShiftTime   
+        self.totalWaitingTime=MaxSimtime-self.totalWorkingTime-self.totalOffShiftTime-self.totalBreakTime   
         # update the waiting/working time percentages lists
         self.Waiting.append(100*self.totalWaitingTime/MaxSimtime)
         self.Working.append(100*self.totalWorkingTime/MaxSimtime)
         self.OffShift.append(100*self.totalOffShiftTime/MaxSimtime)
+        self.OnBreak.append(100*self.totalBreakTime/MaxSimtime)
         
          # in the last element of the schedule if there is no exit time set it to now
         if self.schedule:
@@ -295,6 +307,7 @@ class Operator(ObjectResource):
         json['results']['working_ratio'] = self.Working
         json['results']['waiting_ratio'] = self.Waiting
         json['results']['off_shift_ratio'] = self.OffShift
+        json['results']['on_break_ratio'] = self.OnBreak
         if self.ouputSchedule:
             json['results']['schedule']=[]
             for record in self.schedule:
