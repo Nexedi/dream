@@ -26,7 +26,7 @@
                     "top": 0.5, 
                     "processingTime": {
                          "Fixed": {
-                              "mean": 3.0
+                              "mean": 6.0
                          }
                     }, 
                     "operationType": "MT-Load-Processing", 
@@ -39,17 +39,14 @@
                     "name": "Operator1", 
                     "top": 0.721556886227545, 
                     "interruptions": {
-                         "break": {
-                              "TTR": {
-                                   "Fixed": {
-                                        "mean": 5
-                                   }
-                              }, 
-                              "TTB": {
-                                   "Fixed": {
-                                        "mean": 40
-                                   }
-                              }
+                         "shift": {
+                              "endUnfinished": 1, 
+                              "shiftPattern": [
+                                   [
+                                        0, 
+                                        5
+                                   ]
+                              ]
                          }
                     }, 
                     "_class": "Dream.Operator", 
@@ -57,6 +54,12 @@
                }
           }, 
           "edge": {
+               "1": {
+                    "source": "O1", 
+                    "destination": "M2", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
                "0": {
                     "source": "O1", 
                     "destination": "M1", 
@@ -83,7 +86,7 @@
           "numberOfReplications": "1", 
           "trace": "No", 
           "confidenceLevel": "0.95", 
-          "maxSimTime": "100", 
+          "maxSimTime": "10", 
           "_class": "Dream.Configuration"
      }
 }

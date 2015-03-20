@@ -7,13 +7,13 @@
    "id": "E1", 
    "results": {
     "lifespan": [
-     3.176470588235294
+     6.0
     ], 
     "takt_time": [
-     5.823529411764706
+     6.0
     ], 
     "throughput": [
-     17
+     1
     ]
    }
   }, 
@@ -38,10 +38,10 @@
      0.0
     ], 
     "waiting_ratio": [
-     49.0
+     40.0
     ], 
     "working_ratio": [
-     51.0
+     60.0
     ]
    }
   }, 
@@ -51,16 +51,16 @@
    "id": "O1", 
    "results": {
     "off_shift_ratio": [
-     0.0
+     40.0
     ], 
     "on_break_ratio": [
-     10.0
+     0.0
     ], 
     "waiting_ratio": [
-     39.0
+     0.0
     ], 
     "working_ratio": [
-     51.0
+     60.0
     ]
    }
   }

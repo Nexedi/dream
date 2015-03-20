@@ -47,7 +47,7 @@
                               }, 
                               "TTB": {
                                    "Fixed": {
-                                        "mean": 40
+                                        "mean": 98
                                    }
                               }
                          }
@@ -81,7 +81,7 @@
      "general": {
           "console": "No", 
           "numberOfReplications": "1", 
-          "trace": "No", 
+          "trace": "Yes", 
           "confidenceLevel": "0.95", 
           "maxSimTime": "100", 
           "_class": "Dream.Configuration"
