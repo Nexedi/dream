@@ -35,12 +35,13 @@ from ObjectInterruption import ObjectInterruption
 class Break(ObjectInterruption):
     
     def __init__(self, id='',name='',victim=None, distribution={},deteriorationType='constant',
-                 endUnfinished=True,**kw):
+                 endUnfinished=True,offShiftAnticipation=0,**kw):
         ObjectInterruption.__init__(self,id,name,victim=victim)
         self.rngTTB=RandomNumberGenerator(self, distribution.get('TTB',{'Fixed':{'mean':100}}))
         self.rngTTR=RandomNumberGenerator(self, distribution.get('TTR',{'Fixed':{'mean':10}}))
         self.type="Break"
         self.endUnfinished=endUnfinished
+        self.offShiftAnticipation=offShiftAnticipation
 
     def initialize(self):
         ObjectInterruption.initialize(self)
@@ -78,6 +79,17 @@ class Break(ObjectInterruption):
                 # reset the signalparam of the victimOffShift event
                 self.victimOffShift=self.env.event()
                 continue
+            
+            # check if we are close to the end of the shift. If yes then the break may be suspended 
+            # (depending on offShiftAnticipation)
+            timeToNextOfShift=None
+            for oi in self.victim.objectInterruptions:
+                if oi.type=='ShiftScheduler':
+                    if oi.remainingShiftPattern:
+                        timeToNextOfShift=oi.remainingShiftPattern[0][1]
+            if timeToNextOfShift:
+                if self.offShiftAnticipation>=timeToNextOfShift-self.env.now:
+                    continue
           
             # interrupt the victim
             # if the victim is station
@@ -121,7 +133,7 @@ class Break(ObjectInterruption):
             breakTime=self.env.now                
                                 
             yield self.env.timeout(self.rngTTR.generateNumber())    # wait until the repairing process is over
-            
+                       
             # add the break
             # if victim is off shift add only the fail time before the shift ended
             if not self.victim.onShift and breakTime < self.victim.timeLastShiftEnded:

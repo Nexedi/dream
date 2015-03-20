@@ -349,8 +349,9 @@ def createObjectInterruptions():
             victim=Globals.findObjectById(element['id'])
             endUnfinished=bool(int(br.get('endUnfinished', 1)))
             deteriorationType=br.get('deteriorationType', 'constant')
-
-            BR=Break(victim=victim, distribution=br,endUnfinished=endUnfinished,deteriorationType=deteriorationType)
+            offShiftAnticipation=br.get('offShiftAnticipation',0)
+            BR=Break(victim=victim, distribution=br,endUnfinished=endUnfinished,deteriorationType=deteriorationType,
+                     offShiftAnticipation=offShiftAnticipation)
             G.ObjectInterruptionList.append(BR)
             G.FailureList.append(BR)
 
