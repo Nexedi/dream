@@ -31,6 +31,9 @@
     "blockage_ratio": [
      78.55902777777777
     ], 
+    "break_ratio": [
+     0.0
+    ], 
     "failure_ratio": [
      9.027777777777779
     ], 
@@ -57,6 +60,9 @@
    "id": "M2", 
    "results": {
     "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
      0.0
     ], 
     "failure_ratio": [

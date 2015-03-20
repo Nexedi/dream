@@ -125,6 +125,9 @@
     "blockage_ratio": [
      0.0
     ], 
+    "break_ratio": [
+     0.0
+    ], 
     "failure_ratio": [
      0.0
     ], 
@@ -151,6 +154,9 @@
    "id": "CAD2", 
    "results": {
     "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
      0.0
     ], 
     "failure_ratio": [
@@ -181,6 +187,9 @@
     "blockage_ratio": [
      0.0
     ], 
+    "break_ratio": [
+     0.0
+    ], 
     "failure_ratio": [
      0.0
     ], 
@@ -207,6 +216,9 @@
    "id": "CAM2", 
    "results": {
     "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
      0.0
     ], 
     "failure_ratio": [
@@ -253,6 +265,9 @@
     "blockage_ratio": [
      0.0
     ], 
+    "break_ratio": [
+     0.0
+    ], 
     "failure_ratio": [
      0.0
     ], 
@@ -279,6 +294,9 @@
    "id": "IM", 
    "results": {
     "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
      0.0
     ], 
     "failure_ratio": [
@@ -338,6 +356,9 @@
     "blockage_ratio": [
      0.0
     ], 
+    "break_ratio": [
+     0.0
+    ], 
     "failure_ratio": [
      0.0
     ], 
@@ -364,6 +385,9 @@
    "id": "MA2", 
    "results": {
     "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
      0.0
     ], 
     "failure_ratio": [
@@ -394,6 +418,9 @@
     "blockage_ratio": [
      0.0
     ], 
+    "break_ratio": [
+     0.0
+    ], 
     "failure_ratio": [
      0.0
     ], 
@@ -422,6 +449,9 @@
     "blockage_ratio": [
      0.0
     ], 
+    "break_ratio": [
+     0.0
+    ], 
     "failure_ratio": [
      0.0
     ], 
@@ -448,6 +478,9 @@
    "id": "MILL2", 
    "results": {
     "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
      0.0
     ], 
     "failure_ratio": [

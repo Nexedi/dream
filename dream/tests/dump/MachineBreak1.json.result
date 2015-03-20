@@ -7,21 +7,18 @@
    "id": "E1", 
    "results": {
     "lifespan": [
-     8.0
+     3.2941176470588234
     ], 
     "takt_time": [
-     6.0
+     5.823529411764706
     ], 
     "throughput": [
-     2
-    ], 
-    "unitsThroughput": [
-     160
+     17
     ]
    }
   }, 
   {
-   "_class": "Dream.BatchScrapMachine", 
+   "_class": "Dream.Machine", 
    "family": "Server", 
    "id": "M1", 
    "results": {
@@ -29,7 +26,7 @@
      0.0
     ], 
     "break_ratio": [
-     0.0
+     10.0
     ], 
     "failure_ratio": [
      0.0
@@ -44,18 +41,12 @@
      0.0
     ], 
     "waiting_ratio": [
-     0.0
+     39.0
     ], 
     "working_ratio": [
-     100.0
+     51.0
     ]
    }
-  }, 
-  {
-   "_class": "Dream.Queue", 
-   "family": "Buffer", 
-   "id": "Q1", 
-   "results": {}
   }
  ], 
  "general": {

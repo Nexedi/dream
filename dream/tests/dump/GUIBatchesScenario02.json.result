@@ -10166,6 +10166,9 @@
     "blockage_ratio": [
      0.0
     ], 
+    "break_ratio": [
+     0.0
+    ], 
     "failure_ratio": [
      0.0
     ], 
@@ -10192,6 +10195,9 @@
    "id": "St0M1", 
    "results": {
     "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
      0.0
     ], 
     "failure_ratio": [
@@ -10222,6 +10228,9 @@
     "blockage_ratio": [
      0.0
     ], 
+    "break_ratio": [
+     0.0
+    ], 
     "failure_ratio": [
      0.0
     ], 
@@ -10249,6 +10258,9 @@
    "results": {
     "blockage_ratio": [
      0.16
+    ], 
+    "break_ratio": [
+     0.0
     ], 
     "failure_ratio": [
      0.0
@@ -10278,6 +10290,9 @@
     "blockage_ratio": [
      0.5
     ], 
+    "break_ratio": [
+     0.0
+    ], 
     "failure_ratio": [
      0.0
     ], 
@@ -10305,6 +10320,9 @@
    "results": {
     "blockage_ratio": [
      0.76
+    ], 
+    "break_ratio": [
+     0.0
     ], 
     "failure_ratio": [
      0.0
@@ -10334,6 +10352,9 @@
     "blockage_ratio": [
      7.32
     ], 
+    "break_ratio": [
+     0.0
+    ], 
     "failure_ratio": [
      0.0
     ], 
@@ -10361,6 +10382,9 @@
    "results": {
     "blockage_ratio": [
      4.26
+    ], 
+    "break_ratio": [
+     0.0
     ], 
     "failure_ratio": [
      0.0
@@ -10412,6 +10436,9 @@
     "blockage_ratio": [
      22.18
     ], 
+    "break_ratio": [
+     0.0
+    ], 
     "failure_ratio": [
      0.0
     ], 
@@ -10440,6 +10467,9 @@
     "blockage_ratio": [
      21.86
     ], 
+    "break_ratio": [
+     0.0
+    ], 
     "failure_ratio": [
      0.0
     ], 
@@ -10466,6 +10496,9 @@
    "id": "St6M0", 
    "results": {
     "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
      0.0
     ], 
     "failure_ratio": [
@@ -10518,6 +10551,9 @@
     "blockage_ratio": [
      0.0
     ], 
+    "break_ratio": [
+     0.0
+    ], 
     "failure_ratio": [
      0.0
     ], 
@@ -10568,6 +10604,9 @@
     "blockage_ratio": [
      0.0
     ], 
+    "break_ratio": [
+     0.0
+    ], 
     "failure_ratio": [
      0.0
     ], 
@@ -10596,6 +10635,9 @@
     "blockage_ratio": [
      0.0
     ], 
+    "break_ratio": [
+     0.0
+    ], 
     "failure_ratio": [
      0.0
     ], 
@@ -10622,6 +10664,9 @@
    "id": "St8M1", 
    "results": {
     "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
      0.0
     ], 
     "failure_ratio": [

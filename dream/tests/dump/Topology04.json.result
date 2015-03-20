@@ -31,6 +31,9 @@
     "blockage_ratio": [
      0.0
     ], 
+    "break_ratio": [
+     0.0
+    ], 
     "failure_ratio": [
      9.027777777777779
     ], 
@@ -58,6 +61,9 @@
    "results": {
     "blockage_ratio": [
      3.888888888888889
+    ], 
+    "break_ratio": [
+     0.0
     ], 
     "failure_ratio": [
      19.791666666666668

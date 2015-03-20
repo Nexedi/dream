@@ -46,6 +46,9 @@
     "blockage_ratio": [
      83.73263888888889
     ], 
+    "break_ratio": [
+     0.0
+    ], 
     "failure_ratio": [
      9.027777777777779
     ], 
@@ -74,6 +77,9 @@
     "blockage_ratio": [
      39.035879629629626
     ], 
+    "break_ratio": [
+     0.0
+    ], 
     "failure_ratio": [
      19.791666666666668
     ], 
@@ -100,6 +106,9 @@
    "id": "M3", 
    "results": {
     "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
      0.0
     ], 
     "failure_ratio": [

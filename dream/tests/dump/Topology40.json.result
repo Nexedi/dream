@@ -107,6 +107,9 @@
     "blockage_ratio": [
      0.0
     ], 
+    "break_ratio": [
+     0.0
+    ], 
     "failure_ratio": [
      0.0
     ], 
@@ -135,6 +138,9 @@
     "blockage_ratio": [
      0.0
     ], 
+    "break_ratio": [
+     0.0
+    ], 
     "failure_ratio": [
      0.0
     ], 
@@ -161,6 +167,9 @@
    "id": "MA1", 
    "results": {
     "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
      0.0
     ], 
     "failure_ratio": [

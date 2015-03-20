@@ -25,6 +25,9 @@
     "blockage_ratio": [
      93.24652777777777
     ], 
+    "break_ratio": [
+     0.0
+    ], 
     "failure_ratio": [
      0.0
     ], 
@@ -52,6 +55,9 @@
    "results": {
     "blockage_ratio": [
      60.0
+    ], 
+    "break_ratio": [
+     0.0
     ], 
     "failure_ratio": [
      0.0
@@ -81,6 +87,9 @@
     "blockage_ratio": [
      73.22916666666667
     ], 
+    "break_ratio": [
+     0.0
+    ], 
     "failure_ratio": [
      0.0
     ], 
@@ -107,6 +116,9 @@
    "id": "M4", 
    "results": {
     "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
      0.0
     ], 
     "failure_ratio": [

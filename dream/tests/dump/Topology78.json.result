@@ -28,6 +28,9 @@
     "blockage_ratio": [
      13.194444444444445
     ], 
+    "break_ratio": [
+     0.0
+    ], 
     "failure_ratio": [
      0.0
     ], 
@@ -55,6 +58,9 @@
    "results": {
     "blockage_ratio": [
      13.975694444444445
+    ], 
+    "break_ratio": [
+     0.0
     ], 
     "failure_ratio": [
      0.0
@@ -84,6 +90,9 @@
     "blockage_ratio": [
      13.368055555555555
     ], 
+    "break_ratio": [
+     0.0
+    ], 
     "failure_ratio": [
      0.0
     ], 
@@ -111,6 +120,9 @@
    "results": {
     "blockage_ratio": [
      14.0625
+    ], 
+    "break_ratio": [
+     0.0
     ], 
     "failure_ratio": [
      0.0
@@ -140,6 +152,9 @@
     "blockage_ratio": [
      13.45486111111111
     ], 
+    "break_ratio": [
+     0.0
+    ], 
     "failure_ratio": [
      0.0
     ], 
@@ -168,6 +183,9 @@
     "blockage_ratio": [
      14.149305555555555
     ], 
+    "break_ratio": [
+     0.0
+    ], 
     "failure_ratio": [
      0.0
     ], 
@@ -194,6 +212,9 @@
    "id": "MM", 
    "results": {
     "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
      0.0
     ], 
     "failure_ratio": [
@@ -224,6 +245,9 @@
     "blockage_ratio": [
      0.0
     ], 
+    "break_ratio": [
+     0.0
+    ], 
     "failure_ratio": [
      0.0
     ], 
@@ -250,6 +274,9 @@
    "id": "PaB", 
    "results": {
     "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
      0.0
     ], 
     "failure_ratio": [
@@ -280,6 +307,9 @@
     "blockage_ratio": [
      0.0
     ], 
+    "break_ratio": [
+     0.0
+    ], 
     "failure_ratio": [
      0.0
     ], 
@@ -306,6 +336,9 @@
    "id": "PrB", 
    "results": {
     "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
      0.0
     ], 
     "failure_ratio": [
