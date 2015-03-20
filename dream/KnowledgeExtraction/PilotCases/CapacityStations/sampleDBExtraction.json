@@ -171,21 +171,129 @@
                "dueDate": "2014-08-25", 
                "orderName": "italy", 
                "orderDate": "2014-08-19"
+          }, 
+          {
+               "orderID": "Touto", 
+               "customer": "t2", 
+               "floorSpaceRequired": 300, 
+               "sequence": [
+                    {
+                         "SMF": {
+                              "operation": "SMF", 
+                              "earliestStart": "2014-08-23", 
+                              "task_id": "ID-009", 
+                              "requiredCapacity": 40
+                         }
+                    }, 
+                    {
+                         "WELD": {
+                              "operation": "WELD", 
+                              "earliestStart": "2014-08-24", 
+                              "task_id": "ID-010", 
+                              "requiredCapacity": 25
+                         }
+                    }, 
+                    {
+                         "CNC": {
+                              "operation": "CNC", 
+                              "earliestStart": "2014-08-25", 
+                              "task_id": "ID-011", 
+                              "requiredCapacity": 55
+                         }
+                    }, 
+                    {
+                         "MCH": {
+                              "operation": "MCH", 
+                              "earliestStart": "2014-08-26", 
+                              "task_id": "ID-012", 
+                              "requiredCapacity": 35
+                         }
+                    }, 
+                    {
+                         "EEP": {
+                              "operation": "EEP", 
+                              "earliestStart": "2014-08-27", 
+                              "task_id": "ID-013", 
+                              "requiredCapacity": 25
+                         }
+                    }, 
+                    {
+                         "PPASB": {
+                              "operation": "PPASB", 
+                              "earliestStart": "2014-08-28", 
+                              "task_id": "ID-014", 
+                              "requiredCapacity": 35
+                         }
+                    }, 
+                    {
+                         "PAINT": {
+                              "operation": "PAINT", 
+                              "earliestStart": "2014-08-29", 
+                              "task_id": "ID-015", 
+                              "requiredCapacity": 45
+                         }
+                    }, 
+                    {
+                         "ASBTST": {
+                              "operation": "ASBTST", 
+                              "earliestStart": "2014-08-30", 
+                              "task_id": "ID-016", 
+                              "requiredCapacity": 55
+                         }
+                    }
+               ], 
+               "dueDate": "2014-08-31", 
+               "orderName": "ecofil", 
+               "orderDate": "2014-08-21"
           }
      ], 
      "WIP": {
-          "WELD_idTade": {
+          "ID-002": {
+               "End date": "None", 
+               "Total Capacity required": 15, 
+               "Capacity required": 7.5, 
                "order_id": "Tade", 
-               "buffered": 10.0, 
-               "operation": "WELD"
+               "operation": "WELD", 
+               "Start date": "2015-03-20"
+          }, 
+          "ID-003": {
+               "End date": "None", 
+               "Total Capacity required": 45, 
+               "Capacity required": 5, 
+               "order_id": "Tade", 
+               "operation": "CNC", 
+               "Start date": "2015-03-20"
           }, 
           "ID-001": {
                "End date": "None", 
                "Total Capacity required": 30, 
-               "Capacity required": 10, 
+               "Capacity required": 5, 
                "order_id": "Tade", 
                "operation": "SMF", 
-               "Start date": "2015-03-13"
+               "Start date": "2015-03-17"
+          }, 
+          "WELD_idTouto": {
+               "order_id": "Touto", 
+               "buffered": 17.5, 
+               "operation": "WELD"
+          }, 
+          "ID-009": {
+               "End date": "None", 
+               "Total Capacity required": 40, 
+               "Capacity required": 5, 
+               "order_id": "Touto", 
+               "operation": "SMF", 
+               "Start date": "2015-03-20"
+          }, 
+          "PPASB_idTade": {
+               "order_id": "Tade", 
+               "buffered": 45, 
+               "operation": "PPASB"
+          }, 
+          "WELD_idTade": {
+               "order_id": "Tade", 
+               "buffered": 12.5, 
+               "operation": "WELD"
           }
      }
 }

@@ -20,14 +20,19 @@
 import json
 from datetime import datetime
 
-
-configuration=open("PilotCases\CapacityStations\sampleConfiguration.json", "r")
-# configuration=open("sampleConfiguration.json", "r")
+# gets the data and the station id and returns the buffer id of this station    
+def getBuffer(data,stationId):
+    for (edge_id, edge) in data['graph']['edge'].iteritems():
+        if edge['destination']==stationId:
+            return edge['source']
+        
+# configuration=open("PilotCases\CapacityStations\sampleConfiguration.json", "r")
+configuration=open("sampleConfiguration.json", "r")
 configurationData=configuration.read()
 configurationJSON=json.loads(configurationData)
 
-db=open("PilotCases\CapacityStations\sampleDBExtraction.json", "r")
-# configuration=open("sampleConfiguration.json", "r")
+# db=open("PilotCases\CapacityStations\sampleDBExtraction.json", "r")
+db=open("sampleDBExtraction.json", "r")
 dbData=db.read()
 dbJSON=json.loads(dbData)
 operations=dbJSON.get('operations',{})
@@ -75,7 +80,27 @@ for order in orders:
             "orderDate":orderDate
             })
     
-
+WIP=dbJSON.get('WIP',{})
+if WIP:
+    node=configurationJSON['graph']['node']
+    #create an empty wip list in all CapacityStationBuffers
+    for (node_id,node_data) in node.iteritems():
+        if node_data['_class']=='dream.simulation.applications.CapacityStations.CapacityStationBuffer.CapacityStationBuffer':
+            node_data['wip']=[]
+    for taskid, wip in WIP.iteritems():
+        oper=wip.get('operation',[])
+        requiredCapacity=wip.get('Capacity required', 0)
+        buffered=wip.get('buffered', 0)
+        orderId=wip.get('order_id',[])
+        if requiredCapacity or buffered:
+            capacityBuffer=getBuffer(configurationJSON,oper)
+            configurationJSON['graph']['node'][capacityBuffer]['wip'].append({
+                            "_class": "dream.simulation.applications.CapacityStations.CapacityEntity.CapacityEntity", 
+                            "requiredCapacity": max([requiredCapacity,buffered]), 
+                            "capacityProjectId": orderId, 
+                            "name": orderId+'_'+oper+'_'+str(requiredCapacity)                                                          
+                        })
+                    
 updatedModelJSONString=json.dumps(configurationJSON, indent=5)
 updatedModel=open('UpdatedModel.json', mode='w')
 updatedModel.write(updatedModelJSONString)
