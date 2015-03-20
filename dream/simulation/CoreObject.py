@@ -96,6 +96,7 @@ class CoreObject(ManPyObject):
         self.env=G.env
         self.Up=True                                    #Boolean that shows if the object is in failure ("Down") or not ("up")
         self.onShift=True
+        self.onBreak=False
         self.currentEntity=None      
         # ============================== total times ===============================================
         self.totalOperationTime=0                       #dummy variable to hold totalWorkin/SetupTime during an interruption (yield ...(self.operation('setup'))  
@@ -839,7 +840,7 @@ class CoreObject(ManPyObject):
     # checks if the object is in an active position
     # =======================================================================    
     def checkIfActive(self):
-        return self.Up and self.onShift
+        return self.Up and self.onShift and (not self.onBreak)
     
     #===========================================================================
     # filter that returns True if the activeObject Queue is empty and 
