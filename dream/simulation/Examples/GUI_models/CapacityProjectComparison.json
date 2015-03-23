@@ -238,7 +238,7 @@
     "post_processing": {
       "plugin_list": [
         {
-          "_class": "dream.plugins.CapacityProjectStationUtilization.CapacityProjectStationUtilization", 
+          "_class": "dream.plugins.CapacityStations.CapacityProjectStationUtilization.CapacityProjectStationUtilization", 
           "family": "CapacityStation", 
           "output_id": "station_utilization"
         }, 
@@ -247,11 +247,11 @@
           "output_id": "order_lateness"
         }, 
         {
-          "_class": "dream.plugins.CapacityProjectGantt.CapacityProjectGantt", 
+          "_class": "dream.plugins.CapacityStations.CapacityProjectGantt.CapacityProjectGantt", 
           "output_id": "capacity_project_gantt"
         }, 
         {
-          "_class": "dream.plugins.CapacityStationGantt.CapacityStationGantt", 
+          "_class": "dream.plugins.CapacityStations.CapacityStationGantt.CapacityStationGantt", 
           "output_id": "capacity_station_gantt"
         }
       ]
@@ -259,23 +259,23 @@
     "pre_processing": {
       "plugin_list": [
         {
-          "_class": "dream.plugins.CapacityStationsSetAssemblySpace.CapacityStationsSetAssemblySpace", 
+          "_class": "dream.plugins.CapacityStations.CapacityStationsSetAssemblySpace.CapacityStationsSetAssemblySpace", 
           "input_id": "assemblySpace"
         }, 
         {
-          "_class": "dream.plugins.AvailableCapacitySpreadsheet.AvailableCapacitySpreadsheet", 
+          "_class": "dream.plugins.CapacityStations.AvailableCapacitySpreadsheet.AvailableCapacitySpreadsheet", 
           "input_id": "availableCapacity"
         }, 
         {
-          "_class": "dream.plugins.CapacityProjectSpreadsheet.CapacityProjectSpreadsheet", 
+          "_class": "dream.plugins.CapacityStations.CapacityProjectSpreadsheet.CapacityProjectSpreadsheet", 
           "input_id": "capacityProject"
         }, 
         {
-          "_class": "dream.plugins.CreateCapacityStations.CreateCapacityStations", 
+          "_class": "dream.plugins.CapacityStations.CreateCapacityStations.CreateCapacityStations", 
           "input_id": "createCapacityStations"
         }, 
         {
-          "_class": "dream.plugins.CapacityStationWIPSpreadsheet.CapacityStationWIPSpreadsheet", 
+          "_class": "dream.plugins.CapacityStations.CapacityStationWIPSpreadsheet.CapacityStationWIPSpreadsheet", 
           "input_id": "createCapacityStationWIP"
         }
       ]
