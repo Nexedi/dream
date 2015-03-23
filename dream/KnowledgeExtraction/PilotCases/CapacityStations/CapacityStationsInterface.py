@@ -24,7 +24,7 @@ Created on 20 March 2015
 
 import Tkinter as tk
 from Tkinter import *
-import pyodbc
+import ImportDatabase
 import tkMessageBox
 from datetime import datetime 
 
@@ -120,11 +120,10 @@ class Demo1(Frame):
         return   
        
     def checkInsertedProject(self):
-        cnxn =pyodbc.connect("Driver={MySQL ODBC 3.51 Driver};SERVER=localhost; PORT=3306;DATABASE=bal_database;UID=root; PASSWORD=Pitheos10;")
-        cursor1 = cnxn.cursor()
-        cursor2 = cnxn.cursor()
+        cnxn=ImportDatabase.ConnectionData(seekName='ServerData', file_path='C:\Users\Panos\Documents\DB_Approach\CapacityStations', implicitExt='txt', number_of_cursors=6)
+        cursor=cnxn.getCursors()
         
-        a=cursor1.execute("""
+        a=cursor[0].execute("""
                 select Order_id, ProjectName, Status
                 from orders
                         """)
@@ -139,10 +138,10 @@ class Demo1(Frame):
         return availableProject
     
     def alreadyInsertedWP(self):
-        cnxn =pyodbc.connect("Driver={MySQL ODBC 3.51 Driver};SERVER=localhost; PORT=3306;DATABASE=bal_database;UID=root; PASSWORD=Pitheos10; ")
-        cursor = cnxn.cursor()
+        cnxn=ImportDatabase.ConnectionData(seekName='ServerData', file_path='C:\Users\Panos\Documents\DB_Approach\CapacityStations', implicitExt='txt', number_of_cursors=6)
+        cursor=cnxn.getCursors()
         
-        c=cursor.execute("""
+        c=cursor[0].execute("""
                 select WP_id, END_DATE
                 from production_status
                         """)
@@ -157,54 +156,52 @@ class Demo1(Frame):
     
 
     def updateDatabase(self):
-        cnxn =pyodbc.connect("Driver={MySQL ODBC 3.51 Driver};SERVER=localhost; PORT=3306;DATABASE=bal_database;UID=root; PASSWORD=Pitheos10; ")
-        cursor = cnxn.cursor()
-        cursor1 = cnxn.cursor()
+        cnxn=ImportDatabase.ConnectionData(seekName='ServerData', file_path='C:\Users\Panos\Documents\DB_Approach\CapacityStations', implicitExt='txt', number_of_cursors=13)
+        cursor=cnxn.getCursors()
         
         if self.checkBoxVal2.get():
             update_order= ("INSERT INTO production_status(`status_id`, `WP_id`, `Operation_Name`, `START_DATE`, `Capacity_left`, `Remarks`,`END_DATE`)  VALUES ( ?, ?, ?, ?, ?, ?, ?)") 
-            cursor.execute("SELECT @@IDENTITY AS ID")
+            cursor[0].execute("SELECT @@IDENTITY AS ID")
             order = self.OrderOption.get()
-            a = cursor1.execute("""
+            a = cursor[1].execute("""
                         select WP_id, Order_id
                         from sequence where Order_id=?
                                 """, order)
             for j in range(a.rowcount):
                 ind2=a.fetchone() 
             lastWP =ind2.WP_id
-            print lastWP
-            b = cursor1.execute("""
+            b = cursor[2].execute("""
                                 select sequence.WP_id, sequence.Order_id
                                  from sequence where Operation_Name=?
                                 """, self.operationOption.get())
             ind4=b.fetchone()
             status2 = 'finished'
-            row = cursor.fetchone()
+            row = cursor[0].fetchone()
             WP=ind4[0]
             order_ref = row.ID
             status1 = 'in progress'
-            cursor.execute(update_order, (order_ref, WP, self.operationOption.get(), str(datetime.now()), self.capacity.get(), self.comments.get(),str(datetime.now()) ))
+            cursor[4].execute(update_order, (order_ref, WP, self.operationOption.get(), str(datetime.now()), self.capacity.get(), self.comments.get(),str(datetime.now()) ))
             if WP == lastWP:
-                cursor.execute("UPDATE orders SET `Status`=? WHERE Order_id=? ", status2, order)
-            cursor.commit()
+                cursor[5].execute("UPDATE orders SET `Status`=? WHERE Order_id=? ", status2, order)
+            cursor[6].commit()
             self.close_window() 
         else: 
             update_order= ("INSERT INTO production_status(`status_id`, `WP_id`, `Operation_Name`, `START_DATE`, `Capacity_left`, `Remarks`)  VALUES ( ?, ?, ?, ?, ?, ?)") 
         
-            cursor.execute("SELECT @@IDENTITY AS ID")
+            cursor[7].execute("SELECT @@IDENTITY AS ID")
             order = self.OrderOption.get()
-            a = cursor1.execute("""
+            a = cursor[8].execute("""
                                 select sequence.WP_id, sequence.Order_id, sequence.Operation_Name
                                  from sequence where Order_id=? and Operation_Name=?
                                 """, order, self.operationOption.get())
             ind3=a.fetchone()
             WP=ind3.WP_id 
-            row = cursor.fetchone()
+            row = cursor[7].fetchone()
             order_ref = row.ID
             status1 = 'in progress'
-            cursor.execute(update_order, (order_ref, WP, self.operationOption.get(), str(datetime.now()), self.capacity.get(), self.comments.get()))
-            cursor.execute("UPDATE orders SET `Status`=? WHERE Order_id=? ", status1, order)
-            cursor.commit()
+            cursor[10].execute(update_order, (order_ref, WP, self.operationOption.get(), str(datetime.now()), self.capacity.get(), self.comments.get()))
+            cursor[11].execute("UPDATE orders SET `Status`=? WHERE Order_id=? ", status1, order)
+            cursor[12].commit()
             self.close_window()
         return
     
