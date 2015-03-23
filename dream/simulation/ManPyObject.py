@@ -175,3 +175,22 @@ class ManPyObject(object):
     # =======================================================================
     def outputResultsJSON(self):
         pass
+
+    # =======================================================================
+    #                       ends the simulation
+    # ======================================================================  
+    @staticmethod
+    def endSimulation():
+        from Globals import G
+        G.env.exit()
+
+    # =======================================================================
+    #                       checks if there are entities in the system
+    # ======================================================================        
+    @staticmethod
+    def checkIfSystemEmpty():
+        from Globals import G
+        for object in G.ObjList:
+            if len(object.getActiveObjectQueue()):
+                return False
+        return True

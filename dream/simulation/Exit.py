@@ -37,7 +37,7 @@ class Exit(CoreObject):
     family='Exit'
     
     
-    def __init__(self, id, name, **kw):
+    def __init__(self, id, name, cancelCondition={},**kw):
         self.type="Exit" # XXX needed ?
         #lists to hold statistics of multiple runs
         self.Exits=[]
@@ -47,7 +47,8 @@ class Exit(CoreObject):
         # if input is given in a dictionary
         CoreObject.__init__(self, id, name) 
         from Globals import G
-        G.ExitList.append(self)           
+        G.ExitList.append(self)     
+        self.cancelCondition=cancelCondition   
                    
     def initialize(self):
         # using the Process __init__ and not the CoreObject __init__
@@ -121,6 +122,12 @@ class Exit(CoreObject):
         self.timeLastEntityLeft=self.env.now                               # update the time that the last entity left from the Exit
         activeObjectQueue=self.getActiveObjectQueue()
         del self.Res.users[:]
+        # if there is a cancelCondition the exit may end the simulation
+        if self.cancelCondition:
+            if self.cancelCondition.get('reason',None) =='throughput' and int(self.cancelCondition.get('number',-1))==self.numOfExits:
+                self.endSimulation()
+            if self.cancelCondition.get('reason',None) =='empty' and self.checkIfSystemEmpty():
+                self.endSimulation()
         return activeEntity
     
     @staticmethod
