@@ -30,6 +30,7 @@ schedules the availability of an object according to its shift pattern
 import simpy
 from RandomNumberGenerator import RandomNumberGenerator
 from ObjectInterruption import ObjectInterruption
+from copy import deepcopy
 
 # ===========================================================================
 # the shift scheduler class
@@ -40,7 +41,7 @@ class ShiftScheduler(ObjectInterruption):
     # the __init__() method of the class
     # =======================================================================
     def __init__(self, id='', name='', victim=None, shiftPattern=[], endUnfinished=False, receiveBeforeEndThreshold=0.0,
-                 thresholdTimeIsOnShift=True,**kw):
+                 thresholdTimeIsOnShift=True,rolling=False,lastOffShiftDuration=10,**kw):
         ObjectInterruption.__init__(self,victim=victim)
         self.type='ShiftScheduler'
         self.shiftPattern=shiftPattern
@@ -49,6 +50,8 @@ class ShiftScheduler(ObjectInterruption):
         self.receiveBeforeEndThreshold=receiveBeforeEndThreshold   
         # flag that shows if the threshold time is counted as off-shift or waiting
         self.thresholdTimeIsOnShift=thresholdTimeIsOnShift
+        self.rolling=rolling
+        self.lastOffShiftDuration=lastOffShiftDuration
     
     # =======================================================================
     # initialize for every replications
@@ -177,6 +180,15 @@ class ShiftScheduler(ObjectInterruption):
                 self.outputTrace(self.victim.name,"is off shift")
                 
                 self.remainingShiftPattern.pop(0)
-            # if there is no more shift data break the loop
-            if len(self.remainingShiftPattern)==0:
-                break
+            # if there is no more shift data 
+            if not len(self.remainingShiftPattern):
+                # if the shift is rolling recreate the pattern
+                if self.rolling:
+                    self.remainingShiftPattern=deepcopy(self.shiftPattern)
+                    for record in self.remainingShiftPattern:
+                        # for value in record:
+                        record[0]+=(self.env.now+self.lastOffShiftDuration)
+                        record[1]+=(self.env.now+self.lastOffShiftDuration)
+                # else break the loop
+                else:
+                    break

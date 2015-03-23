@@ -337,9 +337,12 @@ def createObjectInterruptions():
             endUnfinished=bool(int(shift.get('endUnfinished', 0)))
             receiveBeforeEndThreshold=float(shift.get('receiveBeforeEndThreshold', 0))
             thresholdTimeIsOnShift=bool(int(shift.get('thresholdTimeIsOnShift', 1)))
+            rolling=bool(int(shift.get('rolling', 0)))
+            lastOffShiftDuration=float(shift.get('lastOffShiftDuration', 10))
             SS=ShiftScheduler(victim=victim, shiftPattern=shiftPattern, endUnfinished=endUnfinished, 
                               receiveBeforeEndThreshold=receiveBeforeEndThreshold,
-                              thresholdTimeIsOnShift=thresholdTimeIsOnShift)
+                              thresholdTimeIsOnShift=thresholdTimeIsOnShift,
+                              rolling=rolling, lastOffShiftDuration=lastOffShiftDuration)
             G.ObjectInterruptionList.append(SS)
             G.ShiftSchedulerList.append(SS)
         br=element.get('interruptions',{}).get('break', None)
