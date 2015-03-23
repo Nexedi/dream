@@ -1,12 +1,31 @@
+# ===========================================================================
+# Copyright 2013 University of Limerick
+#
+# This file is part of DREAM.
+#
+# DREAM is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# DREAM is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
+# ===========================================================================
+
 '''
-Created on 1 Jun 2014
+Created on 23 March 2015
 
 @author: Panos
 '''
 
 import Tkinter as tk
 from Tkinter import *
-import pyodbc
+import ImportDatabase
 import tkMessageBox
 from datetime import datetime
  
@@ -125,11 +144,10 @@ class TIMEIN(Frame):
         return
     
     def checkInsertedWP(self):
-        cnxn =pyodbc.connect("Driver={MySQL ODBC 3.51 Driver};SERVER=localhost; PORT=3306;DATABASE=leo_database2;UID=root; PASSWORD=Pitheos10; ")
-        cursor1 = cnxn.cursor()
-        cursor2 = cnxn.cursor()
+        cnxn=ImportDatabase.ConnectionData(seekName='ServerData', file_path='C:\Users\Panos\Documents\DB_Approach\JobShop', implicitExt='txt', number_of_cursors=6)
+        cursor=cnxn.getCursors()
         
-        a=cursor1.execute("""
+        a=cursor[0].execute("""
                 select WP_id, PartCode
                 from sequence
                         """)
@@ -141,7 +159,7 @@ class TIMEIN(Frame):
             #and create a dictionary order
             
             availableWP.append(ind1.WP_id)
-        b=cursor2.execute("""
+        b=cursor[1].execute("""
                 select WP_id
                 from prod_status
                         """)
@@ -161,22 +179,21 @@ class TIMEIN(Frame):
         return availableWP
 
     def updateDatabase(self):
-        cnxn =pyodbc.connect("Driver={MySQL ODBC 3.51 Driver};SERVER=localhost; PORT=3306;DATABASE=leo_database2;UID=root; PASSWORD=Pitheos10; ")
-        cursor = cnxn.cursor()
-        cursor1 = cnxn.cursor()
+        cnxn=ImportDatabase.ConnectionData(seekName='ServerData', file_path='C:\Users\Panos\Documents\DB_Approach\JobShop', implicitExt='txt', number_of_cursors=5)
+        cursor=cnxn.getCursors()
         update_order= ("INSERT INTO prod_status(`status_id`, `WP_id`, `PersonnelCode`, `MachineName`, `TIMEIN`)  VALUES (?, ?, ?, ?, ?)")
-        cursor.execute("SELECT @@IDENTITY AS ID")
-        a = cursor1.execute("""
+        cursor[0].execute("SELECT @@IDENTITY AS ID")
+        a = cursor[1].execute("""
         select WP_id, Order_id
         from sequence where WP_id=?
                 """, self.WPOption.get())
         order = a.fetchone()[1]
-        row = cursor.fetchone()
+        row = cursor[0].fetchone()
         order_ref = row.ID
         status1 = 'in progress'
-        cursor.execute(update_order, (order_ref, self.WPOption.get(), self.personnelOption.get(), self.machineOption.get(), str(datetime.now())))
-        cursor.execute("UPDATE orders SET `Status`=? WHERE Order_id=? ", status1, order) 
-        cursor.commit()
+        cursor[2].execute(update_order, (order_ref, self.WPOption.get(), self.personnelOption.get(), self.machineOption.get(), str(datetime.now())))
+        cursor[3].execute("UPDATE orders SET `Status`=? WHERE Order_id=? ", status1, order) 
+        cursor[4].commit()
         self.close_window()
         return
     
@@ -258,10 +275,10 @@ class TIMEOUT(Frame):
         return
     
     def checkInsertedWP(self):
-        cnxn =pyodbc.connect("Driver={MySQL ODBC 3.51 Driver};SERVER=localhost; PORT=3306;DATABASE=leo_database2;UID=root; PASSWORD=Pitheos10; ")
-        cursor1 = cnxn.cursor()
+        cnxn=ImportDatabase.ConnectionData(seekName='ServerData', file_path='C:\Users\Panos\Documents\DB_Approach\JobShop', implicitExt='txt', number_of_cursors=6)
+        cursor=cnxn.getCursors()
         
-        b=cursor1.execute("""
+        b=cursor[0].execute("""
                 select WP_id
                 from prod_status
                         """)
@@ -274,7 +291,7 @@ class TIMEOUT(Frame):
         
         finishedWP=[]
         
-        c=cursor1.execute("""
+        c=cursor[1].execute("""
             select WP_id, TIMEIN, TIMEOUT
             from prod_status
                     """)
@@ -296,15 +313,14 @@ class TIMEOUT(Frame):
         return insertedWP
     
     def updateDatabase(self):
-        cnxn =pyodbc.connect("Driver={MySQL ODBC 3.51 Driver};SERVER=localhost; PORT=3306;DATABASE=leo_database2;UID=root; PASSWORD=Pitheos10; ")
-        cursor = cnxn.cursor()
-        cursor1 = cnxn.cursor()
-        a = cursor1.execute("""
+        cnxn=ImportDatabase.ConnectionData(seekName='ServerData', file_path='C:\Users\Panos\Documents\DB_Approach\JobShop', implicitExt='txt', number_of_cursors=6)
+        cursor=cnxn.getCursors()
+        a = cursor[0].execute("""
         select WP_id, Order_id
         from sequence where WP_id=?
                 """, self.WPOption.get())
         order = a.fetchone()[1]
-        b = cursor1.execute("""
+        b = cursor[1].execute("""
         select WP_id, Order_id, PartName
         from sequence where Order_id=?
                 """, order)
@@ -312,10 +328,10 @@ class TIMEOUT(Frame):
             ind1=b.fetchone() 
         lastWP = ind1.WP_id
         status2 = 'finished'
-        cursor.execute("UPDATE prod_status SET `TIMEOUT`=? ,  `statusName`=? , `Remarks`=? WHERE WP_id=? ", str(datetime.now()), self.statusOption.get(), self.comments.get(), self.WPOption.get() )
+        cursor[2].execute("UPDATE prod_status SET `TIMEOUT`=? ,  `statusName`=? , `Remarks`=? WHERE WP_id=? ", str(datetime.now()), self.statusOption.get(), self.comments.get(), self.WPOption.get() )
         if self.WPOption.get() == lastWP:
-            cursor.execute("UPDATE orders SET `Status`=? WHERE Order_id=? ", status2, order)    
-        cursor.commit()
+            cursor[3].execute("UPDATE orders SET `Status`=? WHERE Order_id=? ", status2, order)    
+        cursor[4].commit()
         self.close_window()
         return
     
