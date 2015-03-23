@@ -1,0 +1,76 @@
+{
+     "graph": {
+          "node": {
+               "Q1": {
+                    "capacity": -1, 
+                    "name": "Queue1", 
+                    "wip": [
+                         {
+                              "route": [
+                                   {
+                                        "stationIdsList": [
+                                             "Q1"
+                                        ]
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 10.0
+                                             }
+                                        }, 
+                                        "stationIdsList": [
+                                             "M1"
+                                        ]
+                                   },
+                                   {
+                                        "stationIdsList": [
+                                             "E1"
+                                        ]
+                                   }								   
+                              ], 
+                              "_class": "Dream.Job", 
+                              "id": "J1", 
+                              "name": "Job1"
+                         }
+                    ], 
+                    "interruptions": {}, 
+                    "_class": "Dream.QueueJobShop"
+               }, 
+               "M1": {
+                    "interruptions": {
+                         "failure": {
+                              "TTR": {
+                                   "Fixed": {
+                                        "mean": 1
+                                   }
+                              }, 
+                              "TTF": {
+                                   "Fixed": {
+                                        "mean": 7
+                                   }
+                              }
+                         } 
+					},                     
+					"_class": "Dream.MachineJobShop", 
+                    "name": "Machine1"
+               }, 
+               "E1": {
+                    "interruptions": {}, 
+                    "_class": "Dream.ExitJobShop", 
+                    "name": "Exit",
+                "cancelCondition": {
+                    "reason": "empty"
+					}
+               }
+          }, 
+          "edge": {}
+     }, 
+     "_class": "Dream.Simulation", 
+     "general": {
+          "maxSimTime": "100", 
+          "_class": "Dream.Configuration", 
+          "confidenceLevel": "0.95", 
+          "trace": "Yes", 
+          "numberOfReplications": "1"
+     }
+}
