@@ -67,7 +67,7 @@
           "maxSimTime": "100", 
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
-          "trace": "Yes", 
+          "trace": "No", 
           "numberOfReplications": "1"
      }
 }
