@@ -18,7 +18,6 @@
 # ===========================================================================
 
 import xlrd
-import pyodbc
 import datetime
 import os
 import ImportDatabase 
