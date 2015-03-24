@@ -54,7 +54,10 @@ def dataExtraction(File):
                     partType=sheet.cell(i,7).value
                     operation=sheet.cell(i,8).value
                     capacityRequired=sheet.cell(i,9).value
-                    earliestStart=datetime.datetime.utcfromtimestamp((sheet.cell(i,10).value - 25569) * 86400.0)
+                    if sheet.cell(i,10).value:
+                        earliestStart=datetime.datetime.utcfromtimestamp((sheet.cell(i,10).value - 25569) * 86400.0)
+                    else:
+                        earliestStart=None
                     
                     workplan[orderId][wpId]=[]
                     workplan[orderId][wpId].insert(0, partId)
