@@ -1,0 +1,117 @@
+{
+ "_class": "Dream.Simulation", 
+ "elementList": [
+  {
+   "_class": "Dream.Queue", 
+   "family": "Buffer", 
+   "id": "DummyQ", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.Exit", 
+   "family": "Exit", 
+   "id": "E1", 
+   "results": {
+    "lifespan": [
+     6.63
+    ], 
+    "takt_time": [
+     1.75
+    ], 
+    "throughput": [
+     50
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "family": "Server", 
+   "id": "M1", 
+   "results": {
+    "blockage_ratio": [
+     78.85714285714286
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     5.714285714285714
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     0.5714285714285714
+    ], 
+    "working_ratio": [
+     14.857142857142858
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "family": "Server", 
+   "id": "M2", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     11.428571428571429
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     2.857142857142857
+    ], 
+    "working_ratio": [
+     85.71428571428571
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Queue", 
+   "family": "Buffer", 
+   "id": "Q1", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.Repairman", 
+   "family": "Operator", 
+   "id": "W1", 
+   "results": {
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "on_break_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     82.85714285714286
+    ], 
+    "working_ratio": [
+     17.142857142857142
+    ]
+   }
+  }
+ ], 
+ "general": {
+  "_class": "Dream.Configuration"
+ }
+}

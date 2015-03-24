@@ -1,0 +1,85 @@
+{
+ "_class": "Dream.Simulation", 
+ "elementList": [
+  {
+   "_class": "Dream.ExitJobShop", 
+   "family": "Exit", 
+   "id": "E1", 
+   "results": {
+    "lifespan": [
+     10.0
+    ], 
+    "takt_time": [
+     10.0
+    ], 
+    "throughput": [
+     1
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Job", 
+   "family": "Job", 
+   "id": "J1", 
+   "results": {
+    "completionTime": 10.0, 
+    "schedule": [
+     {
+      "entranceTime": 0, 
+      "exitTime": 0, 
+      "stationId": "Q1"
+     }, 
+     {
+      "entranceTime": 0, 
+      "exitTime": 10.0, 
+      "stationId": "M1"
+     }, 
+     {
+      "entranceTime": 10.0, 
+      "stationId": "E1"
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.MachineJobShop", 
+   "family": "Server", 
+   "id": "M1", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     10.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     90.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.QueueJobShop", 
+   "family": "Buffer", 
+   "id": "Q1", 
+   "results": {}
+  }
+ ], 
+ "general": {
+  "_class": "Dream.Configuration"
+ }
+}

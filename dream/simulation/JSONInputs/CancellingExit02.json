@@ -15,7 +15,7 @@
                                    {
                                         "processingTime": {
                                              "Fixed": {
-                                                  "mean": 10.0
+                                                  "mean": 9.0
                                              }
                                         }, 
                                         "stationIdsList": [
@@ -67,10 +67,10 @@
      }, 
      "_class": "Dream.Simulation", 
      "general": {
-          "maxSimTime": "100", 
+          "maxSimTime": "-1", 
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
-          "trace": "Yes", 
+          "trace": "No",
           "numberOfReplications": "1"
      }
 }
