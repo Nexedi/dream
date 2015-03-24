@@ -181,9 +181,14 @@ class ManPyObject(object):
     # ======================================================================  
     @staticmethod
     def endSimulation():
+        # cancel all the scheduled events
         from Globals import G
-        G.env.exit()
-
+        from copy import copy
+        scheduledEvents=copy(G.env._queue)
+        for scheduledEvent in scheduledEvents:
+            G.env._queue.remove(scheduledEvent)
+        G.maxSimTime=G.env.now
+        
     # =======================================================================
     #                       checks if there are entities in the system
     # ======================================================================        
