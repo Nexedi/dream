@@ -1,183 +1,98 @@
 {
-  "capacity_by_project_spreadsheet": [
-    [
-      "Project Name", 
-      "Sequence", 
-      "Capacity Requirements"
-    ], 
-    [
-      null, 
-      null, 
-      null
-    ]
-  ], 
-  "capacity_by_station_spreadsheet": [
-    [
-      "Machine", 
-      "Day 0", 
-      "Day 1", 
-      "Day 2", 
-      "Day 3", 
-      null
-    ], 
-    [
-      null, 
-      null, 
-      null, 
-      null, 
-      null, 
-      null
-    ]
-  ], 
-  "edges": {
-    "con_10": [
-      "Q1", 
-      "St1", 
-      {}
-    ], 
-    "con_15": [
-      "Q1", 
-      "St2", 
-      {}
-    ], 
-    "con_20": [
-      "St1", 
-      "E1", 
-      {}
-    ], 
-    "con_25": [
-      "St2", 
-      "E1", 
-      {}
-    ], 
-    "con_5": [
-      "S1", 
-      "Q1", 
-      {}
-    ]
-  }, 
-  "general": {
-    "confidenceLevel": 0.95, 
-    "currentDate": "2014/06/16",  
-    "maxSimTime": 1000, 
-    "numberOfReplications": 5, 
-    "processTimeout": 10, 
-    "seed": "",  
-    "trace": "No"
-  }, 
-  "nodes": {
-    "E1": {
-      "_class": "Dream.Exit", 
-      "element_id": "DreamNode_5", 
-      "name": "Exit"
-    }, 
-    "Q1": {
-      "_class": "Dream.Queue", 
-      "capacity": 1, 
-      "element_id": "DreamNode_2", 
-      "name": "Queue", 
-      "schedulingRule": "FIFO"
-    }, 
-    "S1": {
-      "_class": "Dream.BatchSource", 
-      "batchNumberOfUnits": 80, 
-      "element_id": "DreamNode_1", 
-      "entity": "Dream.Batch", 
-      "interarrivalTime": {
-        "distributionType": "Fixed", 
-        "mean": 1
-      }, 
-      "name": "Source"
-    }, 
-    "St1": {
-      "_class": "Dream.BatchScrapMachine", 
-      "element_id": "DreamNode_3", 
-      "failures": {
-      }, 
-      "name": "Milling1", 
-      "processingTime": {
-        "distributionType": "Fixed", 
-        "max": "", 
-        "mean": 0.75, 
-        "min": "", 
-        "stdev": ""
-      }
-    }, 
-    "St2": {
-      "_class": "Dream.BatchScrapMachine", 
-      "element_id": "DreamNode_4", 
-      "failures": {
-      }, 
-      "name": "Milling2", 
-      "processingTime": {
-        "distributionType": "Fixed", 
-        "max": "", 
-        "mean": 0.75, 
-        "min": "", 
-        "stdev": ""
-      }
-    }
-  }, 
-  "preference": {
-    "coordinates": {
-      "E1": {
-        "left": 0.838470725910555, 
-        "top": 0.5011550303652008
-      }, 
-      "Q1": {
-        "left": 0.28592454969899506, 
-        "top": 0.4898081240173095
-      }, 
-      "S1": {
-        "left": 0.053083038762682624, 
-        "top": 0.48224351978538194
-      }, 
-      "St1": {
-        "left": 0.5199724933344594, 
-        "top": 0.22882927801580868
-      }, 
-      "St2": {
-        "left": 0.5157499788874278, 
-        "top": 0.7243108552070638
-      }
-    }
-  }, 
-  "shift_spreadsheet": [
-    [
-      "Day", 
-      "Machines", 
-      "Start", 
-      "End"
-    ], 
-    [
-      null, 
-      null, 
-      null, 
-      null
-    ]
-  ], 
-  "wip_part_spreadsheet": [
-    [
-      "Order ID", 
-      "Due Date", 
-      "Priority", 
-      "Project Manager", 
-      "Part", 
-      "Part Type", 
-      "Sequence", 
-      "Processing Times", 
-      "Prerequisites Parts"
-    ], 
-    [
-      null, 
-      null, 
-      null, 
-      null, 
-      null, 
-      null, 
-      null, 
-      null, 
-      null
-    ]
-  ]
+     "graph": {
+          "node": {
+				"E1": {
+				  "_class": "Dream.Exit", 
+				  "element_id": "DreamNode_5", 
+				  "name": "Exit"
+				}, 
+				"Q1": {
+				  "_class": "Dream.Queue", 
+				  "capacity": 1, 
+				  "element_id": "DreamNode_2", 
+				  "name": "Queue", 
+				  "schedulingRule": "FIFO"
+				}, 
+				"S1": {
+				  "_class": "Dream.BatchSource", 
+				  "batchNumberOfUnits": 80, 
+				  "element_id": "DreamNode_1", 
+				  "entity": "Dream.Batch", 
+				  "interarrivalTime": {
+					"distributionType": "Fixed", 
+					"mean": 1
+				  }, 
+				  "name": "Source"
+				}, 
+				"St1": {
+				  "_class": "Dream.BatchScrapMachine", 
+				  "element_id": "DreamNode_3", 
+				  "interruptions": {
+                   
+                    }, 
+				  "name": "Milling1", 
+				  "processingTime": {
+					"distributionType": "Fixed", 
+					"max": "", 
+					"mean": 0.75, 
+					"min": "", 
+					"stdev": ""
+				  }
+				}, 
+				"St2": {
+				  "_class": "Dream.BatchScrapMachine", 
+				  "element_id": "DreamNode_4", 
+				  "interruptions": {
+                    }, 
+				  "name": "Milling2", 
+				  "processingTime": {
+					"distributionType": "Fixed", 
+					"max": "", 
+					"mean": 0.75, 
+					"min": "", 
+					"stdev": ""
+				  }
+				}
+			  }, 
+			"edge": {
+               "0": {
+                    "source": "S1", 
+                    "destination": "Q1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "1": {
+                    "source": "Q1", 
+                    "destination": "St1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "2": {
+                    "source": "Q1", 
+                    "destination": "St2", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "3": {
+                    "source": "St1", 
+                    "destination": "E1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "4": {
+                    "source": "St2", 
+                    "destination": "E1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }	
+			}
+		},
+		"_class": "Dream.Simulation", 
+		"general": {
+          "maxSimTime": "1440", 
+          "_class": "Dream.Configuration", 
+          "confidenceLevel": "0.95", 
+          "trace": "No", 
+          "numberOfReplications": "1"
+		} 
 }
