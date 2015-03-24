@@ -18,7 +18,7 @@ class SplitRoute(plugin.InputPreparationPlugin):
   def preprocess(self, data):
     """ splits the routes of mould parts (design + mould) and update the _class attribute of the entities
     """
-    orders = data["input"]["BOM"]["productionOrders"]
+    orders = data["input"].get("BOM",{}).get("productionOrders",{})
     for order in orders:
       orderComponents = order.get("componentsList", [])
       componentsToAdd = []

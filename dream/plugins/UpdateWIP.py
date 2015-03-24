@@ -21,9 +21,9 @@ class UpdateWIP(SplitRoute.SplitRoute):
     """ updates the Work in Process according to what is provided by the BOM, i.e. if a design just exited the last step of it's sequence
     """
     self.data = copy(data)
-    orders = self.data["input"]["BOM"]["productionOrders"]
+    orders = self.data["input"].get("BOM",{}).get("productionOrders",{})
     nodes = self.data["graph"]["node"]
-    wip = self.data["input"]["BOM"].get("WIP", {})
+    wip = self.data["input"].get("BOM",{}).get("WIP", {})
   
     """ get the tasks that are in the WIP, and place those that are not in the WIP in the corresponding stations. Consider the parts that have concluded their routes, or the components that are not created yet.
     All the components defined by the corresponding orders should be examined

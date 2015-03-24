@@ -16,7 +16,7 @@ class MergeSteps(plugin.InputPreparationPlugin):
   def preprocess(self, data):
     """ merge the steps that constitute one single technology step
     """
-    orders = data["input"]["BOM"]["productionOrders"]
+    orders = data["input"].get("BOM", {}).get("productionOrders", {})
     # for all the orders 
     for order in orders:
       orderComponents = order.get("componentsList", [])

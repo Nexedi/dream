@@ -11,7 +11,7 @@ class InsertWIP(plugin.InputPreparationPlugin):
   def preprocess(self, data):
     """ updates the Work in Process of each station according to the BOM
     """
-    WIP = data["input"]["BOM"].get("WIP", {})
+    WIP = data["input"].get("BOM",{}).get("WIP", {})
     for partID, work in WIP.iteritems():
       stationID = work.get("station", None)
       if not stationID:
