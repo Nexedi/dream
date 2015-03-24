@@ -253,21 +253,9 @@
           "input_id": "assemblySpace"
         }, 
         {
-          "_class": "dream.plugins.AvailableCapacitySpreadsheet.AvailableCapacitySpreadsheet", 
-          "input_id": "availableCapacity"
-        }, 
-        {
-          "_class": "dream.plugins.CapacityProjectSpreadsheet.CapacityProjectSpreadsheet", 
-          "input_id": "capacityProject"
-        }, 
-        {
           "_class": "dream.plugins.CreateCapacityStations.CreateCapacityStations", 
           "input_id": "createCapacityStations"
         }, 
-        {
-          "_class": "dream.plugins.CapacityStationWIPSpreadsheet.CapacityStationWIPSpreadsheet", 
-          "input_id": "createCapacityStationWIP"
-        },
         {
           "_class": "dream.plugins.CapacityStationsKE.CapacityStationsKE", 
           "input_id": "CapacityStationsKE"
