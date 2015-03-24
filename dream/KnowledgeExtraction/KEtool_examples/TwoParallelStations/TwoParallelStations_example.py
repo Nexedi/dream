@@ -54,19 +54,29 @@ KS = DistFittest()      #Call the DistFittest object  (Kolmoghorov-Smirnov test)
 M1ProcTime_dist = KS.ks_test(M1_ProcTime)
 M2ProcTime_dist = MLE.Normal_distrfit(M2_ProcTime)
 
+
 #======================= Output preparation: output the updated values in the JSON file of this example ================================#
-jsonFile = open('JSON_TwoParallelStations.json','r')      #It opens the JSON file 
+jsonFile = open('OLD_JSON_TwoParallel.json','r')      #It opens the JSON file 
 data = json.load(jsonFile)                                                              #It loads the file
 jsonFile.close()
-nodes = data.get('nodes',[])                                                         #It creates a variable that holds the 'nodes' dictionary
+nodes = data['graph']['node']                                                         #It creates a variable that holds the 'nodes' dictionary
+
+procTimeM1dict={}
+procTimeM2dict={}
+dist=M1ProcTime_dist['distributionType']
+del M1ProcTime_dist['distributionType']
+procTimeM1dict[dist]=M1ProcTime_dist
+
+dist=M2ProcTime_dist['distributionType']
+del M2ProcTime_dist['distributionType']
+procTimeM2dict[dist]=M2ProcTime_dist
 
 for element in nodes:
-    processingTime = nodes[element].get('processingTime',{})        #It creates a variable that gets the element attribute 'processingTime'
-        
+    processingTime = nodes[element].get('processingTime',{})        #It creates a variable that gets the element attribute 'processingTime'    
     if element == 'St1':
-        nodes['St1']['processingTime'] = M1ProcTime_dist         #It checks using if syntax if the element is 'M1'
+        nodes['St1']['processingTime'] = procTimeM1dict         #It checks using if syntax if the element is 'M1'
     elif element == 'St2':
-        nodes['St2']['processingTime'] = M2ProcTime_dist         #It checks using if syntax if the element is 'M2'
+        nodes['St2']['processingTime'] = procTimeM2dict         #It checks using if syntax if the element is 'M2'
       
     
     jsonFile = open('JSON_ParallelStations_Output.json',"w")     #It opens the JSON file
@@ -81,7 +91,6 @@ export.PrintStatisticalMeasures(M2_ProcTime,'M2_ProcTime_StatResults.xls')
 
 export.PrintDistributionFit(M1_ProcTime,'M1_ProcTime_DistFitResults.xls')
 export.PrintDistributionFit(M2_ProcTime,'M2_ProcTime_DistFitResults.xls')
-
 #calls ManPy main script with the input
 simulationOutput=ManPyMain.main(input_data=json.dumps(data))
 # save the simulation output
