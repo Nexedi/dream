@@ -24,12 +24,12 @@ Created on 23 Sep 2014
 
 #================= Main script of KE tool  =====================================#
 from __future__ import division
-from StatisticalMeasures import BasicStatisticalMeasures
-from DistributionFitting import Distributions
-from DistributionFitting import DistFittest
-from ReplaceMissingValues import HandleMissingValues
-from ImportExceldata import Import_Excel
-from DetectOutliers import HandleOutliers
+from dream.KnowledgeExtraction.StatisticalMeasures import BasicStatisticalMeasures
+from dream.KnowledgeExtraction.DistributionFitting import Distributions
+from dream.KnowledgeExtraction.DistributionFitting import DistFittest
+from dream.KnowledgeExtraction.ReplaceMissingValues import HandleMissingValues
+from dream.KnowledgeExtraction.ImportExceldata import Import_Excel
+from dream.KnowledgeExtraction.DetectOutliers import HandleOutliers
 from JSON_Output import JSON_example
 from WIP_Identifier import currentWIP
 import xlrd
