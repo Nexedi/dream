@@ -32,7 +32,7 @@ class KnowledgeExtractionExamples(TestCase):
         filepath=os.path.join(project_path, "dream", "KnowledgeExtraction", "KEtool_examples", 
                                                         "TwoParallelStations")
         workbook = xlrd.open_workbook(os.path.join(filepath, 'inputData.xls'))
-        jsonFile = open(os.path.join(filepath, 'JSON_TwoParallelStations.json'))     
+        jsonFile = open(os.path.join(filepath, 'JSON_ParallelStations.json'))     
         result = main(test=1,workbook=workbook,jsonFile=jsonFile)
         result_data = json.loads(result)
         
