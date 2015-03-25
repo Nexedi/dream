@@ -22,8 +22,6 @@ import os
 project_path = os.path.split(os.path.split(os.path.split(__file__)[0])[0])[0]
 import xlrd
 import json
-import glob
-
 
 class KnowledgeExtractionExamples(TestCase):
     """
