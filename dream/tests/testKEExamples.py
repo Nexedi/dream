@@ -31,10 +31,10 @@ class KnowledgeExtractionExamples(TestCase):
     """
     def testTwoParallelStations(self):
         from dream.KnowledgeExtraction.KEtool_examples.TwoParallelStations.TwoParallelStations_example import main 
-        filepath=glob.glob(os.path.join(project_path, "dream", "KnowledgeExtraction", "KEtool_examples", 
-                                                        "TwoParallelStations"))[0]
-        workbook = xlrd.open_workbook(filepath+'\\inputData.xls')
-        jsonFile = open(filepath+'\\JSON_TwoParallelStations.json')      
+        filepath=os.path.join(project_path, "dream", "KnowledgeExtraction", "KEtool_examples", 
+                                                        "TwoParallelStations")
+        workbook = xlrd.open_workbook(os.path.join(filepath, 'inputData.xls'))
+        jsonFile = open(os.path.join(filepath, 'JSON_TwoParallelStations.json'))     
         result = main(test=1,workbook=workbook,jsonFile=jsonFile)
         result_data = json.loads(json.loads(result))
         
