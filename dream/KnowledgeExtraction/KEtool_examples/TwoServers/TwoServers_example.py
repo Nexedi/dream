@@ -22,11 +22,13 @@ Created on 19 Feb 2014
 # along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
 # ===========================================================================
 
-from ImportExceldata import Import_Excel
-from DistributionFitting import DistFittest
+from dream.KnowledgeExtraction.ImportExceldata import Import_Excel
+from dream.KnowledgeExtraction.DistributionFitting import DistFittest
+from dream.KnowledgeExtraction.ExcelOutput import Output
+from dream.KnowledgeExtraction.JSONOutput import JSONOutput
+from dream.KnowledgeExtraction.ReplaceMissingValues import HandleMissingValues
+import dream.simulation.LineGenerationJSON as ManPyMain #import ManPy main JSON script
 from xml.etree import ElementTree as et
-from ExcelOutput import Output
-from ReplaceMissingValues import HandleMissingValues
 import xlrd
 import json
 
@@ -124,23 +126,17 @@ for process in process:
 jsonFile= open('JSON_TwoServers.json','r')      #It opens the Topology10 JSON file 
 data = json.load(jsonFile)                                                              #It loads the file
 jsonFile.close()
-nodes=data.get('coreObject',[])                                                         #It creates a variable that holds the 'coreObject' list
 
-for element in nodes:
-    name=element.get('name')                                                            #It creates a variable that gets the element attribute 'name'
-    processingTime=element.get('processingTime',{})                                     #It creates a variable that gets the element attribute 'processingTime'
-        
-    if name =='Machine1':
-        element['processingTime']=Dict['M1']                            #It checks using if...elif syntax if the name is 'Machine1', so the first machine in the Topology10
-    elif name=='Machine2':                        
-        element['processingTime']=Dict['M2']
-    else:
-        continue                            
-        
-    jsonFile = open('JSON_TwoServers_Output.json',"w")     #It opens the JSON file
-    jsonFile.write(json.dumps(data, indent=True))                                           #It writes the updated data to the JSON file 
-    jsonFile.close()                                                                        #It closes the file
-        
+exportJSON=JSONOutput()
+stationId1='M1'
+stationId2='M2'
+data=exportJSON.ProcessingTimes(data, stationId1, M1)                           
+data1=exportJSON.ProcessingTimes(data, stationId2, M2)         
+
+jsonFile = open('JSON_TwoServers_Output.json',"w")     #It opens the JSON file
+jsonFile.write(json.dumps(data1, indent=True))                                           #It writes the updated data to the JSON file 
+jsonFile.close()                                                                        #It closes the file
+    
 #================================ Calling the ExcelOutput object, outputs the outcomes of the statistical analysis in Excel files =============================================#
 C=Output()
 C.PrintDistributionFit(Machine1_OpearationTimes,'Machine1_DistFitResults.xls')   
@@ -148,4 +144,11 @@ C.PrintStatisticalMeasures(Machine1_OpearationTimes,'Machine1_StatResults.xls')
 C.PrintDistributionFit(Machine2_OpearationTimes,'Machine2_DistFitResults.xls')   
 C.PrintStatisticalMeasures(Machine2_OpearationTimes,'Machine2_StatResults.xls')
 
+#================================ Call ManPy and run the simulation model =============================================#
+#calls ManPy main script with the input
+simulationOutput=ManPyMain.main(input_data=json.dumps(data))
+# save the simulation output
+jsonFile = open('ManPyOutput.json',"w")     #It opens the JSON file
+jsonFile.write(simulationOutput)                                           #It writes the updated data to the JSON file 
+jsonFile.close()                                                                        #It closes the file
     
