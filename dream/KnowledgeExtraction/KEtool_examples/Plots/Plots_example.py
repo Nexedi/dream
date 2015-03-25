@@ -23,8 +23,8 @@ Created on 13 Jun 2014
 # ===========================================================================
 
 
-from ImportCSVdata import Import_CSV
-from Plots import Graphs
+from dream.KnowledgeExtraction.ImportCSVdata import Import_CSV
+from dream.KnowledgeExtraction.Plots import Graphs
 
 filename = ("DataSet.csv")
 A=Import_CSV()   #call the Import_CSV module and using its method Input_data import the data set from the CSV file to the tool
