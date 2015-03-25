@@ -57,7 +57,7 @@ M2ProcTime_dist = MLE.Normal_distrfit(M2_ProcTime)
 
 
 #======================= Output preparation: output the updated values in the JSON file of this example ================================#
-jsonFile = open('JSON_TwoParallelStations.json','r')      #It opens the JSON file 
+jsonFile = open('JSON_ParallelStations.json','r')      #It opens the JSON file 
 data = json.load(jsonFile)                                                              #It loads the file
 jsonFile.close()
 
