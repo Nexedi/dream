@@ -22,11 +22,11 @@ Created on 15 Jun 2014
 # along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
 # ===========================================================================
 
-from Transformations import BasicTransformations
-from DistributionFitting import DistFittest
-from DistributionFitting import Distributions
-from ExcelOutput import Output
-from JSONOutput import JSONOutput
+from dream.KnowledgeExtraction.Transformations import BasicTransformations
+from dream.KnowledgeExtraction.DistributionFitting import DistFittest
+from dream.KnowledgeExtraction.DistributionFitting import Distributions
+from dream.KnowledgeExtraction.ExcelOutput import Output
+from dream.KnowledgeExtraction.JSONOutput import JSONOutput
 import ImportDatabase
 import json
 #================================= Extract data from the database ==========================================#
