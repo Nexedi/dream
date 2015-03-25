@@ -22,15 +22,15 @@ Created on 19 Feb 2014
 # along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
 # ===========================================================================
 
-from StatisticalMeasures import BasicStatisticalMeasures
-from DataManipulation import DataManagement
-from DistributionFitting import DistFittest
-from DistributionFitting import Distributions
+from dream.KnowledgeExtraction.StatisticalMeasures import BasicStatisticalMeasures
+from dream.KnowledgeExtraction.DataManipulation import DataManagement
+from dream.KnowledgeExtraction.DistributionFitting import DistFittest
+from dream.KnowledgeExtraction.DistributionFitting import Distributions
 from CMSD_Output import CMSD_example
 from JSON_Output import JSON_example
-from ExcelOutput import Output
-from ReplaceMissingValues import HandleMissingValues
-from ImportExceldata import Import_Excel
+from dream.KnowledgeExtraction.ExcelOutput import Output
+from dream.KnowledgeExtraction.ReplaceMissingValues import HandleMissingValues
+from dream.KnowledgeExtraction.ImportExceldata import Import_Excel
 import xlrd
 #import ManPy main JSON script
 import dream.simulation.LineGenerationJSON as ManPyMain 
