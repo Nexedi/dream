@@ -19,8 +19,9 @@
 				  "element_id": "DreamNode_1", 
 				  "entity": "Dream.Batch", 
 				  "interarrivalTime": {
-					"distributionType": "Fixed", 
-					"mean": 1
+					"Fixed": {
+				      "mean": 0.5
+				     }
 				  }, 
 				  "name": "Source"
 				}, 
