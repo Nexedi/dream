@@ -1,130 +1,137 @@
 {
-    "_class": "Dream.Simulation",
-    "edges": {
-        "0": [
-            "W1",
-            "M1",
-            {}
-        ],
-        "1": [
-            "W1",
-            "M2",
-            {}
-        ],
-        "2": [
-            "S1",
-            "DummyQ",
-            {}
-        ],
-        "3": [
-            "M1",
-            "E1",
-            {}
-        ],
-        "4": [
-            "M2",
-            "E1",
-            {}
-        ],
-        "5": [
-            "DummyQ",
-            "Q1",
-            {}
-        ],
-        "6": [
-            "Q1",
-            "M1",
-            {}
-        ],
-        "7": [
-            "Q1",
-            "M2",
-            {}
-        ]
+    "graph": {
+        "node": {
+            "DummyQ": {
+                "_class": "Dream.Queue",
+                "capacity": 1,
+                "isDummy": "1",
+                "left": 0.639751552795031,
+                "name": "DummyQ",
+                "top": 0.7720588235294118
+            },
+            "E1": {
+                "_class": "Dream.Exit",
+                "left": 0.40993788819875776,
+                "name": "Stock",
+                "top": 0.04656862745098034
+            },
+            "M1": {
+                "_class": "Dream.Machine",
+                "left": 0.6335403726708074,
+                "name": "MILL1",
+                "interruptions": {
+                    "failure": {
+                        "TTR": {
+                            
+                        },
+                        "TTF": {
+                        }
+					},
+                    "repairman": "W1"
+					},
+                "processingTime": {},
+                "top": 0.40931372549019607
+				},
+            "M2": {
+                "_class": "Dream.Machine",
+                "interruptions": {
+                    "failure": {
+                        "TTR": {
+                        },
+                        "TTF": {
+                        }
+                    },
+                    "repairman": "W1"
+                },
+                "left": 0.1863354037267081,
+                "name": "MILL2",
+                "processingTime": {},
+                "top": 0.40931372549019607
+            },
+            "Q1": {
+                "_class": "Dream.Queue",
+                "capacity": 1,
+                "isDummy": "0",
+                "left": 0.639751552795031,
+                "name": "Q1",
+                "top": 0.5906862745098039
+            },
+            "S1": {
+                "_class": "Dream.Source",
+                "entity": "Dream.Part",
+                "interarrivalTime": {
+                    "Fixed": {
+				      "mean": 0.5
+				     }
+                },
+                "left": 0.639751552795031,
+                "name": "Raw Material",
+                "top": 0.9534313725490196
+            },
+            "W1": {
+                "_class": "Dream.Repairman",
+                "capacity": 1,
+                "left": 0.18012422360248448,
+                "name": "W1",
+                "top": 0.5906862745098039
+            }
+			},
+        "edge": {
+            "0": {
+                "source": "W1",
+                "destination": "M1",
+                "data": {},
+                "_class": "Dream.Edge"
+            },
+            "1": {
+                "source": "W1",
+                "destination": "M2",
+                "data": {},
+                "_class": "Dream.Edge"
+            },
+            "2": {
+                "source": "S1",
+                "destination": "DummyQ",
+                "data": {},
+                "_class": "Dream.Edge"
+            },
+            "3": {
+                "source": "M1",
+                "destination": "E1",
+                "data": {},
+                "_class": "Dream.Edge"
+            },
+            "4": {
+                "source": "DummyQ",
+                "destination": "Q1",
+                "data": {},
+                "_class": "Dream.Edge"
+            },
+            "5": {
+                "source": "M2",
+                "destination": "E1",
+                "data": {},
+                "_class": "Dream.Edge"
+            },
+            "6": {
+                "source": "Q1",
+                "destination": "M1",
+                "data": {},
+                "_class": "Dream.Edge"
+            },
+            "7": {
+                "source": "Q1",
+                "destination": "M2",
+                "data": {},
+                "_class": "Dream.Edge"
+            }
+        }
     },
+	"_class": "Dream.Simulation",
     "general": {
-        "_class": "Dream.Configuration",
         "confidenceLevel": "0.95",
         "maxSimTime": "1440",
         "numberOfReplications": "1",
         "trace": "No"
-    },
-    "nodes": {
-        "DummyQ": {
-            "_class": "Dream.Queue",
-            "capacity": 1,
-            "isDummy": "1",
-            "left": 0.639751552795031,
-            "name": "DummyQ",
-            "top": 0.7720588235294118
-        },
-        "E1": {
-            "_class": "Dream.Exit",
-            "left": 0.40993788819875776,
-            "name": "Stock",
-            "top": 0.04656862745098034
-        },
-        "M1": {
-            "_class": "Dream.Machine",
-            "left": 0.6335403726708074,
-            "name": "MILL1",
-			"failures": {
-                "MTTF": {
-                
-                },
-                "MTTR": {
-                
-                } ,
-                "repairman": "W1"
-            },
-            "processingTime": {
-                
-            },
-            "top": 0.40931372549019607
-        },
-        "M2": {
-            "_class": "Dream.Machine",
-            "failures": {
-                "MTTF": {
-                
-                },
-                "MTTR": {
-                
-                } ,
-                "repairman": "W1"
-            },
-            "left": 0.1863354037267081,
-            "name": "MILL2",
-            "processingTime": {
-                
-            },
-            "top": 0.40931372549019607
-        },
-        "Q1": {
-            "_class": "Dream.Queue",
-            "capacity": 1,
-            "isDummy": "0",
-            "left": 0.639751552795031,
-            "name": "Q1",
-            "top": 0.5906862745098039
-        },
-        "S1": {
-            "_class": "Dream.Source",
-            "entity": "Dream.Part",
-            "interarrivalTime": {
-                "distributionType": "Fixed",
-                "mean": 0.5
-            },
-            "left": 0.639751552795031,
-            "name": "Raw Material",
-            "top": 0.9534313725490196
-        },
-        "W1": {
-            "_class": "Dream.Repairman",
-            "capacity": 1,
-            "left": 0.18012422360248448,
-            "name": "W1",
-            "top": 0.5906862745098039
-        }
     }
 }
