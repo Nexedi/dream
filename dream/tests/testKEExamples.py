@@ -34,7 +34,7 @@ class KnowledgeExtractionExamples(TestCase):
         workbook = xlrd.open_workbook(os.path.join(filepath, 'inputData.xls'))
         jsonFile = open(os.path.join(filepath, 'JSON_TwoParallelStations.json'))     
         result = main(test=1,workbook=workbook,jsonFile=jsonFile)
-        result_data = json.loads(json.loads(result))
+        result_data = json.loads(result)
         
         result_data=result_data['result']['result_list'][0]
         elementList=result_data.get('elementList',[])
