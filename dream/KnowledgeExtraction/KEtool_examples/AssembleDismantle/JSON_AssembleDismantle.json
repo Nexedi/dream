@@ -1,60 +1,14 @@
 {
-    "_class": "Dream.Simulation",
-    "edges": {
-        "0": [
-            "S1",
-            "A1",
-            {
-                "entity": "Part"
-            }
-        ],
-        "1": [
-            "S2",
-            "A1",
-            {
-                "entity": "Frame"
-            }
-        ],
-        "2": [
-            "A1",
-            "M1",
-            {}
-        ],
-        "3": [
-            "M1",
-            "D1",
-            {}
-        ],
-        "4": [
-            "D1",
-            "E1",
-            {
-                "entity": "Frame"
-            }
-        ],
-        "5": [
-            "D1",
-            "E2",
-            {
-                "entity": "Part"
-            }
-        ]
-    },
-    "general": {
-        "_class": "Dream.Configuration",
-        "confidenceLevel": "0.95",
-        "maxSimTime": "1440",
-        "numberOfReplications": "1",
-        "trace": "No"
-    },
-    "nodes": {
-        "A1": {
+     "graph": {
+          "node": {
+		  "A1": {
             "_class": "Dream.Assembly",
             "left": 0.5,
             "name": "Assembly",
             "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 2.0
+                "Fixed": {
+                    "mean": 1.5
+                }
             },
             "top": 0.2784431137724551
         },
@@ -63,8 +17,9 @@
             "left": 0.5,
             "name": "Dismantle",
             "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 1.0
+                "Fixed": {
+                    "mean": 1.0
+                }
             },
             "top": 0.721556886227545
         },
@@ -82,15 +37,20 @@
         },
         "M1": {
             "_class": "Dream.Machine",
-            "failures": {
-                "MTTF": {
-                
-                },
-                "MTTR": {
-                
-                } ,
-                "repairman": "None"
-            },
+            "interruptions": {
+				 "failure": {
+					  "TTR": {
+						   "Fixed": {
+								"mean": 10
+						   }
+					  }, 
+					  "TTF": {
+						   "Fixed": {
+								"mean": 40
+						   }
+					  }
+				 }
+			},
             "left": 0.5,
             "name": "Moulding",
             "processingTime": {
@@ -102,8 +62,9 @@
             "_class": "Dream.Source",
             "entity": "Dream.Part",
             "interarrivalTime": {
-                "distributionType": "Fixed",
-                "mean": 0.5
+                "Fixed": {
+                    "mean": 0.5
+                }
             },
             "left": 0.2142857142857143,
             "name": "Parts",
@@ -113,12 +74,60 @@
             "_class": "Dream.Source",
             "entity": "Dream.Frame",
             "interarrivalTime": {
-                "distributionType": "Fixed",
-                "mean": 2.0
+                "Fixed": {
+                    "mean": 2.0
+                }
             },
             "left": 0.7857142857142857,
             "name": "Frames",
             "top": 0.05688622754491013
-        }
-    }
-}
+			}
+		},
+		"edge": {
+               "1": {
+                    "source": "S1", 
+                    "destination": "A1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "0": {
+                    "source": "S2", 
+                    "destination": "A1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "3": {
+                    "source": "A1", 
+                    "destination": "M1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "2": {
+                    "source": "M1", 
+                    "destination": "D1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "5": {
+                    "source": "D1", 
+                    "destination": "E1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "4": {
+                    "source": "D1", 
+                    "destination": "E2", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               } 
+            }
+		},
+	"_class": "Dream.Simulation",
+	"general": {
+		"confidenceLevel": "0.95",
+		"_class": "Dream.Configuration",
+		"maxSimTime": "1440",
+		"numberOfReplications": "1",
+		"trace": "No"
+	}
+}	
