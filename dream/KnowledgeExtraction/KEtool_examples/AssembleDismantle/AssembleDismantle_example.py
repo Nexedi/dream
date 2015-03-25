@@ -22,12 +22,12 @@ Created on 12 Jun 2014
 # along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
 # ===========================================================================
 
-from ImportExceldata import Import_Excel
-from ReplaceMissingValues import HandleMissingValues
-from DistributionFitting import Distributions
-from DistributionFitting import DistFittest
-from ExcelOutput import Output
-from JSONOutput import JSONOutput
+from dream.KnowledgeExtraction.ImportExceldata import Import_Excel
+from dream.KnowledgeExtraction.ReplaceMissingValues import HandleMissingValues
+from dream.KnowledgeExtraction.DistributionFitting import Distributions
+from dream.KnowledgeExtraction.DistributionFitting import DistFittest
+from dream.KnowledgeExtraction.ExcelOutput import Output
+from dream.KnowledgeExtraction.JSONOutput import JSONOutput
 import dream.simulation.LineGenerationJSON as ManPyMain #import ManPy main JSON script
 import xlrd
 import json
@@ -83,6 +83,7 @@ C.PrintStatisticalMeasures(MTTF,'MTTF_StatResults.xls')
 C.PrintDistributionFit(ProcTime,'ProcTime_DistFitResults.xls')
 C.PrintDistributionFit(MTTR,'MTTR_DistFitResults.xls')
 
+#================================ Call ManPy and run the simulation model =============================================#
 #calls ManPy main script with the input
 simulationOutput=ManPyMain.main(input_data=json.dumps(data))
 # save the simulation output
