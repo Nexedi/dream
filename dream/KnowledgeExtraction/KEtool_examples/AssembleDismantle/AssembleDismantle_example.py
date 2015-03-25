@@ -27,6 +27,8 @@ from ReplaceMissingValues import HandleMissingValues
 from DistributionFitting import Distributions
 from DistributionFitting import DistFittest
 from ExcelOutput import Output
+from JSONOutput import JSONOutput
+import dream.simulation.LineGenerationJSON as ManPyMain #import ManPy main JSON script
 import xlrd
 import json
 
@@ -59,29 +61,20 @@ D = DistFittest()      #Call the DistFittest object
 ProcTime_dist = D.ks_test(ProcTime)
 MTTF_dist = C.Exponential_distrfit(MTTF)
 MTTR_dist = C.Exponential_distrfit(MTTR)
-
 #================================= Output preparation: output the updated values in the JSON file of this example =========================================================#
 jsonFile = open('JSON_AssembleDismantle.json','r')      #It opens the JSON file 
 data = json.load(jsonFile)                                                              #It loads the file
 jsonFile.close()
-nodes = data.get('nodes',[])                                                         #It creates a variable that holds the 'nodes' dictionary
 
-for element in nodes:
-    processingTime = nodes[element].get('processingTime',{})        #It creates a variable that gets the element attribute 'processingTime'
-    MTTF_Nodes = nodes[element].get('MTTF',{})                            #It creates a variable that gets the element attribute 'MTTF'
-    MTTR_Nodes = nodes[element].get('MTTR',{})                            #It creates a variable that gets the element attribute 'MTTR'
-        
-    if element == 'M1':
-        nodes['M1']['processingTime'] = ProcTime_dist         #It checks using if syntax if the element is 'M1'
-        nodes['M1']['failures']['MTTF'] = MTTF_dist
-        nodes['M1']['failures']['MTTR'] = MTTR_dist
-        continue                            
+exportJSON=JSONOutput()
+stationId='M1'
+data=exportJSON.ProcessingTimes(data, stationId, ProcTime_dist)
+data1=exportJSON.TTF(data, stationId, MTTF_dist)
+data2=exportJSON.TTR(data1, stationId, MTTR_dist)
     
-    jsonFile = open('JSON_AssembleDismantle_Output.json',"w")     #It opens the JSON file
-    jsonFile.write(json.dumps(data, indent=True))                                           #It writes the updated data to the JSON file 
-    jsonFile.close()                                                                        #It closes the file
-
-
+jsonFile = open('JSON_AssembleDismantle_Output.json',"w")     #It opens the JSON file
+jsonFile.write(json.dumps(data2, indent=True))                                           #It writes the updated data to the JSON file 
+jsonFile.close()                                                                        #It closes the file
 #================================ Calling the ExcelOutput object, outputs the outcomes of the statistical analysis in xls files =============================================#
 C=Output()
 C.PrintStatisticalMeasures(ProcTime,'ProcTime_StatResults.xls')   
@@ -89,3 +82,10 @@ C.PrintStatisticalMeasures(MTTR,'MTTR_StatResults.xls')
 C.PrintStatisticalMeasures(MTTF,'MTTF_StatResults.xls')   
 C.PrintDistributionFit(ProcTime,'ProcTime_DistFitResults.xls')
 C.PrintDistributionFit(MTTR,'MTTR_DistFitResults.xls')
+
+#calls ManPy main script with the input
+simulationOutput=ManPyMain.main(input_data=json.dumps(data))
+# save the simulation output
+jsonFile = open('ManPyOutput.json',"w")     #It opens the JSON file
+jsonFile.write(simulationOutput)           #It writes the updated data to the JSON file 
+jsonFile.close()                         #It closes the file
