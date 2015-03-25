@@ -27,6 +27,7 @@ from DistributionFitting import Distributions
 from ImportExceldata import Import_Excel
 from ExcelOutput import Output
 from ReplaceMissingValues import HandleMissingValues
+from JSONOutput import JSONOutput
 import xlrd
 import json
 import dream.simulation.LineGenerationJSON as ManPyMain #import ManPy main JSON script
@@ -56,32 +57,19 @@ M2ProcTime_dist = MLE.Normal_distrfit(M2_ProcTime)
 
 
 #======================= Output preparation: output the updated values in the JSON file of this example ================================#
-jsonFile = open('OLD_JSON_TwoParallel.json','r')      #It opens the JSON file 
+jsonFile = open('JSON_TwoParallelStations.json','r')      #It opens the JSON file 
 data = json.load(jsonFile)                                                              #It loads the file
 jsonFile.close()
-nodes = data['graph']['node']                                                         #It creates a variable that holds the 'nodes' dictionary
 
-procTimeM1dict={}
-procTimeM2dict={}
-dist=M1ProcTime_dist['distributionType']
-del M1ProcTime_dist['distributionType']
-procTimeM1dict[dist]=M1ProcTime_dist
-
-dist=M2ProcTime_dist['distributionType']
-del M2ProcTime_dist['distributionType']
-procTimeM2dict[dist]=M2ProcTime_dist
-
-for element in nodes:
-    processingTime = nodes[element].get('processingTime',{})        #It creates a variable that gets the element attribute 'processingTime'    
-    if element == 'St1':
-        nodes['St1']['processingTime'] = procTimeM1dict         #It checks using if syntax if the element is 'M1'
-    elif element == 'St2':
-        nodes['St2']['processingTime'] = procTimeM2dict         #It checks using if syntax if the element is 'M2'
+exportJSON=JSONOutput()
+stationId1='St1'
+stationId2='St2'
+data1=exportJSON.ProcessingTimes(data, stationId1, M1ProcTime_dist)
+data2=exportJSON.ProcessingTimes(data1, stationId2, M2ProcTime_dist)
       
-    
-    jsonFile = open('JSON_ParallelStations_Output.json',"w")     #It opens the JSON file
-    jsonFile.write(json.dumps(data, indent=True))                                           #It writes the updated data to the JSON file 
-    jsonFile.close()                                                                        #It closes the file
+jsonFile = open('JSON_ParallelStations_Output.json',"w")     #It opens the JSON file
+jsonFile.write(json.dumps(data2, indent=True))                                           #It writes the updated data to the JSON file 
+jsonFile.close()                                                                        #It closes the file
 
 #=================== Calling the ExcelOutput object, outputs the outcomes of the statistical analysis in xls files ==========================#
 export=Output()
