@@ -27,7 +27,7 @@ from dream.KnowledgeExtraction.DistributionFitting import Distributions
 from dream.KnowledgeExtraction.ImportExceldata import Import_Excel
 from dream.KnowledgeExtraction.ExcelOutput import Output
 from dream.KnowledgeExtraction.ReplaceMissingValues import HandleMissingValues
-from JSONOutput import JSONOutput
+from dream.KnowledgeExtraction.JSONOutput import JSONOutput
 import xlrd
 import json
 import dream.simulation.LineGenerationJSON as ManPyMain #import ManPy main JSON script
