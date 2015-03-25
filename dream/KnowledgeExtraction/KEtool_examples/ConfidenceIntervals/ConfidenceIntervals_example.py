@@ -22,8 +22,8 @@ Created on 13 Jun 2014
 # along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
 # ===========================================================================
 
-from ImportCSVdata import Import_CSV
-from ConfidenceIntervals import Intervals
+from dream.KnowledgeExtraction.ImportCSVdata import Import_CSV
+from dream.KnowledgeExtraction.ConfidenceIntervals import Intervals
 
 filename = ("DataSet.csv")
 data=Import_CSV()   #call the Import_CSV module and using its method Input_data import the data set from the CSV file to the tool
