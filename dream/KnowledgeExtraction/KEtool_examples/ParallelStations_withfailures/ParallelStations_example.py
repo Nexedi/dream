@@ -26,9 +26,9 @@ from Transformations import BasicTransformations
 from DistributionFitting import DistFittest
 from DistributionFitting import Distributions
 from ExcelOutput import Output
+from JSONOutput import JSONOutput
 import ImportDatabase
 import json
-
 #================================= Extract data from the database ==========================================#
 
 cnxn=ImportDatabase.ConnectionData(seekName='ServerData', implicitExt='txt', number_of_cursors=3)
@@ -126,25 +126,22 @@ distMTTR_MILL2 = dist_MTTR.Poisson_distrfit(MTTR_MILL2)
 jsonFile = open('JSON_example.json','r')      #It opens the JSON file 
 data = json.load(jsonFile)                                                              #It loads the file
 jsonFile.close()
-nodes = data.get('nodes',[])                                                         #It creates a variable that holds the 'nodes' dictionary
 
-for element in nodes:
-    processingTime = nodes[element].get('processingTime',{})        #It creates a variable that gets the element attribute 'processingTime'
-    MTTF_Nodes = nodes[element].get('MTTF',{})                            #It creates a variable that gets the element attribute 'MTTF'
-    MTTR_Nodes = nodes[element].get('MTTR',{})                            #It creates a variable that gets the element attribute 'MTTR'
-        
-    if element == 'M1':
-        nodes['M1']['processingTime'] = distProcTime_MILL1         #It checks using if syntax if the element is 'M1'
-        nodes['M1']['failures']['MTTF'] = distMTTF_MILL1
-        nodes['M1']['failures']['MTTR'] = distMTTR_MILL1
-    elif element == 'M2':
-        nodes['M2']['processingTime'] = distProcTime_MILL2         #It checks using if syntax if the element is 'M2'
-        nodes['M2']['failures']['MTTF'] = distMTTF_MILL2
-        nodes['M2']['failures']['MTTR'] = distMTTR_MILL2
+exportJSON=JSONOutput()
+stationId1='M1'
+stationId2='M2'
+data1=exportJSON.ProcessingTimes(data, stationId1, distProcTime_MILL1)
+data2=exportJSON.ProcessingTimes(data1, stationId2, distProcTime_MILL2)
+
+data3=exportJSON.TTF(data2, stationId1, distMTTF_MILL1)
+data4=exportJSON.TTR(data3, stationId1, distMTTR_MILL1)
+
+data5=exportJSON.TTF(data4, stationId2, distMTTF_MILL2)
+data6=exportJSON.TTR(data5, stationId2, distMTTR_MILL2)
     
-    jsonFile = open('JSON_ParallelStations_Output.json',"w")     #It opens the JSON file
-    jsonFile.write(json.dumps(data, indent=True))                                           #It writes the updated data to the JSON file 
-    jsonFile.close()                                                                        #It closes the file
+jsonFile = open('JSON_ParallelStations_Output.json',"w")     #It opens the JSON file
+jsonFile.write(json.dumps(data6, indent=True))                                           #It writes the updated data to the JSON file 
+jsonFile.close()                                                                        #It closes the file
 
 #=================== Calling the ExcelOutput object, outputs the outcomes of the statistical analysis in xls files ==========================#
 export=Output()
