@@ -168,11 +168,11 @@
     "post_processing": {
       "plugin_list": [
         {
-          "_class": "dream.plugins.PostProcessDemandPlanning.PostProcessDemandPlanning", 
+          "_class": "dream.plugins.DemandPlanning.PostProcessDemandPlanning.PostProcessDemandPlanning", 
           "output_id": "demand_planning_spreadsheet"
         },
         {
-          "_class": "dream.plugins.DemandPlanningLine.DemandPlanningLine", 
+          "_class": "dream.plugins.DemandPlanning.DemandPlanningLine.DemandPlanningLine", 
           "output_id": "bottleneck_utilization"
         }
       ]
@@ -180,7 +180,7 @@
     "pre_processing": {
       "plugin_list": [
         {
-          "_class": "dream.plugins.AddDemandPlannerGenerator.AddDemandPlannerGenerator", 
+          "_class": "dream.plugins.DemandPlanning.AddDemandPlannerGenerator.AddDemandPlannerGenerator", 
           "input_id": "attached_document"
         }
       ]
