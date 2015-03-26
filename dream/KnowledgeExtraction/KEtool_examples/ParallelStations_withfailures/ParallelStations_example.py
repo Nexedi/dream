@@ -28,6 +28,8 @@ from dream.KnowledgeExtraction.DistributionFitting import Distributions
 from dream.KnowledgeExtraction.ExcelOutput import Output
 from dream.KnowledgeExtraction.JSONOutput import JSONOutput
 import ImportDatabase
+from xml.etree import ElementTree as et
+from CMSDOutput import CMSDOutput
 import json
 #================================= Extract data from the database ==========================================#
 
@@ -120,7 +122,25 @@ distMTTF_MILL1 = dist_MTTF.Weibull_distrfit(MTTF_MILL1)
 distMTTF_MILL2 = dist_MTTF.Weibull_distrfit(MTTF_MILL2)
 
 distMTTR_MILL1 = dist_MTTR.Poisson_distrfit(MTTR_MILL1)
-distMTTR_MILL2 = dist_MTTR.Poisson_distrfit(MTTR_MILL2) 
+distMTTR_MILL2 = dist_MTTR.Poisson_distrfit(MTTR_MILL2)
+
+#======================== Output preparation: output the values prepared in the CMSD information model of this model ====================================================#
+datafile=('CMSD_ParallelStations.xml')       #It defines the name or the directory of the XML file that is manually written the CMSD information model
+tree = et.parse(datafile)                                               #This file will be parsed using the XML.ETREE Python library
+
+exportCMSD=CMSDOutput()
+stationId1='M1'
+stationId2='M2'
+procTime1=exportCMSD.ProcessingTimes(tree, stationId1, distProcTime_MILL1) 
+procTime2=exportCMSD.ProcessingTimes(procTime1, stationId2, distProcTime_MILL2)
+
+TTF1=exportCMSD.TTF(procTime2, stationId1, distMTTF_MILL1)
+TTR1=exportCMSD.TTR(TTF1, stationId1, distMTTR_MILL1)
+
+TTF2=exportCMSD.TTF(TTR1, stationId2, distMTTF_MILL2)
+TTR2=exportCMSD.TTR(TTF2, stationId2, distMTTR_MILL2)
+
+TTR2.write('CMSD_ParallelStations_Output.xml',encoding="utf8")                         #It writes the element tree to a specified file, using the 'utf8' output encoding
 
 #======================= Output preparation: output the updated values in the JSON file of this example ================================#
 jsonFile = open('JSON_example.json','r')      #It opens the JSON file 
