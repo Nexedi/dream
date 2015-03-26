@@ -158,7 +158,7 @@ def _runSimulation(parameter_dict):
       exc_type, exc_value, exc_traceback = sys.exc_info()
       tb = ''.join(simpy._compat.format_chain(exc_type, exc_value, exc_traceback))
     else:
-      assert sys.version_info[0] == 3
+#       assert sys.version_ == 3
       tb = traceback.format_exc()
     app.logger.error(tb)
     return dict(error=tb)
