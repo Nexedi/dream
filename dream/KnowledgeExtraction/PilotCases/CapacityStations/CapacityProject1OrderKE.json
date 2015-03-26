@@ -255,6 +255,10 @@
         {
           "_class": "dream.plugins.CreateCapacityStations.CreateCapacityStations", 
           "input_id": "createCapacityStations"
+        },
+        {
+          "_class": "dream.plugins.AvailableCapacitySpreadsheet.AvailableCapacitySpreadsheet", 
+          "input_id": "createCapacityStations"
         }, 
         {
           "_class": "dream.plugins.CapacityStationsKE.CapacityStationsKE", 
