@@ -109,11 +109,15 @@
 					<Name>interarrivalTime</Name>
 					<Unit>minutes</Unit>
 					<Distribution>
-						<Name>Fixed</Name>
-						<DistributionParameter>
-						    <Name>mean</Name>
-							<Value>0.5</Value>
-						</DistributionParameter>
+						<Name></Name>
+						<DistributionParameterA>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterA>
+						<DistributionParameterB>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterB>
 					</Distribution>
 				</Property>
 				<Property>
@@ -165,26 +169,34 @@
 						</DistributionParameterB>
 					</Distribution>
 				</OperationTime>
-				<Property>
+				<Property1>
 					<Name>MeanTimeToFailure</Name>
 					<Unit>minutes</Unit>
 					<Distribution>
-						<Name>Fixed</Name>
-						<DistributionParameter>
-							<Name>mean</Name>
-							<Value>60</Value>
-						</DistributionParameter>
+						<Name></Name>
+						<DistributionParameterA>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterA>
+						<DistributionParameterB>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterB>
 					</Distribution>
-				</Property>
-				<Property>
+				</Property1>
+				<Property2>
 					<Name>MeanTimeToRepair</Name>
 					<Unit>minutes</Unit>
 					<Distribution>
-						<Name>Fixed</Name>
-						<DistributionParameter>
-							<Name>mean</Name>
-							<Value>5</Value>
-						</DistributionParameter>
+						<Name></Name>
+						<DistributionParameterA>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterA>
+						<DistributionParameterB>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterB>
 					</Distribution>
 					<Property>
 						<Name>RepairmanRequired</Name>
@@ -193,7 +205,7 @@
 							<ResourceIdentifier>W1</ResourceIdentifier>
 						</ResourcesRequired>
 					</Property>
-				</Property>
+				</Property2>
 			</Process>
 			
 			<Process>
@@ -254,26 +266,34 @@
 						</DistributionParameterB>
 					</Distribution>
 				</OperationTime>
-				<Property>
+				<Property1>
 					<Name>MeanTimeToFailure</Name>
 					<Unit>minutes</Unit>
 					<Distribution>
-						<Name>Fixed</Name>
-						<DistributionParameter>
-							<Name>mean</Name>
-							<Value>40</Value>
-						</DistributionParameter>
+						<Name></Name>
+						<DistributionParameterA>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterA>
+						<DistributionParameterB>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterB>
 					</Distribution>
-				</Property>
-				<Property>
+				</Property1>
+				<Property2>
 					<Name>MeanTimeToRepair</Name>
 					<Unit>minutes</Unit>
 					<Distribution>
-						<Name>Fixed</Name>
-						<DistributionParameter>
-							<Name>mean</Name>
-							<Value>10</Value>
-						</DistributionParameter>
+						<Name></Name>
+						<DistributionParameterA>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterA>
+						<DistributionParameterB>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterB>
 					</Distribution>
 					<Property>
 						<Name>RepairmanRequired</Name>
@@ -282,7 +302,7 @@
 							<ResourceIdentifier>W1</ResourceIdentifier>
 						</ResourcesRequired>
 					</Property>
-				</Property>
+				</Property2>
 			</Process>
 		
 			<Process>

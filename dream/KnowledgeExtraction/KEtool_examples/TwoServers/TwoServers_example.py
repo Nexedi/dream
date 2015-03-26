@@ -29,6 +29,7 @@ from dream.KnowledgeExtraction.JSONOutput import JSONOutput
 from dream.KnowledgeExtraction.ReplaceMissingValues import HandleMissingValues
 import dream.simulation.LineGenerationJSON as ManPyMain #import ManPy main JSON script
 from xml.etree import ElementTree as et
+from CMSDOutput import CMSDOutput
 import xlrd
 import json
 
@@ -59,69 +60,18 @@ M1=Dict.get('M1')
 M2=Dict.get('M2')
 
 
-#==================================== Output preparation: output the updated values in the CMSD information model of Topology10 ====================================================#
+#==================================== Output preparation: output the updated values in the CMSD information model ====================================================#
 
 datafile=('CMSD_TwoServers.xml')       #It defines the name or the directory of the XML file that is manually written the CMSD information model
 tree = et.parse(datafile)                                               #This file will be parsed using the XML.ETREE Python library
 
-M1Parameters=[]
-M1ParameterValue=[]
-for index in list(Dict['M1'].keys()):
-    if index is not 'distributionType':
-        M1Parameters.append(index)
-        M1ParameterValue.append(Dict['M1'][index])
-if Dict['M1']['distributionType']=='Normal':
-    del M1['min']
-    del M1['max']
-elif Dict['M2']['distributionType']=='Normal':
-    del M2['min']
-    del M2['max']
+exportCMSD=CMSDOutput()
+stationId1='A020'
+stationId2='A040'
+procTime1=exportCMSD.ProcessingTimes(tree, stationId1, M1) 
+procTime2=exportCMSD.ProcessingTimes(procTime1, stationId2, M2)
 
-M2Parameters=[]
-M2ParameterValue=[]
-for index in list(Dict['M2'].keys()):
-    if index is not 'distributionType':
-        M2Parameters.append(index)
-        M2ParameterValue.append(Dict['M2'][index])       
-
-root=tree.getroot()
-process=tree.findall('./DataSection/ProcessPlan/Process')               #It creates a new variable and using the 'findall' order in XML.ETREE library, this new variable holds all the processes defined in the XML file
-for process in process:
-    process_identifier=process.find('Identifier').text                  #It creates a new variable that holds the text of the Identifier element in the XML file
-    if process_identifier=='A020':                                      #It checks using if...elif syntax if the process identifier is 'A020', so the process that uses the first machine
-        OperationTime=process.get('OpeationTime')                       #It gets the element attribute OpearationTime inside the Process node
-        Distribution=process.get('./OperationTime/Distribution')        #It gets the element attribute Distribution inside the OpearationTime node
-        Name=process.find('./OperationTime/Distribution/Name')          #It finds the subelement Name inside the Distribution attribute
-        Name.text=Dict['M1']['distributionType']                                     #It changes the text between the Name element tags, putting the name of the distribution (e.g. in Normal distribution that will be Normal) 
-        DistributionParameterA=process.get('./OperationTime/Distribution/DistributionParameterA')
-        Name=process.find('./OperationTime/Distribution/DistributionParameterA/Name')
-        Name.text=str(M1Parameters[0])                               #It changes the text between the Name element tags, putting the name of the distribution's first parameter (e.g. in Normal that will be the mean)
-        Value=process.find('./OperationTime/Distribution/DistributionParameterA/Value')
-        Value.text=str(M1ParameterValue[0])                          #It changes the text between the Value element tags, putting the value of the distribution's first parameter (e.g. in Normal so for mean value that will be 5.0)
-        DistributionParameterB=process.get('./OperationTime/Distribution/DistributionParameterB')
-        Name=process.find('./OperationTime/Distribution/DistributionParameterB/Name')
-        Name.text=str(M1Parameters[1])                                #It changes the text between the Name element tags, putting the name of the distribution's second parameter (e.g. in Normal that will be the standarddeviation)
-        Value=process.find('./OperationTime/Distribution/DistributionParameterB/Value')
-        Value.text=str(M1ParameterValue[1])                           #It changes the text between the Value element tags, putting the value of the distribution's second parameter (e.g. in Normal so for standarddeviation value that will be 1.3)
-    elif process_identifier=='A040':                                #It checks using if...elif syntax if the process identifier is 'A040', so the process that uses the second machine 
-        OperationTime=process.get('OpeationTime')
-        Distribution=process.get('./OperationTime/Distribution')
-        Name=process.find('./OperationTime/Distribution/Name')
-        Name.text=Dict['M2']['distributionType'] 
-        DistributionParameterA=process.get('./OperationTime/Distribution/DistributionParameterA')
-        Name=process.find('./OperationTime/Distribution/DistributionParameterA/Name')
-        Name.text=str(M2Parameters[0]) 
-        Value=process.find('./OperationTime/Distribution/DistributionParameterA/Value')
-        Value.text=str(M2ParameterValue[0]) 
-        DistributionParameterB=process.get('./OperationTime/Distribution/DistributionParameterB')
-        Name=process.find('./OperationTime/Distribution/DistributionParameterB/Name')
-        Name.text=str(M2Parameters[1]) 
-        Value=process.find('./OperationTime/Distribution/DistributionParameterB/Value')
-        Value.text=str(M2ParameterValue[1]) 
-    else:
-        continue
-    tree.write('CMSD_TwoServers_Output.xml',encoding="utf8")                         #It writes the element tree to a specified file, using the 'utf8' output encoding
-
+procTime2.write('CMSD_TwoServers_Output.xml',encoding="utf8")                         #It writes the element tree to a specified file, using the 'utf8' output encoding
 #================================= Output preparation: output the updated values in the JSON file of Topology10 =========================================================#
 jsonFile= open('JSON_TwoServers.json','r')      #It opens the Topology10 JSON file 
 data = json.load(jsonFile)                                                              #It loads the file
