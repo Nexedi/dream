@@ -37,7 +37,7 @@ def DataExtraction(DBFilePath):
                     """)
     #create a dictionary called data and put inside two lists (orders and stations) and a dictionary called WIP
     data={}
-    data['orders']=[]
+    data['productionOrders']=[]
     data['WIP']={}
     data['stations']=[]
     productionOrders={}
@@ -153,8 +153,7 @@ def DataExtraction(DBFilePath):
         #in case the status is 'finished' continue to the next order                                   
         elif status == 'finished':
             continue    
-        data['orders'].append(productionOrders.copy())           
-    print data
+        data['productionOrders'].append(productionOrders.copy())           
+#     print data
     return data
-
-  
+DataExtraction("C:\Users\Panos\Documents\DB_Approach\JobShop")
