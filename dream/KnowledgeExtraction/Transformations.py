@@ -26,7 +26,7 @@ Created on 14 Nov 2013
 import rpy2.robjects as robjects
 
 #The BasicTransformations object
-class BasicTransformations:
+class BasicTransformations(object):
 # A variety of transformations are calculated in this object
     def sum(self, data):                      #calculates the sum of data sample
         data=robjects.FloatVector(data)          ##The given list changes into float vector in order to be handled by RPy2

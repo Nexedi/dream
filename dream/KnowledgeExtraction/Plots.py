@@ -25,7 +25,7 @@ Created on 16 Dec 2013
 from rpy2 import robjects
 
 #The Graphs object
-class Graphs:
+class Graphs(object):
     #Graphs that can visualize the data samples 
     
     def Plots(self,data, fileName="plotChart.jpg"):

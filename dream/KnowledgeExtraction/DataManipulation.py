@@ -26,7 +26,7 @@ Created on 16 Apr 2014
 import rpy2.robjects as robjects
 
 #The DataManipulation object
-class DataManagement:
+class DataManagement(object):
     
     def round(self, data):                      #returns the rounded values of the data sample
         data=robjects.FloatVector(data)          ##The given list changes into float vector in order to be handled by RPy2

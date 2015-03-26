@@ -25,7 +25,7 @@ Created on 16 Nov 2013
 from rpy2 import robjects
 
 #The ConfidenceIntervals object
-class Intervals:
+class Intervals(object):
     #Calculate the p (decimal number) confidence intervals for a sample of data
     def ConfidIntervals(self,data,p): 
   

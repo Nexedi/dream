@@ -35,7 +35,7 @@ MASS= importr('MASS')
 #DistFittest object: for Kolmogorov-Smirnov distribution fitting test in order to find the best distribution fitting for the given data points
 
 #The Distributions object
-class Distributions:
+class Distributions(object):
            
     def Normal_distrfit(self,data):
         data=robjects.FloatVector(data)     #The given data sample changes into float vector in order to be handled by RPy2
@@ -139,7 +139,7 @@ class Distributions:
         return myDict
         
 #The Distribution Fitting test object
-class DistFittest:
+class DistFittest(object):
     
     def Norm_kstest(self,data):             
         data=robjects.FloatVector(data)         #The given data sample changes into float vector in order to be handled by RPy2

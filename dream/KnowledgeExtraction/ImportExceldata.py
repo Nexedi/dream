@@ -23,7 +23,7 @@ Created on 19 Feb 2014
 @author: Panos
 '''
 #The Import_Excel object
-class Import_Excel:
+class Import_Excel(object):
 #This object reads data from different worksheets of an Excel document
     def Input_data(self,worksheetName,inputbook):         #This method takes as an argument the Name of the preferred worksheet 
             

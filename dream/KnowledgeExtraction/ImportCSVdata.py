@@ -23,7 +23,7 @@ Created on 13 Jun 2014
 # ===========================================================================
 import csv
 #The Import_CSV object
-class Import_CSV:
+class Import_CSV(object):
 #This object reads data from a CSV document
     def Input_data(self,fileName):         #This method takes as an argument the Name of the CSV file
         #Opens the CSV for the reader to use

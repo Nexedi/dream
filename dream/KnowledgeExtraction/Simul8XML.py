@@ -27,7 +27,7 @@ Created on 27 Nov 2014
 # By using this script the KE tool integrates with Simul8 accessing the XML of one model and modifying several info based on the available data
 from xml.etree import ElementTree as et
 # The Distributions object
-class Simul8Output:
+class Simul8Output(object):
     
     def Simul8Dist(self,dist):     #Using this method the statistical distributions from the DistributionFitting objects translated to meaningful info for the Simul8 package
         self.sim8Dist=[]
