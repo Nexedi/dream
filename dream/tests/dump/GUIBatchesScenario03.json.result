@@ -1,0 +1,2707 @@
+{
+ "_class": "Dream.Simulation", 
+ "buffer_output": [
+  [
+   "Buffer", 
+   "Final Value", 
+   "Average", 
+   "Std Dev", 
+   "Min", 
+   "Max"
+  ], 
+  [
+   "B12", 
+   10.0, 
+   "10.00", 
+   "0.00", 
+   10, 
+   12
+  ], 
+  [
+   "B10", 
+   1.0, 
+   "1.00", 
+   "0.00", 
+   1, 
+   1
+  ], 
+  [
+   "B11", 
+   1.0, 
+   "1.00", 
+   "0.00", 
+   1, 
+   1
+  ], 
+  [
+   "B4", 
+   0.0, 
+   "0.00", 
+   "0.00", 
+   0, 
+   1
+  ], 
+  [
+   "B7", 
+   2.0, 
+   "2.00", 
+   "0.00", 
+   2, 
+   3
+  ], 
+  [
+   "B1", 
+   0.0, 
+   "0.00", 
+   "0.00", 
+   0, 
+   1
+  ], 
+  [
+   "B2", 
+   0.0, 
+   "0.00", 
+   "0.00", 
+   0, 
+   1
+  ], 
+  [
+   "B3", 
+   0.0, 
+   "0.00", 
+   "0.00", 
+   0, 
+   1
+  ], 
+  [
+   "B8", 
+   0.0, 
+   "0.00", 
+   "0.00", 
+   0, 
+   0
+  ], 
+  [
+   "B9", 
+   1.0, 
+   "1.00", 
+   "0.00", 
+   1, 
+   2
+  ]
+ ], 
+ "elementList": [
+  {
+   "_class": "Dream.LineClearance", 
+   "family": "Buffer", 
+   "id": "B1", 
+   "results": {
+    "wip_stat_list": [
+     [
+      [
+       0.0, 
+       0.0
+      ], 
+      [
+       0.0, 
+       1.0
+      ], 
+      [
+       0.0, 
+       1.0
+      ], 
+      [
+       0.0, 
+       0.0
+      ], 
+      [
+       2.0, 
+       0.0
+      ]
+     ]
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Queue", 
+   "family": "Buffer", 
+   "id": "B10", 
+   "results": {
+    "wip_stat_list": [
+     [
+      [
+       0.0, 
+       0.0
+      ], 
+      [
+       0.0, 
+       1.0
+      ], 
+      [
+       0.0, 
+       1.0
+      ], 
+      [
+       2.0, 
+       1.0
+      ]
+     ]
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Queue", 
+   "family": "Buffer", 
+   "id": "B11", 
+   "results": {
+    "wip_stat_list": [
+     [
+      [
+       0.0, 
+       0.0
+      ], 
+      [
+       0.0, 
+       1.0
+      ], 
+      [
+       0.0, 
+       1.0
+      ], 
+      [
+       2.0, 
+       1.0
+      ]
+     ]
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.RoutingQueue", 
+   "family": "Buffer", 
+   "id": "B12", 
+   "results": {
+    "wip_stat_list": [
+     [
+      [
+       0.0, 
+       0.0
+      ], 
+      [
+       0.0, 
+       12.0
+      ], 
+      [
+       0.0, 
+       12.0
+      ], 
+      [
+       0.0, 
+       11.0
+      ], 
+      [
+       0.0, 
+       10.0
+      ], 
+      [
+       0.0, 
+       10.0
+      ], 
+      [
+       2.0, 
+       10.0
+      ]
+     ]
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.LineClearance", 
+   "family": "Buffer", 
+   "id": "B2", 
+   "results": {
+    "wip_stat_list": [
+     [
+      [
+       0.0, 
+       0.0
+      ], 
+      [
+       0.0, 
+       1.0
+      ], 
+      [
+       0.0, 
+       1.0
+      ], 
+      [
+       0.0, 
+       0.0
+      ], 
+      [
+       2.0, 
+       0.0
+      ]
+     ]
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.LineClearance", 
+   "family": "Buffer", 
+   "id": "B3", 
+   "results": {
+    "wip_stat_list": [
+     [
+      [
+       0.0, 
+       0.0
+      ], 
+      [
+       0.0, 
+       1.0
+      ], 
+      [
+       0.0, 
+       1.0
+      ], 
+      [
+       0.0, 
+       0.0
+      ], 
+      [
+       2.0, 
+       0.0
+      ]
+     ]
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.LineClearance", 
+   "family": "Buffer", 
+   "id": "B4", 
+   "results": {
+    "wip_stat_list": [
+     [
+      [
+       0.0, 
+       0.0
+      ], 
+      [
+       0.0, 
+       1.0
+      ], 
+      [
+       0.0, 
+       1.0
+      ], 
+      [
+       0.0, 
+       0.0
+      ], 
+      [
+       2.0, 
+       0.0
+      ]
+     ]
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Queue", 
+   "family": "Buffer", 
+   "id": "B7", 
+   "results": {
+    "wip_stat_list": [
+     [
+      [
+       0.0, 
+       0.0
+      ], 
+      [
+       0.0, 
+       3.0
+      ], 
+      [
+       0.0, 
+       3.0
+      ], 
+      [
+       0.0, 
+       2.0
+      ], 
+      [
+       0.0, 
+       2.0
+      ], 
+      [
+       2.0, 
+       2.0
+      ]
+     ]
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Queue", 
+   "family": "Buffer", 
+   "id": "B8", 
+   "results": {
+    "wip_stat_list": [
+     [
+      [
+       0.0, 
+       0.0
+      ], 
+      [
+       2.0, 
+       0.0
+      ]
+     ]
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Queue", 
+   "family": "Buffer", 
+   "id": "B9", 
+   "results": {
+    "wip_stat_list": [
+     [
+      [
+       0.0, 
+       0.0
+      ], 
+      [
+       0.0, 
+       2.0
+      ], 
+      [
+       0.0, 
+       2.0
+      ], 
+      [
+       0.0, 
+       1.0
+      ], 
+      [
+       0.0, 
+       1.0
+      ], 
+      [
+       2.0, 
+       1.0
+      ]
+     ]
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.BatchReassemblyBlocking", 
+   "family": "Server", 
+   "id": "BRA", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     100.0
+    ], 
+    "working_ratio": [
+     0.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.BatchReassemblyBlocking", 
+   "family": "Server", 
+   "id": "BRB", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     100.0
+    ], 
+    "working_ratio": [
+     0.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Exit", 
+   "family": "Exit", 
+   "id": "Dream.Exit1", 
+   "results": {
+    "lifespan": [
+     0
+    ], 
+    "takt_time": [
+     0
+    ], 
+    "throughput": [
+     0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "family": "Operator", 
+   "id": "PB_1", 
+   "results": {
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "on_break_ratio": [
+     0.0
+    ], 
+    "schedule": [
+     {
+      "entranceTime": 0, 
+      "exitTime": 2.0, 
+      "stationId": "St1M0"
+     }
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     100.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "family": "Operator", 
+   "id": "PB_10", 
+   "results": {
+    "off_shift_ratio": [
+     100.0
+    ], 
+    "on_break_ratio": [
+     0.0
+    ], 
+    "schedule": [
+     {
+      "entranceTime": 0, 
+      "exitTime": 2.0, 
+      "stationId": "off-shift"
+     }
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     0.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "family": "Operator", 
+   "id": "PB_12", 
+   "results": {
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "on_break_ratio": [
+     0.0
+    ], 
+    "schedule": [
+     {
+      "entranceTime": 0, 
+      "exitTime": 2.0, 
+      "stationId": "St6M1"
+     }
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     100.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "family": "Operator", 
+   "id": "PB_15", 
+   "results": {
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "on_break_ratio": [
+     0.0
+    ], 
+    "schedule": [
+     {
+      "entranceTime": 0.0, 
+      "exitTime": 2.0, 
+      "stationId": "St8M0"
+     }
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     100.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "family": "Operator", 
+   "id": "PB_16", 
+   "results": {
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "on_break_ratio": [
+     0.0
+    ], 
+    "schedule": [
+     {
+      "entranceTime": 0, 
+      "exitTime": 2.0, 
+      "stationId": "St7M0"
+     }
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     100.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "family": "Operator", 
+   "id": "PB_17", 
+   "results": {
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "on_break_ratio": [
+     0.0
+    ], 
+    "schedule": [
+     {
+      "entranceTime": 0, 
+      "exitTime": 2.0, 
+      "stationId": "St6M0"
+     }
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     100.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "family": "Operator", 
+   "id": "PB_2", 
+   "results": {
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "on_break_ratio": [
+     0.0
+    ], 
+    "schedule": [
+     {
+      "entranceTime": 0, 
+      "exitTime": 2.0, 
+      "stationId": "St0M1"
+     }
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     100.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "family": "Operator", 
+   "id": "PB_20", 
+   "results": {
+    "off_shift_ratio": [
+     100.0
+    ], 
+    "on_break_ratio": [
+     0.0
+    ], 
+    "schedule": [
+     {
+      "entranceTime": 0, 
+      "exitTime": 2.0, 
+      "stationId": "off-shift"
+     }
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     0.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "family": "Operator", 
+   "id": "PB_21", 
+   "results": {
+    "off_shift_ratio": [
+     100.0
+    ], 
+    "on_break_ratio": [
+     0.0
+    ], 
+    "schedule": [
+     {
+      "entranceTime": 0, 
+      "exitTime": 2.0, 
+      "stationId": "off-shift"
+     }
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     0.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "family": "Operator", 
+   "id": "PB_25", 
+   "results": {
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "on_break_ratio": [
+     0.0
+    ], 
+    "schedule": [
+     {
+      "entranceTime": 0, 
+      "exitTime": 2.0, 
+      "stationId": "St8M1"
+     }
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     100.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "family": "Operator", 
+   "id": "PB_3", 
+   "results": {
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "on_break_ratio": [
+     0.0
+    ], 
+    "schedule": [
+     {
+      "entranceTime": 0, 
+      "exitTime": 2.0, 
+      "stationId": "St2M0"
+     }
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     100.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "family": "Operator", 
+   "id": "PB_30", 
+   "results": {
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "on_break_ratio": [
+     0.0
+    ], 
+    "schedule": [
+     {
+      "entranceTime": 0, 
+      "exitTime": 2.0, 
+      "stationId": "St3M0"
+     }
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     100.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "family": "Operator", 
+   "id": "PB_4", 
+   "results": {
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "on_break_ratio": [
+     0.0
+    ], 
+    "schedule": [
+     {
+      "entranceTime": 0, 
+      "exitTime": 2.0, 
+      "stationId": "St1M1"
+     }
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     100.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "family": "Operator", 
+   "id": "PB_7", 
+   "results": {
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "on_break_ratio": [
+     0.0
+    ], 
+    "schedule": [
+     {
+      "entranceTime": 0, 
+      "exitTime": 2.0, 
+      "stationId": "St2M1"
+     }
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     100.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "family": "Operator", 
+   "id": "PB_9", 
+   "results": {
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "on_break_ratio": [
+     0.0
+    ], 
+    "schedule": [
+     {
+      "entranceTime": 0, 
+      "exitTime": 2.0, 
+      "stationId": "St5M1"
+     }
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     100.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.SkilledRouter", 
+   "id": "SkilledRouter01", 
+   "results": {
+    "solutionList": [
+     {
+      "allocation": {
+       "PB_1": "St1M0", 
+       "PB_12": "St6M1", 
+       "PB_15": "St8M0", 
+       "PB_16": "St7M0", 
+       "PB_17": "St6M0", 
+       "PB_2": "St0M1", 
+       "PB_25": "St8M1", 
+       "PB_3": "St2M0", 
+       "PB_30": "St3M0", 
+       "PB_4": "St1M1", 
+       "PB_7": "St2M1", 
+       "PB_9": "St5M1"
+      }, 
+      "time": 0
+     }, 
+     {
+      "allocation": {}, 
+      "time": 2.0
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.BatchScrapMachineAfterDecompose", 
+   "family": "Server", 
+   "id": "St0M0", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     100.0
+    ], 
+    "working_ratio": [
+     0.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.BatchScrapMachineAfterDecompose", 
+   "family": "Server", 
+   "id": "St0M1", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     100.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.BatchScrapMachine", 
+   "family": "Server", 
+   "id": "St1M0", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     100.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.BatchScrapMachine", 
+   "family": "Server", 
+   "id": "St1M1", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     100.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.M3", 
+   "family": "Server", 
+   "id": "St2M0", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     100.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.M3", 
+   "family": "Server", 
+   "id": "St2M1", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     100.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.BatchScrapMachine", 
+   "family": "Server", 
+   "id": "St3M0", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     100.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.BatchScrapMachine", 
+   "family": "Server", 
+   "id": "St4M0", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     100.0
+    ], 
+    "working_ratio": [
+     0.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.BatchReassemblyBlocking", 
+   "family": "Server", 
+   "id": "St4M0_R", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     100.0
+    ], 
+    "working_ratio": [
+     0.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.BatchScrapMachine", 
+   "family": "Server", 
+   "id": "St5M0", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     100.0
+    ], 
+    "working_ratio": [
+     0.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.BatchScrapMachine", 
+   "family": "Server", 
+   "id": "St5M1", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     100.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.BatchScrapMachine", 
+   "family": "Server", 
+   "id": "St6M0", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     100.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.BatchReassemblyBlocking", 
+   "family": "Server", 
+   "id": "St6M0_R", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     100.0
+    ], 
+    "working_ratio": [
+     0.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.BatchScrapMachine", 
+   "family": "Server", 
+   "id": "St6M1", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     100.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.BatchReassemblyBlocking", 
+   "family": "Server", 
+   "id": "St6M1_R", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     100.0
+    ], 
+    "working_ratio": [
+     0.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.BatchScrapMachineAfterDecompose", 
+   "family": "Server", 
+   "id": "St7M0", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     100.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.M3", 
+   "family": "Server", 
+   "id": "St8M0", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     100.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.M3", 
+   "family": "Server", 
+   "id": "St8M1", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     100.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.BatchReassemblyBlocking", 
+   "family": "Server", 
+   "id": "St8RA", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     100.0
+    ], 
+    "working_ratio": [
+     0.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.BatchReassemblyBlocking", 
+   "family": "Server", 
+   "id": "St8RB", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     100.0
+    ], 
+    "working_ratio": [
+     0.0
+    ]
+   }
+  }
+ ], 
+ "exit_output": [
+  [
+   "KPI", 
+   "Unit", 
+   "Value"
+  ], 
+  [
+   "Number of batches produced", 
+   "Batches", 
+   0
+  ], 
+  [
+   "Number of units produced", 
+   "Units", 
+   0
+  ], 
+  [
+   "Line throughput", 
+   "Batches/minute", 
+   "0.00"
+  ], 
+  [
+   "Average Unit Departure Rate", 
+   "Units/minute", 
+   "0.00"
+  ], 
+  [
+   "Average Cycle Time", 
+   "minute", 
+   "0.00"
+  ]
+ ], 
+ "general": {
+  "_class": "Dream.Configuration"
+ }, 
+ "key": "default", 
+ "operator_gantt": {
+  "subscales": [
+   {
+    "date": "%H:%i", 
+    "step": 1, 
+    "unit": "hour"
+   }
+  ], 
+  "task_list": [
+   {
+    "id": "PB_1", 
+    "open": false, 
+    "text": "PB_1", 
+    "type": "operator"
+   }, 
+   {
+    "id": "PB_10", 
+    "open": false, 
+    "text": "PB_10", 
+    "type": "operator"
+   }, 
+   {
+    "id": "PB_12", 
+    "open": false, 
+    "text": "PB_12", 
+    "type": "operator"
+   }, 
+   {
+    "id": "PB_15", 
+    "open": false, 
+    "text": "PB_15", 
+    "type": "operator"
+   }, 
+   {
+    "id": "PB_16", 
+    "open": false, 
+    "text": "PB_16", 
+    "type": "operator"
+   }, 
+   {
+    "id": "PB_17", 
+    "open": false, 
+    "text": "PB_17", 
+    "type": "operator"
+   }, 
+   {
+    "id": "PB_2", 
+    "open": false, 
+    "text": "PB_2", 
+    "type": "operator"
+   }, 
+   {
+    "id": "PB_20", 
+    "open": false, 
+    "text": "PB_20", 
+    "type": "operator"
+   }, 
+   {
+    "id": "PB_21", 
+    "open": false, 
+    "text": "PB_21", 
+    "type": "operator"
+   }, 
+   {
+    "id": "PB_25", 
+    "open": false, 
+    "text": "PB_25", 
+    "type": "operator"
+   }, 
+   {
+    "id": "PB_3", 
+    "open": false, 
+    "text": "PB_3", 
+    "type": "operator"
+   }, 
+   {
+    "id": "PB_30", 
+    "open": false, 
+    "text": "PB_30", 
+    "type": "operator"
+   }, 
+   {
+    "id": "PB_4", 
+    "open": false, 
+    "text": "PB_4", 
+    "type": "operator"
+   }, 
+   {
+    "id": "PB_7", 
+    "open": false, 
+    "text": "PB_7", 
+    "type": "operator"
+   }, 
+   {
+    "id": "PB_9", 
+    "open": false, 
+    "text": "PB_9", 
+    "type": "operator"
+   }, 
+   {
+    "color": "Olive", 
+    "duration": 2.0, 
+    "entranceTime": 0, 
+    "id": "PB_1St1M02", 
+    "open": false, 
+    "parent": "PB_1", 
+    "start_date": "16-02-2015 07:00", 
+    "stop_date": "16-02-2015 07:02", 
+    "text": "St1M0"
+   }, 
+   {
+    "color": "white", 
+    "duration": 2.0, 
+    "entranceTime": 0, 
+    "id": "PB_10off-shift2", 
+    "open": false, 
+    "parent": "PB_10", 
+    "start_date": "16-02-2015 07:00", 
+    "stop_date": "16-02-2015 07:02", 
+    "text": "off-shift"
+   }, 
+   {
+    "color": "gold", 
+    "duration": 2.0, 
+    "entranceTime": 0, 
+    "id": "PB_12St6M12", 
+    "open": false, 
+    "parent": "PB_12", 
+    "start_date": "16-02-2015 07:00", 
+    "stop_date": "16-02-2015 07:02", 
+    "text": "St6M1"
+   }, 
+   {
+    "color": "yellow", 
+    "duration": 2.0, 
+    "entranceTime": 0.0, 
+    "id": "PB_15St8M02", 
+    "open": false, 
+    "parent": "PB_15", 
+    "start_date": "16-02-2015 07:00", 
+    "stop_date": "16-02-2015 07:02", 
+    "text": "St8M0"
+   }, 
+   {
+    "color": "blue", 
+    "duration": 2.0, 
+    "entranceTime": 0, 
+    "id": "PB_16St7M02", 
+    "open": false, 
+    "parent": "PB_16", 
+    "start_date": "16-02-2015 07:00", 
+    "stop_date": "16-02-2015 07:02", 
+    "text": "St7M0"
+   }, 
+   {
+    "color": "black", 
+    "duration": 2.0, 
+    "entranceTime": 0, 
+    "id": "PB_17St6M02", 
+    "open": false, 
+    "parent": "PB_17", 
+    "start_date": "16-02-2015 07:00", 
+    "stop_date": "16-02-2015 07:02", 
+    "text": "St6M0"
+   }, 
+   {
+    "color": "orange", 
+    "duration": 2.0, 
+    "entranceTime": 0, 
+    "id": "PB_2St0M12", 
+    "open": false, 
+    "parent": "PB_2", 
+    "start_date": "16-02-2015 07:00", 
+    "stop_date": "16-02-2015 07:02", 
+    "text": "St0M1"
+   }, 
+   {
+    "color": "white", 
+    "duration": 2.0, 
+    "entranceTime": 0, 
+    "id": "PB_20off-shift2", 
+    "open": false, 
+    "parent": "PB_20", 
+    "start_date": "16-02-2015 07:00", 
+    "stop_date": "16-02-2015 07:02", 
+    "text": "off-shift"
+   }, 
+   {
+    "color": "white", 
+    "duration": 2.0, 
+    "entranceTime": 0, 
+    "id": "PB_21off-shift2", 
+    "open": false, 
+    "parent": "PB_21", 
+    "start_date": "16-02-2015 07:00", 
+    "stop_date": "16-02-2015 07:02", 
+    "text": "off-shift"
+   }, 
+   {
+    "color": "magenta", 
+    "duration": 2.0, 
+    "entranceTime": 0, 
+    "id": "PB_25St8M12", 
+    "open": false, 
+    "parent": "PB_25", 
+    "start_date": "16-02-2015 07:00", 
+    "stop_date": "16-02-2015 07:02", 
+    "text": "St8M1"
+   }, 
+   {
+    "color": "DarkRed", 
+    "duration": 2.0, 
+    "entranceTime": 0, 
+    "id": "PB_3St2M02", 
+    "open": false, 
+    "parent": "PB_3", 
+    "start_date": "16-02-2015 07:00", 
+    "stop_date": "16-02-2015 07:02", 
+    "text": "St2M0"
+   }, 
+   {
+    "color": "Fuchsia", 
+    "duration": 2.0, 
+    "entranceTime": 0, 
+    "id": "PB_30St3M02", 
+    "open": false, 
+    "parent": "PB_30", 
+    "start_date": "16-02-2015 07:00", 
+    "stop_date": "16-02-2015 07:02", 
+    "text": "St3M0"
+   }, 
+   {
+    "color": "pink", 
+    "duration": 2.0, 
+    "entranceTime": 0, 
+    "id": "PB_4St1M12", 
+    "open": false, 
+    "parent": "PB_4", 
+    "start_date": "16-02-2015 07:00", 
+    "stop_date": "16-02-2015 07:02", 
+    "text": "St1M1"
+   }, 
+   {
+    "color": "Aqua", 
+    "duration": 2.0, 
+    "entranceTime": 0, 
+    "id": "PB_7St2M12", 
+    "open": false, 
+    "parent": "PB_7", 
+    "start_date": "16-02-2015 07:00", 
+    "stop_date": "16-02-2015 07:02", 
+    "text": "St2M1"
+   }, 
+   {
+    "color": "red", 
+    "duration": 2.0, 
+    "entranceTime": 0, 
+    "id": "PB_9St5M12", 
+    "open": false, 
+    "parent": "PB_9", 
+    "start_date": "16-02-2015 07:00", 
+    "stop_date": "16-02-2015 07:02", 
+    "text": "St5M1"
+   }
+  ], 
+  "time_unit": "minute"
+ }, 
+ "operator_spreadsheet": {
+  "data": "0M8R4KGxGuEAAAAAAAAAAAAAAAAAAAAAPgADAP7/CQAGAAAAAAAAAAAAAAABAAAACQAAAAAAAAAA\nEAAA/v///wAAAAD+////AAAAAAgAAAD/////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n//////////////////////////////////////////////////////////////////////////8J\nCBAAAAYFALsNzAcAAAAABgAAAOEAAgCwBMEAAgAAAOIAAABcAHAATm9uZSAgICAgICAgICAgICAg\nICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg\nICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIEIAAgCwBGEBAgAAAD0BAgABAJwA\nAgAOABkAAgAAABIAAgAAAGMAAgAAABMAAgAAAK8BAgAAALwBAgAAAEAAAgAAAI0AAgAAAD0AEgDg\nAVoAzz9OKjgAAAAAAAEAWAIiAAIAAAAOAAIAAQC3AQIAAADaAAIAAAAxABUAyAAAAP9/kAEAAAAA\nAQAFAEFyaWFsMQAVAMgAAAD/f5ABAAAAAAEABQBBcmlhbDEAFQDIAAAA/3+QAQAAAAABAAUAQXJp\nYWwxABUAyAAAAP9/kAEAAAAAAQAFAEFyaWFsMQAVAMgAAAD/f5ABAAAAAAEABQBBcmlhbDEAFQDI\nAAAA/3+QAQAAAAABAAUAQXJpYWwxABUAyAABAAoAvAIAAAAAAQAFAEFyaWFsMQAVAMgAAQAKALwC\nAAAAAAEABQBBcmlhbDEAFQDIAAAA/3+QAQAAAAABAAUAQXJpYWweBAwApAAHAABHZW5lcmFs4AAU\nAAYApAD1/yAAAPQAAAAAAAAAAMAg4AAUAAYApAD1/yAAAPQAAAAAAAAAAMAg4AAUAAYApAD1/yAA\nAPQAAAAAAAAAAMAg4AAUAAYApAD1/yAAAPQAAAAAAAAAAMAg4AAUAAYApAD1/yAAAPQAAAAAAAAA\nAMAg4AAUAAYApAD1/yAAAPQAAAAAAAAAAMAg4AAUAAYApAD1/yAAAPQAAAAAAAAAAMAg4AAUAAYA\npAD1/yAAAPQAAAAAAAAAAMAg4AAUAAYApAD1/yAAAPQAAAAAAAAAAMAg4AAUAAYApAD1/yAAAPQA\nAAAAAAAAAMAg4AAUAAYApAD1/yAAAPQAAAAAAAAAAMAg4AAUAAYApAD1/yAAAPQAAAAAAAAAAMAg\n4AAUAAYApAD1/yAAAPQAAAAAAAAAAMAg4AAUAAYApAD1/yAAAPQAAAAAAAAAAMAg4AAUAAYApAD1\n/yAAAPQAAAAAAAAAAMAg4AAUAAYApAD1/yAAAPQAAAAAAAAAAMAg4AAUAAYApAABACAAAPgAAAAA\nAAAAAMAg4AAUAAcApAABACAAAPgAMAAAACAAAMAg4AAUAAgApAABACAAAPgAAAAAAAAAAMAg4AAU\nAAkApAABACAAAPgAAAAAAAAAAMAgkwIEAACAAP9gAQIAAQCFABkAAQUAAAAAEQBPcGVyYXRvciBT\nY2hlZHVsZfwA7wAcAAAAHAAAAAgAAE9wZXJhdG9yBwAATWFjaGluZQoAAFN0YXJ0IFRpbWUIAABF\nbmQgVGltZQQAAFBCXzQFAABTdDFNMQQAAFBCXzkFAABTdDVNMQQAAFBCXzcFAABTdDJNMQUAAFBC\nXzEyBQAAU3Q2TTEFAABQQl8yNQUAAFN0OE0xBAAAUEJfMwUAAFN0Mk0wBQAAUEJfMzAFAABTdDNN\nMAQAAFBCXzEFAABTdDFNMAQAAFBCXzIFAABTdDBNMQUAAFBCXzE3BQAAU3Q2TTAFAABQQl8xNgUA\nAFN0N00wBQAAUEJfMTUFAABTdDhNMAoAAAAJCBAAAAYQALsNzAcAAAAABgAAAA0AAgABAAwAAgBk\nAA8AAgABABEAAgAAABAACAD8qfHSTWJQP18AAgAAAIAACAAAAAAAAQAAACUCBAAAAP8AgQACAAEM\nAAIOAAAAAAANAAAAAAAEAAAAKgACAAAAKwACAAAAggACAAEAGwACAAAAGgACAAAAFAAFAAIAACZQ\nFQAFAAIAACZGgwACAAEAhAACAAAAJgAIADMzMzMzM9M/JwAIADMzMzMzM9M/KAAIAIXrUbgeheM/\nKQAIAK5H4XoUrtc/oQAiAAkAZAABAAEAAQCDACwBLAGamZmZmZm5P5qZmZmZmbk/AQASAAIAAADd\nAAIAAAAZAAIAAABjAAIAAAATAAIAAAAIAhAAAAAAAAQA/wAAAAAAAAEPAP0ACgAAAAAAEQAAAAAA\n/QAKAAAAAQARAAEAAAD9AAoAAAACABEAAgAAAP0ACgAAAAMAEQADAAAACAIQAAEAAAAEAP8AAAAA\nAAABDwD9AAoAAQAAABIABAAAAP0ACgABAAEAEwAFAAAAvQASAAEAAgATAAIAAAATAAoAAAADAAgC\nEAACAAAABAD/AAAAAAAAAQ8A/QAKAAIAAAASAAYAAAD9AAoAAgABABMABwAAAL0AEgACAAIAEwAC\nAAAAEwAKAAAAAwAIAhAAAwAAAAQA/wAAAAAAAAEPAP0ACgADAAAAEgAIAAAA/QAKAAMAAQATAAkA\nAAC9ABIAAwACABMAAgAAABMACgAAAAMACAIQAAQAAAAEAP8AAAAAAAABDwD9AAoABAAAABIACgAA\nAP0ACgAEAAEAEwALAAAAvQASAAQAAgATAAIAAAATAAoAAAADAAgCEAAFAAAABAD/AAAAAAAAAQ8A\n/QAKAAUAAAASAAwAAAD9AAoABQABABMADQAAAL0AEgAFAAIAEwACAAAAEwAKAAAAAwAIAhAABgAA\nAAQA/wAAAAAAAAEPAP0ACgAGAAAAEgAOAAAA/QAKAAYAAQATAA8AAAC9ABIABgACABMAAgAAABMA\nCgAAAAMACAIQAAcAAAAEAP8AAAAAAAABDwD9AAoABwAAABIAEAAAAP0ACgAHAAEAEwARAAAAvQAS\nAAcAAgATAAIAAAATAAoAAAADAAgCEAAIAAAABAD/AAAAAAAAAQ8A/QAKAAgAAAASABIAAAD9AAoA\nCAABABMAEwAAAL0AEgAIAAIAEwACAAAAEwAKAAAAAwAIAhAACQAAAAQA/wAAAAAAAAEPAP0ACgAJ\nAAAAEgAUAAAA/QAKAAkAAQATABUAAAC9ABIACQACABMAAgAAABMACgAAAAMACAIQAAoAAAAEAP8A\nAAAAAAABDwD9AAoACgAAABIAFgAAAP0ACgAKAAEAEwAXAAAAvQASAAoAAgATAAIAAAATAAoAAAAD\nAAgCEAALAAAABAD/AAAAAAAAAQ8A/QAKAAsAAAASABgAAAD9AAoACwABABMAGQAAAL0AEgALAAIA\nEwACAAAAEwAKAAAAAwAIAhAADAAAAAQA/wAAAAAAAAEPAP0ACgAMAAAAEgAaAAAA/QAKAAwAAQAT\nABsAAAC9ABIADAACABMAAgAAABMACgAAAAMAPgISALYCAAAAAEAAAAAAAAAAAAAAAAoAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAIAAAAD\nAAAABAAAAAUAAAAGAAAABwAAAP7////9/////v//////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n//////////////////////////////////////////////////////////////9SAG8AbwB0ACAA\nRQBuAHQAcgB5AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFgAF\nAf//////////AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP7///8AAAAA\nAAAAAFcAbwByAGsAYgBvAG8AawAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAASAAIB////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH///////////////8AAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAD+////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAf///////////////wAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP7///8AAAAAAAAAAA==\n", 
+  "mime_type": "application/vnd.ms-excel", 
+  "name": "Operator_Schedule.xls"
+ }, 
+ "operator_utilization": {
+  "options": {
+   "series": {
+    "bars": {
+     "align": "center", 
+     "barWidth": 0.8, 
+     "show": true
+    }, 
+    "stack": true
+   }, 
+   "xaxis": {
+    "minTickSize": 1, 
+    "ticks": [
+     [
+      0, 
+      "PB_25"
+     ], 
+     [
+      1, 
+      "PB_7"
+     ], 
+     [
+      2, 
+      "PB_4"
+     ], 
+     [
+      3, 
+      "PB_3"
+     ], 
+     [
+      4, 
+      "PB_2"
+     ], 
+     [
+      5, 
+      "PB_1"
+     ], 
+     [
+      6, 
+      "PB_12"
+     ], 
+     [
+      7, 
+      "PB_10"
+     ], 
+     [
+      8, 
+      "PB_17"
+     ], 
+     [
+      9, 
+      "PB_16"
+     ], 
+     [
+      10, 
+      "PB_15"
+     ], 
+     [
+      11, 
+      "PB_30"
+     ], 
+     [
+      12, 
+      "PB_20"
+     ], 
+     [
+      13, 
+      "PB_21"
+     ], 
+     [
+      14, 
+      "PB_9"
+     ]
+    ]
+   }, 
+   "yaxis": {
+    "max": 100
+   }
+  }, 
+  "series": [
+   {
+    "data": [
+     [
+      0, 
+      100.0
+     ], 
+     [
+      1, 
+      100.0
+     ], 
+     [
+      2, 
+      100.0
+     ], 
+     [
+      3, 
+      100.0
+     ], 
+     [
+      4, 
+      100.0
+     ], 
+     [
+      5, 
+      100.0
+     ], 
+     [
+      6, 
+      100.0
+     ], 
+     [
+      7, 
+      0.0
+     ], 
+     [
+      8, 
+      100.0
+     ], 
+     [
+      9, 
+      100.0
+     ], 
+     [
+      10, 
+      100.0
+     ], 
+     [
+      11, 
+      100.0
+     ], 
+     [
+      12, 
+      0.0
+     ], 
+     [
+      13, 
+      0.0
+     ], 
+     [
+      14, 
+      100.0
+     ]
+    ], 
+    "label": "Working"
+   }, 
+   {
+    "data": [
+     [
+      0, 
+      0.0
+     ], 
+     [
+      1, 
+      0.0
+     ], 
+     [
+      2, 
+      0.0
+     ], 
+     [
+      3, 
+      0.0
+     ], 
+     [
+      4, 
+      0.0
+     ], 
+     [
+      5, 
+      0.0
+     ], 
+     [
+      6, 
+      0.0
+     ], 
+     [
+      7, 
+      0.0
+     ], 
+     [
+      8, 
+      0.0
+     ], 
+     [
+      9, 
+      0.0
+     ], 
+     [
+      10, 
+      0.0
+     ], 
+     [
+      11, 
+      0.0
+     ], 
+     [
+      12, 
+      0.0
+     ], 
+     [
+      13, 
+      0.0
+     ], 
+     [
+      14, 
+      0.0
+     ]
+    ], 
+    "label": "Waiting"
+   }, 
+   {
+    "data": [
+     [
+      0, 
+      0.0
+     ], 
+     [
+      1, 
+      0.0
+     ], 
+     [
+      2, 
+      0.0
+     ], 
+     [
+      3, 
+      0.0
+     ], 
+     [
+      4, 
+      0.0
+     ], 
+     [
+      5, 
+      0.0
+     ], 
+     [
+      6, 
+      0.0
+     ], 
+     [
+      7, 
+      100.0
+     ], 
+     [
+      8, 
+      0.0
+     ], 
+     [
+      9, 
+      0.0
+     ], 
+     [
+      10, 
+      0.0
+     ], 
+     [
+      11, 
+      0.0
+     ], 
+     [
+      12, 
+      100.0
+     ], 
+     [
+      13, 
+      100.0
+     ], 
+     [
+      14, 
+      0.0
+     ]
+    ], 
+    "label": "Off_shift"
+   }
+  ]
+ }, 
+ "queue_statistics": {
+  "options": {
+   "xaxis": {
+    "minTickSize": [
+     1, 
+     "minute"
+    ], 
+    "mode": "time"
+   }
+  }, 
+  "series": [
+   {
+    "data": [
+     [
+      1424070000000.0, 
+      0.0
+     ], 
+     [
+      1424070000000.0, 
+      12.0
+     ], 
+     [
+      1424070000000.0, 
+      12.0
+     ], 
+     [
+      1424070000000.0, 
+      11.0
+     ], 
+     [
+      1424070000000.0, 
+      10.0
+     ], 
+     [
+      1424070000000.0, 
+      10.0
+     ], 
+     [
+      1424070120000.0, 
+      10.0
+     ]
+    ], 
+    "label": "B12"
+   }, 
+   {
+    "data": [
+     [
+      1424070000000.0, 
+      0.0
+     ], 
+     [
+      1424070000000.0, 
+      1.0
+     ], 
+     [
+      1424070000000.0, 
+      1.0
+     ], 
+     [
+      1424070120000.0, 
+      1.0
+     ]
+    ], 
+    "label": "B10"
+   }, 
+   {
+    "data": [
+     [
+      1424070000000.0, 
+      0.0
+     ], 
+     [
+      1424070000000.0, 
+      1.0
+     ], 
+     [
+      1424070000000.0, 
+      1.0
+     ], 
+     [
+      1424070120000.0, 
+      1.0
+     ]
+    ], 
+    "label": "B11"
+   }, 
+   {
+    "data": [
+     [
+      1424070000000.0, 
+      0.0
+     ], 
+     [
+      1424070000000.0, 
+      1.0
+     ], 
+     [
+      1424070000000.0, 
+      1.0
+     ], 
+     [
+      1424070000000.0, 
+      0.0
+     ], 
+     [
+      1424070120000.0, 
+      0.0
+     ]
+    ], 
+    "label": "B4"
+   }, 
+   {
+    "data": [
+     [
+      1424070000000.0, 
+      0.0
+     ], 
+     [
+      1424070000000.0, 
+      3.0
+     ], 
+     [
+      1424070000000.0, 
+      3.0
+     ], 
+     [
+      1424070000000.0, 
+      2.0
+     ], 
+     [
+      1424070000000.0, 
+      2.0
+     ], 
+     [
+      1424070120000.0, 
+      2.0
+     ]
+    ], 
+    "label": "B7"
+   }, 
+   {
+    "data": [
+     [
+      1424070000000.0, 
+      0.0
+     ], 
+     [
+      1424070000000.0, 
+      1.0
+     ], 
+     [
+      1424070000000.0, 
+      1.0
+     ], 
+     [
+      1424070000000.0, 
+      0.0
+     ], 
+     [
+      1424070120000.0, 
+      0.0
+     ]
+    ], 
+    "label": "B1"
+   }, 
+   {
+    "data": [
+     [
+      1424070000000.0, 
+      0.0
+     ], 
+     [
+      1424070000000.0, 
+      1.0
+     ], 
+     [
+      1424070000000.0, 
+      1.0
+     ], 
+     [
+      1424070000000.0, 
+      0.0
+     ], 
+     [
+      1424070120000.0, 
+      0.0
+     ]
+    ], 
+    "label": "B2"
+   }, 
+   {
+    "data": [
+     [
+      1424070000000.0, 
+      0.0
+     ], 
+     [
+      1424070000000.0, 
+      1.0
+     ], 
+     [
+      1424070000000.0, 
+      1.0
+     ], 
+     [
+      1424070000000.0, 
+      0.0
+     ], 
+     [
+      1424070120000.0, 
+      0.0
+     ]
+    ], 
+    "label": "B3"
+   }, 
+   {
+    "data": [
+     [
+      1424070000000.0, 
+      0.0
+     ], 
+     [
+      1424070120000.0, 
+      0.0
+     ]
+    ], 
+    "label": "B8"
+   }, 
+   {
+    "data": [
+     [
+      1424070000000.0, 
+      0.0
+     ], 
+     [
+      1424070000000.0, 
+      2.0
+     ], 
+     [
+      1424070000000.0, 
+      2.0
+     ], 
+     [
+      1424070000000.0, 
+      1.0
+     ], 
+     [
+      1424070000000.0, 
+      1.0
+     ], 
+     [
+      1424070120000.0, 
+      1.0
+     ]
+    ], 
+    "label": "B9"
+   }
+  ]
+ }, 
+ "score": 0, 
+ "station_utilization": {
+  "options": {
+   "series": {
+    "bars": {
+     "align": "center", 
+     "barWidth": 0.8, 
+     "show": true
+    }, 
+    "stack": true
+   }, 
+   "xaxis": {
+    "minTickSize": 1, 
+    "ticks": [
+     [
+      0, 
+      "Carding"
+     ], 
+     [
+      1, 
+      "Flag Labelling A"
+     ], 
+     [
+      2, 
+      "Flag Labelling B"
+     ], 
+     [
+      3, 
+      "Pressure B"
+     ], 
+     [
+      4, 
+      "Pressure A"
+     ], 
+     [
+      5, 
+      "D_B_A_B"
+     ], 
+     [
+      6, 
+      "D_B_A_A"
+     ], 
+     [
+      7, 
+      "Cut & Bend"
+     ], 
+     [
+      8, 
+      "Moulding"
+     ], 
+     [
+      9, 
+      "Packaging B"
+     ], 
+     [
+      10, 
+      "Packaging A"
+     ], 
+     [
+      11, 
+      "P_B_A_A"
+     ], 
+     [
+      12, 
+      "RO_E_M_A_B"
+     ], 
+     [
+      13, 
+      "RO_E_M_A_A"
+     ], 
+     [
+      14, 
+      "P_B_A_B"
+     ]
+    ]
+   }, 
+   "yaxis": {
+    "max": 100
+   }
+  }, 
+  "series": [
+   {
+    "data": [
+     [
+      0, 
+      100.0
+     ], 
+     [
+      1, 
+      0.0
+     ], 
+     [
+      2, 
+      100.0
+     ], 
+     [
+      3, 
+      100.0
+     ], 
+     [
+      4, 
+      100.0
+     ], 
+     [
+      5, 
+      100.0
+     ], 
+     [
+      6, 
+      100.0
+     ], 
+     [
+      7, 
+      100.0
+     ], 
+     [
+      8, 
+      0.0
+     ], 
+     [
+      9, 
+      100.0
+     ], 
+     [
+      10, 
+      100.0
+     ], 
+     [
+      11, 
+      100.0
+     ], 
+     [
+      12, 
+      100.0
+     ], 
+     [
+      13, 
+      0.0
+     ], 
+     [
+      14, 
+      100.0
+     ]
+    ], 
+    "label": "Working"
+   }, 
+   {
+    "data": [
+     [
+      0, 
+      0.0
+     ], 
+     [
+      1, 
+      100.0
+     ], 
+     [
+      2, 
+      0.0
+     ], 
+     [
+      3, 
+      0.0
+     ], 
+     [
+      4, 
+      0.0
+     ], 
+     [
+      5, 
+      0.0
+     ], 
+     [
+      6, 
+      0.0
+     ], 
+     [
+      7, 
+      0.0
+     ], 
+     [
+      8, 
+      100.0
+     ], 
+     [
+      9, 
+      0.0
+     ], 
+     [
+      10, 
+      0.0
+     ], 
+     [
+      11, 
+      0.0
+     ], 
+     [
+      12, 
+      0.0
+     ], 
+     [
+      13, 
+      100.0
+     ], 
+     [
+      14, 
+      0.0
+     ]
+    ], 
+    "label": "Waiting"
+   }, 
+   {
+    "data": [
+     [
+      0, 
+      0.0
+     ], 
+     [
+      1, 
+      0.0
+     ], 
+     [
+      2, 
+      0.0
+     ], 
+     [
+      3, 
+      0.0
+     ], 
+     [
+      4, 
+      0.0
+     ], 
+     [
+      5, 
+      0.0
+     ], 
+     [
+      6, 
+      0.0
+     ], 
+     [
+      7, 
+      0.0
+     ], 
+     [
+      8, 
+      0.0
+     ], 
+     [
+      9, 
+      0.0
+     ], 
+     [
+      10, 
+      0.0
+     ], 
+     [
+      11, 
+      0.0
+     ], 
+     [
+      12, 
+      0.0
+     ], 
+     [
+      13, 
+      0.0
+     ], 
+     [
+      14, 
+      0.0
+     ]
+    ], 
+    "label": "Failures"
+   }, 
+   {
+    "data": [
+     [
+      0, 
+      0.0
+     ], 
+     [
+      1, 
+      0.0
+     ], 
+     [
+      2, 
+      0.0
+     ], 
+     [
+      3, 
+      0.0
+     ], 
+     [
+      4, 
+      0.0
+     ], 
+     [
+      5, 
+      0.0
+     ], 
+     [
+      6, 
+      0.0
+     ], 
+     [
+      7, 
+      0.0
+     ], 
+     [
+      8, 
+      0.0
+     ], 
+     [
+      9, 
+      0.0
+     ], 
+     [
+      10, 
+      0.0
+     ], 
+     [
+      11, 
+      0.0
+     ], 
+     [
+      12, 
+      0.0
+     ], 
+     [
+      13, 
+      0.0
+     ], 
+     [
+      14, 
+      0.0
+     ]
+    ], 
+    "label": "Blockage"
+   }, 
+   {
+    "data": [
+     [
+      0, 
+      0.0
+     ], 
+     [
+      1, 
+      0.0
+     ], 
+     [
+      2, 
+      0.0
+     ], 
+     [
+      3, 
+      0.0
+     ], 
+     [
+      4, 
+      0.0
+     ], 
+     [
+      5, 
+      0.0
+     ], 
+     [
+      6, 
+      0.0
+     ], 
+     [
+      7, 
+      0.0
+     ], 
+     [
+      8, 
+      0.0
+     ], 
+     [
+      9, 
+      0.0
+     ], 
+     [
+      10, 
+      0.0
+     ], 
+     [
+      11, 
+      0.0
+     ], 
+     [
+      12, 
+      0.0
+     ], 
+     [
+      13, 
+      0.0
+     ], 
+     [
+      14, 
+      0.0
+     ]
+    ], 
+    "label": "off_shift"
+   }
+  ]
+ }
+}
