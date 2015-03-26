@@ -136,6 +136,7 @@ def DataExtraction(DBFilePath):
             step={}
             ind4=d.fetchone()
             process=ind4.Operation_Name
+            orderID=ind3.Order_id
             task=ind4.WP_id
             #create another dictionary in step dictionary and insert the following attributes
             step[process]={}
@@ -144,6 +145,29 @@ def DataExtraction(DBFilePath):
             step[process]['requiredCapacity']=ind4.CapacityRequirement
             step[process]['earliestStart']=str(ind4.EarliestStart)
             order['sequence'].append(step)
+            if status == 'accepted' or status =='in progress':
+                if process == 'SMF':
+                    data['WIP']['startBuffered.SMF_id' + orderID]={}
+                    data['WIP']['startBuffered.SMF_id' + orderID]['operation']=process
+                    data['WIP']['startBuffered.SMF_id' + orderID]['buffered']=ind4.CapacityRequirement
+                    data['WIP']['startBuffered.SMF_id' + orderID]['order_id']=ind3.Order_id
+                elif process == 'CNC':
+                    data['WIP']['startBuffered.CNC_id' + orderID]={}
+                    data['WIP']['startBuffered.CNC_id' + orderID]['operation']=process
+                    data['WIP']['startBuffered.CNC_id' + orderID]['buffered']=ind4.CapacityRequirement
+                    data['WIP']['startBuffered.CNC_id' + orderID]['order_id']=ind3.Order_id
+                elif process == 'MCH':
+                    data['WIP']['startBuffered.MCH_id' + orderID]={}
+                    data['WIP']['startBuffered.MCH_id' + orderID]['operation']=process
+                    data['WIP']['startBuffered.MCH_id' + orderID]['buffered']=ind4.CapacityRequirement
+                    data['WIP']['startBuffered.MCH_id' + orderID]['order_id']=ind3.Order_id
+                elif process == 'EEP':
+                    data['WIP']['startBuffered.EEP_id' + orderID]={}
+                    data['WIP']['startBuffered.EEP_id' + orderID]['operation']=process
+                    data['WIP']['startBuffered.EEP_id' + orderID]['buffered']=ind4.CapacityRequirement
+                    data['WIP']['startBuffered.EEP_id' + orderID]['order_id']=ind3.Order_id   
+            else:
+                continue
         
     #SQL query that extracts data from production_status table, joining the sequence and production_status table in WP_id attribute, in order to retrieve that WIP
     e= cursor[5].execute("""
@@ -202,7 +226,8 @@ def DataExtraction(DBFilePath):
         if operation=='SMF' and not ind5.END_DATE:
             finishedCap= ind5.CapacityRequirement - ind5.Capacity_left
             startWELD = float(key) * float(finishedCap)
-            try: 
+            try:
+                del data['WIP']['startBuffered.SMF_id' + orderID] 
                 data['WIP']['WELD_id' +  orderID]['operation']='WELD'
                 data['WIP']['WELD_id' +  orderID]['buffered']=startWELD
                 data['WIP']['WELD_id' +  orderID]['order_id']=orderID
@@ -234,6 +259,7 @@ def DataExtraction(DBFilePath):
         if operation=='CNC':
             try:
                 cncfinishedCap= ind5.CapacityRequirement - ind5.Capacity_left
+                del data['WIP']['startBuffered.CNC_id' + orderID]
                 data['WIP']['PPASB_id' +  orderID ]['operation']='PPASB'
                 data['WIP']['PPASB_id' +  orderID ]['order_id']=orderID
                 if weldfinishedCap or mchfinishedCap:
@@ -254,6 +280,7 @@ def DataExtraction(DBFilePath):
         if operation=='MCH':
             try:
                 mchfinishedCap= ind5.CapacityRequirement - ind5.Capacity_left
+                del data['WIP']['startBuffered.MCH_id' + orderID]
                 data['WIP']['PPASB_id' +  orderID ]['operation']='PPASB'
                 data['WIP']['PPASB_id' +  orderID ]['order_id']=orderID
                 if weldfinishedCap or cncfinishedCap:
@@ -269,7 +296,10 @@ def DataExtraction(DBFilePath):
                     FinishedCap = mchfinishedCap
                     data['WIP']['PPASB_id' +  orderID ]['buffered']=FinishedCap
             except KeyError:
-                continue               
+                continue 
+        if operation=='EEP':
+            try:
+                del data['WIP']['startBuffered.EEP_id' + orderID]
+            except KeyError:
+                continue                
     return data
-
-
