@@ -12,11 +12,9 @@ class JobShopKE(plugin.InputPreparationPlugin):
     """
 
     def preprocess(self, data):
-        print 'arkouda'
         from dream.KnowledgeExtraction.PilotCases.JobShop.DataExtraction import DataExtraction
-        
-        print '!!!!!!!!!!'
-        print data['general']
+        receivedData = DataExtraction("C:\Users\Panos\Documents\DB_Approach\JobShop")
+        data['input']['BOM'] = receivedData
         return data
 
     
