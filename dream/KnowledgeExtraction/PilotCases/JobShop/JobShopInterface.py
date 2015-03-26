@@ -313,7 +313,7 @@ class TIMEOUT(Frame):
         return insertedWP
     
     def updateDatabase(self):
-        cnxn=ImportDatabase.ConnectionData(seekName='ServerData', file_path='C:\Users\Panos\Documents\DB_Approach\JobShop', implicitExt='txt', number_of_cursors=6)
+        cnxn=ImportDatabase.ConnectionData(seekName='ServerData', file_path='C:\Users\Panos\Documents\DB_Approach\JobShop', implicitExt='txt', number_of_cursors=7)
         cursor=cnxn.getCursors()
         a = cursor[0].execute("""
         select WP_id, Order_id
@@ -328,10 +328,12 @@ class TIMEOUT(Frame):
             ind1=b.fetchone() 
         lastWP = ind1.WP_id
         status2 = 'finished'
-        cursor[2].execute("UPDATE prod_status SET `TIMEOUT`=? ,  `statusName`=? , `Remarks`=? WHERE WP_id=? ", str(datetime.now()), self.statusOption.get(), self.comments.get(), self.WPOption.get() )
+        completed='TRUE'
+        cursor[3].execute("UPDATE sequence SET `Completed`=? WHERE WP_id=? ", completed , self.WPOption.get() )
+        cursor[4].execute("UPDATE prod_status SET `TIMEOUT`=? ,  `statusName`=? , `Remarks`=? WHERE WP_id=? ", str(datetime.now()), self.statusOption.get(), self.comments.get(), self.WPOption.get() )
         if self.WPOption.get() == lastWP:
-            cursor[3].execute("UPDATE orders SET `Status`=? WHERE Order_id=? ", status2, order)    
-        cursor[4].commit()
+            cursor[5].execute("UPDATE orders SET `Status`=? WHERE Order_id=? ", status2, order)    
+        cursor[6].commit()
         self.close_window()
         return
     
