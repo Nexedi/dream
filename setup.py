@@ -19,7 +19,8 @@ setup(
         'zope.dottedname',
         'rpy2',
         'pulp',
-        'tablib'
+        'tablib',
+        'MySQL-python',
     ],
     entry_points=("""
     [console_scripts]
