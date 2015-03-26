@@ -35,13 +35,14 @@ def OutputPreparation(data,extractedData):
     currentDate=datetime.strptime(currentDate, '%Y/%m/%d')
     
     # set the interval capacity of the stations
-    for operationId, operation in operations.iteritems():
-        intervalCapacity=operation.get('intervalCapacity',[])
-        for stationId, station in stations.iteritems():
-            if stationId==operationId:
-                station['intervalCapacity']=intervalCapacity
+#     for operationId, operation in operations.iteritems():
+#         intervalCapacity=operation.get('intervalCapacity',[])
+#         for stationId, station in stations.iteritems():
+#             if stationId==operationId:
+#                 station['intervalCapacity']=intervalCapacity
     
     orders=dbJSON.get('orders',{})
+    configurationJSON['input']['BOM']={}
     configurationJSON['input']['BOM']['productionOrders']=[]
     
     capacityRequirementDict={}
@@ -51,9 +52,11 @@ def OutputPreparation(data,extractedData):
             operationId=operation.keys()[0]
             capacityRequirementDict[operationId]=operation[operationId]['requiredCapacity']
             earliestStart=operation[operationId].get('earliestStart',None)
-            if earliestStart:
+            try:
                 earliestStart=datetime.strptime(earliestStart, '%Y-%m-%d')
                 earliestStartDict[operationId]=(earliestStart-currentDate).days
+            except ValueError:
+                continue
         assemblySpaceRequirement=order.get('floorSpaceRequired',100)
         orderId=order['orderID']
         dueDate=order.get('dueDate',100)
@@ -98,7 +101,6 @@ def OutputPreparation(data,extractedData):
 #     updatedModelJSONString=json.dumps(configurationJSON, indent=5)
 #     updatedModel=open('UpdatedModel.json', mode='w')
 #     updatedModel.write(updatedModelJSONString)
-
     return configurationJSON
 
 
