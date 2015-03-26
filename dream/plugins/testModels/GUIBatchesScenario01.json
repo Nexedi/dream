@@ -277,7 +277,7 @@
       "description": "", 
       "plugin_list": [
         {
-          "_class": "dream.plugins.AddBatchStations.AddBatchStations", 
+          "_class": "dream.plugins.Batches.AddBatchStations.AddBatchStations", 
           "input_id": "batchStations"
         }, 
         {
@@ -289,15 +289,15 @@
           "input_id": "EntryData"
         }, 
         {
-          "_class": "dream.plugins.BatchesWIPSpreadsheet.BatchesWIPSpreadsheet", 
+          "_class": "dream.plugins.Batches.BatchesWIPSpreadsheet.BatchesWIPSpreadsheet", 
           "input_id": "WipSpreadsheet"
         }, 
         {
-          "_class": "dream.plugins.ReadSkilledOperators.ReadSkilledOperators", 
+          "_class": "dream.plugins.Batches.ReadSkilledOperators.ReadSkilledOperators", 
           "input_id": "SkilledOperatorsSpreadsheet"
         }, 
         {
-          "_class": "dream.plugins.BatchesShift.BatchesShift", 
+          "_class": "dream.plugins.Batches.BatchesShift.BatchesShift", 
           "input_id": "ShiftSpreadsheet"
         }
       ]
