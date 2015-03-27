@@ -44,5 +44,26 @@ class KnowledgeExtractionExamples(TestCase):
             if element['id']=='St1':
                 self.assertTrue(99.93<element['results']['working_ratio'][0]<99.94)
         jsonFile.close()
+        
+    def testTwoServers(self):
+        from dream.KnowledgeExtraction.KEtool_examples.TwoServers.TwoServers_example import main 
+        filepath=os.path.join(project_path, "dream", "KnowledgeExtraction", "KEtool_examples", 
+                                                        "TwoServers")
+        workbook = xlrd.open_workbook(os.path.join(filepath, 'inputsTwoServers.xls'))
+        jsonFile = open(os.path.join(filepath, 'JSON_TwoServers.json'))     
+        result = main(test=1,workbook=workbook,jsonFile=jsonFile)
+        result_data = json.loads(result)
+        
+        result_data=result_data['result']['result_list'][0]
+        elementList=result_data.get('elementList',[])
+        for element in elementList:
+            if element['id']=='E1':
+                self.assertEquals(element['results']['throughput'][0], 272)
+            if element['id']=='M2':
+                self.assertTrue(13.05<element['results']['working_ratio'][0]<13.06)
+            if element['id']=='M1':
+                self.assertTrue(92.01<element['results']['working_ratio'][0]<92.02)
+        jsonFile.close()
+    
      
    
