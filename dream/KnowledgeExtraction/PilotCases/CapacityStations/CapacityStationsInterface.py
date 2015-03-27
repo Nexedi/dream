@@ -171,9 +171,9 @@ class Demo1(Frame):
                 ind2=a.fetchone() 
             lastWP =ind2.WP_id
             b = cursor[2].execute("""
-                                select sequence.WP_id, sequence.Order_id
-                                 from sequence where Operation_Name=?
-                                """, self.operationOption.get())
+                                select WP_id
+                                 from sequence where Operation_Name=? and Order_id=?
+                                """, self.operationOption.get(),order)
             ind4=b.fetchone()
             status2 = 'finished'
             row = cursor[0].fetchone()

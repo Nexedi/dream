@@ -352,5 +352,3 @@ def DataExtraction(DBFilePath):
             except KeyError:
                 continue        
     return data
-
-print DataExtraction('C:\Users\Panos\Documents\DB_Approach\CapacityStations')
