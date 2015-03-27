@@ -1803,11 +1803,11 @@
         }, 
         "scrapping": {
           "Fixed": {
-            "mean": 80
+            "mean": 0
           }, 
           "distribution": "Fixed"
         }, 
-        "workingBatchSize": null
+        "workingBatchSize": 80
       }, 
       "St4M0": {
         "_class": "Dream.BatchScrapMachine", 
