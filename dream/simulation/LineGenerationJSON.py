@@ -386,6 +386,7 @@ def createWIP():
         # for every order in the productionOrders list
         for prodOrder in orders:
             orderClass=prodOrder.get('_class',None)
+            print '....', prodOrder['id'], prodOrder['name'], orderClass
             orderType=Globals.getClassFromName(orderClass)
             # make sure that their type is Dream.Order
             if orderClass=='Dream.Order':
