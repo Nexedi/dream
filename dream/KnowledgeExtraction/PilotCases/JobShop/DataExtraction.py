@@ -67,6 +67,7 @@ def DataExtraction(DBFilePath):
             productionOrders['manager']=ind0.ProjectManager
             orderDate=datetime.strptime(str(ind0.Order_date), '%Y-%m-%d')
             productionOrders['orderDate']=str(orderDate)
+            productionOrders['_class']="Dream.Order"
             dueDate=datetime.strptime(str(ind0.Due_date), '%Y-%m-%d')
             productionOrders['dueDate']=str(dueDate)
             productionOrders['componentsList']=[]
