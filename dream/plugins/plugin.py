@@ -160,7 +160,8 @@ class PluginRegistry(object):
     outputJSONString=json.dumps(data, indent=5)
     outputJSONFile=open('sentToManPy.json', mode='w')
     outputJSONFile.write(outputJSONString)
-      
+    
+    
     data = self.execution_plugin.run(data)
 
     for output_preparation in self.output_preparation_list:

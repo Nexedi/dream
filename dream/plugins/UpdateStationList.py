@@ -51,7 +51,7 @@ class UpdateStationList(plugin.InputPreparationPlugin):
     self.data = data
     orders = data["input"].get("BOM",{}).get("productionOrders",{})
     try:
-      stations = data["input"]["BOM"]['stations']
+      stations = data["input"]["BOM"]['stations1']
     except:
       stations = self.getStationNames()
     nodes = data["graph"]["node"]
@@ -66,6 +66,7 @@ class UpdateStationList(plugin.InputPreparationPlugin):
           step["technology"] = technology
           technologyStations = []
           for station in stations:
+            station = station.replace(" ", "").split("-")[0]
             for initials in self.getStationInitials(technology):
               if station.startswith(initials)\
                  and data["graph"]["node"][station]["_class"] in self.STATION_CLASS_SET:
