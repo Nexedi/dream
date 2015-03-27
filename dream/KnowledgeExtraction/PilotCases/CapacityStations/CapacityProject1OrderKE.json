@@ -2,6 +2,12 @@
   "application_configuration": {
     "general": {
       "properties": {
+		"ServerAuth": {
+          "default": "", 
+          "description": "Data required for the authentication of the Database", 
+          "name": "Server Authentication Data", 
+          "type": "string"
+        },
         "assemblySpace": {
           "default": 100, 
           "description": "Total assembly Space in square meters", 
@@ -19,13 +25,7 @@
           "description": "The day the experiment starts, in YYYY/MM/DD format", 
           "title": "SimulationStartTime", 
           "type": "string"
-        }, 
-        "ke_url": {
-          "default": "http: //git.erp5.org/gitweb/dream.git/blob_plain/HEAD: /dream/KnowledgeExtraction/Mockup_Processingtimes.xls", 
-          "description": "The URL for knowledge extraction to access its data for example http: //git.erp5.org/gitweb/dream.git/blob_plain/HEAD: /dream/KnowledgeExtraction/Mockup_Processingtimes.xls", 
-          "title": "URL for Knowledge Extraction Spreadsheet", 
-          "type": "string"
-        }, 
+        },  
         "maxSimTime": {
           "default": 100, 
           "description": "Length of the simulation run", 
