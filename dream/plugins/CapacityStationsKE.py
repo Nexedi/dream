@@ -15,7 +15,7 @@ class CapacityStationsKE(plugin.InputPreparationPlugin):
     def preprocess(self, data):
         from dream.KnowledgeExtraction.PilotCases.CapacityStations.DataExtraction import DataExtraction
         from dream.KnowledgeExtraction.PilotCases.CapacityStations.OutputPreparation import OutputPreparation
-        DBFilePath=data['general']['ke_url']
+        DBFilePath=data['general']['ServerAuth']
         extractedData=DataExtraction(DBFilePath)
         data=OutputPreparation(data,extractedData)
         return data
