@@ -32,6 +32,7 @@ from xml.etree import ElementTree as et
 from dream.KnowledgeExtraction.CMSDOutput import CMSDOutput
 import xlrd
 import json
+import os
 
 #================================================ This script is a simple example of the Knowledge extraction tool ===============================================================#
 
@@ -45,7 +46,7 @@ def main(test=0, ExcelFileName='inputsTwoServers.xls',
                 workbook=None,
                 jsonFile=None, cmsdFile=None):
     if not workbook:
-        workbook = xlrd.open_workbook(ExcelFileName)      #Using xlrd library opens the Excel document with the input data      
+        workbook = xlrd.open_workbook(os.path.join(os.path.dirname(os.path.realpath(__file__)), ExcelFileName))      #Using xlrd library opens the Excel document with the input data      
     worksheets = workbook.sheet_names()
     worksheet_OperationTime = worksheets[0]             #It creates a variable that holds the first Excel worksheet 
      
@@ -67,7 +68,7 @@ def main(test=0, ExcelFileName='inputsTwoServers.xls',
         
     #==================================== Output preparation: output the updated values in the CMSD information model ====================================================#
     if not cmsdFile:
-        datafile=CMSDFileName       #It defines the name or the directory of the XML file that is manually written the CMSD information model
+        datafile=(os.path.join(os.path.dirname(os.path.realpath(__file__)), CMSDFileName))       #It defines the name or the directory of the XML file that is manually written the CMSD information model
         tree = et.parse(datafile)                                               #This file will be parsed using the XML.ETREE Python library
     
     exportCMSD=CMSDOutput()
@@ -79,7 +80,7 @@ def main(test=0, ExcelFileName='inputsTwoServers.xls',
     procTime2.write('CMSD_TwoServers_Output.xml',encoding="utf8")                         #It writes the element tree to a specified file, using the 'utf8' output encoding
     #================================= Output preparation: output the updated values in the JSON file of Topology10 =========================================================#
     if not jsonFile:
-        jsonFile = open(JSONFileName,'r')      #It opens the JSON file 
+        jsonFile = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), JSONFileName),'r')      #It opens the JSON file 
         data = json.load(jsonFile)             #It loads the file
         jsonFile.close()
     else:
