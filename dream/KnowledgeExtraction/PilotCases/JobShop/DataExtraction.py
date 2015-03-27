@@ -91,7 +91,7 @@ def DataExtraction(DBFilePath):
                 component['route']=[]
                 #SQL query that extracts data from sequence table where PartCode is given
                 d=cursor[3].execute("""
-                        select  PartCode, PartName, WP_id, Operation_Name, ProcessingTime, PersonnelCode, Quantity, step
+                        select  PartCode, PartName, WP_id, Operation_Name, ProcessingTime, PersonnelCode, Quantity, step, Completed
                         from sequence
                         where PartCode=?
                         """, code)
@@ -112,6 +112,7 @@ def DataExtraction(DBFilePath):
                     step['operator']=ind2.PersonnelCode
                     step['task_id']=ind2.WP_id
                     step['quantity']=ind2.Quantity
+                    step['completed']=ind2.Completed
                     ind3=f.fetchone()
                     partsNeeded = ind3.PartsNeeded.split(';')       
                     step['requiredParts']=partsNeeded       
