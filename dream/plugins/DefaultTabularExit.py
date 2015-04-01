@@ -31,7 +31,7 @@ class DefaultTabularExit(plugin.OutputPreparationPlugin):
         elif numberOfReplications>1:
             # create the titles of the columns
             data['result']['result_list'][0]['exit_output'] = [['Exit Id','','Throughput','' , '','Takt Time','','', 'Lifespan',''],
-                                                               ['','LB','AVG','RB','LB','AVG','RB','LB','AVG','RB']]
+                                                               ['','LB','AVG','UB','LB','AVG','UB','LB','AVG','UB']]
             for record in data['result']['result_list'][0]['elementList']:
                 family=record.get('family',None)
                 # when found, add a row with the results of the specific exit
