@@ -1482,6 +1482,11 @@
    "Average Cycle Time", 
    "minute", 
    "0.00"
+  ], 
+  [
+   "Productivity", 
+   "Produced Units/Operator Hours", 
+   "0.00"
   ]
  ], 
  "general": {
