@@ -199,6 +199,36 @@
         "title": "Run Simulation",
         "type": "object_view"
       },
+      "view_ACO_weights_spreadsheet": {
+        "configuration": {
+          "columns": [
+            {
+              "col1": "", 
+              "col2": "Obj1: Max number of assigned PB", 
+              "col3": "Obj2: Assignment to machines with higher WIP", 
+              "col4": "Obj3: Min assignment variations", 
+              "col5": "Obj4: Uniform assignment across stations", 
+              "col6": "Obj5: Machines with furthest last assignment time", 
+              "col7": "Obj6: Fill sub-line"
+            }, 
+            {
+              "col1": "Min value"
+            }, 
+            {
+              "col1": "Max value"
+            }, 
+            {
+              "col1": "Step"
+            }, 
+            {
+              "col1": "Static value"
+            }
+          ]
+        }, 
+        "gadget": "Input_viewSpreadsheet", 
+        "title": "Optimization Weights", 
+        "type": "object_view"
+      }, 
       "view_result": {
         "gadget": "Input_viewResultList",
         "title": "Results",
