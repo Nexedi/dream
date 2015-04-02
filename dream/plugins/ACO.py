@@ -70,10 +70,10 @@ class ACO(plugin.ExecutionPlugin):
 
     # Number of times new ants are to be created, i.e. number of generations (a
     # generation can have more than 1 ant)
+    seedPlus = 0
     for i in range(int(data["general"]["numberOfGenerations"])):
         scenario_list = [] # for the distributor
         # number of ants created per generation
-        seedPlus = 0
         for j in range(int(data["general"]["numberOfAntsPerGenerations"])):
             # an ant dictionary to contain rule to queue assignment information
             ant = {}
@@ -95,7 +95,6 @@ class ACO(plugin.ExecutionPlugin):
                 ant['key'] = ant_key
                 ant['input'] = ant_data
                 scenario_list.append(ant)
-
         if distributor is None:
             # synchronous
             for ant in scenario_list:
