@@ -30,15 +30,24 @@ class ACO(plugin.ExecutionPlugin):
             totalDelay += max(delay, 0)
     return totalDelay
 
+  # creates the collated scenarios, i.e. the list 
+  # of options collated into a dictionary for ease of referencing in ManPy
   def createCollatedScenarios(self,data):
-    # the list of options collated into a dictionary for ease of referencing in
-    # ManPy
     collated = dict()
     for node_id, node in data['graph']['node'].items():
       node_class = getClassFromName(node['_class'])
       if issubclass(node_class, Queue) or issubclass(node_class, Operator):
         collated[node_id] = list(node_class.getSupportedSchedulingRules())
-    return collated     
+    return collated    
+
+  # creates the ant scenario based on what ACO randomly selected
+  def createAntData(self,data,ant): 
+    # set scheduling rule on queues based on ant data
+    ant_data = copy(data)
+    for k, v in ant.items():
+        ant_data["graph"]["node"][k]['schedulingRule'] = v
+    return ant_data
+
 
   def run(self, data):
     """Preprocess the data.
@@ -82,15 +91,10 @@ class ACO(plugin.ExecutionPlugin):
             # if the ant was not already tested, only then test it
             if ant_key not in tested_ants:
                 tested_ants.add(ant_key)
-
-                # set scheduling rule on queues based on ant data
-                ant_data = copy(data)
-                for k, v in ant.items():
-                    ant_data["graph"]["node"][k]['schedulingRule'] = v
-
+ 
+                ant_data=self.createAntData(data, ant)
                 ant['key'] = ant_key
                 ant['input'] = ant_data
-
                 scenario_list.append(ant)
 
         if distributor is None:
