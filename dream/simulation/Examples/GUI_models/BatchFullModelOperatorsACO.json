@@ -1,0 +1,2492 @@
+{
+  "application_configuration": {
+    "general": {
+      "properties": {
+        "confidenceLevel": {
+          "default": 0.95, 
+          "description": "Confidence level for statistical analysis of stochastic experiments", 
+          "name": "Confidence level", 
+          "type": "number"
+        }, 
+        "currentDate": {
+          "default": "2014/02/18", 
+          "description": "The day the experiment starts, in YYYY/MM/DD HH:MM:DD format", 
+          "name": "Simulation start time", 
+          "type": "string"
+        }, 
+        "ke_url": {
+          "default": "http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/KnowledgeExtraction/Mockup_Processingtimes.xls", 
+          "description": "The URL for knowledge extraction to access its data for example http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/KnowledgeExtraction/Mockup_Processingtimes.xls", 
+          "name": "URL for Knowledge Extraction Spreadsheet", 
+          "type": "string"
+        }, 
+        "maxSimTime": {
+          "default": 100, 
+          "description": "Length of the simulation run", 
+          "name": "Length of experiment", 
+          "type": "number"
+        }, 
+        "numberOfReplications": {
+          "default": 10, 
+          "description": "Number of replications to run", 
+          "name": "Number of replications", 
+          "type": "number"
+        }, 
+        "processTimeout": {
+          "default": 10, 
+          "description": "Number of seconds before the calculation process is interrupted", 
+          "name": "Process timeout", 
+          "type": "number"
+        }, 
+        "seed": {
+          "default": "1", 
+          "description": "When using the same seed, the random number generator produce the same sequence of numbers", 
+          "name": "Seed for random number generator", 
+          "type": "number"
+        }, 
+        "throughputTarget": {
+          "default": 10, 
+          "description": "The daily throughput target in units.", 
+          "name": "Daily throughput target", 
+          "type": "number"
+        }, 
+        "timeUnit": {
+          "default": "minute", 
+          "description": "Used for input and reporting widgets.", 
+          "enum": [
+            "minute", 
+            "hour", 
+            "day", 
+            "week", 
+            "month", 
+            "year"
+          ], 
+          "name": "Time unit", 
+          "type": "string"
+        }, 
+        "trace": {
+          "default": "No", 
+          "description": "Create an excel trace file (Yes or No)", 
+          "enum": [
+            "No", 
+            "Yes"
+          ], 
+          "name": "Output Trace", 
+          "type": "string"
+        }
+      }
+    }, 
+    "input": {
+      "debug": {
+        "gadget": "Input_viewDebugJson", 
+        "title": "Edit Configuration", 
+        "type": "object_view"
+      }, 
+      "view": {
+        "gadget": "Input_viewProductionLine", 
+        "title": "Production Line", 
+        "type": "object_view"
+      }, 
+      "view_ACO_weights_spreadsheet": {
+        "configuration": {
+          "columns": []
+        }, 
+        "gadget": "Input_viewSpreadsheet", 
+        "title": "Optimization Weights", 
+        "type": "object_view"
+      }, 
+      "view_machine_shift_spreadsheet": {
+        "configuration": {
+          "columns": [
+            {
+              "format": "date-time", 
+              "name": "Date", 
+              "type": "string"
+            }, 
+            {
+              "name": "Machine", 
+              "type": "string"
+            }, 
+            {
+              "name": "Start", 
+              "type": "string"
+            }, 
+            {
+              "name": "Stop", 
+              "type": "string"
+            }
+          ]
+        }, 
+        "gadget": "Input_viewSpreadsheet", 
+        "title": "Machine Shifts Spreadsheet", 
+        "type": "object_view"
+      }, 
+      "view_management": {
+        "gadget": "Input_viewDocumentManagement", 
+        "title": "Manage Document", 
+        "type": "object_view"
+      }, 
+      "view_operator_shift_spreadsheet": {
+        "configuration": {
+          "columns": [
+            {
+              "format": "date-time", 
+              "name": "Date", 
+              "type": "string"
+            }, 
+            {
+              "name": "Product Builder", 
+              "type": "string"
+            }, 
+            {
+              "name": "Start", 
+              "type": "string"
+            }, 
+            {
+              "name": "Stop", 
+              "type": "string"
+            }
+          ]
+        }, 
+        "gadget": "Input_viewSpreadsheet", 
+        "title": "Product Builder Shifts Spreadsheet", 
+        "type": "object_view"
+      }, 
+      "view_operator_skill_spreadsheet": {
+        "configuration": {
+          "columns": [
+            {
+              "name": "Product Builder", 
+              "type": "string"
+            }, 
+            {
+              "name": "Skills", 
+              "type": "array"
+            }
+          ]
+        }, 
+        "gadget": "Input_viewSpreadsheet", 
+        "title": "Product Builder Skills", 
+        "type": "object_view"
+      }, 
+      "view_result": {
+        "gadget": "Input_viewResultList", 
+        "title": "Results", 
+        "type": "object_view"
+      }, 
+      "view_run_simulation": {
+        "gadget": "Input_viewSimulation", 
+        "title": "Run Simulation", 
+        "type": "object_view"
+      }, 
+      "view_wip_spreadsheet": {
+        "configuration": {
+          "columns": [
+            {
+              "name": "ID", 
+              "type": "string"
+            }, 
+            {
+              "name": "StationID", 
+              "type": "string"
+            }, 
+            {
+              "name": "Number of Units", 
+              "type": "number"
+            }, 
+            {
+              "name": "Remaining Units", 
+              "type": "number"
+            }, 
+            {
+              "name": "Type", 
+              "type": "string"
+            }, 
+            {
+              "name": "Batch ID", 
+              "type": "string"
+            }
+          ]
+        }, 
+        "gadget": "Input_viewSpreadsheet", 
+        "title": "WIP Spreadsheet", 
+        "type": "object_view"
+      }
+    }, 
+    "output": {
+      "view_buffer_state": {
+        "configuration": {
+          "handsontable_options": {}, 
+          "output_id": "buffer_output"
+        }, 
+        "gadget": "Output_viewSpreadsheet", 
+        "title": "Buffer Levels", 
+        "type": "object_view"
+      }, 
+      "view_download_spreadsheet": {
+        "configuration": {
+          "output_id": "operator_spreadsheet"
+        }, 
+        "gadget": "Output_viewDownloadFile", 
+        "title": "Operator Schedule Spreadsheet", 
+        "type": "object_view"
+      }, 
+      "view_exit_results": {
+        "configuration": {
+          "handsontable_options": {}, 
+          "output_id": "exit_output"
+        }, 
+        "gadget": "Output_viewSpreadsheet", 
+        "title": "Exit statistics", 
+        "type": "object_view"
+      }, 
+      "view_operator_gantt": {
+        "configuration": {
+          "output_id": "operator_gantt"
+        }, 
+        "gadget": "Output_viewGantt", 
+        "title": "Operator Schedule Gantt", 
+        "type": "object_view"
+      }, 
+      "view_operator_utilization": {
+        "configuration": {
+          "output_id": "operator_utilization"
+        }, 
+        "gadget": "Output_viewGraph", 
+        "title": "Operator Utilization", 
+        "type": "object_view"
+      }, 
+      "view_queue_stats": {
+        "configuration": {
+          "output_id": "queue_statistics"
+        }, 
+        "gadget": "Output_viewGraph", 
+        "title": "Queue Statistics", 
+        "type": "object_view"
+      }, 
+      "view_station_utilization": {
+        "configuration": {
+          "output_id": "station_utilization"
+        }, 
+        "gadget": "Output_viewGraph", 
+        "title": "Station Utilization", 
+        "type": "object_view"
+      }
+    }, 
+    "post_processing": {
+      "description": "", 
+      "plugin_list": [
+        {
+          "_class": "dream.plugins.Batches.BatchesStationUtilization.BatchesStationUtilization", 
+          "family": "Server", 
+          "output_id": "station_utilization"
+        }, 
+        {
+          "_class": "dream.plugins.PostProcessQueueStatistics.PostProcessQueueStatistics", 
+          "output_id": "queue_statistics"
+        }, 
+        {
+          "_class": "dream.plugins.Batches.BatchesTabularExit.BatchesTabularExit", 
+          "output_id": "exit_output"
+        }, 
+        {
+          "_class": "dream.plugins.Batches.BatchesTabularQueues.BatchesTabularQueues", 
+          "output_id": "buffer_output"
+        }, 
+        {
+          "_class": "dream.plugins.Batches.BatchesOperatorUtilization.BatchesOperatorUtilization", 
+          "output_id": "operator_utilization"
+        }, 
+        {
+          "_class": "dream.plugins.Batches.BatchesOperatorGantt.BatchesOperatorGantt", 
+          "output_id": "operator_gantt"
+        }, 
+        {
+          "_class": "dream.plugins.Batches.BatchesOperatorSpreadsheet.BatchesOperatorSpreadsheet", 
+          "output_id": "operator_spreadsheet"
+        }
+      ]
+    }, 
+    "pre_processing": {
+      "description": "", 
+      "plugin_list": [
+        {
+          "_class": "dream.plugins.Batches.AddBatchStations.AddBatchStations", 
+          "input_id": "batchStations"
+        }, 
+        {
+          "_class": "dream.plugins.GatherWIPStat.GatherWIPStat", 
+          "input_id": "WIPStat"
+        }, 
+        {
+          "_class": "dream.plugins.ReadEntryData.ReadEntryData", 
+          "input_id": "EntryData"
+        }, 
+        {
+          "_class": "dream.plugins.Batches.BatchesWIPSpreadsheet.BatchesWIPSpreadsheet", 
+          "input_id": "WipSpreadsheet"
+        }, 
+        {
+          "_class": "dream.plugins.Batches.ReadSkilledOperators.ReadSkilledOperators", 
+          "input_id": "SkilledOperatorsSpreadsheet"
+        }, 
+        {
+          "_class": "dream.plugins.Batches.BatchesShift.BatchesShift", 
+          "input_id": "ShiftSpreadsheet"
+        }
+      ]
+    }, 
+    "processing_plugin": {
+      "_class": "dream.plugins.Batches.BatchesACO.BatchesACO", 
+      "description": ""
+    }
+  }, 
+  "class_definition": {
+    "Dream.BatchDecomposition": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "id": {
+              "default": "D", 
+              "type": "string"
+            }, 
+            "name": {
+              "default": "Decomposition", 
+              "type": "string"
+            }, 
+            "numberOfSubBatches": {
+              "default": 10, 
+              "description": "Number Of Sub-Batches", 
+              "type": "number"
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#dfd", 
+        "backgroundImage": "linear-gradient(to bottom, #dfd 0%, #cec 100%)", 
+        "border": "1px solid #bcb"
+      }, 
+      "description": "A station that decomposes a batch into sub-batches", 
+      "name": "Decomposition"
+    }, 
+    "Dream.BatchDecompositionStartTime": {
+      "_class": "Dream.BatchDecompositionStartTime", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "id": {
+              "default": "D", 
+              "type": "string"
+            }, 
+            "name": {
+              "default": "Decomposition", 
+              "type": "string"
+            }, 
+            "numberOfSubBatches": {
+              "default": 10, 
+              "description": "Number Of Sub-Batches", 
+              "type": "number"
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#dfd", 
+        "backgroundImage": "linear-gradient(to bottom, #dfd 0%, #cec 100%)", 
+        "border": "1px solid #bcb"
+      }, 
+      "description": "A station that decomposes batches into sub-batches", 
+      "name": "Decomposition"
+    }, 
+    "Dream.BatchReassembly": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "id": {
+              "default": "R", 
+              "type": "string"
+            }, 
+            "name": {
+              "default": "Reassembly", 
+              "type": "string"
+            }, 
+            "numberOfSubBatches": {
+              "default": 10, 
+              "description": "Number Of Sub-Batches", 
+              "type": "number"
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#dfd", 
+        "backgroundImage": "linear-gradient(to bottom, #dfd 0%, #cec 100%)", 
+        "border": "1px solid #bcb"
+      }, 
+      "description": "A station that assembles sub-batches back into a parent batch", 
+      "name": "Reassembly"
+    }, 
+    "Dream.BatchScrapMachine": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "id": {
+              "default": "M", 
+              "required": true, 
+              "type": "string"
+            }, 
+            "name": {
+              "default": "Machine", 
+              "name": "Name", 
+              "type": "string"
+            }, 
+            "processingTime": {
+              "$ref": "#/definitions/_dist", 
+              "default": 0.1, 
+              "description": "The time that this station needs in order to process a unit", 
+              "name": "Processing time (per unit)", 
+              "required": true
+            }, 
+            "workingBatchSize": {
+              "default": 10, 
+              "name": "Working batch size in this station", 
+              "type": "number"
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#fef", 
+        "backgroundImage": "linear-gradient(to bottom, #fef 0%, #ede 100%)", 
+        "border": "1px solid #cbc"
+      }, 
+      "description": "A station processing batches for some time given by a distribution provided by the entities that are processed. A random number of batch units is scrapped", 
+      "name": "Machine"
+    }, 
+    "Dream.BatchSource": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "batchNumberOfUnits": {
+              "description": "the number of units of the created batches", 
+              "name": "Number Of Units", 
+              "required": true, 
+              "type": "number"
+            }, 
+            "entity": {
+              "default": "Dream.Batch", 
+              "description": "Manpy class for entities", 
+              "name": "Entity Class", 
+              "required": true, 
+              "type": "string"
+            }, 
+            "id": {
+              "default": "S", 
+              "name": "ID", 
+              "required": true, 
+              "type": "string"
+            }, 
+            "interArrivalTime": {
+              "$ref": "#/definitions/_dist", 
+              "description": "Inter-arrival time", 
+              "name": "Inter-arrival time", 
+              "required": true
+            }, 
+            "name": {
+              "default": "Source", 
+              "name": "Name", 
+              "type": "string"
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "description": "A station creating entities", 
+      "name": "Source"
+    }, 
+    "Dream.Edge": {
+      "_class": "edge", 
+      "allOf": [
+        {
+          "$ref": "#/edge"
+        }
+      ], 
+      "description": "Connect stations together"
+    }, 
+    "Dream.EventGenerator": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "argumentDict": {
+              "default": "{}", 
+              "description": "arguments to be used by the method", 
+              "required": true, 
+              "type": "string"
+            }, 
+            "duration": {
+              "default": 10, 
+              "description": "duration", 
+              "required": true, 
+              "type": "number"
+            }, 
+            "id": {
+              "default": "A", 
+              "required": true, 
+              "type": "string"
+            }, 
+            "interval": {
+              "default": 10, 
+              "description": "interval time", 
+              "required": true, 
+              "type": "number"
+            }, 
+            "method": {
+              "default": "Globals.countIntervalThroughput", 
+              "description": "method to be performed", 
+              "required": true, 
+              "type": "string"
+            }, 
+            "name": {
+              "default": "Attainment", 
+              "type": "string"
+            }, 
+            "start": {
+              "default": 1, 
+              "description": "Start time", 
+              "required": true, 
+              "type": "number"
+            }, 
+            "stop": {
+              "default": -1, 
+              "description": "Stop time", 
+              "required": true, 
+              "type": "number"
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#fdc", 
+        "backgroundImage": "linear-gradient(to bottom, #fdc 0%, #ecb 100%)", 
+        "border": "1px solid #cba"
+      }, 
+      "description": "Attainment", 
+      "name": "Attainment"
+    }, 
+    "Dream.Exit": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "id": {
+              "default": "E", 
+              "required": true
+            }, 
+            "name": {
+              "default": "Exit", 
+              "type": "string"
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#eef", 
+        "backgroundImage": "linear-gradient(to bottom, #eef 0%, #dde 100%)", 
+        "border": "1px solid #ccb"
+      }, 
+      "description": "A station where entities exits from the system", 
+      "name": "Exit", 
+      "shape": "rectangle"
+    }, 
+    "Dream.LineClearance": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "capacity": {
+              "$ref": "#/definitions/_capacity", 
+              "required": true
+            }, 
+            "id": {
+              "default": "C", 
+              "type": "string"
+            }, 
+            "name": {
+              "default": "Clearance", 
+              "type": "string"
+            }, 
+            "schedulingRule": {
+              "$ref": "#/definitions/_schedulingRule", 
+              "required": true
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#eff", 
+        "backgroundImage": "linear-gradient(to bottom, #eff 0%, #dee 100%)", 
+        "border": "1px solid #bcc"
+      }, 
+      "description": "A buffer where entities of the same group can be held until the next station is ready to process them. Entities of other groups cannot be accepted", 
+      "name": "Clearance"
+    }, 
+    "Dream.NonStarvingEntry": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "entityData": {
+              "description": "Entity produced related information", 
+              "properties": {
+                "class": {
+                  "default": "Dream.Batch", 
+                  "description": "Entity class", 
+                  "required": true, 
+                  "type": "string"
+                }, 
+                "numberOfUnits": {
+                  "default": 80, 
+                  "description": "Number of units per batch", 
+                  "required": true, 
+                  "type": "number"
+                }
+              }, 
+              "required": true, 
+              "type": "object"
+            }, 
+            "id": {
+              "default": "E", 
+              "required": true, 
+              "type": "string"
+            }, 
+            "name": {
+              "default": "Entry", 
+              "type": "string"
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#ffe", 
+        "backgroundImage": "linear-gradient(to bottom, #ffe 0%, #dde 100%)", 
+        "border": "1px solid #bbc"
+      }, 
+      "description": "A station creating batches", 
+      "name": "Entry"
+    }, 
+    "Dream.Queue": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "capacity": {
+              "$ref": "#/definitions/_capacity", 
+              "required": true
+            }, 
+            "id": {
+              "default": "Q", 
+              "type": "string"
+            }, 
+            "name": {
+              "default": "Queue", 
+              "type": "string"
+            }, 
+            "schedulingRule": {
+              "$ref": "#/definitions/_schedulingRule", 
+              "required": true
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#eff", 
+        "backgroundImage": "linear-gradient(to bottom, #eff 0%, #dee 100%)", 
+        "border": "1px solid #bcc"
+      }, 
+      "description": "A buffer where entities can be hold until the next station is ready to process them", 
+      "name": "Queue"
+    }, 
+    "Dream.RoutingQueue": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "capacity": {
+              "$ref": "#/definitions/_capacity", 
+              "required": true
+            }, 
+            "id": {
+              "default": "RQ", 
+              "type": "string"
+            }, 
+            "name": {
+              "default": "RoutingQueue", 
+              "type": "string"
+            }, 
+            "schedulingRule": {
+              "$ref": "#/definitions/_schedulingRule", 
+              "required": true
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#eff", 
+        "backgroundImage": "linear-gradient(to bottom, #eff 0%, #dee 100%)", 
+        "border": "1px solid #bcc"
+      }, 
+      "description": "A buffer that directs sub-batches of the same batch directed to the same machine", 
+      "name": "RoutingQueue"
+    }, 
+    "definitions": {
+      "_capacity": {
+        "default": 1, 
+        "description": "capacity of the queue. -1 means infinite", 
+        "name": "Capacity", 
+        "oneOf": [
+          {
+            "enum": [
+              -1
+            ]
+          }, 
+          {
+            "multipleOf": 1
+          }
+        ], 
+        "type": "number"
+      }, 
+      "_dist": {
+        "allOf": [
+          {
+            "properties": {
+              "distribution": {
+                "default": "Fixed", 
+                "enum": [
+                  "Fixed", 
+                  "Exp", 
+                  "Normal", 
+                  "Lognormal", 
+                  "Binomial", 
+                  "Poisson", 
+                  "Logistic", 
+                  "Cauchy", 
+                  "Geometric", 
+                  "Gama", 
+                  "Weibull"
+                ], 
+                "type": "string"
+              }
+            }, 
+            "type": "object"
+          }, 
+          {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/distributionTypes/_fixed"
+              }, 
+              {
+                "$ref": "#/definitions/distributionTypes/_exp"
+              }, 
+              {
+                "$ref": "#/definitions/distributionTypes/_normal"
+              }, 
+              {
+                "$ref": "#/definitions/distributionTypes/_lognormal"
+              }, 
+              {
+                "$ref": "#/definitions/distributionTypes/_binomial"
+              }, 
+              {
+                "$ref": "#/definitions/distributionTypes/_poisson"
+              }, 
+              {
+                "$ref": "#/definitions/distributionTypes/_logistic"
+              }, 
+              {
+                "$ref": "#/definitions/distributionTypes/_cauchy"
+              }, 
+              {
+                "$ref": "#/definitions/distributionTypes/_geometric"
+              }, 
+              {
+                "$ref": "#/definitions/distributionTypes/_gama"
+              }, 
+              {
+                "$ref": "#/definitions/distributionTypes/_weibull"
+              }
+            ]
+          }
+        ]
+      }, 
+      "_failureDist": {
+        "allOf": [
+          {
+            "properties": {
+              "failureDistribution": {
+                "default": "No", 
+                "description": "Is this machine subject to failures, if not then Time to Repair and Time to failure are ignored", 
+                "enum": [
+                  "No", 
+                  "Yes"
+                ], 
+                "name": "Has failure ?", 
+                "type": "string"
+              }
+            }, 
+            "type": "object"
+          }, 
+          {
+            "$ref": "#/definitions/distributionTypes/_failure"
+          }
+        ]
+      }, 
+      "_operationType": {
+        "description": "the type of operations that are performed manually in the machine", 
+        "enum": [
+          "MT-Load", 
+          "MT-Load-Setup", 
+          "MT-Load-Setup-Processing"
+        ], 
+        "name": "Operation type", 
+        "type": "string"
+      }, 
+      "_schedulingRule": {
+        "default": "FIFO", 
+        "description": "Scheduling Rule of this buffer", 
+        "enum": [
+          "FIFO", 
+          "Priority", 
+          "EDD", 
+          "EOD", 
+          "NumStages", 
+          "RPC", 
+          "LPT", 
+          "SPT", 
+          "MS", 
+          "WINQ", 
+          "WT"
+        ], 
+        "name": "Scheduling Rule", 
+        "type": "string"
+      }, 
+      "distributionTypes": {
+        "_binomial": {
+          "description": "Binomial", 
+          "properties": {
+            "mean": {
+              "default": 0, 
+              "type": "number"
+            }, 
+            "size": {
+              "default": 0, 
+              "type": "number"
+            }
+          }, 
+          "title": "Binomial", 
+          "type": "object"
+        }, 
+        "_cauchy": {
+          "description": "Cauchy", 
+          "properties": {
+            "location": {
+              "default": 0, 
+              "type": "number"
+            }, 
+            "scale": {
+              "default": 0, 
+              "type": "number"
+            }
+          }, 
+          "title": "Cauchy", 
+          "type": "object"
+        }, 
+        "_exp": {
+          "description": "Exponential", 
+          "properties": {
+            "mean": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }
+          }, 
+          "title": "Exp", 
+          "type": "object"
+        }, 
+        "_failure": {
+          "properties": {
+            "TTF": {
+              "$ref": "#/definitions/_dist", 
+              "name": "Time to Failure"
+            }, 
+            "TTR": {
+              "$ref": "#/definitions/_dist", 
+              "name": "Time to Repair"
+            }, 
+            "repairman": {
+              "description": "Repairman", 
+              "required": true, 
+              "type": "string"
+            }
+          }, 
+          "title": "Yes", 
+          "type": "object"
+        }, 
+        "_fixed": {
+          "properties": {
+            "mean": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }
+          }, 
+          "title": "Fixed", 
+          "type": "object"
+        }, 
+        "_gama": {
+          "description": "Gama", 
+          "properties": {
+            "rate": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }, 
+            "shape": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }
+          }, 
+          "title": "Gama", 
+          "type": "object"
+        }, 
+        "_geometric": {
+          "description": "Geometric", 
+          "properties": {
+            "probability": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }
+          }, 
+          "title": "Geometric", 
+          "type": "object"
+        }, 
+        "_logistic": {
+          "description": "Logistic", 
+          "properties": {
+            "location": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }, 
+            "scale": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }
+          }, 
+          "title": "Logistic", 
+          "type": "object"
+        }, 
+        "_lognormal": {
+          "description": "Lognormal", 
+          "properties": {
+            "mean": {
+              "_class": "Dream.Property", 
+              "default": 0, 
+              "name": "Mean", 
+              "type": "number"
+            }, 
+            "stdev": {
+              "_class": "Dream.Property", 
+              "default": 0, 
+              "name": "Standard Deviation", 
+              "type": "number"
+            }
+          }, 
+          "title": "Lognormal", 
+          "type": "object"
+        }, 
+        "_no": {
+          "description": "None", 
+          "title": "No", 
+          "type": "string"
+        }, 
+        "_normal": {
+          "description": "Normal", 
+          "properties": {
+            "mean": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }, 
+            "stdev": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }
+          }, 
+          "title": "Normal", 
+          "type": "object"
+        }, 
+        "_poisson": {
+          "description": "Poisson", 
+          "properties": {
+            "lambda": {
+              "default": 0, 
+              "type": "number"
+            }
+          }, 
+          "title": "Poisson", 
+          "type": "object"
+        }, 
+        "_weibull": {
+          "description": "Weibull", 
+          "properties": {
+            "scale": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }, 
+            "shape": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }
+          }, 
+          "title": "Weibull", 
+          "type": "object"
+        }
+      }
+    }, 
+    "edge": {
+      "description": "Base definition for edge", 
+      "properties": {
+        "_class": {
+          "type": "string"
+        }, 
+        "destination": {
+          "type": "string"
+        }, 
+        "name": {
+          "type": "string"
+        }, 
+        "source": {
+          "type": "string"
+        }
+      }, 
+      "required": [
+        "_class", 
+        "source", 
+        "destination"
+      ], 
+      "type": "object"
+    }, 
+    "node": {
+      "description": "Base definition for node", 
+      "properties": {
+        "_class": {
+          "type": "string"
+        }, 
+        "coordinate": {
+          "properties": {
+            "left": "number", 
+            "top": "number"
+          }, 
+          "type": "object"
+        }, 
+        "name": {
+          "type": "string"
+        }
+      }, 
+      "required": [
+        "name", 
+        "_class"
+      ], 
+      "type": "object"
+    }
+  }, 
+  "constraints": {}, 
+  "general": {
+    "confidenceLevel": 0.95, 
+    "currentDate": "2015/02/16 07:00", 
+    "ke_url": "http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/KnowledgeExtraction/Mockup_Processingtimes.xls", 
+    "maxSimTime": 540, 
+    "name": "BatchFullModelOperators.json", 
+    "numberOfReplications": 1, 
+    "processTimeout": 1000, 
+    "seed": 1, 
+    "throughputTarget": 1000, 
+    "timeUnit": "minute", 
+    "trace": "No"
+  }, 
+  "graph": {
+    "edge": {
+      "con_1001": {
+        "_class": "Dream.Edge", 
+        "destination": "B8", 
+        "source": "St3M0"
+      }, 
+      "con_1043": {
+        "_class": "Dream.Edge", 
+        "destination": "St4M0", 
+        "source": "B8"
+      }, 
+      "con_1083": {
+        "_class": "Dream.Edge", 
+        "destination": "B9", 
+        "source": "St4M0"
+      }, 
+      "con_1121": {
+        "_class": "Dream.Edge", 
+        "destination": "St5M0", 
+        "source": "B9"
+      }, 
+      "con_1159": {
+        "_class": "Dream.Edge", 
+        "destination": "St5M1", 
+        "source": "B9"
+      }, 
+      "con_1193": {
+        "_class": "Dream.Edge", 
+        "destination": "B10", 
+        "source": "St5M1"
+      }, 
+      "con_1229": {
+        "_class": "Dream.Edge", 
+        "destination": "B10", 
+        "source": "St5M0"
+      }, 
+      "con_1261": {
+        "_class": "Dream.Edge", 
+        "destination": "St6M0", 
+        "source": "B10"
+      }, 
+      "con_1293": {
+        "_class": "Dream.Edge", 
+        "destination": "St6M1", 
+        "source": "B10"
+      }, 
+      "con_1321": {
+        "_class": "Dream.Edge", 
+        "destination": "B11", 
+        "source": "St6M1"
+      }, 
+      "con_1351": {
+        "_class": "Dream.Edge", 
+        "destination": "B11", 
+        "source": "St6M0"
+      }, 
+      "con_1377": {
+        "_class": "Dream.Edge", 
+        "destination": "St7D", 
+        "source": "B11"
+      }, 
+      "con_1401": {
+        "_class": "Dream.Edge", 
+        "destination": "St7M0", 
+        "source": "St7D"
+      }, 
+      "con_1423": {
+        "_class": "Dream.Edge", 
+        "destination": "B12", 
+        "source": "St7M0"
+      }, 
+      "con_1443": {
+        "_class": "Dream.Edge", 
+        "destination": "St8M0", 
+        "source": "B12"
+      }, 
+      "con_1463": {
+        "_class": "Dream.Edge", 
+        "destination": "St8M1", 
+        "source": "B12"
+      }, 
+      "con_1479": {
+        "_class": "Dream.Edge", 
+        "destination": "St8RB", 
+        "source": "St8M1"
+      }, 
+      "con_1497": {
+        "_class": "Dream.Edge", 
+        "destination": "St8RA", 
+        "source": "St8M0"
+      }, 
+      "con_1509": {
+        "_class": "Dream.Edge", 
+        "destination": "Dream.Exit1", 
+        "source": "St8RB"
+      }, 
+      "con_1523": {
+        "_class": "Dream.Edge", 
+        "destination": "Dream.Exit1", 
+        "source": "St8RA"
+      }, 
+      "con_273": {
+        "_class": "Dream.Edge", 
+        "destination": "B1", 
+        "source": "St0M0"
+      }, 
+      "con_339": {
+        "_class": "Dream.Edge", 
+        "destination": "St1M0", 
+        "source": "B1"
+      }, 
+      "con_39": {
+        "_class": "Dream.Edge", 
+        "destination": "BDA", 
+        "source": "Dream.BatchSource1"
+      }, 
+      "con_401": {
+        "_class": "Dream.Edge", 
+        "destination": "B2", 
+        "source": "St1M0"
+      }, 
+      "con_459": {
+        "_class": "Dream.Edge", 
+        "destination": "St2M0", 
+        "source": "B2"
+      }, 
+      "con_513": {
+        "_class": "Dream.Edge", 
+        "destination": "BRA", 
+        "source": "St2M0"
+      }, 
+      "con_57": {
+        "_class": "Dream.Edge", 
+        "destination": "BDB", 
+        "source": "Dream.BatchSource1"
+      }, 
+      "con_581": {
+        "_class": "Dream.Edge", 
+        "destination": "B3", 
+        "source": "St0M1"
+      }, 
+      "con_645": {
+        "_class": "Dream.Edge", 
+        "destination": "St1M1", 
+        "source": "B3"
+      }, 
+      "con_705": {
+        "_class": "Dream.Edge", 
+        "destination": "B4", 
+        "source": "St1M1"
+      }, 
+      "con_71": {
+        "_class": "Dream.Edge", 
+        "destination": "St0M1", 
+        "source": "BDB"
+      }, 
+      "con_761": {
+        "_class": "Dream.Edge", 
+        "destination": "St2M1", 
+        "source": "B4"
+      }, 
+      "con_813": {
+        "_class": "Dream.Edge", 
+        "destination": "BRB", 
+        "source": "St2M1"
+      }, 
+      "con_861": {
+        "_class": "Dream.Edge", 
+        "destination": "B7", 
+        "source": "BRB"
+      }, 
+      "con_87": {
+        "_class": "Dream.Edge", 
+        "destination": "St0M0", 
+        "source": "BDA"
+      }, 
+      "con_911": {
+        "_class": "Dream.Edge", 
+        "destination": "B7", 
+        "source": "BRA"
+      }, 
+      "con_957": {
+        "_class": "Dream.Edge", 
+        "destination": "St3M0", 
+        "source": "B7"
+      }
+    }, 
+    "node": {
+      "B1": {
+        "_class": "Dream.LineClearance", 
+        "capacity": 2, 
+        "coordinate": {
+          "left": 0.3081327478571614, 
+          "top": 0.021036307350047176
+        }, 
+        "id": "B1", 
+        "name": "B1", 
+        "schedulingRule": "FIFO"
+      }, 
+      "B10": {
+        "_class": "Dream.Queue", 
+        "capacity": 4, 
+        "coordinate": {
+          "left": 0.37830510689257246, 
+          "top": 0.7550041875821227
+        }, 
+        "id": "B10", 
+        "name": "B10", 
+        "schedulingRule": "FIFO"
+      }, 
+      "B11": {
+        "_class": "Dream.Queue", 
+        "capacity": 4, 
+        "coordinate": {
+          "left": 0.5418509694588267, 
+          "top": 0.7716845469524345
+        }, 
+        "name": "B11", 
+        "schedulingRule": "FIFO"
+      }, 
+      "B12": {
+        "_class": "Dream.RoutingQueue", 
+        "capacity": 23, 
+        "coordinate": {
+          "left": 0.8289991434559814, 
+          "top": 0.7487532817957058
+        }, 
+        "name": "B12", 
+        "schedulingRule": "FIFO"
+      }, 
+      "B2": {
+        "_class": "Dream.LineClearance", 
+        "capacity": 2, 
+        "coordinate": {
+          "left": 0.5232485073555496, 
+          "top": 0.013666696062206444
+        }, 
+        "name": "B2", 
+        "schedulingRule": "FIFO"
+      }, 
+      "B3": {
+        "_class": "Dream.LineClearance", 
+        "capacity": 2, 
+        "coordinate": {
+          "left": 0.30516154587152466, 
+          "top": 0.21432431691821405
+        }, 
+        "name": "B3", 
+        "schedulingRule": "FIFO"
+      }, 
+      "B4": {
+        "_class": "Dream.LineClearance", 
+        "capacity": 2, 
+        "coordinate": {
+          "left": 0.5187142701900398, 
+          "top": 0.24087466145736686
+        }, 
+        "name": "B4", 
+        "schedulingRule": "FIFO"
+      }, 
+      "B7": {
+        "_class": "Dream.Queue", 
+        "capacity": 4, 
+        "coordinate": {
+          "left": 0.8453666868818541, 
+          "top": 0.07788764399810784
+        }, 
+        "name": "B7", 
+        "schedulingRule": "FIFO"
+      }, 
+      "B8": {
+        "_class": "Dream.Queue", 
+        "capacity": 4, 
+        "coordinate": {
+          "left": 0.004539505060373879, 
+          "top": 0.7695789354655987
+        }, 
+        "name": "B8", 
+        "schedulingRule": "FIFO"
+      }, 
+      "B9": {
+        "_class": "Dream.Queue", 
+        "capacity": 4, 
+        "coordinate": {
+          "left": 0.21072871541220164, 
+          "top": 0.7565175398133711
+        }, 
+        "name": "B9", 
+        "schedulingRule": "FIFO"
+      }, 
+      "BDA": {
+        "_class": "Dream.BatchDecomposition", 
+        "coordinate": {
+          "left": 0.09978623503357781, 
+          "top": 0.01725281110758568
+        }, 
+        "name": "BDA", 
+        "numberOfSubBatches": 4
+      }, 
+      "BDB": {
+        "_class": "Dream.BatchDecomposition", 
+        "coordinate": {
+          "left": 0.09762884137511894, 
+          "top": 0.22590515117972654
+        }, 
+        "name": "BDB", 
+        "numberOfSubBatches": 4
+      }, 
+      "BRA": {
+        "_class": "Dream.BatchReassembly", 
+        "coordinate": {
+          "left": 0.7345017315221779, 
+          "top": 0.005869386959240394
+        }, 
+        "name": "BRA", 
+        "numberOfSubBatches": 4
+      }, 
+      "BRB": {
+        "_class": "Dream.BatchReassembly", 
+        "coordinate": {
+          "left": 0.732266858260719, 
+          "top": 0.22001598561825875
+        }, 
+        "name": "BRB", 
+        "numberOfSubBatches": 4
+      }, 
+      "Dream.BatchSource1": {
+        "_class": "Dream.BatchSource", 
+        "batchNumberOfUnits": "80", 
+        "coordinate": {
+          "left": 0.002304632153726827, 
+          "top": 0.10443803914040899
+        }, 
+        "entity": "Dream.Batch", 
+        "id": "Dream.BatchSource1", 
+        "interArrivalTime": {
+          "Fixed": {
+            "mean": 0.5
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "name": "Source", 
+        "numberOfUnits": "80"
+      }, 
+      "Dream.Exit1": {
+        "_class": "Dream.Exit", 
+        "coordinate": {
+          "left": 0.9994692573189933, 
+          "top": 0.7470423170386943
+        }, 
+        "name": "Exit"
+      }, 
+      "St0M0": {
+        "_class": "Dream.BatchScrapMachine", 
+        "coordinate": {
+          "left": 0.2018021659108287, 
+          "top": 0.013666696062206444
+        }, 
+        "id": "St0M0", 
+        "interruption": {
+          "failure": {
+            "TTF": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "TTR": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "failureDistribution": "No", 
+            "repairman": ""
+          }
+        }, 
+        "name": "RO_E_M_A_A", 
+        "processingTime": {
+          "Fixed": {
+            "mean": 0.75
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "scrapping": {
+          "Fixed": {
+            "mean": 0
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "workingBatchSize": 20
+      }, 
+      "St0M1": {
+        "_class": "Dream.BatchScrapMachine", 
+        "coordinate": {
+          "left": 0.2018021659108287, 
+          "top": 0.22399692088997386
+        }, 
+        "id": "St0M1", 
+        "interruption": {
+          "failure": {
+            "TTF": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "TTR": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "failureDistribution": "No", 
+            "repairman": ""
+          }
+        }, 
+        "name": "RO_E_M_A_B", 
+        "processingTime": {
+          "Fixed": {
+            "mean": 0.75
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "scrapping": {
+          "Fixed": {
+            "mean": 0
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "workingBatchSize": 20
+      }, 
+      "St1M0": {
+        "_class": "Dream.BatchScrapMachine", 
+        "coordinate": {
+          "left": 0.4182614199086073, 
+          "top": 0.015344638650002296
+        }, 
+        "id": "St1M0", 
+        "interruption": {
+          "failure": {
+            "TTF": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "TTR": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "failureDistribution": "No", 
+            "repairman": ""
+          }
+        }, 
+        "name": "P_B_A_A", 
+        "processingTime": {
+          "Fixed": {
+            "mean": 0.75
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "scrapping": {
+          "Fixed": {
+            "mean": 0
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "workingBatchSize": 20
+      }, 
+      "St1M1": {
+        "_class": "Dream.BatchScrapMachine", 
+        "coordinate": {
+          "left": 0.41230602697692575, 
+          "top": 0.2219242159080133
+        }, 
+        "id": "St1M1", 
+        "interruption": {
+          "failure": {
+            "TTF": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "TTR": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "failureDistribution": "No", 
+            "repairman": ""
+          }
+        }, 
+        "name": "P_B_A_B", 
+        "processingTime": {
+          "Fixed": {
+            "mean": 0.75
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "scrapping": {
+          "Fixed": {
+            "mean": 0
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "workingBatchSize": 20
+      }, 
+      "St2M0": {
+        "_class": "Dream.BatchScrapMachine", 
+        "coordinate": {
+          "left": 0.6332996089721042, 
+          "top": 0.01725281110758568
+        }, 
+        "id": "St2M0", 
+        "interruption": {
+          "failure": {
+            "TTF": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "TTR": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "failureDistribution": "No", 
+            "repairman": ""
+          }
+        }, 
+        "name": "D_B_A_A", 
+        "processingTime": {
+          "Fixed": {
+            "mean": 0.75
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "scrapping": {
+          "Fixed": {
+            "mean": 0
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "workingBatchSize": 20
+      }, 
+      "St2M1": {
+        "_class": "Dream.BatchScrapMachine", 
+        "coordinate": {
+          "left": 0.6340488812407455, 
+          "top": 0.22379953969289082
+        }, 
+        "id": "St2M1", 
+        "interruption": {
+          "failure": {
+            "TTF": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "TTR": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "failureDistribution": "No", 
+            "repairman": ""
+          }
+        }, 
+        "name": "D_B_A_B", 
+        "processingTime": {
+          "Fixed": {
+            "mean": 0.75
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "scrapping": {
+          "Fixed": {
+            "mean": 0
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "workingBatchSize": 20
+      }, 
+      "St3M0": {
+        "_class": "Dream.BatchScrapMachine", 
+        "coordinate": {
+          "left": 0.9659075094274915, 
+          "top": 0.17454810203462923
+        }, 
+        "id": "St3M0", 
+        "interruption": {
+          "failure": {
+            "TTF": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "TTR": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "failureDistribution": "No", 
+            "repairman": ""
+          }
+        }, 
+        "name": "Cut & Bend", 
+        "processingTime": {
+          "Fixed": {
+            "mean": 0.1875
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "scrapping": {
+          "Fixed": {
+            "mean": 0
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "workingBatchSize": 80
+      }, 
+      "St4M0": {
+        "_class": "Dream.BatchScrapMachine", 
+        "coordinate": {
+          "left": 0.11094765779640971, 
+          "top": 0.773362431708059
+        }, 
+        "id": "St4M0", 
+        "interruption": {
+          "failure": ""
+        }, 
+        "name": "Moulding", 
+        "processingTime": {
+          "Fixed": {
+            "mean": 0.375
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "scrapping": {
+          "Fixed": {
+            "mean": 0
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "workingBatchSize": 40
+      }, 
+      "St5M0": {
+        "_class": "Dream.BatchScrapMachine", 
+        "coordinate": {
+          "left": 0.2970488955292209, 
+          "top": 0.5764883070945124
+        }, 
+        "id": "St5M0", 
+        "interruption": {
+          "failure": {
+            "TTF": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "TTR": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "failureDistribution": "No", 
+            "repairman": ""
+          }
+        }, 
+        "name": "Flag Labelling A", 
+        "processingTime": {
+          "Fixed": {
+            "mean": 0.1875
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "scrapping": {
+          "Fixed": {
+            "mean": 0
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "workingBatchSize": 80
+      }, 
+      "St5M1": {
+        "_class": "Dream.BatchScrapMachine", 
+        "coordinate": {
+          "left": 0.2918428202821252, 
+          "top": 0.9611889446138
+        }, 
+        "id": "St5M1", 
+        "interruption": {
+          "failure": {
+            "TTF": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "TTR": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "failureDistribution": "No", 
+            "repairman": ""
+          }
+        }, 
+        "name": "Flag Labelling B", 
+        "processingTime": {
+          "Fixed": {
+            "mean": 0.1875
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "scrapping": {
+          "Fixed": {
+            "mean": 0
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "workingBatchSize": 80
+      }, 
+      "St6M0": {
+        "_class": "Dream.BatchScrapMachine", 
+        "coordinate": {
+          "left": 0.45934164132760386, 
+          "top": 0.5615188546490438
+        }, 
+        "id": "St6M0", 
+        "interruption": {
+          "failure": {
+            "TTF": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "TTR": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "failureDistribution": "No", 
+            "repairman": ""
+          }
+        }, 
+        "name": "Pressure A", 
+        "processingTime": {
+          "Fixed": {
+            "mean": 1
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "scrapping": {
+          "Fixed": {
+            "mean": 0
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "workingBatchSize": 10
+      }, 
+      "St6M1": {
+        "_class": "Dream.BatchScrapMachine", 
+        "coordinate": {
+          "left": 0.45918659128971234, 
+          "top": 0.960991679081057
+        }, 
+        "id": "St6M1", 
+        "interruption": {
+          "failure": {
+            "TTF": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "TTR": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "failureDistribution": "No", 
+            "repairman": ""
+          }
+        }, 
+        "name": "Pressure B", 
+        "processingTime": {
+          "Fixed": {
+            "mean": 1
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "scrapping": {
+          "Fixed": {
+            "mean": 0
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "workingBatchSize": 10
+      }, 
+      "St7D": {
+        "_class": "Dream.BatchDecomposition", 
+        "coordinate": {
+          "left": 0.6385832092381459, 
+          "top": 0.7640847057948053
+        }, 
+        "name": "St7_D", 
+        "numberOfSubBatches": 8
+      }, 
+      "St7M0": {
+        "_class": "Dream.BatchScrapMachine", 
+        "coordinate": {
+          "left": 0.7286239090253878, 
+          "top": 0.5916553142335758
+        }, 
+        "id": "St7M0", 
+        "interruption": {
+          "failure": {
+            "TTF": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "TTR": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "failureDistribution": "No", 
+            "repairman": ""
+          }
+        }, 
+        "name": "Carding", 
+        "processingTime": {
+          "Fixed": {
+            "mean": 0.5
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "scrapping": {
+          "Fixed": {
+            "mean": 0
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "workingBatchSize": 10
+      }, 
+      "St8M0": {
+        "_class": "Dream.BatchScrapMachine", 
+        "coordinate": {
+          "left": 0.8662814564336495, 
+          "top": 0.5158535320361616
+        }, 
+        "id": "St8M0", 
+        "interruption": {
+          "failure": {
+            "TTF": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "TTR": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "failureDistribution": "No", 
+            "repairman": ""
+          }
+        }, 
+        "name": "Packaging A", 
+        "processingTime": {
+          "Fixed": {
+            "mean": 1
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "scrapping": {
+          "Fixed": {
+            "mean": 0
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "workingBatchSize": 10
+      }, 
+      "St8M1": {
+        "_class": "Dream.BatchScrapMachine", 
+        "coordinate": {
+          "left": 0.8781921514651204, 
+          "top": 0.9611889446138
+        }, 
+        "id": "St8M1", 
+        "interruption": {
+          "failure": {
+            "TTF": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "TTR": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "failureDistribution": "No", 
+            "repairman": ""
+          }
+        }, 
+        "name": "Packaging B", 
+        "processingTime": {
+          "Fixed": {
+            "mean": 1
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "scrapping": {
+          "Fixed": {
+            "mean": 0
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "workingBatchSize": 10
+      }, 
+      "St8RA": {
+        "_class": "Dream.BatchReassembly", 
+        "coordinate": {
+          "left": 0.9697830337196626, 
+          "top": 0.5350013587825962
+        }, 
+        "id": "St8RA", 
+        "name": "St8R_A", 
+        "numberOfSubBatches": 8
+      }, 
+      "St8RB": {
+        "_class": "Dream.BatchReassembly", 
+        "coordinate": {
+          "left": 0.9770689321903234, 
+          "top": 0.960991679081057
+        }, 
+        "name": "St8R_B", 
+        "numberOfSubBatches": 8
+      }
+    }
+  }, 
+  "input": {
+    "ACO_weights_spreadsheet": [
+		["Obj1: Max number of assigned PB","Obj2: Assignment to machines with higher WIP","Obj3: Min assignment variations","Obj4: Uniform assignment across stations","Obj5: Machines with furthest last assignment time","Obj6: Fill sub-line"],
+		["Min value",0.5,1.5,0,0.5,0.5,1],
+		["Max weight value",1.5,2.5,1,1.5,1.5,2],
+		["Step",0.1,0.1,0.1,0.1,0.1,0.1],
+		["Static",1,"","","","",""]
+    ], 
+    "machine_shift_spreadsheet": [
+      [
+        "Date", 
+        "Machines", 
+        "Start", 
+        "Stop"
+      ], 
+      [
+        "2015/02/16", 
+        "All", 
+        "07:00", 
+        "16:00"
+      ], 
+      [
+        "2015/02/16", 
+        "St0M0,St1M0,St2M0,St3M0,St4M0,St5M0,St6M0,St7M0,St8M0", 
+        "16:00", 
+        "01:00"
+      ], 
+      [
+        "2015/02/17", 
+        "All", 
+        "07:00", 
+        "16:00"
+      ], 
+      [
+        "2015/02/17", 
+        "St0M0,St1M0,St2M0,St3M0,St4M0,St5M0,St6M0,St7M0,St8M0", 
+        "16:00", 
+        "01:00"
+      ], 
+      [
+        "2015/02/18", 
+        "All", 
+        "07:00", 
+        "16:00"
+      ], 
+      [
+        "2015/02/18", 
+        "St0M0,St1M0,St2M0,St3M0,St4M0,St5M0,St6M0,St7M0,St8M0", 
+        "16:00", 
+        "01:00"
+      ], 
+      [
+        "", 
+        "", 
+        "", 
+        ""
+      ]
+    ], 
+    "operator_shift_spreadsheet": [
+      [
+        "Date", 
+        "Product Builder", 
+        "Start", 
+        "Stop"
+      ], 
+      [
+        "2015/02/16", 
+        "PB_1,PB_2,PB_3,PB_4,PB_7,PB_9,PB_16,PB_15,PB_17,PB_25,PB_30,PB_12", 
+        "07:00", 
+        "16:00"
+      ], 
+      [
+        "2015/02/16", 
+        "PB_1,PB_2,PB_3,PB_4,PB_7,PB_9,PB_10,PB_20,PB_21,PB_16,PB_15,PB_17,PB_25", 
+        "16:00", 
+        "01:00"
+      ], 
+      [
+        "2015/02/17", 
+        "PB_1,PB_2,PB_3,PB_4,PB_7,PB_9,PB_16,PB_15,PB_17,PB_25,PB_30,PB_12", 
+        "07:00", 
+        "16:00"
+      ], 
+      [
+        "2015/02/17", 
+        "PB_1,PB_2,PB_3,PB_4,PB_7,PB_9,PB_10,PB_20,PB_21,PB_16,PB_15,PB_17,PB_25", 
+        "16:00", 
+        "01:00"
+      ], 
+      [
+        "2015/02/18", 
+        "PB_1,PB_2,PB_3,PB_4,PB_7,PB_9,PB_16,PB_15,PB_17,PB_25,PB_30,PB_12", 
+        "07:00", 
+        "16:00"
+      ], 
+      [
+        "2015/02/18", 
+        "PB_1,PB_2,PB_3,PB_4,PB_7,PB_9,PB_10,PB_20,PB_21,PB_16,PB_15,PB_17,PB_25", 
+        "16:00", 
+        "01:00"
+      ], 
+      [
+        null, 
+        null, 
+        null, 
+        null
+      ]
+    ], 
+    "operator_skill_spreadsheet": [
+      [
+        "Product Builder", 
+        "Skills"
+      ], 
+      [
+        "PB_1", 
+        "St0M0,St0M1,St1M0,St1M1,St2M0,St2M2"
+      ], 
+      [
+        "PB_2", 
+        "St0M0,St0M1,St1M0,St1M1,St2M0,St2M2"
+      ], 
+      [
+        "PB_3", 
+        "St0M0,St0M1,St1M0,St1M1,St2M0,St2M2"
+      ], 
+      [
+        "PB_4", 
+        "St0M0,St0M1,St1M0,St1M1,St2M0,St2M2"
+      ], 
+      [
+        "PB_7", 
+        "St2M0,St2M1,St4M0,St5M0,St5M1"
+      ], 
+      [
+        "PB_9", 
+        "St3M0,St4M0,St5M0,St5M1"
+      ], 
+      [
+        "PB_10", 
+        "St4M0,St5M0,St5M1,St6M0,St6M1"
+      ], 
+      [
+        "PB_12", 
+        "St1M0,St1M1,St2M0,St2M2,St6M0,St6M1"
+      ], 
+      [
+        "PB_15", 
+        "St7M0,St8M0,St8M1"
+      ], 
+      [
+        "PB_16", 
+        "St6M0,St6M1,St7M0,St8M0,St8M1"
+      ], 
+      [
+        "PB_17", 
+        "St3M0,St6M0,St6M1,St8M0,St8M1"
+      ], 
+      [
+        "PB_20", 
+        "St5M0, St5M1,St6M0,St6M1,St7M0"
+      ], 
+      [
+        "PB_21", 
+        "St6M0,St6M1,St7M0,St8M0,St8M1"
+      ], 
+      [
+        "PB_25", 
+        "St1M0,St1M1,St2M0,St2M2,St8M0,St8M1"
+      ], 
+      [
+        "PB_30", 
+        "St3M0,St4M0"
+      ], 
+      [
+        "", 
+        ""
+      ]
+    ], 
+    "wip_spreadsheet": [
+      [
+        "ID", 
+        "StationID", 
+        "Number of Units", 
+        "Remaining Units", 
+        "Type", 
+        "Batch ID"
+      ], 
+      [
+        "1", 
+        "St8M0", 
+        "80", 
+        "60", 
+        "Batch", 
+        null
+      ], 
+      [
+        "2", 
+        "St7M0", 
+        "80", 
+        "20", 
+        "Batch", 
+        ""
+      ], 
+      [
+        "3", 
+        "B11", 
+        "80", 
+        "", 
+        "Batch", 
+        null
+      ], 
+      [
+        "4", 
+        "St6M0", 
+        "80", 
+        "45", 
+        "Batch", 
+        ""
+      ], 
+      [
+        "5", 
+        "St6M1", 
+        "80", 
+        "10", 
+        "Batch", 
+        null
+      ], 
+      [
+        "6", 
+        "B10", 
+        "80", 
+        "", 
+        "Batch", 
+        ""
+      ], 
+      [
+        "7", 
+        "B9", 
+        "80", 
+        "", 
+        "Batch", 
+        null
+      ], 
+      [
+        "8", 
+        "B9", 
+        "80", 
+        "", 
+        "Batch", 
+        null
+      ], 
+      [
+        "9", 
+        "B7", 
+        "80", 
+        "", 
+        "Batch", 
+        null
+      ], 
+      [
+        "12", 
+        "B7", 
+        "80", 
+        "", 
+        "Batch", 
+        null
+      ], 
+      [
+        "13", 
+        "B7", 
+        "80", 
+        "", 
+        "Batch", 
+        null
+      ], 
+      [
+        "B10_SB0", 
+        "St2M0", 
+        "20", 
+        "0", 
+        "SubBatch", 
+        "10"
+      ], 
+      [
+        "B10_SB1", 
+        "B2", 
+        "20", 
+        "", 
+        "SubBatch", 
+        "10"
+      ], 
+      [
+        "B10_SB2", 
+        "B1", 
+        "20", 
+        null, 
+        "SubBatch", 
+        "10"
+      ], 
+      [
+        "B10_SB3", 
+        "St0M0", 
+        "20", 
+        "20", 
+        "SubBatch", 
+        "10"
+      ], 
+      [
+        "B11_SB0", 
+        "B4", 
+        "20", 
+        "", 
+        "SubBatch", 
+        "11"
+      ], 
+      [
+        "B11_SB1", 
+        "B3", 
+        "20", 
+        "", 
+        "SubBatch", 
+        "11"
+      ], 
+      [
+        "B11_SB2", 
+        "St0M1", 
+        "20", 
+        "20", 
+        "SubBatch", 
+        "11"
+      ], 
+      [
+        "B11_SB3", 
+        "St0M1", 
+        "20", 
+        "20", 
+        "SubBatch", 
+        "11"
+      ], 
+      [
+        null, 
+        null, 
+        null, 
+        null, 
+        null, 
+        null
+      ]
+    ]
+  }, 
+  "result": {
+    "result_list": []
+  }
+}
