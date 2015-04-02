@@ -37,11 +37,8 @@ class BatchesOperatorUtilization(plugin.OutputPreparationPlugin):
     }, {
       "label": "Waiting",
       "data": waiting_data
-    },
-    {
-      "label": "Off_shift",
-      "data": off_shift_data
-    }];
+    }
+    ];
  
     out = result[self.configuration_dict['output_id']] = {
       "series": series,
@@ -53,14 +50,13 @@ class BatchesOperatorUtilization(plugin.OutputPreparationPlugin):
         if obj.get('_class') == 'Dream.Operator':
             working_ratio=obj['results']['working_ratio'][0]
             waiting_ratio=obj['results']['waiting_ratio'][0]
+            # if there is no working or waiting time do not output for this operator
             if (not working_ratio) and (not waiting_ratio):
                 continue
             if obj['results']['working_ratio']:
-                working_data.append((i, obj['results']['working_ratio'][0]))
+                working_data.append((i, 100*(working_ratio/(working_ratio+waiting_ratio))))
             if obj['results']['waiting_ratio']:
-                waiting_data.append((i, obj['results']['waiting_ratio'][0]))
-#             if obj['results']['off_shift_ratio']:
-#                 off_shift_data.append((i, obj['results']['off_shift_ratio'][0]))
+                waiting_data.append((i, 100*(waiting_ratio/(working_ratio+waiting_ratio))))
             ticks.append((i, obj.get('name', self.getNameFromId(data, obj['id']))))
             i += 1
   
