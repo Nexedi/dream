@@ -2139,11 +2139,11 @@
   }, 
   "input": {
     "ACO_weights_spreadsheet": [
-		["Obj1: Max number of assigned PB","Obj2: Assignment to machines with higher WIP","Obj3: Min assignment variations","Obj4: Uniform assignment across stations","Obj5: Machines with furthest last assignment time","Obj6: Fill sub-line"],
-		["Min value",0.5,1.5,0,0.5,0.5,1],
+		["","Obj1: Max number of assigned PB","Obj2: Assignment to machines with higher WIP","Obj3: Min assignment variations","Obj4: Uniform assignment across stations","Obj5: Machines with furthest last assignment time","Obj6: Fill sub-line"],
+		["Min weight value",0.5,1.5,0,0.5,0.5,1],
 		["Max weight value",1.5,2.5,1,1.5,1.5,2],
 		["Step",0.1,0.1,0.1,0.1,0.1,0.1],
-		["Static",1,"","","","",""]
+		["Static weight value",1,"","","","0",""]
     ], 
     "machine_shift_spreadsheet": [
       [
