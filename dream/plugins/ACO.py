@@ -73,12 +73,12 @@ class ACO(plugin.ExecutionPlugin):
     for i in range(int(data["general"]["numberOfGenerations"])):
         scenario_list = [] # for the distributor
         # number of ants created per generation
+        seedPlus = 0
         for j in range(int(data["general"]["numberOfAntsPerGenerations"])):
             # an ant dictionary to contain rule to queue assignment information
             ant = {}
             # for each of the machines, rules are randomly picked from the
             # options list
-            seedPlus = 0
             seed = data['general'].get('seed', 10)
             if seed == '' or seed == ' ' or seed == None:
                 seed = 10
@@ -91,7 +91,6 @@ class ACO(plugin.ExecutionPlugin):
             # if the ant was not already tested, only then test it
             if ant_key not in tested_ants:
                 tested_ants.add(ant_key)
- 
                 ant_data=self.createAntData(data, ant)
                 ant['key'] = ant_key
                 ant['input'] = ant_data
