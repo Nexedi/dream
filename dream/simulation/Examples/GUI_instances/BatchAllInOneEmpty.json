@@ -446,16 +446,6 @@
               "required": true, 
               "type": "string"
             }, 
-            "interruption": {
-              "name": "Interruptions", 
-              "properties": {
-                "failure": {
-                  "$ref": "#/definitions/_failureDist", 
-                  "required": true
-                }
-              }, 
-              "type": "object"
-            }, 
             "name": {
               "default": "Machine", 
               "name": "Name", 
@@ -463,21 +453,16 @@
             }, 
             "processingTime": {
               "$ref": "#/definitions/_dist", 
-              "description": "TODO: describe processing time", 
-              "name": "Processing time", 
+              "description": "The time that this station needs in order to process a unit", 
+			  "default": 0.1, 
+              "name": "Processing time (per unit)", 
               "required": true
             }, 
 			"workingBatchSize": {
-				"default": "sad", 
+			  "default": 10, 
 			  "name": "Working batch size in this station", 
 			  "type": "number"
-			}, 
-            "scrapping": {
-              "$ref": "#/definitions/_dist", 
-              "description": "TODO: describe scrapping", 
-              "name": "Scrapping", 
-              "required": true
-            }
+			} 
           }, 
           "type": "object"
         }
