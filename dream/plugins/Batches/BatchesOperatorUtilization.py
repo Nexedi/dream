@@ -51,12 +51,16 @@ class BatchesOperatorUtilization(plugin.OutputPreparationPlugin):
     i = 0
     for obj in result['elementList']:
         if obj.get('_class') == 'Dream.Operator':
+            working_ratio=obj['results']['working_ratio'][0]
+            waiting_ratio=obj['results']['waiting_ratio'][0]
+            if (not working_ratio) and (not waiting_ratio):
+                continue
             if obj['results']['working_ratio']:
                 working_data.append((i, obj['results']['working_ratio'][0]))
             if obj['results']['waiting_ratio']:
                 waiting_data.append((i, obj['results']['waiting_ratio'][0]))
-            if obj['results']['off_shift_ratio']:
-                off_shift_data.append((i, obj['results']['off_shift_ratio'][0]))
+#             if obj['results']['off_shift_ratio']:
+#                 off_shift_data.append((i, obj['results']['off_shift_ratio'][0]))
             ticks.append((i, obj.get('name', self.getNameFromId(data, obj['id']))))
             i += 1
   
