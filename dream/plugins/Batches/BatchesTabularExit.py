@@ -46,7 +46,16 @@ class BatchesTabularExit(plugin.OutputPreparationPlugin):
                     avgCycleTime=record['results']['lifespan'][0]
                     data['result']['result_list'][0]['exit_output'].append(['Average Cycle Time',
                                                                             timeUnit,
-                                                                            "%.2f" % avgCycleTime])                   
+                                                                            "%.2f" % avgCycleTime])
+                    
+                    # output the productivity metric
+                    # ToDo, this currently works only for one replication
+                    totalOperatorHours=self.getTotalOperatorOnShiftHours(data['result']['result_list'][0]['elementList'],maxSimTime)
+                    if totalOperatorHours:
+                        productivity=unitsThroughput/totalOperatorHours
+                        data['result']['result_list'][0]['exit_output'].append(['Productivity',
+                                                                                "Produced Units/Operator Hours",
+                                                                                "%.2f" % productivity])                                   
         elif numberOfReplications>1:
             # create the titles of the columns
             data['result']['result_list'][0]['exit_output'] = [['KPI','Unit','Average','Std Dev','Min','Max',
@@ -112,3 +121,11 @@ class BatchesTabularExit(plugin.OutputPreparationPlugin):
                                                                             "%.2f" % avgCycleTimeCI['ub']]
                                                                            ) 
         return data
+    
+    
+    def getTotalOperatorOnShiftHours(self,results,maxSimTime):
+        totalOperatorOnShiftHours=0.0
+        for element in results:
+            if element.get('family',None)=='Operator':
+                totalOperatorOnShiftHours+=maxSimTime*(1-element['results']['off_shift_ratio'][0]/100.0)
+        return totalOperatorOnShiftHours
