@@ -22,6 +22,7 @@ import json
 import os
 import glob
 import tempfile
+import logging
 from unittest import TestCase
 
 
@@ -52,10 +53,14 @@ class SimulationTopology(TestCase):
     input_file = open(file_path, "r")
     input_data = input_file.read()
     input_file.close()
-    pluginRegistry=PluginRegistry(logger=None, data=json.loads(input_data))
+    logger = logging.getLogger('myLogger')
+    pluginRegistry=PluginRegistry(logger=logger, data=json.loads(input_data))
     result_data=pluginRegistry.run(data=json.loads(input_data))
     # Slightly change the output to make it stable
-    del result_data['result']['result_list'][0]["general"]["totalExecutionTime"]
+    try:
+        del result_data['result']['result_list'][0]["general"]["totalExecutionTime"]
+    except KeyError:
+        pass
     result_data['result']['result_list'][0]["elementList"].sort(key=lambda x: x["id"])
     stable_result = json.dumps(result_data['result']['result_list'][0], indent=True, sort_keys=True)
     dump_path = os.path.join(self.dump_folder_path, "%s.result" % filename)
