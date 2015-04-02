@@ -17,19 +17,20 @@ class BatchesACO(ACO):
   def _calculateAntScore(self, ant):
     """Calculate the score of this ant.
     """
-    totalDelay=0    #set the total delay to 0
     result, = ant['result']['result_list']  #read the result as JSON
-    #loop through the elements
+    #loop through the elements 
     for element in result['elementList']:
         element_family = element.get('family', None)
-        #id the class is Job
-        if element_family == 'Job':
-            results=element['results']
-            delay = float(results.get('delay', "0"))
-            # A negative delay would mean we are ahead of schedule. This
-            # should not be considered better than being on time.
-            totalDelay += max(delay, 0)
-    return totalDelay
+        #id the class is Exit get the unitsThroughput
+        if element_family == 'Exit':
+            unitsThroughput=element['results'].get('unitsThroughput',None)
+            if unitsThroughput:
+                unitsThroughput=unitsThroughput[0]
+            if not unitsThroughput:
+                unitsThroughput=batchesThroughput
+    print 'score=',unitsThroughput
+    # return the negative value since they are ranked this way. XXX discuss this
+    return -unitsThroughput
 
   # creates the collated scenarios, i.e. the list 
   # of options collated into a dictionary for ease of referencing in ManPy
@@ -45,10 +46,10 @@ class BatchesACO(ACO):
             collated[str(i)]=[float(staticValue)]
         else:
             collated[str(i)]=[]
-            value=minValue
+            value=float(minValue)
             while 1:
                 collated[str(i)].append(round(float(value),2))
-                value+=stepValue
+                value+=float(stepValue)
                 if value>maxValue:
                     break
     return collated    
@@ -70,7 +71,7 @@ class BatchesACO(ACO):
     ant_data = copy(data)
     # below provisional values, to be updated (should the user set those?)
     data['general']['numberOfSolutions']=1
-    data["general"]["numberOfGenerations"]=1
+    data["general"]["numberOfGenerations"]=4
     data["general"]["numberOfAntsPerGenerations"]=2
     ACO.run(self, data)
     return data
