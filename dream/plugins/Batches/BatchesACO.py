@@ -28,7 +28,6 @@ class BatchesACO(ACO):
                 unitsThroughput=unitsThroughput[0]
             if not unitsThroughput:
                 unitsThroughput=batchesThroughput
-    print 'score=',unitsThroughput
     # return the negative value since they are ranked this way. XXX discuss this
     return -unitsThroughput
 
@@ -64,7 +63,6 @@ class BatchesACO(ACO):
     for node_id, node in ant_data["graph"]["node"].iteritems():
         if node['_class']=="dream.simulation.SkilledOperatorRouter.SkilledRouter":
             node['weightFactors']=weightFactors
-    print 'created Ant',weightFactors
     return ant_data
 
   def run(self, data):
