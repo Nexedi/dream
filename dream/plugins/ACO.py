@@ -30,6 +30,16 @@ class ACO(plugin.ExecutionPlugin):
             totalDelay += max(delay, 0)
     return totalDelay
 
+  def createCollatedScenarios(self,data):
+    # the list of options collated into a dictionary for ease of referencing in
+    # ManPy
+    collated = dict()
+    for node_id, node in data['graph']['node'].items():
+      node_class = getClassFromName(node['_class'])
+      if issubclass(node_class, Queue) or issubclass(node_class, Operator):
+        collated[node_id] = list(node_class.getSupportedSchedulingRules())
+    return collated     
+
   def run(self, data):
     """Preprocess the data.
     """
@@ -41,14 +51,8 @@ class ACO(plugin.ExecutionPlugin):
     tested_ants = set()
     start = time.time()         # start counting execution time
 
-    # the list of options collated into a dictionary for ease of referencing in
-    # ManPy
-    collated = dict()
-    for node_id, node in data['graph']['node'].items():
-      node_class = getClassFromName(node['_class'])
-      if issubclass(node_class, Queue) or issubclass(node_class, Operator):
-        collated[node_id] = list(node_class.getSupportedSchedulingRules())
-    assert collated
+    collated=self.createCollatedScenarios(data)    
+    assert collated 
 
     max_results = int(data['general'].get('numberOfSolutions',0))
     assert max_results >= 1
