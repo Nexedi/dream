@@ -561,15 +561,24 @@
                     "_class": "Dream.BatchScrapMachine", 
                     "id": "St8M1"
                }, 
-               "B4": {
+               "B9": {
                     "coordinate": {
-                         "top": 0.24087466145736686, 
-                         "left": 0.5187142701900398
+                         "top": 0.7565175398133711, 
+                         "left": 0.21072871541220164
                     }, 
-                    "_class": "Dream.LineClearance", 
-                    "capacity": 2, 
-                    "name": "B4", 
+                    "_class": "Dream.Queue", 
+                    "capacity": 4, 
+                    "name": "B9", 
                     "schedulingRule": "FIFO"
+               }, 
+               "St7D": {
+                    "coordinate": {
+                         "top": 0.7640847057948053, 
+                         "left": 0.6385832092381459
+                    }, 
+                    "_class": "Dream.BatchDecomposition", 
+                    "numberOfSubBatches": 8, 
+                    "name": "St7_D"
                }, 
                "St2M1": {
                     "interruption": {
@@ -862,15 +871,6 @@
                     "_class": "Dream.BatchScrapMachine", 
                     "id": "St1M1"
                }, 
-               "BRB": {
-                    "coordinate": {
-                         "top": 0.22001598561825875, 
-                         "left": 0.732266858260719
-                    }, 
-                    "_class": "Dream.BatchReassembly", 
-                    "numberOfSubBatches": 4, 
-                    "name": "BRB"
-               }, 
                "St8RA": {
                     "coordinate": {
                          "top": 0.5350013587825962, 
@@ -988,14 +988,15 @@
                     "_class": "Dream.BatchSource", 
                     "id": "Dream.BatchSource1"
                }, 
-               "St7D": {
+               "B4": {
                     "coordinate": {
-                         "top": 0.7640847057948053, 
-                         "left": 0.6385832092381459
+                         "top": 0.24087466145736686, 
+                         "left": 0.5187142701900398
                     }, 
-                    "_class": "Dream.BatchDecomposition", 
-                    "numberOfSubBatches": 8, 
-                    "name": "St7_D"
+                    "_class": "Dream.LineClearance", 
+                    "capacity": 2, 
+                    "name": "B4", 
+                    "schedulingRule": "FIFO"
                }, 
                "B7": {
                     "coordinate": {
@@ -1048,15 +1049,14 @@
                     "name": "B8", 
                     "schedulingRule": "FIFO"
                }, 
-               "B9": {
+               "BRB": {
                     "coordinate": {
-                         "top": 0.7565175398133711, 
-                         "left": 0.21072871541220164
+                         "top": 0.22001598561825875, 
+                         "left": 0.732266858260719
                     }, 
-                    "_class": "Dream.Queue", 
-                    "capacity": 4, 
-                    "name": "B9", 
-                    "schedulingRule": "FIFO"
+                    "_class": "Dream.BatchReassembly", 
+                    "numberOfSubBatches": 4, 
+                    "name": "BRB"
                }, 
                "BRA": {
                     "coordinate": {
@@ -1069,9 +1069,9 @@
                }
           }, 
           "edge": {
-               "con_1497": {
-                    "source": "St8M0", 
-                    "destination": "St8RA", 
+               "con_459": {
+                    "source": "B2", 
+                    "destination": "St2M0", 
                     "_class": "Dream.Edge"
                }, 
                "con_1043": {
@@ -1094,9 +1094,9 @@
                     "destination": "B10", 
                     "_class": "Dream.Edge"
                }, 
-               "con_1401": {
-                    "source": "St7D", 
-                    "destination": "St7M0", 
+               "con_57": {
+                    "source": "Dream.BatchSource1", 
+                    "destination": "BDB", 
                     "_class": "Dream.Edge"
                }, 
                "con_581": {
@@ -1149,11 +1149,6 @@
                     "destination": "B10", 
                     "_class": "Dream.Edge"
                }, 
-               "con_1509": {
-                    "source": "St8RB", 
-                    "destination": "Dream.Exit1", 
-                    "_class": "Dream.Edge"
-               }, 
                "con_1261": {
                     "source": "B10", 
                     "destination": "St6M0", 
@@ -1164,9 +1159,9 @@
                     "destination": "B1", 
                     "_class": "Dream.Edge"
                }, 
-               "con_459": {
-                    "source": "B2", 
-                    "destination": "St2M0", 
+               "con_1497": {
+                    "source": "St8M0", 
+                    "destination": "St8RA", 
                     "_class": "Dream.Edge"
                }, 
                "con_645": {
@@ -1194,6 +1189,11 @@
                     "destination": "St0M1", 
                     "_class": "Dream.Edge"
                }, 
+               "con_1523": {
+                    "source": "St8RA", 
+                    "destination": "Dream.Exit1", 
+                    "_class": "Dream.Edge"
+               }, 
                "con_1423": {
                     "source": "St7M0", 
                     "destination": "B12", 
@@ -1214,14 +1214,14 @@
                     "destination": "BDA", 
                     "_class": "Dream.Edge"
                }, 
-               "con_1523": {
-                    "source": "St8RA", 
+               "con_1509": {
+                    "source": "St8RB", 
                     "destination": "Dream.Exit1", 
                     "_class": "Dream.Edge"
                }, 
-               "con_57": {
-                    "source": "Dream.BatchSource1", 
-                    "destination": "BDB", 
+               "con_1401": {
+                    "source": "St7D", 
+                    "destination": "St7M0", 
                     "_class": "Dream.Edge"
                }, 
                "con_1443": {
@@ -1264,9 +1264,9 @@
           "seed": 1, 
           "confidenceLevel": 0.95, 
           "maxSimTime": 5000, 
-          "throughputTarget": 1000, 
+          "timeUnit": "minute", 
           "currentDate": "2014/07/31 11:00", 
-          "timeUnit": "minute"
+          "throughputTarget": 1000
      }, 
      "class_definition": {
           "node": {
@@ -1464,42 +1464,27 @@
                     {
                          "type": "object", 
                          "properties": {
-                              "interruption": {
-                                   "type": "object", 
-                                   "name": "Interruptions", 
-                                   "properties": {
-                                        "failure": {
-                                             "required": true, 
-                                             "$ref": "#/definitions/_failureDist"
-                                        }
-                                   }
+                              "processingTime": {
+                                   "default": 0.1, 
+                                   "required": true, 
+                                   "description": "The time that this station needs in order to process a unit", 
+                                   "name": "Processing time (per unit)", 
+                                   "$ref": "#/definitions/_dist"
                               }, 
                               "workingBatchSize": {
-                                   "default": "sad", 
+                                   "default": 10, 
                                    "type": "number", 
                                    "name": "Working batch size in this station"
-                              }, 
-                              "name": {
-                                   "default": "Machine", 
-                                   "type": "string", 
-                                   "name": "Name"
-                              }, 
-                              "processingTime": {
-                                   "required": true, 
-                                   "description": "TODO: describe processing time", 
-                                   "name": "Processing time", 
-                                   "$ref": "#/definitions/_dist"
-                              }, 
-                              "scrapping": {
-                                   "required": true, 
-                                   "description": "TODO: describe scrapping", 
-                                   "name": "Scrapping", 
-                                   "$ref": "#/definitions/_dist"
                               }, 
                               "id": {
                                    "default": "M", 
                                    "required": true, 
                                    "type": "string"
+                              }, 
+                              "name": {
+                                   "default": "Machine", 
+                                   "type": "string", 
+                                   "name": "Name"
                               }
                          }
                     }
@@ -2271,6 +2256,20 @@
                     null
                ]
           ], 
+          "operator_shift_spreadsheet": [
+               [
+                    "Date", 
+                    "Product Builder", 
+                    "Start", 
+                    "Stop"
+               ], 
+               [
+                    null, 
+                    null, 
+                    null, 
+                    null
+               ]
+          ], 
           "machine_shift_spreadsheet": [
                [
                     "Date", 
@@ -2361,20 +2360,6 @@
                     "St0M0,St0M1,St1M0,St1M1,St2M0,St2M1,St3M0,St4M0,St5M0,St5M1,St6M0,St6M1,St7M0,St8M0,St8M1", 
                     "19:30", 
                     "21:45"
-               ], 
-               [
-                    null, 
-                    null, 
-                    null, 
-                    null
-               ]
-          ], 
-          "operator_shift_spreadsheet": [
-               [
-                    "Date", 
-                    "Product Builder", 
-                    "Start", 
-                    "Stop"
                ], 
                [
                     null, 
