@@ -20,6 +20,7 @@ class BatchesShift(ReadShiftFromSpreadsheet):
     nodes=data['graph']['node']
     machineshiftData=data['input'].get('machine_shift_spreadsheet', None)
     operatorshiftData=data['input'].get('operator_shift_spreadsheet', None)
+    maxSimTime=data['general']['maxSimTime']
      
     # create a string with all station ids separated by commas
     allString=''
@@ -49,11 +50,21 @@ class BatchesShift(ReadShiftFromSpreadsheet):
 
     # set attributes to shifts
     for node_id, node in nodes.iteritems():
-        interruptions=node.get('interruptions',None)
-        if interruptions:
-            shift=interruptions.get('shift',None)
-            if shift:
-                interruptions['shift']['thresholdTimeIsOnShift']=0
-                interruptions['shift']['receiveBeforeEndThreshold']=7
-                interruptions['shift']['endUnfinished']=1
+        if "BatchScrapMachine" in node['_class'] or "M3" in node['_class'] or node['_class']=="Dream.Operator": 
+            shiftExists=False
+            interruptions=node.get('interruptions',None)
+            if interruptions:
+                shift=interruptions.get('shift',None)
+                if shift:
+                    interruptions['shift']['thresholdTimeIsOnShift']=0
+                    interruptions['shift']['receiveBeforeEndThreshold']=7
+                    interruptions['shift']['endUnfinished']=1
+                    shiftExists=True
+            # if element has no shift defined in the spreadsheet it needs to be off-shift. For this we declare a dummy
+            # shift that is on-shift only after the completion of simulation
+            if not shiftExists:
+                print 'Setting for', node_id
+                node['interruptions']=node.get('interruptions',{})
+                node['interruptions']['shift']={}
+                node['interruptions']['shift']['shiftPattern']=[[maxSimTime+1,maxSimTime+2]]      
     return data
