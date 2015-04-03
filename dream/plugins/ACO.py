@@ -1,6 +1,6 @@
 from dream.plugins import plugin
 from pprint import pformat
-from copy import copy
+from copy import copy, deepcopy
 import json
 import time
 import random
@@ -91,10 +91,11 @@ class ACO(plugin.ExecutionPlugin):
             # if the ant was not already tested, only then test it
             if ant_key not in tested_ants:
                 tested_ants.add(ant_key)
-                ant_data=self.createAntData(data, ant)
+                ant_data=deepcopy(self.createAntData(data, ant))
                 ant['key'] = ant_key
                 ant['input'] = ant_data
                 scenario_list.append(ant)
+                       
         if distributor is None:
             # synchronous
             for ant in scenario_list:
