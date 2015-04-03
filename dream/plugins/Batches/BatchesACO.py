@@ -27,7 +27,7 @@ class BatchesACO(ACO):
             if unitsThroughput:
                 unitsThroughput=unitsThroughput[0]
             if not unitsThroughput:
-                unitsThroughput=batchesThroughput
+                unitsThroughput=element['results']['throughput'][0]
     # return the negative value since they are ranked this way. XXX discuss this
     return -unitsThroughput
 
@@ -69,7 +69,7 @@ class BatchesACO(ACO):
     ant_data = copy(data)
     # below provisional values, to be updated (should the user set those?)
     data['general']['numberOfSolutions']=1
-    data["general"]["numberOfGenerations"]=4
-    data["general"]["numberOfAntsPerGenerations"]=2
+    data["general"]["numberOfGenerations"]=1
+    data["general"]["numberOfAntsPerGenerations"]=3
     ACO.run(self, data)
     return data
