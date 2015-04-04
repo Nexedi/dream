@@ -46,7 +46,8 @@ class HandleMissingValues(BasicStatisticalMeasures):
     
     def ReplaceWithMean(self,mylist):          #Replace in the given list the missing values with the mean value  
         list1=self.DeleteMissingValue(mylist)  #Create a new list, which is the given list deleting the missing values (calling the DeleteMissingValue method)
-        mean=sum(list1)/float(len(list1))      #Calculate the mean value of the new list
+#         mean=sum(list1)/float(len(list1))      #Calculate the mean value of the new list
+        mean=self.mean(list1)
         i=0
         for value in mylist:
             if value is '' :
@@ -56,8 +57,8 @@ class HandleMissingValues(BasicStatisticalMeasures):
     
     def ReplaceWithMedian(self,mylist):       #Replace in the given list the missing values with the median value 
         list1=self.DeleteMissingValue(mylist) #Create a new list, which is the given list deleting the missing values (calling the DeleteMissingValue method)
-        A=BasicStatisticalMeasures()          #Call the BasicStatisticalMeasures to calculate the median value
-        median=A.median(list1)                #Calculate the median value of the new list
+#         A=BasicStatisticalMeasures()          #Call the BasicStatisticalMeasures to calculate the median value
+        median=self.median(list1)                #Calculate the median value of the new list
         i=0
         for value in mylist:
             if value is '' :
