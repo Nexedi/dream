@@ -65,7 +65,7 @@ def main(test=0, ExcelFileName1='InterarrivalsData.xls',
     S1 = distMLE.Exponential_distrfit(S1)
     
     if not simul8XMLFile:
-        datafile=(os.path.join(os.path.dirname(os.path.realpath(__file__)), simul8XMLFileName))       #It defines the name or the directory of the XML file that is manually written the CMSD information model
+        datafile=(os.path.join(os.path.dirname(os.path.realpath(__file__)), simul8XMLFileName))       #It defines the name or the directory of the XML file 
         tree = et.parse(datafile)    
     else:
         datafile=simul8XMLFile
