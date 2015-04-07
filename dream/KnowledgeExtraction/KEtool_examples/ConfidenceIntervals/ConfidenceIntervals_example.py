@@ -24,17 +24,29 @@ Created on 13 Jun 2014
 
 from dream.KnowledgeExtraction.ImportCSVdata import Import_CSV
 from dream.KnowledgeExtraction.ConfidenceIntervals import Intervals
+from dream.KnowledgeExtraction.DataManipulation import DataManagement
 
-filename = ("DataSet.csv")
-data=Import_CSV()   #call the Import_CSV module and using its method Input_data import the data set from the CSV file to the tool
-Data = data.Input_data(filename)
-
-ProcTime = Data.get('ProcessingTimes',[])       #get from the returned Python dictionary the three data sets
-MTTF = Data.get('MTTF',[])
-MTTR = Data.get('MTTR',[])
-
-CI=Intervals()  #create a Intervals object
-#print the confidence intervals of the data sets applying either 90% or 95% probability
-print CI.ConfidIntervals(ProcTime, 0.95)
-print CI.ConfidIntervals(MTTF, 0.90)
-print CI.ConfidIntervals(MTTR, 0.95)
+def main(test=0, CSVFileName='DataSet.csv',
+                 csvFile=None):
+    if csvFile:
+        CSVFileName = csvFile.name
+        
+    filename = CSVFileName
+    data=Import_CSV()   #call the Import_CSV module and using its method Input_data import the data set from the CSV file to the tool
+    Data = data.Input_data(filename)
+    
+    ProcTime = Data.get('ProcessingTimes',[])       #get from the returned Python dictionary the three data sets
+    MTTF = Data.get('MTTF',[])
+    MTTR = Data.get('MTTR',[])
+    
+    CI=Intervals()  #create a Intervals object
+    DM=DataManagement()
+    if test:
+        return DM.round(CI.ConfidIntervals(ProcTime, 0.95)), CI.ConfidIntervals(MTTR, 0.95), DM.ceiling(CI.ConfidIntervals(MTTF, 0.90))
+    #print the confidence intervals of the data sets applying either 90% or 95% probability
+    print DM.round(CI.ConfidIntervals(ProcTime, 0.95))
+    print DM.ceiling(CI.ConfidIntervals(MTTF, 0.90))
+    print CI.ConfidIntervals(MTTR, 0.95)
+    
+if __name__ == '__main__':
+    main()
