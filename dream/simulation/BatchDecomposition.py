@@ -30,7 +30,7 @@ BatchDecomposition is a Core Object that takes a batch and decomposes to sub-bat
 # from SimPy.Simulation import waituntil, now, hold, waitevent
 import simpy
 
-from Globals import G
+from Globals import ManPyEnvironment
 from CoreObject import CoreObject
 from RandomNumberGenerator import RandomNumberGenerator
 
@@ -61,14 +61,14 @@ class BatchDecomposition(CoreObject):
         self.operator=operator         
         # Sets the attributes of the processing (and failure) time(s)
         self.rng=RandomNumberGenerator(self, processingTime)
-        from Globals import G
+        from Globals import ManPyEnvironment
         G.BatchDecompositionList.append(self)
 
     # =======================================================================
     #     initialize the internal resource of the object
     # =======================================================================
     def initialize(self):
-        from Globals import G
+        from Globals import ManPyEnvironment
         G.BatchWaitingList = []                                     # batches waiting to be reassembled
         CoreObject.initialize(self)                                 # using the default CoreObject Functionality
         self.Res=simpy.Resource(self.env, self.numberOfSubBatches)  # initialize the Internal resource (Queue) functionality

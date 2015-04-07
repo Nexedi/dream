@@ -32,7 +32,7 @@ from Source import Source
 from Exit import Exit
 from Part import Part
 from Queue import Queue
-from Globals import G
+from Globals import ManPyEnvironment
 import ExcelHandler
 import Globals
 

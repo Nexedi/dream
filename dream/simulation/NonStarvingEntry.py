@@ -46,7 +46,7 @@ class NonStarvingEntry(Queue):
     # extend to create the initial WIP in the given level
     def initialize(self):
         Queue.initialize(self)
-        from Globals import G
+        from Globals import ManPyEnvironment
         import Globals
         for i in range(self.initialWIPLevel):
             self.createEntity()
@@ -64,7 +64,7 @@ class NonStarvingEntry(Queue):
     # ToDo we could apply similar methodology to source.CreateEntity.
     # Source JSON schema may change though.
     def createEntity(self):
-        from Globals import G
+        from Globals import ManPyEnvironment
         import Globals
         entityType=self.entityData.get('_class', None)
         extraArgs=dict(self.entityData)

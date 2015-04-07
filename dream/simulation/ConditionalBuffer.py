@@ -76,7 +76,7 @@ class ConditionalBuffer(QueueJobShop):
     #===========================================================================
     def getEntity(self):
         activeEntity=QueueJobShop.getEntity(self)
-        from Globals import G
+        from Globals import ManPyEnvironment
         # for all the entities in the EntityList
         for entity in G.EntityList:
             requiredParts=entity.getRequiredParts()

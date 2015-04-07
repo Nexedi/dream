@@ -56,7 +56,7 @@ class MachineManagedJob(MachineJobShop):
         id = self.id+'_OP'
         name=self.objName+'_operatorPool'
         self.operatorPool=OperatorPool(id, name, operatorsList=[])
-        from Globals import G
+        from Globals import ManPyEnvironment
         G.OperatorPoolsList.append(self.operatorPool)
     
    
@@ -65,7 +65,7 @@ class MachineManagedJob(MachineJobShop):
     #===========================================================================
     def createRouter(self):
         #create a Router
-        from Globals import G
+        from Globals import ManPyEnvironment
         if not G.RouterList:
             self.router=RouterManaged()
             G.RouterList[0]=self.router          

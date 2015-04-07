@@ -27,7 +27,7 @@ models a frame entity. This can flow through the system and carry parts
 '''
 
 from simpy import Resource
-from Globals import G
+from Globals import ManPyEnvironment
 from Entity import Entity
 
 #The entity object

@@ -40,7 +40,7 @@ class ObjectInterruption(ManPyObject):
         self.victim=victim
         # variable used to hand in control to the objectInterruption
         self.call=False
-        from Globals import G
+        from Globals import ManPyEnvironment
         # G.ObjectInterruptionList.append(self)
         # append the interruption to the list that victim (if any) holds
         if self.victim:
@@ -60,7 +60,7 @@ class ObjectInterruption(ManPyObject):
                               }
     
     def initialize(self):
-        from Globals import G
+        from Globals import ManPyEnvironment
         self.env=G.env
         self.call=False
         # events that are send by one interruption to all the other interruptions that might wait for them
@@ -150,6 +150,6 @@ class ObjectInterruption(ManPyObject):
     #===========================================================================
     #print message in the console. Format is (Simulation Time | Entity or Frame Name | message)
     def printTrace(self, entityName, message):
-        from Globals import G
+        from Globals import ManPyEnvironment
         if(G.console=="Yes"):         #output only if the user has selected to
             print self.env.now, entityName, message

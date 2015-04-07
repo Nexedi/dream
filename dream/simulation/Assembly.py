@@ -69,7 +69,7 @@ class Assembly(CoreObject):
                                                         # when the entities have to be loaded to operatedMachines
                                                         # then the giverObjects have to be blocked for the time
                                                         # that the machine is being loaded 
-        from Globals import G
+        from Globals import ManPyEnvironment
         G.AssemblyList.append(self)
 
     # =======================================================================
@@ -95,7 +95,7 @@ class Assembly(CoreObject):
                                                         # when the entities have to be loaded to operatedMachines
                                                         # then the giverObjects have to be blocked for the time
                                                         # that the machine is being loaded 
-        from Globals import G
+        from Globals import ManPyEnvironment
         G.AssemblyList.append(self)
 
     #===========================================================================
@@ -388,7 +388,7 @@ class Assembly(CoreObject):
     # outputs results to JSON File
     #===========================================================================
     def outputResultsJSON(self):
-        from Globals import G
+        from Globals import ManPyEnvironment
         json = {'_class': self.class_name,
                 'id': self.id,
                 'results': {}}

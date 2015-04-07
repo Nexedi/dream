@@ -39,7 +39,7 @@ class ExitJobShop(Exit):
     # set all the objects in previous
     # =======================================================================
     def initialize(self):
-        from Globals import G
+        from Globals import ManPyEnvironment
         self.previous=G.ObjList
         Exit.initialize(self)   #run default behaviour
         

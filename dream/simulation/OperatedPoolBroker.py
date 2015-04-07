@@ -90,7 +90,7 @@ class Broker(ObjectInterruption):
                     # update the time that the station is waiting for the operator    
                     self.timeWaitForOperatorStarted=self.env.now
                     #===============================================================
-                    from Globals import G
+                    from Globals import ManPyEnvironment
 
                     # if the victim already holds an entity that means that the machine's operation type
                     #     is no Load or setup, in that case the router is already invoked and the machine is already assigned an operator

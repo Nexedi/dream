@@ -98,7 +98,7 @@ class SkilledRouter(Router):
                     break
             self.printTrace('','=-'*15)
             
-            from Globals import G
+            from Globals import ManPyEnvironment
             
             if self.allocation:
                 #===================================================================
@@ -327,7 +327,7 @@ class SkilledRouter(Router):
         self.waitEndProcess=False
         
     def checkIfAllocationShouldBeCalled(self):
-        from Globals import G
+        from Globals import ManPyEnvironment
         # loop through the operators and the machines. 
         # If for one the shift ended or started right now allocation is needed
         for obj in G.OperatorsList+G.MachineList:
@@ -355,7 +355,7 @@ class SkilledRouter(Router):
     
     def outputResultsJSON(self):
         if self.outputSolutions:
-            from Globals import G
+            from Globals import ManPyEnvironment
             json = {'_class': 'Dream.%s' % self.__class__.__name__,
                     'id': self.id,
                     'results': {}}

@@ -57,7 +57,7 @@ class Machine(CoreObject):
                   canDeliverOnInterruption=False, **kw):
         self.type="Machine"                         #String that shows the type of object
         CoreObject.__init__(self, id, name)
-        from Globals import G
+        from Globals import ManPyEnvironment
 
         processingTime=self.getOperationTime(time=processingTime)
 
@@ -214,7 +214,7 @@ class Machine(CoreObject):
              the list of operators provided
             if the  list is empty create operator pool with empty list
         '''
-        from Globals import G
+        from Globals import ManPyEnvironment
         # XXX operatorPool is not None ?
         # if a list of operators is provided as argument
         if (type(operatorPool) is list) and len(operatorPool)>0:
@@ -255,7 +255,7 @@ class Machine(CoreObject):
     def createRouter(self):
         # initiate the Broker and the router
         if (self.operatorPool!='None'):
-            from Globals import G
+            from Globals import ManPyEnvironment
             # if there is no router
             if not G.RouterList:
                 # TODO if the dedicatedOperator flag is raised then create a SkilledRouter (temp)
@@ -362,7 +362,7 @@ class Machine(CoreObject):
                 else:
                     methodsNotRequired.append(tup)
             required = True
-            from Globals import getMethodFromName
+            from Globals import ManPyEnvironmentetMethodFromName
             if methodsRequired:
                 for methodTup in methodsRequired:
                     method, func = methodTup
@@ -520,7 +520,7 @@ class Machine(CoreObject):
                 #===========================================================
                 self.currentOperator.totalWorkingTime+=self.env.now-self.currentOperator.timeLastOperationStarted 
                 yield self.env.process(self.release())                 
-                from Globals import G
+                from Globals import ManPyEnvironment
                 # append the entity that was stopped to the pending ones
                 if G.RouterList:
                     G.pendingEntities.append(self.currentEntity)
@@ -560,7 +560,7 @@ class Machine(CoreObject):
     # =======================================================================
     def run(self):
         # request for allocation if needed
-        from Globals import G
+        from Globals import ManPyEnvironment
         self.initialAllocationRequest()
         # execute all through simulation time
         while 1:
@@ -911,7 +911,7 @@ class Machine(CoreObject):
                 self.outputTrace(activeObjectQueue[0].name,"ended processing in "+self.objName)
             except IndexError:
                 pass
-            from Globals import G
+            from Globals import ManPyEnvironment
             if G.RouterList:
                 # the just processed entity is added to the list of entities 
                 # pending for the next processing
@@ -1120,7 +1120,7 @@ class Machine(CoreObject):
         if self.currentOperator:
             self.currentOperator.schedule[-1]["entity"] = activeEntity
         # after the machine receives an entity, it must be removed from the pendingEntities list
-        from Globals import G
+        from Globals import ManPyEnvironment
         if G.RouterList:
             if activeEntity in G.pendingEntities:
                 G.pendingEntities.remove(activeEntity)
@@ -1166,7 +1166,7 @@ class Machine(CoreObject):
         assert self.isInActiveQueue(entity), entity.id +' not in the internalQueue of'+ self.id
         activeEntity=entity
         
-        from Globals import G
+        from Globals import ManPyEnvironment
         router = G.RouterList[0]
         # if the entity is in a machines who's broker waits for operator then
         if self in router.pendingMachines:
@@ -1212,7 +1212,7 @@ class Machine(CoreObject):
             operator.workingStation=None
             self.outputTrace(operator.name, "released from "+ self.objName)
             # if the Router is expecting for signal send it
-            from Globals import G
+            from Globals import ManPyEnvironment
             from SkilledOperatorRouter import SkilledRouter
             self.toBeOperated = False
             if G.RouterList[0].__class__ is SkilledRouter:
@@ -1233,7 +1233,7 @@ class Machine(CoreObject):
     # outputs results to JSON File
     # =======================================================================
     def outputResultsJSON(self):
-        from Globals import G
+        from Globals import ManPyEnvironment
         json = {'_class': 'Dream.%s' % self.__class__.__name__,
                 'id': self.id,
                 'family': self.family,

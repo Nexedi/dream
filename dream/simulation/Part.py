@@ -27,7 +27,7 @@ models a part entity that flows through the system
 '''
 
 
-from Globals import G
+from Globals import ManPyEnvironment
 from Entity import Entity
 
 #The part object

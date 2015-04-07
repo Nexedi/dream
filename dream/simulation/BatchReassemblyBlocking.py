@@ -56,7 +56,7 @@ class BatchReassemblyBlocking(BatchReassembly):
     def addBlockage(self): 
         # find the previous station
         station=self.previous[0]
-        from Globals import G
+        from Globals import ManPyEnvironment
         from ShiftScheduler import ShiftScheduler          
         if self.timeLastBlockageStarted:
             # calculate how much time the previous station was offShift 

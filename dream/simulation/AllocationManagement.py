@@ -13,7 +13,7 @@ import xlwt
 import xlrd
 from AllocationRoutine import AllocationRoutine
 from CoreObject import CoreObject
-from Globals import G
+from Globals import ManPyEnvironment
 from ObjectInterruption import ObjectInterruption
 from FutureDemandCreator import FutureDemandCreator
 
@@ -29,7 +29,7 @@ class AllocationManagement(ObjectInterruption):
         ObjectInterruption.initialize(self)
         self.readData()
         self.FDC=FutureDemandCreator()
-        from Globals import G
+        from Globals import ManPyEnvironment
         G.AllocationManagementList.append(self)
         
     def run(self):

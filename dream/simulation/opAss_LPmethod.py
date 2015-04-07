@@ -12,7 +12,7 @@ def opAss_LP(machineList, PBlist, PBskills, previousAssignment={}, weightFactors
     import glob
     import os 
     import time
-    from Globals import G
+    from Globals import ManPyEnvironment
 
     startPulp=time.time()
     machines = machineList.keys()

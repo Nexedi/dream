@@ -49,7 +49,7 @@ class EventGenerator(ObjectInterruption):
         if isinstance(self.argumentDict, basestring):
             import ast
             self.argumentDict=ast.literal_eval(self.argumentDict)
-        from Globals import G
+        from Globals import ManPyEnvironment
         G.EventGeneratorList.append(self)
         self.method=method
         if isinstance(method, basestring):

@@ -25,7 +25,7 @@ Created on 17 Jan 2014
 Mould is an Entity that assembled out of OrderComponents and has a parent Order 
 '''
 
-from Globals import G
+from Globals import ManPyEnvironment
 from Job import Job
 
 # ===========================================================================

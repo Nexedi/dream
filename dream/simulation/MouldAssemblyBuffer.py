@@ -64,7 +64,7 @@ class MouldAssemblyBuffer(ConditionalBuffer):
             are present in other MouldAssemblyBuffers
         '''
         # execute default behaviour
-        from Globals import G
+        from Globals import ManPyEnvironment
         activeObject = self.getActiveObject()
         activeObjectQueue = activeObject.getActiveObjectQueue()
         activeEntity=ConditionalBuffer.getEntity(self)

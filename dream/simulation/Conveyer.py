@@ -55,7 +55,7 @@ class Conveyer(CoreObject):
                                                         # when the entities have to be loaded to operatedMachines
                                                         # then the giverObjects have to be blocked for the time
                                                         # that the machine is being loaded 
-        from Globals import G
+        from Globals import ManPyEnvironment
         G.ConveyerList.append(self)
        
     #===========================================================================
@@ -427,7 +427,7 @@ class Conveyer(CoreObject):
     #===========================================================================
     def postProcessing(self, MaxSimtime=None):              
         if MaxSimtime==None:
-            from Globals import G
+            from Globals import ManPyEnvironment
             MaxSimtime=G.maxSimTime
         self.moveEntities()     #move the entities to count the working time
         #if the conveyer is full count the blockage time
@@ -446,7 +446,7 @@ class Conveyer(CoreObject):
     # outputs results to JSON File
     #===========================================================================
     def outputResultsJSON(self):
-        from Globals import G
+        from Globals import ManPyEnvironment
         json = {'_class': self.class_name,
                 'id': self.id,
                 'results': {}}
@@ -466,7 +466,7 @@ class ConveyerMover(object):
     #===========================================================================
     def __init__(self, conveyer):
 #         Process.__init__(self)
-        from Globals import G
+        from Globals import ManPyEnvironment
         self.env=G.env
         self.conveyer=conveyer      #the conveyer that owns the mover
         self.timeToWait=0           #the time to wait every time. This is calculated by the conveyer and corresponds

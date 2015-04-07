@@ -43,7 +43,7 @@ class SubBatch(Entity):
             # check if the parent batch is already created. If not, then create it
             batch=None
             from Batch import Batch
-            from Globals import G
+            from Globals import ManPyEnvironment
             for b in G.EntityList:
                 if b.id==parentBatchId:
                     batch=b

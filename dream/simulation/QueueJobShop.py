@@ -37,7 +37,7 @@ class QueueJobShop(Queue):
     # set all the objects in previous and next
     # =======================================================================
     def initialize(self):
-        from Globals import G
+        from Globals import ManPyEnvironment
         self.previous=G.ObjList
         self.next=[]
         Queue.initialize(self)  #run default behaviour
@@ -173,7 +173,7 @@ class QueueJobShop(Queue):
     def sortEntitiesForReceiver(self, receiver=None):
         # TODO: if the receiver is already assigned an operator then the giver should sort for that manager
         activeObject=self.getActiveObject()
-        from Globals import G
+        from Globals import ManPyEnvironment
         for operator in G.OperatorsList:
             if operator.isAssignedTo()==receiver:
                 activeObject.sortEntitiesForOperator(operator)

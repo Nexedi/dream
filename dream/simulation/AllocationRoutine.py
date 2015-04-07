@@ -4,7 +4,7 @@ Created on 5 Sep 2013
 @author: Anna
 '''
 
-from Globals import G
+from Globals import ManPyEnvironment
 from Allocation import Allocation
 from JobMA import JobMA
 

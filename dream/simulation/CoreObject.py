@@ -70,7 +70,7 @@ class CoreObject(ManPyObject):
         self.station_col_inds=[]
         self.op_col_indx=None
         # if there is input in a dictionary parse from it
-        from Globals import G
+        from Globals import ManPyEnvironment
         G.ObjList.append(self)  # add object to ObjList
         # list of expected signals of a station (values can be used as flags to inform on which signals is the station currently yielding)
         self.expectedSignals={
@@ -93,7 +93,7 @@ class CoreObject(ManPyObject):
         self.WipStat=[]
                 
     def initialize(self):
-        from Globals import G
+        from Globals import ManPyEnvironment
         self.env=G.env
         self.Up=True                                    #Boolean that shows if the object is in failure ("Down") or not ("up")
         self.onShift=True
@@ -262,7 +262,7 @@ class CoreObject(ManPyObject):
         # XXX: there may be a case where one object is not assigned an operator, in that case we do not want to invoke the allocation routine
         if self.checkForDedicatedOperators():
             allocationNeeded=False
-            from Globals import G
+            from Globals import ManPyEnvironment
             for obj in G.MachineList:
                 if obj.operatorPool!='None':
                     if obj.operatorPool.operators:
@@ -392,7 +392,7 @@ class CoreObject(ManPyObject):
 #         #     then it checks if there other requested entities by the same requesting entity.
 #         #     Finally, it is controlled whether all the requested parts have concluded 
 #         #     their sequences for the requesting entity
-#         from Globals import G
+#         from Globals import ManPyEnvironment
 #         # for all the entities in the EntityList
 #         for entity in G.EntityList:
 #             requiredParts=entity.getRequiredParts()
@@ -540,7 +540,7 @@ class CoreObject(ManPyObject):
         # dummy variables that help prioritize the objects requesting to give objects to the object (activeObject)
         maxTimeWaiting=0                                            # dummy variable counting the time a successor is waiting
         receiver=None
-        from Globals import G
+        from Globals import ManPyEnvironment
         for object in candidates:
             timeWaiting=G.env.now-object.timeLastEntityLeft     # the time it has been waiting is updated and stored in dummy variable timeWaiting
             if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):# if the timeWaiting is the maximum among the ones of the successors 
@@ -603,7 +603,7 @@ class CoreObject(ManPyObject):
         # dummy variables that help prioritize the objects requesting to give objects to the object (activeObject)
         maxTimeWaiting=0                                            # dummy variable counting the time a predecessor is blocked
         giver=None
-        from Globals import G
+        from Globals import ManPyEnvironment
         # loop through the possible givers to see which have to dispose and which is the one blocked for longer
         for object in candidates:
             # calculate how much the giver is waiting
@@ -618,7 +618,7 @@ class CoreObject(ManPyObject):
     # =======================================================================
     def postProcessing(self, MaxSimtime=None): 
         if MaxSimtime==None:
-            from Globals import G
+            from Globals import ManPyEnvironment
             MaxSimtime=G.maxSimTime
         
         activeObject=self.getActiveObject()

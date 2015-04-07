@@ -30,7 +30,7 @@ models the source object that generates the entities
 import simpy
 from RandomNumberGenerator import RandomNumberGenerator
 from CoreObject import CoreObject
-from Globals import G
+from Globals import ManPyEnvironment
 import Globals
 
 
@@ -100,7 +100,7 @@ class Source(CoreObject):
         self.item=Globals.getClassFromName(entity)      #the type of object that the Source will generate
                
         self.scheduledEntities=[]       # list of creations that are scheduled. pattern is [timeOfCreation, EntityCounter]     
-        from Globals import G
+        from Globals import ManPyEnvironment
         G.SourceList.append(self)  
     
     #===========================================================================
@@ -164,7 +164,7 @@ class Source(CoreObject):
     # add newly created entity to pendingEntities
     #===========================================================================
     def appendEntity(self, entity):
-        from Globals import G
+        from Globals import ManPyEnvironment
         assert entity, 'cannot append None entity'
         activeEntity=entity
         if G.RouterList:

@@ -26,7 +26,7 @@ Job is an Entity that implements the logic of a job shop. Job carries attributes
 in the system and also in the processing times at each station
 '''
 
-from Globals import G
+from Globals import ManPyEnvironment
 from Entity import Entity
 
 # =======================================================================
@@ -77,7 +77,7 @@ class Job(Entity):                                  # inherits from the Entity c
     # outputs results to JSON File 
     # =======================================================================
     def outputResultsJSON(self):
-        from Globals import G
+        from Globals import ManPyEnvironment
         if(G.numberOfReplications==1):              #if we had just one replication output the results to excel
             json = { '_class': 'Dream.%s' % self.__class__.__name__,
                   'id': self.id,
@@ -307,7 +307,7 @@ class Job(Entity):                                  # inherits from the Entity c
     # method that finds a receiver for a candidate entity
     #===========================================================================
     def findCandidateReceiver(self):
-        from Globals import G
+        from Globals import ManPyEnvironment
         router=G.RouterList[0]
         # initiate the local list variable available receivers
         availableReceivers=[x for x in self.candidateReceivers\

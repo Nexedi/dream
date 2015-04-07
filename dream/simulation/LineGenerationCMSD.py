@@ -31,7 +31,7 @@ logger = logging.getLogger("dream.platform")
 
 
 from SimPy.Simulation import activate, initialize, simulate, now, infinity
-from Globals import G 
+from Globals import ManPyEnvironment 
 from Source import Source
 from Machine import Machine
 from Exit import Exit

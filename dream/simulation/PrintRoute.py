@@ -1,6 +1,6 @@
 import Globals
 import xlwt
-from Globals import G
+from Globals import ManPyEnvironment
 
 import OrderComponent
 import Mould

@@ -68,7 +68,7 @@ class BatchScrapMachine(Machine):
             scrapQuantity = {'Fixed':{'mean': 0}}
             
         self.scrapRng=RandomNumberGenerator(self, scrapQuantity)
-        from Globals import G
+        from Globals import ManPyEnvironment
         G.BatchScrapMachineList.append(self)
 
     # =======================================================================

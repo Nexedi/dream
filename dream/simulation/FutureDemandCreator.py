@@ -29,7 +29,7 @@ import xlrd
 import json
 import urllib
 
-from Globals import G
+from Globals import ManPyEnvironment
 from JobMA import JobMA
 
 class FutureDemandCreator(): 

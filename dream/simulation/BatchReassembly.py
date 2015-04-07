@@ -29,7 +29,7 @@ BatchReassembly is a Core Object that takes a number of subBatches and reassembl
 # from SimPy.Simulation import activate, waituntil, now, hold, waitevent
 import simpy
 
-from Globals import G
+from Globals import ManPyEnvironment
 from RandomNumberGenerator import RandomNumberGenerator
 from CoreObject import CoreObject
 # from Entity import Entity
@@ -60,7 +60,7 @@ class BatchReassembly(CoreObject):
         self.operator=operator         
         # Sets the attributes of the processing (and failure) time(s)
         self.rng=RandomNumberGenerator(self, processingTime)
-        from Globals import G
+        from Globals import ManPyEnvironment
         G.BatchReassemblyList.append(self)
         # flag to show if the objects outputs results
         self.outputResults=bool(int(outputResults))
@@ -335,7 +335,7 @@ class BatchReassembly(CoreObject):
     # =======================================================================
     def outputResultsJSON(self):
         if self.outputResults:
-            from Globals import G
+            from Globals import ManPyEnvironment
             json = {'_class': 'Dream.%s' % self.__class__.__name__,
                     'id': self.id,
                     'family': self.family,

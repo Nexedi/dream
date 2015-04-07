@@ -104,7 +104,7 @@ class QueueManagedJob(QueueJobShop):
                 if receiver.isLoadRequested():
                     if receiver.identifyEntityToGet().manager.isAssignedTo()!=receiver:
                         try:
-                            from Globals import G
+                            from Globals import ManPyEnvironment
                             if not G.RouterList[0].invoked and G.RouterList[0].expectedSignals['isCalled']:
 #                                 self.printTrace(self.id, signal='router')
                                 G.RouterList[0].invoked=True

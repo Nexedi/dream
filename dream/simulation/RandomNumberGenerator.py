@@ -85,7 +85,7 @@ class RandomNumberGenerator(object):
         self.obj = obj
 
     def generateNumber(self):
-        from Globals import G
+        from Globals import ManPyEnvironment
         if(self.distributionType=="Fixed"):     #if the distribution is Fixed 
             return self.mean
         elif(self.distributionType=="Exp"):     #if the distribution is Exponential

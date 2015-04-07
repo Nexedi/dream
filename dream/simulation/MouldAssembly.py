@@ -63,7 +63,7 @@ TODOs: check the case when a mould is already in the WIP by the beginning of the
 '''
 from MachineJobShop import MachineJobShop
 import simpy
-from Globals import G
+from Globals import ManPyEnvironment
 from RandomNumberGenerator import RandomNumberGenerator
 
 # =======================================================================
@@ -82,7 +82,7 @@ class MouldAssembly(MachineJobShop):
     # parses inputs if they are given in a dictionary
     # =======================================================================       
     def parseInputs(self, **kw):
-        from Globals import G
+        from Globals import ManPyEnvironment
         G.MouldAssemblyList.append(self)
 
     # =======================================================================

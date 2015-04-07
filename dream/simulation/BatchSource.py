@@ -25,7 +25,7 @@ Created on 29 Oct 2013
 models the source object that generates the Batches Entities
 '''
 from Source import Source
-from Globals import G
+from Globals import ManPyEnvironment
 # from SimPy.Simulation import Process
 import simpy
 from RandomNumberGenerator import RandomNumberGenerator
@@ -36,7 +36,7 @@ class BatchSource(Source):
         Source.__init__(self, id=id, name=name,
                         interArrivalTime=interArrivalTime, entity=entity)
         self.numberOfUnits = int(batchNumberOfUnits)
-        from Globals import G
+        from Globals import ManPyEnvironment
         G.BatchSourceList.append(self)  
         
         

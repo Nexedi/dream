@@ -36,7 +36,7 @@ class MachineJobShop(Machine):
     # set all the objects in previous and next
     # =======================================================================
     def initialize(self):
-        from Globals import G
+        from Globals import ManPyEnvironment
         self.previous=G.ObjList
         self.next=[]
         Machine.initialize(self)    #run default behaviour

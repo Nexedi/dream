@@ -38,7 +38,7 @@ logger = logging.getLogger("dream.platform")
 import numpy
 numpy.seterr(all='raise')
 import simpy
-from dream.simulation.Globals import G 
+from dream.simulation.Globals import ManPyEnvironment 
 from dream.simulation.Order import Order
 from dream.simulation.OrderDesign import OrderDesign
 from dream.simulation.Mould import Mould
@@ -610,7 +610,9 @@ def activateObjects():
 # ===========================================================================
 def main(argv=[], input_data=None):
     argv = argv or sys.argv[1:]
-
+    environment=ManPyEnvironment()
+    print environment
+    
     #create an empty list to store all the objects in   
     G.ObjList=[]
     G.RouterList=[]

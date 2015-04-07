@@ -42,11 +42,11 @@ class ObjectResource(ManPyObject):
         self.alias=None
         # list with the coreObjects IDs that the resource services
         self.coreObjectIds=[]
-        from Globals import G
+        from Globals import ManPyEnvironment
         G.ObjectResourceList.append(self) 
         
     def initialize(self):
-        from Globals import G
+        from Globals import ManPyEnvironment
         # flag that shows if the resource is on shift
         self.onShift=True
         # flag that shows if the resource is on break

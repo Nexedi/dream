@@ -25,7 +25,7 @@ Created on 06 Jan 2013
 Order is an Entity that can have its design, get broken to sub-components
 '''
 
-from Globals import G
+from Globals import ManPyEnvironment
 from Job import Job
 
 # =======================================================================

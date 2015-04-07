@@ -64,7 +64,7 @@ TODOs: check the case when a mould is already in the WIP by the beginning of the
 from MachineManagedJob import MachineManagedJob
 # from SimPy.Simulation import Resource, reactivate, now
 import simpy
-from Globals import G
+from Globals import ManPyEnvironment
 
 # =======================================================================
 # Error in the assembling of the mould

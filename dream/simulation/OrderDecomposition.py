@@ -30,7 +30,7 @@ dummy object: infinite capacity no processing time
 # from SimPy.Simulation import waituntil, now, hold, infinity, waitevent
 import simpy
 
-from Globals import G
+from Globals import ManPyEnvironment
 from CoreObject import CoreObject
 from RandomNumberGenerator import RandomNumberGenerator
 from Entity import Entity

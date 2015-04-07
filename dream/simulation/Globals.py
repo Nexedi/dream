@@ -35,94 +35,88 @@ from random import Random, expovariate, gammavariate, normalvariate
 import simpy
 
 # ===========================================================================
-# globals
+# ManPyEnvironment
 # ===========================================================================
-class G:   
-    seed=1450                       #the seed of the random number generator
-    Rnd = Random(seed)              #random number generator
-    import numpy
-    numpyRnd=numpy    
-
-    ObjList=[]                      #a list that holds all the CoreObjects 
-    EntityList=[]                   #a list that holds all the Entities 
-    ObjectResourceList=[]
-    ObjectInterruptionList=[]
-    RouterList=[]
+class ManPyEnvironment(object):   
+    def __init__(self,seed=1):
+        self.seed=seed                       #the seed of the random number generator
+        self.Rnd = Random(self.seed)              #random number generator
+        import numpy
+        self.numpyRnd=numpy    
     
-    numberOfReplications=1          #the number of replications default=1git 
-    confidenceLevel=0.9             #the confidence level default=90%
-    Base=1                          #the Base time unit. Default =1 minute
-    maxSimTime=0                    #the total simulation time
+        self.ObjList=[]                      #a list that holds all the CoreObjects 
+        self.EntityList=[]                   #a list that holds all the Entities 
+        self.ObjectResourceList=[]
+        self.ObjectInterruptionList=[]
+        self.RouterList=[]
+        
+        self.numberOfReplications=1          #the number of replications default=1git 
+        self.confidenceLevel=0.9             #the confidence level default=90%
+        self.Base=1                          #the Base time unit. Default =1 minute
+        self.maxSimTime=0                    #the total simulation time
+        
+        # flag for printing in console
+        self.console=""
+        
+        # data for the trace output in excel
+        self.trace=""                        #this is written from input. If it is "Yes" then you write to trace, else we do not
+        self.traceIndex=0                    #index that shows in what row we are
+        self.sheetIndex=1                    #index that shows in what sheet we are
+        self.traceFile = xlwt.Workbook()     #create excel file
+        self.traceSheet = self.traceFile.add_sheet('sheet '+str(self.sheetIndex), cell_overwrite_ok=True)  #create excel sheet    
+                
+        #variables for json output
+        self.outputJSON={}
+        self.outputJSONFile=None
+        
+        self.numberOfEntities = 0
+           
+        #                define the lists of each object type
+        self.SourceList=[]
+        self.MachineList=[]
+        self.ExitList=[]
+        self.QueueList=[]    
+        self.RepairmanList=[]
+        self.AssemblyList=[]
+        self.DismantleList=[]
+        self.ConveyerList=[]
+        self.MachineJobShopList=[]
+        self.QueueJobShopList=[]
+        self.ExitJobShopList=[]
+        self.BatchDecompositionList=[]
+        self.BatchSourceList=[]
+        self.BatchReassemblyList=[]
+        self.LineClearanceList=[]
+        self.EventGeneratorList=[]
+        self.OperatorsList = []
+        self.OperatorManagedJobsList = []
+        self.OperatorPoolsList = []
+        self.BrokersList = []
+        self.OperatedMachineList = []
+        self.BatchScrapMachineList=[]
+        self.OrderDecompositionList=[]
+        self.ConditionalBufferList=[]
+        self.MouldAssemblyBufferList=[]
+        self.MouldAssemblyList=[]
+        self.MachineManagedJobList=[]
+        self.QueueManagedJobList=[]
+        self.ModelResourceList=[]
+        
+        self.JobList=[]
+        self.WipList=[]
+        self.EntityList=[]  
+        self.PartList=[]
+        self.OrderComponentList=[]
+        self.OrderList=[]
+        self.MouldList=[]
+        self.BatchList=[]
+        self.SubBatchList=[]
+        # entities that just finished processing in a station 
+        # and have to enter the next machine 
+        self.pendingEntities=[]
+        self.env=simpy.Environment()
     
-    # flag for printing in console
-    console=""
-    
-    # data for the trace output in excel
-    trace=""                        #this is written from input. If it is "Yes" then you write to trace, else we do not
-    traceIndex=0                    #index that shows in what row we are
-    sheetIndex=1                    #index that shows in what sheet we are
-    traceFile = xlwt.Workbook()     #create excel file
-    traceSheet = traceFile.add_sheet('sheet '+str(sheetIndex), cell_overwrite_ok=True)  #create excel sheet    
-    
-    
-    # variables for excel output
-    outputIndex=0                   #index that shows in what row we are
-    sheetIndex=1                    #index that shows in what sheet we are
-    outputFile = xlwt.Workbook()    #create excel file
-    outputSheet = outputFile.add_sheet('sheet '+str(sheetIndex), cell_overwrite_ok=True)  #create excel sheet
-    
-    #variables for json output
-    outputJSON={}
-    outputJSONFile=None
-    
-    numberOfEntities = 0
-       
-    #                define the lists of each object type
-    SourceList=[]
-    MachineList=[]
-    ExitList=[]
-    QueueList=[]    
-    RepairmanList=[]
-    AssemblyList=[]
-    DismantleList=[]
-    ConveyerList=[]
-    MachineJobShopList=[]
-    QueueJobShopList=[]
-    ExitJobShopList=[]
-    BatchDecompositionList=[]
-    BatchSourceList=[]
-    BatchReassemblyList=[]
-    LineClearanceList=[]
-    EventGeneratorList=[]
-    OperatorsList = []
-    OperatorManagedJobsList = []
-    OperatorPoolsList = []
-    BrokersList = []
-    OperatedMachineList = []
-    BatchScrapMachineList=[]
-    OrderDecompositionList=[]
-    ConditionalBufferList=[]
-    MouldAssemblyBufferList=[]
-    MouldAssemblyList=[]
-    MachineManagedJobList=[]
-    QueueManagedJobList=[]
-    ModelResourceList=[]
-    
-    JobList=[]
-    WipList=[]
-    EntityList=[]  
-    PartList=[]
-    OrderComponentList=[]
-    OrderList=[]
-    MouldList=[]
-    BatchList=[]
-    SubBatchList=[]
-    # entities that just finished processing in a station 
-    # and have to enter the next machine 
-    pendingEntities=[]
-    env=simpy.Environment()
-
-    totalPulpTime=0     # temporary to track how much time PuLP needs to run 
+        self.totalPulpTime=0     # temporary to track how much time PuLP needs to run 
     
 # =======================================================================
 # method to move entities exceeding a certain safety stock
@@ -315,7 +309,7 @@ def countIntervalThroughput(**kw):
 # #===========================================================================
 # def printTrace(entity='',station='', **kw):
 #     assert len(kw)==1, 'only one phrase per printTrace supported for the moment'
-#     from Globals import G
+#     from Globals import ManPyEnvironment
 #     time=G.env.now
 #     charLimit=60
 #     remainingChar=charLimit-len(entity)-len(str(time))
