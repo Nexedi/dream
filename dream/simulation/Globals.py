@@ -118,6 +118,12 @@ class ManPyEnvironment(object):
         self.SimPyEnvironment=simpy.Environment() 
         self.env=self.SimPyEnvironment
     
+    def initialize(self):
+        self.SimPyEnvironment=simpy.Environment() 
+        self.env=self.SimPyEnvironment
+        for object in self.ObjList+self.ObjectInterruptionList+self.ObjectResourceList:
+            object.env=self.env                
+    
 # =======================================================================
 # method to move entities exceeding a certain safety stock
 # =======================================================================

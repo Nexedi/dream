@@ -637,7 +637,7 @@ def main(argv=[], input_data=None):
 
     #run the experiment (replications)          
     for i in xrange(environment.numberOfReplications):
-        # environment.env=simpy.Environment()                       # initialize the environment
+        environment.initialize()
         environment.maxSimTime=float(JSONData['general'].get('maxSimTime', '100'))     # read the maxSimTime in each replication 
                                                                                # since it may be changed for infinite ones
         if environment.RouterList:

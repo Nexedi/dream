@@ -51,6 +51,6 @@
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
           "trace": "No", 
-          "numberOfReplications": "1"
+          "numberOfReplications": "3"
      }
 }
