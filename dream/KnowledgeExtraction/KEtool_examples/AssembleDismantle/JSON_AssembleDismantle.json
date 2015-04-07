@@ -128,6 +128,7 @@
 		"_class": "Dream.Configuration",
 		"maxSimTime": "1440",
 		"numberOfReplications": "1",
+		"seed":1,
 		"trace": "No"
 	}
 }	
