@@ -144,7 +144,7 @@ TTR2.write('CMSD_ParallelStations_Output.xml',encoding="utf8")                  
 
 #======================= Output preparation: output the updated values in the JSON file of this example ================================#
 jsonFile = open('JSON_example.json','r')      #It opens the JSON file 
-data = json.load(jsonFile)                                                              #It loads the file
+data = json.load(jsonFile)                    #It loads the file
 jsonFile.close()
 
 exportJSON=JSONOutput()
