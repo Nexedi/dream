@@ -35,7 +35,7 @@ from random import Random, expovariate, gammavariate, normalvariate
 import simpy
 
 # ===========================================================================
-# ManPyEnvironment
+# ManPyEnvironment here all the ManPy objects interact
 # ===========================================================================
 class ManPyEnvironment(object):   
     def __init__(self,seed=1):
@@ -117,13 +117,22 @@ class ManPyEnvironment(object):
         self.totalPulpTime=0     # temporary to track how much time PuLP needs to run 
         self.SimPyEnvironment=simpy.Environment() 
         self.env=self.SimPyEnvironment
-    
+ 
+    # ===========================================================================
+    # initializes the environment for every replication
+    # ===========================================================================   
     def initialize(self):
         self.SimPyEnvironment=simpy.Environment() 
         self.env=self.SimPyEnvironment
         for object in self.ObjList+self.ObjectInterruptionList+self.ObjectResourceList:
             object.env=self.env                
-    
+
+    # ===========================================================================
+    # returns the simulation time
+    # ===========================================================================  
+    def now(self):
+        return self.SimPyEnvironment.now
+
 # =======================================================================
 # method to move entities exceeding a certain safety stock
 # =======================================================================
