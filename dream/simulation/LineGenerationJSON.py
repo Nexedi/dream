@@ -56,26 +56,24 @@ import cProfile
 # ===========================================================================
 #                       reads general simulation inputs
 # ===========================================================================
-def readGeneralInput():
-    general=G.JSONData['general']                                           # read the dict with key 'general'
-    G.numberOfReplications=int(general.get('numberOfReplications', '1'))    # read the number of replications / default 1
-    G.maxSimTime=float(general.get('maxSimTime', '100'))                    # get the maxSimTime / default 100
-    G.trace=general.get('trace', 'No')                                      # get trace in order to check if trace is requested
-    G.console=general.get('console', 'No')                                  # get console flag in order to check if console print is requested
-    G.confidenceLevel=float(general.get('confidenceLevel', '0.95'))         # get the confidence level
-    G.seed = general.get('seed')                                            # the seed for random number generation
-    G.extraPropertyDict=general.get('extraPropertyDict', {})                # a dict to put extra properties that are 
+def readGeneralInput(environment,JSONData):
+    general=JSONData['general']                                           # read the dict with key 'general'
+    environment.numberOfReplications=int(general.get('numberOfReplications', '1'))    # read the number of replications / default 1
+    environment.maxSimTime=float(general.get('maxSimTime', '100'))                    # get the maxSimTime / default 100
+    environment.trace=general.get('trace', 'No')                                      # get trace in order to check if trace is requested
+    environment.console=general.get('console', 'No')                                  # get console flag in order to check if console print is requested
+    environment.confidenceLevel=float(general.get('confidenceLevel', '0.95'))         # get the confidence level
+    environment.seed = general.get('seed')                                            # the seed for random number generation
+    environment.extraPropertyDict=general.get('extraPropertyDict', {})                # a dict to put extra properties that are 
                                                                             # generic for the model
 
 # ===========================================================================
 #                       creates first the object interruptions 
 #                            and then the core objects
 # ===========================================================================
-def createObjectResourcesAndCoreObjects():
+def createObjectResourcesAndCoreObjects(environment,json_data):
 
-    json_data = G.JSONData
     #Read the json data
-    # nodes = json_data['nodes']                      # read from the dictionary the dicts with key 'nodes'
     nodes = json_data['graph']["node"]                      # read from the dictionary the dicts with key 'nodes'
     edges = json_data['graph']["edge"]                      # read from the dictionary the dicts with key 'edges'
 
@@ -103,41 +101,41 @@ def createObjectResourcesAndCoreObjects():
     '''
     define the lists of each object type
     '''
-    G.SourceList=[]
-    G.MachineList=[]
-    G.ExitList=[]
-    G.QueueList=[]    
-    G.RepairmanList=[]
-    G.AssemblyList=[]
-    G.DismantleList=[]
-    G.ConveyerList=[]
-    G.MachineJobShopList=[]
-    G.QueueJobShopList=[]
-    G.ExitJobShopList=[]
-    G.BatchDecompositionList=[]
-    G.BatchSourceList=[]
-    G.BatchReassemblyList=[]
-    G.RoutingQueueList=[]
-    G.LineClearanceList=[]
-    G.EventGeneratorList=[]
-    G.OperatorsList = []
-    G.OperatorManagedJobsList = []
-    G.OperatorPoolsList = []
-    G.BrokersList = []
-    G.OperatedMachineList = []
-    G.BatchScrapMachineList=[]
-    G.OrderDecompositionList=[]
-    G.ConditionalBufferList=[]
-    G.MouldAssemblyBufferList=[]
-    G.MouldAssemblyList=[]
-    G.MachineManagedJobList=[]
-    G.QueueManagedJobList=[]
-    G.ObjectResourceList=[]
-    G.CapacityStationBufferList=[]
-    G.AllocationManagementList=[]
-    G.CapacityStationList=[]
-    G.CapacityStationExitList=[]
-    G.CapacityStationControllerList=[]
+    environment.SourceList=[]
+    environment.MachineList=[]
+    environment.ExitList=[]
+    environment.QueueList=[]    
+    environment.RepairmanList=[]
+    environment.AssemblyList=[]
+    environment.DismantleList=[]
+    environment.ConveyerList=[]
+    environment.MachineJobShopList=[]
+    environment.QueueJobShopList=[]
+    environment.ExitJobShopList=[]
+    environment.BatchDecompositionList=[]
+    environment.BatchSourceList=[]
+    environment.BatchReassemblyList=[]
+    environment.RoutingQueueList=[]
+    environment.LineClearanceList=[]
+    environment.EventGeneratorList=[]
+    environment.OperatorsList = []
+    environment.OperatorManagedJobsList = []
+    environment.OperatorPoolsList = []
+    environment.BrokersList = []
+    environment.OperatedMachineList = []
+    environment.BatchScrapMachineList=[]
+    environment.OrderDecompositionList=[]
+    environment.ConditionalBufferList=[]
+    environment.MouldAssemblyBufferList=[]
+    environment.MouldAssemblyList=[]
+    environment.MachineManagedJobList=[]
+    environment.QueueManagedJobList=[]
+    environment.ObjectResourceList=[]
+    environment.CapacityStationBufferList=[]
+    environment.AllocationManagementList=[]
+    environment.CapacityStationList=[]
+    environment.CapacityStationExitList=[]
+    environment.CapacityStationControllerList=[]
 
     '''
     loop through all the model resources 
@@ -221,6 +219,7 @@ def createObjectResourcesAndCoreObjects():
             inputDict=dict(element)           
             # create the CoreObject
             coreObject=objectType(**inputDict)
+            coreObject.env=environment.SimPyEnvironment
             # update the nextIDs list of the object
             coreObject.nextIds=getSuccessorList(element['id'])           
             # (Below is only for Dismantle for now)
@@ -231,27 +230,26 @@ def createObjectResourcesAndCoreObjects():
             
     #                    loop through all the core objects    
     #                         to read predecessors
-    for element in G.ObjList:
+    for element in environment.ObjList:
         #loop through all the nextIds of the object
         for nextId in element.nextIds:
             #loop through all the core objects to find the on that has the id that was read in the successorList
-            for possible_successor in G.ObjList:
+            for possible_successor in environment.ObjList:
                 if possible_successor.id==nextId:
                     possible_successor.previousIds.append(element.id)            
 
 # ===========================================================================
 #                creates the object interruptions
 # ===========================================================================
-def createObjectInterruptions():
-    G.ObjectInterruptionList=[]
-    G.ScheduledMaintenanceList=[]
-    G.FailureList=[]
-    G.BreakList=[]
-    G.ShiftSchedulerList=[]
-    G.EventGeneratorList=[]
-    G.CapacityStationControllerList=[]
-    G.PeriodicMaintenanceList=[]
-    json_data = G.JSONData
+def createObjectInterruptions(environment,json_data):
+    environment.ObjectInterruptionList=[]
+    environment.ScheduledMaintenanceList=[]
+    environment.FailureList=[]
+    environment.BreakList=[]
+    environment.ShiftSchedulerList=[]
+    environment.EventGeneratorList=[]
+    environment.CapacityStationControllerList=[]
+    environment.PeriodicMaintenanceList=[]
     #Read the json data
     nodes = json_data['graph']["node"]                      # read from the dictionary the dicts with key 'nodes'
     
@@ -360,24 +358,23 @@ def createObjectInterruptions():
 # ===========================================================================
 #                       creates the entities that are wip
 # ===========================================================================
-def createWIP():
-    G.JobList=[]
-    G.WipList=[]
-    G.EntityList=[]  
-    G.PartList=[]
-    G.OrderComponentList=[]
-    G.DesignList=[]     # list of the OrderDesigns in the system
-    G.OrderList=[]
-    G.MouldList=[]
-    G.BatchList=[]
-    G.SubBatchList=[]
-    G.CapacityEntityList=[]
-    G.CapacityProjectList=[]
+def createWIP(environment,json_data):
+    environment.JobList=[]
+    environment.WipList=[]
+    environment.EntityList=[]  
+    environment.PartList=[]
+    environment.OrderComponentList=[]
+    environment.DesignList=[]     # list of the OrderDesigns in the system
+    environment.OrderList=[]
+    environment.MouldList=[]
+    environment.BatchList=[]
+    environment.SubBatchList=[]
+    environment.CapacityEntityList=[]
+    environment.CapacityProjectList=[]
     # entities that just finished processing in a station 
     # and have to enter the next machine 
-    G.pendingEntities=[]
-    #Read the json data
-    json_data = G.JSONData
+    environment.pendingEntities=[]
+
     # read from the dictionary the dicts with key 'BOM' (if there are any)
     input=json_data.get('input',{})
     bom=input.get('BOM',None)
@@ -552,20 +549,20 @@ def createWIP():
 # ===========================================================================
 #    defines the topology (predecessors and successors for all the objects)
 # ===========================================================================
-def setTopology():
+def setTopology(environment):
     #loop through all the objects  
-    for element in G.ObjList:
+    for element in environment.ObjList:
         next=[]
         previous=[]
         for j in range(len(element.previousIds)):
-            for q in range(len(G.ObjList)):
-                if G.ObjList[q].id==element.previousIds[j]:
-                    previous.append(G.ObjList[q])
+            for q in range(len(environment.ObjList)):
+                if environment.ObjList[q].id==element.previousIds[j]:
+                    previous.append(environment.ObjList[q])
                     
         for j in range(len(element.nextIds)):
-            for q in range(len(G.ObjList)):
-                if G.ObjList[q].id==element.nextIds[j]:
-                    next.append(G.ObjList[q])      
+            for q in range(len(environment.ObjList)):
+                if environment.ObjList[q].id==element.nextIds[j]:
+                    next.append(environment.ObjList[q])      
                              
         if element.type=="Source":
             element.defineRouting(next)
@@ -577,13 +574,13 @@ def setTopology():
             nextPart=[]
             nextFrame=[]
             for j in range(len(element.nextPartIds)):
-                for q in range(len(G.ObjList)):
-                    if G.ObjList[q].id==element.nextPartIds[j]:
-                        nextPart.append(G.ObjList[q])
+                for q in range(len(environment.ObjList)):
+                    if environment.ObjList[q].id==element.nextPartIds[j]:
+                        nextPart.append(environment.ObjList[q])
             for j in range(len(element.nextFrameIds)):
-                for q in range(len(G.ObjList)):
-                    if G.ObjList[q].id==element.nextFrameIds[j]:
-                        nextFrame.append(G.ObjList[q])
+                for q in range(len(environment.ObjList)):
+                    if environment.ObjList[q].id==element.nextFrameIds[j]:
+                        nextFrame.append(environment.ObjList[q])
             element.defineRouting(previous, next)            
             element.definePartFrameRouting(nextPart, nextFrame)
         else:
@@ -592,18 +589,18 @@ def setTopology():
 # ===========================================================================
 #            initializes all the objects that are in the topology
 # ===========================================================================
-def initializeObjects():
-    for element in G.ObjList + G.ObjectResourceList + G.EntityList + G.ObjectInterruptionList+G.RouterList:
+def initializeObjects(environment):
+    for element in environment.ObjList + environment.ObjectResourceList + environment.EntityList + environment.ObjectInterruptionList+environment.RouterList:
         element.initialize()
 
 # ===========================================================================
 #                        activates all the objects
 # ===========================================================================
-def activateObjects():
-    for element in G.ObjectInterruptionList:
-        G.env.process(element.run())       
-    for element in G.ObjList:
-        G.env.process(element.run())                                             
+def activateObjects(environment):
+    for element in environment.ObjectInterruptionList:
+        environment.env.process(element.run())       
+    for element in environment.ObjList:
+        environment.env.process(element.run())                                             
 
 # ===========================================================================
 #                        the main script that is ran
@@ -611,114 +608,113 @@ def activateObjects():
 def main(argv=[], input_data=None):
     argv = argv or sys.argv[1:]
     environment=ManPyEnvironment()
-    print environment
     
     #create an empty list to store all the objects in   
-    G.ObjList=[]
-    G.RouterList=[]
+    environment.ObjList=[]
+    environment.RouterList=[]
 
     if input_data is None:
       # user passes the topology filename as first argument to the program
       filename = argv[0]
       try:                                          # try to open the file with the inputs
-          G.JSONFile=open(filename, "r")            # global variable holding the file to be opened
+          JSONFile=open(filename, "r")            # global variable holding the file to be opened
       except IOError:                               
           print "%s could not be open" % filename
           return "ERROR"
-      G.InputData=G.JSONFile.read()                 # pass the contents of the input file to the global var InputData
+      InputData=JSONFile.read()                 # pass the contents of the input file to the global var InputData
     else:
-      G.InputData = input_data
+      InputData = input_data
     start=time.time()                               # start counting execution time 
 
     #read the input from the JSON file and create the line
-    G.JSONData=json.loads(G.InputData)              # create the dictionary JSONData
-    readGeneralInput()
-    createObjectResourcesAndCoreObjects()
-    createObjectInterruptions()
-    setTopology()
+    JSONData=json.loads(InputData)              # create the dictionary JSONData
+    readGeneralInput(environment,JSONData)
+    createObjectResourcesAndCoreObjects(environment,JSONData)
+    createObjectInterruptions(environment,JSONData)
+    setTopology(environment)
 
     #run the experiment (replications)          
-    for i in xrange(G.numberOfReplications):
-        G.env=simpy.Environment()                       # initialize the environment
-        G.maxSimTime=float(G.JSONData['general'].get('maxSimTime', '100'))     # read the maxSimTime in each replication 
+    for i in xrange(environment.numberOfReplications):
+        environment.env=simpy.Environment()                       # initialize the environment
+        environment.maxSimTime=float(JSONData['general'].get('maxSimTime', '100'))     # read the maxSimTime in each replication 
                                                                                # since it may be changed for infinite ones
-        if G.RouterList:
-            G.RouterList[0].isActivated=False
-            G.RouterList[0].isInitialized=False
+        if environment.RouterList:
+            environment.RouterList[0].isActivated=False
+            environment.RouterList[0].isInitialized=False
         
-        if G.seed:
-            G.Rnd=Random('%s%s' % (G.seed, i))
-            G.numpyRnd.random.seed(G.seed)
+        if environment.seed:
+            environment.Rnd=Random('%s%s' % (G.seed, i))
+            environment.numpyRnd.random.seed(G.seed)
         else:
-            G.Rnd=Random()
-            G.numpyRnd.random.seed()
-        createWIP()
-        initializeObjects()
-        Globals.setWIP(G.EntityList)        
-        activateObjects()
+            environment.Rnd=Random()
+            environment.numpyRnd.random.seed()
+        createWIP(environment,JSONData)
+        initializeObjects(environment)
+        Globals.setWIP(environment.EntityList)        
+        activateObjects(environment)
         
         # if the simulation is ran until no more events are scheduled, 
         # then we have to find the end time as the time the last entity ended.
-        if G.maxSimTime==-1:
+        if environment.maxSimTime==-1:
             # If someone does it for a model that has always events, then it will run forever!
-            G.env.run(until=float('inf'))
+            environment.env.run(until=float('inf'))
                                          
             # identify from the exits what is the time that the last entity has ended. 
             endList=[]
-            for exit in G.ExitList:
+            for exit in environment.ExitList:
                 endList.append(exit.timeLastEntityLeft)
   
             # identify the time of the last event
             if float(max(endList))!=0 and G.env.now==float('inf'):    #do not let G.maxSimTime=0 so that there will be no crash
-                G.maxSimTime=float(max(endList))
+                environment.maxSimTime=float(max(endList))
             else:
                 print "simulation ran for 0 time, something may have gone wrong"
                 logger.info("simulation ran for 0 time, something may have gone wrong")
         #else we simulate until the given maxSimTime
         else:
-            G.env.run(until=G.maxSimTime)
+            environment.env.run(until=environment.maxSimTime)
         
         #carry on the post processing operations for every object in the topology       
-        for element in G.ObjList+G.ObjectResourceList+G.RouterList:
+        for element in environment.ObjList+environment.ObjectResourceList+environment.RouterList:
             element.postProcessing()
                        
         # added for debugging, print the Route of the Jobs on the same G.traceFile
-        PrintRoute.outputRoute()
+        PrintRoute.outputRoute(environment)
             
         #output trace to excel      
-        if(G.trace=="Yes"):
+        if(environment.trace=="Yes"):
             ExcelHandler.outputTrace('trace'+str(i))  
             import StringIO
             traceStringIO = StringIO.StringIO()
-            G.traceFile.save(traceStringIO)
+            environment.traceFile.save(traceStringIO)
             encodedTrace=traceStringIO.getvalue().encode('base64')
             ExcelHandler.resetTrace()
     
-    G.outputJSON['_class'] = 'Dream.Simulation';
-    G.outputJSON['general'] ={};
-    G.outputJSON['general']['_class'] = 'Dream.Configuration';
-    G.outputJSON['general']['totalExecutionTime'] = (time.time()-start);
-    G.outputJSON['elementList'] =[];
+    environment.outputJSON['_class'] = 'Dream.Simulation';
+    environment.outputJSON['general'] ={};
+    environment.outputJSON['general']['_class'] = 'Dream.Configuration';
+    environment.outputJSON['general']['totalExecutionTime'] = (time.time()-start);
+    environment.outputJSON['elementList'] =[];
     
         
     #output data to JSON for every object in the topology         
-    for object in G.ObjectResourceList + G.EntityList + G.ObjList+G.RouterList:
+    for object in environment.ObjectResourceList + environment.EntityList + environment.ObjList+environment.RouterList:
         object.outputResultsJSON()
         
     # output the trace as encoded if it is set on
-    if G.trace=="Yes":
+    if environment.trace=="Yes":
         # XXX discuss names on this
         jsonTRACE = {'_class': 'Dream.Simulation',
                 'id': 'TraceFile',
                 'results': {'trace':encodedTrace}
             }
-        G.outputJSON['elementList'].append(jsonTRACE)
+        environment.outputJSON['elementList'].append(jsonTRACE)
         
         
-    outputJSONString=json.dumps(G.outputJSON, indent=True)
+    outputJSONString=json.dumps(environment.outputJSON, indent=True)
     if 0:
-      G.outputJSONFile=open('outputJSON.json', mode='w')
-      G.outputJSONFile.write(outputJSONString)
+      environment.outputJSONFile=open('outputJSON.json', mode='w')
+      environment.outputJSONFile.write(outputJSONString)
     if not input_data:
       # Output on stdout
       print outputJSONString
@@ -726,10 +722,10 @@ def main(argv=[], input_data=None):
       return
 
     # XXX result_list is not needed here, we could replace result by result_list
-    G.JSONData['result'] = {'result_list': [G.outputJSON]}
+    environment.JSONData['result'] = {'result_list': [G.outputJSON]}
     #logger.info("execution time="+str(time.time()-start))
 
-    return json.dumps(G.JSONData, indent=True)
+    return json.dumps(environment.JSONData, indent=True)
 
 
 if __name__ == '__main__':
