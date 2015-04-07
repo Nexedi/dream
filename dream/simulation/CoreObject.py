@@ -404,6 +404,13 @@ class CoreObject(ManPyObject):
 #                         entity.mayProceed=True
 #                         self.sendSignal(receiver=entity.currentStation, signal=entity.currentStation.canDispose)
         
+        # update wipStatList
+        if self.gatherWipStat:
+            import numpy
+            wip=0
+            for holdEntity in activeObjectQueue:
+                wip+=holdEntity.numberOfUnits
+            self.wipStatList=numpy.concatenate((self.wipStatList,[[self.env.now, wip]]))
         # if the object (eg Queue) canAccept then signal the Giver
         if self.canAccept():
             self.signalGiver()
