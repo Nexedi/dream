@@ -307,7 +307,10 @@ class CoreObject(ManPyObject):
         # update wipStatList
         if self.gatherWipStat:
             import numpy
-            self.wipStatList=numpy.concatenate((self.wipStatList,[[self.env.now, len(activeObjectQueue)]]))   
+            wip=0
+            for holdEntity in activeObjectQueue:
+                wip+=holdEntity.numberOfUnits
+            self.wipStatList=numpy.concatenate((self.wipStatList,[[self.env.now, wip]]))
         if self.expectedSignals['entityRemoved']:
             self.printTrace(self.id, signal='(removedEntity)')
             self.sendSignal(receiver=self, signal=self.entityRemoved)
@@ -463,9 +466,14 @@ class CoreObject(ManPyObject):
                     self.signalRouter(receiver)
                     activeObjectQueue.sort(key=lambda x: x==activeEntity, reverse=True)
         # update wipStatList
+        # update wipStatList
         if self.gatherWipStat:
             import numpy
-            self.wipStatList=numpy.concatenate((self.wipStatList,[[self.env.now, len(activeObjectQueue)]]))   
+            wip=0
+            for holdEntity in activeObjectQueue:
+                wip+=holdEntity.numberOfUnits
+            self.wipStatList=numpy.concatenate((self.wipStatList,[[self.env.now, wip]]))
+
     
     #===========================================================================
     # find possible receivers
@@ -609,9 +617,14 @@ class CoreObject(ManPyObject):
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
         
-        import numpy
-        self.wipStatList=numpy.concatenate((self.wipStatList,[[self.env.now, len(activeObjectQueue)]])) 
-               
+        # update wipStatList
+        if self.gatherWipStat:
+            import numpy
+            wip=0
+            for holdEntity in activeObjectQueue:
+                wip+=holdEntity.numberOfUnits
+            self.wipStatList=numpy.concatenate((self.wipStatList,[[self.env.now, wip]]))
+                           
         #calculate the offShift time for current entity
         offShiftTimeInCurrentEntity=0
         if self.interruptedBy:
