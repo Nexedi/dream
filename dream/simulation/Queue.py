@@ -66,8 +66,6 @@ class Queue(CoreObject):
         if level:
             assert level<=self.capacity, "the level cannot be bigger than the capacity of the queue"
         self.level=level
-        from Globals import ManPyEnvironment
-        G.QueueList.append(self)
             
     @staticmethod
     def getSupportedSchedulingRules():
@@ -80,6 +78,7 @@ class Queue(CoreObject):
     def initialize(self):
         # using the Process __init__ and not the CoreObject __init__
         CoreObject.initialize(self)
+        self.environment.QueueList.append(self)
         # initialise the internal Queue (type Resource) of the Queue object 
         self.Res=simpy.Resource(self.env, self.capacity)
         # event used by router
@@ -99,7 +98,7 @@ class Queue(CoreObject):
         # check if there is WIP and signal receiver
         self.initialSignalReceiver()
         while 1:
-            self.printTrace(self.id, waitEvent='')
+            self.printTrace(self.environment,self.id, waitEvent='')
             # wait until the Queue can accept an entity and one predecessor requests it
             self.expectedSignals['canDispose']=1
             self.expectedSignals['isRequested']=1
@@ -322,11 +321,10 @@ class Queue(CoreObject):
             assert False, "Unknown scheduling criterion %r" % (criterion, )
 
     def outputResultsJSON(self):
-        from Globals import ManPyEnvironment
         json = {'_class': 'Dream.%s' % self.__class__.__name__,
                 'id': str(self.id), 
                 'family': self.family,
                 'results': {} }
         if self.gatherWipStat:
             json['results']['wip_stat_list']=self.WipStat
-        G.outputJSON['elementList'].append(json)
+        self.environment.outputJSON['elementList'].append(json)

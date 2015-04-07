@@ -46,13 +46,12 @@ class Exit(CoreObject):
         self.TaktTime=[]   
         # if input is given in a dictionary
         CoreObject.__init__(self, id, name) 
-        from Globals import ManPyEnvironment
-        G.ExitList.append(self)     
         self.cancelCondition=cancelCondition   
                    
     def initialize(self):
         # using the Process __init__ and not the CoreObject __init__
         CoreObject.initialize(self)
+        self.environment.ExitList.append(self)
         
         # initialize the internal Queue (type Resource) of the Exit 
         self.Res=simpy.Resource(self.env, capacity=float('inf'))         
@@ -153,9 +152,8 @@ class Exit(CoreObject):
     #            actions to be taken after the simulation ends
     # =======================================================================
     def postProcessing(self, MaxSimtime=None):
-        from Globals import ManPyEnvironment
         if MaxSimtime==None:
-            MaxSimtime=G.maxSimTime
+            MaxSimtime=self.environment.maxSimTime
         # hold the numberOfExits of each replication
         self.Exits.append(self.numOfExits)
         self.UnitExits.append(self.totalNumberOfUnitsExited) 
@@ -172,7 +170,6 @@ class Exit(CoreObject):
     #                        outputs results to JSON File
     # =======================================================================
     def outputResultsJSON(self):
-        from Globals import ManPyEnvironment
         json = { '_class': 'Dream.%s' % self.__class__.__name__,
                   'id': self.id,
                   'family': self.family,
@@ -182,4 +179,4 @@ class Exit(CoreObject):
         json['results']['takt_time'] = self.TaktTime
         if self.Exits!=self.UnitExits:      #output this only if there was variability in units
             json['results']['unitsThroughput'] = self.UnitExits
-        G.outputJSON['elementList'].append(json)
+        self.environment.outputJSON['elementList'].append(json)

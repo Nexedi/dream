@@ -29,7 +29,7 @@ def getEventsList(objectsList=[]):
                         events_list.append(exit_time)
     return events_list
 
-def outputRoute():
+def outputRoute(environment):
     '''            
         prints the routes of the Jobs through the model as a table 
         the horizontal axis represents the different stations of the model 
@@ -54,53 +54,53 @@ def outputRoute():
     
     # xx for each station allocate 2 rows and a 3rd one for operators
     
-    if G.trace=='Yes':
-        if G.JobList:
-            G.routeSheetIndex=G.sheetIndex+1
+    if environment.trace=='Yes':
+        if environment.JobList:
+            environment.routeSheetIndex=environment.sheetIndex+1
             # add one more sheet to the trace file
-            G.routeTraceSheet=G.traceFile.add_sheet('sheet '+str(G.routeSheetIndex)+' route', cell_overwrite_ok=True)
-            number_of_machines=len(G.MachineList)
+            environment.routeTraceSheet=environment.traceFile.add_sheet('sheet '+str(environment.routeSheetIndex)+' route', cell_overwrite_ok=True)
+            number_of_machines=len(environment.MachineList)
             sortMachines()  # sort the machines according to the priority specified in JOB_SHOP_TECHNOLOGY_SEQ
             # get the events list
-            G.events_list=getEventsList(G.JobList+G.OperatorsList)
-            G.events_list.sort(cmp=None, key=None, reverse=False)     # sort the events
-            number_of_events=len(G.events_list)                       # keep the total number of events 
+            environment.events_list=getEventsList(environment.JobList+environment.OperatorsList)
+            environment.events_list.sort(cmp=None, key=None, reverse=False)     # sort the events
+            number_of_events=len(environment.events_list)                       # keep the total number of events 
             # create a table number_of_events X number_of_machines
-            G.routeTraceSheet.write(0,0, 'Time/Machines')
+            environment.routeTraceSheet.write(0,0, 'Time/Machines')
             # write the events in the first column and the machineIDs in the first row
-            for j, event in enumerate(G.events_list):
-                G.routeTraceSheet.write(j+1,0,float(event))
+            for j, event in enumerate(environment.events_list):
+                environment.routeTraceSheet.write(j+1,0,float(event))
             # XXX create 3 times as many columns as the number of machines
-            for j, machine in enumerate(G.MachineList):
+            for j, machine in enumerate(environment.MachineList):
                 machine.station_col_inds=range(j*3+1,j*3+3)
                 machine.op_col_indx=j*3+3
-                G.routeTraceSheet.write_merge(0,0,j*3+1,j*3+3,str(machine.id))
+                environment.routeTraceSheet.write_merge(0,0,j*3+1,j*3+3,str(machine.id))
 
             # sort the jobs according to their name
-            G.JobList.sort(key=lambda x:x.id)
+            environment.JobList.sort(key=lambda x:x.id)
             
-            G.cells_to_write=[]
-            for job in G.JobList:
+            environment.cells_to_write=[]
+            for job in environment.JobList:
                 job.printRoute()
             
             # list of cells to be written
-            G.cells_to_write=[]
+            environment.cells_to_write=[]
             # for every job in the JobList
-            for worker in G.OperatorsList:
+            for worker in environment.OperatorsList:
                 worker.printRoute()
             # reset list of cells to be written
-            del G.cells_to_write[:]
-            del G.events_list[:]
+            del environment.cells_to_write[:]
+            del environment.events_list[:]
             
             # print aliases
             try:
-                sample_job=next(x for x in G.JobList)
+                sample_job=next(x for x in environment.JobList)
                 if sample_job.__class__.__name__ in ORDER_COMPONENT_TYPE_SET:
-                    G.JobList.sort(key=lambda x:x.order.id)
+                    environment.JobList.sort(key=lambda x:x.order.id)
             except:
                 pass
-            for j,job in enumerate(G.JobList):
+            for j,job in enumerate(environment.JobList):
                 if job.schedule:
-                    G.routeTraceSheet.write(number_of_events+2+j, 0, job.id)
-                    G.routeTraceSheet.write(number_of_events+2+j, 1, job.alias)
+                    environment.routeTraceSheet.write(number_of_events+2+j, 0, job.id)
+                    environment.routeTraceSheet.write(number_of_events+2+j, 1, job.alias)
             

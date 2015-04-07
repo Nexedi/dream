@@ -42,9 +42,9 @@ class EntityGenerator(object):
     # the __init__ method of the EntityGenerator
     #===========================================================================
     def __init__(self, victim=None):
-        self.env=G.env
         self.type="EntityGenerator"                       #String that shows the type of object
         self.victim=victim
+        self.env=victim.environment.SimPyEnvironment
             
     #===========================================================================
     # the generator of the EntitiesGenerator
@@ -101,7 +101,6 @@ class Source(CoreObject):
                
         self.scheduledEntities=[]       # list of creations that are scheduled. pattern is [timeOfCreation, EntityCounter]     
         from Globals import ManPyEnvironment
-        G.SourceList.append(self)  
     
     #===========================================================================
     # The initialize method of the Source class
@@ -109,6 +108,7 @@ class Source(CoreObject):
     def initialize(self):
         # using the Process __init__ and not the CoreObject __init__
         CoreObject.initialize(self)
+        self.environment.SourceList.append(self)
         
         # initialize the internal Queue (type Resource) of the Source 
         # self.Res=Resource(capacity=infinity)

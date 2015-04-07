@@ -117,6 +117,7 @@ class ManPyEnvironment(object):
         self.env=simpy.Environment()
     
         self.totalPulpTime=0     # temporary to track how much time PuLP needs to run 
+        self.SimPyEnvironment=simpy.Environment() 
     
 # =======================================================================
 # method to move entities exceeding a certain safety stock

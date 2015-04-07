@@ -101,14 +101,14 @@ class ManPyObject(object):
         return any(operator.skillsList for operator in G.OperatorsList)
     
     @staticmethod
-    def printTrace(entity='', **kw):
+    def printTrace(environment,entity='', **kw):
         assert len(kw)==1, 'only one phrase per printTrace supported for the moment'
         from Globals import ManPyEnvironment
         import Globals
-        time=G.env.now
+        time=environment.env.now
         charLimit=60
         remainingChar=charLimit-len(entity)-len(str(time))
-        if(G.console=='Yes'):
+        if(environment.console=='Yes'):
             print time,entity,
             for key in kw:
                 if key not in Globals.getSupportedPrintKwrds():
@@ -127,8 +127,7 @@ class ManPyObject(object):
                         suffix=suffix+'>'
                     print phrase,arg,suffix
                 else:
-                    print phrase,arg
-                    
+                    print phrase,arg                    
     # =======================================================================
     # outputs message to the trace.xls 
     # outputs message to the trace.xls. Format is (Simulation Time | Entity or Frame Name | message)

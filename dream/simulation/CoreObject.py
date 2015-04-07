@@ -69,9 +69,6 @@ class CoreObject(ManPyObject):
         # attributes/indices used for printing the route, hold the cols corresponding to the object (entities route and operators route) 
         self.station_col_inds=[]
         self.op_col_indx=None
-        # if there is input in a dictionary parse from it
-        from Globals import ManPyEnvironment
-        G.ObjList.append(self)  # add object to ObjList
         # list of expected signals of a station (values can be used as flags to inform on which signals is the station currently yielding)
         self.expectedSignals={
                                 "isRequested":0,
@@ -93,8 +90,6 @@ class CoreObject(ManPyObject):
         self.WipStat=[]
                 
     def initialize(self):
-        from Globals import ManPyEnvironment
-        self.env=G.env
         self.Up=True                                    #Boolean that shows if the object is in failure ("Down") or not ("up")
         self.onShift=True
         self.onBreak=False
@@ -618,8 +613,7 @@ class CoreObject(ManPyObject):
     # =======================================================================
     def postProcessing(self, MaxSimtime=None): 
         if MaxSimtime==None:
-            from Globals import ManPyEnvironment
-            MaxSimtime=G.maxSimTime
+            MaxSimtime=self.environment.maxSimTime
         
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()

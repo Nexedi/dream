@@ -219,7 +219,9 @@ def createObjectResourcesAndCoreObjects(environment,json_data):
             inputDict=dict(element)           
             # create the CoreObject
             coreObject=objectType(**inputDict)
+            coreObject.environment=environment
             coreObject.env=environment.SimPyEnvironment
+            environment.ObjList.append(coreObject)
             # update the nextIDs list of the object
             coreObject.nextIds=getSuccessorList(element['id'])           
             # (Below is only for Dismantle for now)
