@@ -258,7 +258,7 @@ class CoreObject(ManPyObject):
         if self.checkForDedicatedOperators():
             allocationNeeded=False
             from Globals import ManPyEnvironment
-            for obj in G.MachineList:
+            for obj in self.environment.MachineList:
                 if obj.operatorPool!='None':
                     if obj.operatorPool.operators:
                         allocationNeeded=False
@@ -291,7 +291,7 @@ class CoreObject(ManPyObject):
         self.offShiftTimeTryingToReleaseCurrentEntity=0
         
         self.timeLastEntityLeft=self.env.now
-        self.outputTrace(entity.name, "released "+self.objName)
+        self.outputTrace(self.environment,entity.name, "released "+self.objName)
         
         #append the time to schedule so that it can be read in the result
         #remember that every entity has it's schedule which is supposed to be updated every time 
@@ -380,8 +380,8 @@ class CoreObject(ManPyObject):
         self.nameLastEntityEntered=activeEntity.name      # this holds the name of the last entity that got into object
         # update the next list of the object
         self.updateNext(activeEntity)
-        self.outputTrace(activeEntity.name, "got into "+self.objName)
-        self.printTrace(activeEntity.name, enter=self.id)
+        self.outputTrace(self.environment,activeEntity.name, "got into "+self.objName)
+        self.printTrace(self.environment,activeEntity.name, enter=self.id)
 #         # if there are entities with requiredParts then check whether the requirements are fulfilled for them to proceed
 #         #     ass soon as a "buffer" receives an entity it controls if the entity is requested elsewhere,
 #         #     then it checks if there other requested entities by the same requesting entity.
@@ -389,7 +389,7 @@ class CoreObject(ManPyObject):
 #         #     their sequences for the requesting entity
 #         from Globals import ManPyEnvironment
 #         # for all the entities in the EntityList
-#         for entity in G.EntityList:
+#         for entity in self.environment.EntityList:
 #             requiredParts=entity.getRequiredParts()
 #             if requiredParts:
 #                 # if the activeEntity is in the requierdParts of the entity
@@ -493,7 +493,7 @@ class CoreObject(ManPyObject):
     def signalReceiver(self):
         possibleReceivers=self.findReceiversFor(self)
         if possibleReceivers:
-            receiver=self.selectReceiver(possibleReceivers)
+            receiver=self.selectReceiver(self.environment,possibleReceivers)
             receiversGiver=self
             # perform the checks that canAcceptAndIsRequested used to perform and update activeCallersList or assignExit and operatorPool
             while not receiver.canAcceptAndIsRequested(receiversGiver):
@@ -514,7 +514,7 @@ class CoreObject(ManPyObject):
 
             self.receiver=receiver
             self.receiver.giver=self
-            self.printTrace(self.id, signalReceiver=self.receiver.id)
+            self.printTrace(self.environment,self.id, signalReceiver=self.receiver.id)
             # assign the entry of the receiver
             self.receiver.assignEntryTo()
             # assign the exit of the current object to the receiver
@@ -530,14 +530,14 @@ class CoreObject(ManPyObject):
     # select a receiver Object
     # =======================================================================
     @staticmethod
-    def selectReceiver(possibleReceivers=[]):
+    def selectReceiver(environment,possibleReceivers=[]):
         candidates=possibleReceivers
         # dummy variables that help prioritize the objects requesting to give objects to the object (activeObject)
         maxTimeWaiting=0                                            # dummy variable counting the time a successor is waiting
         receiver=None
         from Globals import ManPyEnvironment
         for object in candidates:
-            timeWaiting=G.env.now-object.timeLastEntityLeft     # the time it has been waiting is updated and stored in dummy variable timeWaiting
+            timeWaiting=environment.env.now-object.timeLastEntityLeft     # the time it has been waiting is updated and stored in dummy variable timeWaiting
             if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):# if the timeWaiting is the maximum among the ones of the successors 
                 maxTimeWaiting=timeWaiting
                 receiver=object                                 # set the receiver as the longest waiting possible receiver
@@ -602,7 +602,7 @@ class CoreObject(ManPyObject):
         # loop through the possible givers to see which have to dispose and which is the one blocked for longer
         for object in candidates:
             # calculate how much the giver is waiting
-            timeWaiting=G.env.now-object.timeLastEntityEnded   
+            timeWaiting=self.environment.env.now-object.timeLastEntityEnded   
             if(timeWaiting>=maxTimeWaiting): 
                 giver=object                 # the object to deliver the Entity to the activeObject is set to the ith member of the previous list
                 maxTimeWaiting=timeWaiting  
@@ -670,7 +670,7 @@ class CoreObject(ManPyObject):
             if now==float('inf'):
                 now=0
                 lastExits=[]
-                for object in G.ExitList:
+                for object in self.environment.ExitList:
                     lastExits.append(object.timeLastEntityEntered)
                 if lastExits:
                     now=max(lastExits)

@@ -105,14 +105,14 @@ class Exit(CoreObject):
     # =======================================================================
     def getEntity(self): 
         activeEntity = CoreObject.getEntity(self)           #run the default method
-        # if the entity is in the G.pendingEntities list then remove it from there
+        # if the entity is in the self.environment.pendingEntities list then remove it from there
         from Globals import ManPyEnvironment
-#         G.pendingEntities[:]=(entity for entity in G.pendingEntities if not entity is activeEntity)
-        if G.RouterList:
-            if activeEntity in G.pendingEntities:
-                G.pendingEntities.remove(activeEntity)
-#         if activeEntity in G.EntityList:
-#             G.EntityList.remove(activeEntity)
+#         self.environment.pendingEntities[:]=(entity for entity in self.environment.pendingEntities if not entity is activeEntity)
+        if self.environment.RouterList:
+            if activeEntity in self.environment.pendingEntities:
+                self.environment.pendingEntities.remove(activeEntity)
+#         if activeEntity in self.environment.EntityList:
+#             self.environment.EntityList.remove(activeEntity)
 #         self.clear(activeEntity)
         self.totalLifespan+=self.env.now-activeEntity.startTime    #Add the entity's lifespan to the total one. 
         self.numOfExits+=1                                          # increase the exits by one
@@ -135,10 +135,10 @@ class Exit(CoreObject):
         def deleteEntityfromlist(entity, list):            
             if entity in list:
                 list.remove(entity)
-        lists=(G.EntityList, G.PartList, G.pendingEntities, G.WipList)
-#         lists=(G.EntityList, G.PartList, G.BatchList, G.SubBatchList,
-#                G.JobList, G.OrderList, G.OrderComponentList, G.MouldList,
-#                G.pendingEntities, G.WipList)
+        lists=(self.environment.EntityList, self.environment.PartList, self.environment.pendingEntities, self.environment.WipList)
+#         lists=(self.environment.EntityList, self.environment.PartList, self.environment.BatchList, self.environment.SubBatchList,
+#                self.environment.JobList, self.environment.OrderList, self.environment.OrderComponentList, self.environment.MouldList,
+#                self.environment.pendingEntities, self.environment.WipList)
         for list in lists:
             deleteEntityfromlist(entity,list)
     
@@ -158,11 +158,11 @@ class Exit(CoreObject):
         self.Exits.append(self.numOfExits)
         self.UnitExits.append(self.totalNumberOfUnitsExited) 
         try:                            # throw exception in case the numOfExits is zero
-            self.Lifespan.append(((self.totalLifespan)/self.numOfExits)/G.Base)
+            self.Lifespan.append(((self.totalLifespan)/self.numOfExits)/self.environment.Base)
         except ZeroDivisionError:       # the lifespan in this case is zero
             self.Lifespan.append(0)
         try:                            # throw exception in case of zero division
-            self.TaktTime.append(((self.totalTaktTime)/self.numOfExits)/G.Base)
+            self.TaktTime.append(((self.totalTaktTime)/self.numOfExits)/self.environment.Base)
         except ZeroDivisionError:       # the average time between exits is zero if no Entity exited
             self.TaktTime.append(0)
             

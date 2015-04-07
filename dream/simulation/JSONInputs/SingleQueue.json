@@ -1,0 +1,56 @@
+{
+     "graph": {
+          "node": {
+               "E1": {
+                    "interruptions": {}, 
+                    "top": 0.10215053763440862, 
+                    "_class": "Dream.Exit", 
+                    "name": "Stock", 
+                    "left": 0.5
+               }, 
+               "S1": {
+                    "name": "Raw Material", 
+                    "top": 0.8978494623655914, 
+                    "entity": "Dream.Part", 
+                    "interArrivalTime": {
+                         "Fixed": {
+                              "distributionType": "Fixed", 
+                              "mean": 0.5
+                         }
+                    }, 
+                    "interruptions": {}, 
+                    "_class": "Dream.Source", 
+                    "left": 0.5
+               }, 
+               "Q1": {
+                    "name": "Queue", 
+                    "top": 0.5, 
+                    "interruptions": {}, 
+                    "_class": "Dream.Queue", 
+                    "left": 0.5
+               }
+          }, 
+          "edge": {
+               "1": {
+                    "source": "Q1", 
+                    "destination": "E1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "0": {
+                    "source": "S1", 
+                    "destination": "Q1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }
+          }
+     }, 
+     "_class": "Dream.Simulation", 
+     "general": {
+          "maxSimTime": "10", 
+          "_class": "Dream.Configuration", 
+          "confidenceLevel": "0.95", 
+          "trace": "No", 
+          "numberOfReplications": "1"
+     }
+}

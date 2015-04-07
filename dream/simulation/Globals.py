@@ -113,11 +113,10 @@ class ManPyEnvironment(object):
         self.SubBatchList=[]
         # entities that just finished processing in a station 
         # and have to enter the next machine 
-        self.pendingEntities=[]
-        self.env=simpy.Environment()
-    
+        self.pendingEntities=[]   
         self.totalPulpTime=0     # temporary to track how much time PuLP needs to run 
         self.SimPyEnvironment=simpy.Environment() 
+        self.env=self.SimPyEnvironment
     
 # =======================================================================
 # method to move entities exceeding a certain safety stock

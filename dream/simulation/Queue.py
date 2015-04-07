@@ -104,11 +104,11 @@ class Queue(CoreObject):
             self.expectedSignals['isRequested']=1
             self.expectedSignals['loadOperatorAvailable']=1
             receivedEvent=yield self.env.any_of([self.isRequested, self.canDispose, self.loadOperatorAvailable])
-            self.printTrace(self.id, received='')
+            self.printTrace(self.environment,self.id, received='')
             # if the event that activated the thread is isRequested then getEntity
             if self.isRequested in receivedEvent:
                 transmitter, eventTime=self.isRequested.value
-                self.printTrace(self.id, isRequested=transmitter.id)
+                self.printTrace(self.environment,self.id, isRequested=transmitter.id)
                 # reset the isRequested signal parameter
                 self.isRequested=self.env.event()
                 self.getEntity()

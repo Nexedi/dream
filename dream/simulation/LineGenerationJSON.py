@@ -600,9 +600,9 @@ def initializeObjects(environment):
 # ===========================================================================
 def activateObjects(environment):
     for element in environment.ObjectInterruptionList:
-        environment.env.process(element.run())       
+        environment.SimPyEnvironment.process(element.run())       
     for element in environment.ObjList:
-        environment.env.process(element.run())                                             
+        environment.SimPyEnvironment.process(element.run())                                             
 
 # ===========================================================================
 #                        the main script that is ran
@@ -637,7 +637,7 @@ def main(argv=[], input_data=None):
 
     #run the experiment (replications)          
     for i in xrange(environment.numberOfReplications):
-        environment.env=simpy.Environment()                       # initialize the environment
+        # environment.env=simpy.Environment()                       # initialize the environment
         environment.maxSimTime=float(JSONData['general'].get('maxSimTime', '100'))     # read the maxSimTime in each replication 
                                                                                # since it may be changed for infinite ones
         if environment.RouterList:
@@ -659,7 +659,7 @@ def main(argv=[], input_data=None):
         # then we have to find the end time as the time the last entity ended.
         if environment.maxSimTime==-1:
             # If someone does it for a model that has always events, then it will run forever!
-            environment.env.run(until=float('inf'))
+            environment.SimPyEnvironment.run(until=float('inf'))
                                          
             # identify from the exits what is the time that the last entity has ended. 
             endList=[]
@@ -667,14 +667,14 @@ def main(argv=[], input_data=None):
                 endList.append(exit.timeLastEntityLeft)
   
             # identify the time of the last event
-            if float(max(endList))!=0 and G.env.now==float('inf'):    #do not let G.maxSimTime=0 so that there will be no crash
+            if float(max(endList))!=0 and environment.SimPyEnvironment.now==float('inf'):    #do not let G.maxSimTime=0 so that there will be no crash
                 environment.maxSimTime=float(max(endList))
             else:
                 print "simulation ran for 0 time, something may have gone wrong"
                 logger.info("simulation ran for 0 time, something may have gone wrong")
         #else we simulate until the given maxSimTime
         else:
-            environment.env.run(until=environment.maxSimTime)
+            environment.SimPyEnvironment.run(until=environment.maxSimTime)
         
         #carry on the post processing operations for every object in the topology       
         for element in environment.ObjList+environment.ObjectResourceList+environment.RouterList:
