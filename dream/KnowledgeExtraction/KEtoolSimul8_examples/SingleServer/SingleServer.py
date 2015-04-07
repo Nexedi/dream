@@ -22,12 +22,12 @@ Created on 3 Dec 2014
 # along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
 # ===========================================================================
 
-from ImportExceldata import Import_Excel
-from DistributionFitting import DistFittest
-from DistributionFitting import Distributions
+from dream.KnowledgeExtraction.ImportExceldata import Import_Excel
+from dream.KnowledgeExtraction.DistributionFitting import DistFittest
+from dream.KnowledgeExtraction.DistributionFitting import Distributions
 import xlrd
 from xml.etree import ElementTree as et
-from Simul8XML import Simul8Output
+from dream.KnowledgeExtraction.Simul8XML import Simul8Output
 import os
 
 def main(test=0, ExcelFileName1='InterarrivalsData.xls',
@@ -66,18 +66,21 @@ def main(test=0, ExcelFileName1='InterarrivalsData.xls',
     
     if not simul8XMLFile:
         datafile=(os.path.join(os.path.dirname(os.path.realpath(__file__)), simul8XMLFileName))       #It defines the name or the directory of the XML file that is manually written the CMSD information model
+        tree = et.parse(datafile)    
+    else:
+        datafile=simul8XMLFile
         tree = et.parse(datafile)
- 
+        
     simul8 = Simul8Output()    #Call the Simul8Output object
-    
     title = 'KEtool_SingleServer'
     interTimes = simul8.InterArrivalTime(tree,'Source', S1)
     procTimes = simul8.ProcTimes(interTimes,'Activity 1', M1)
     title = simul8.Title(procTimes,title)
     #Output the XML file with the processed data
-    output= procTimes.write('KEtool_SingleServer.xml')
+    output= title.write('KEtool_SingleServer.xml')
     
     if test:
+        output=et.parse('KEtool_SingleServer.xml')
         return output    
 if __name__ == '__main__':
     main()
