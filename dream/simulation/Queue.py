@@ -37,10 +37,10 @@ class Queue(CoreObject):
     #===========================================================================
     # the __init__ method of the Queue
     #===========================================================================
-    def __init__(self, id='', name='', capacity=1, isDummy=False, schedulingRule="FIFO", 
+    def __init__(self, environment,id='', name='', capacity=1, isDummy=False, schedulingRule="FIFO", 
                  level=None, gatherWipStat=False, **kw):
         self.type="Queue"           # String that shows the type of object
-        CoreObject.__init__(self, id, name)
+        CoreObject.__init__(self, environment,id, name)
         capacity=float(capacity)
         if capacity<0 or capacity==float("inf"):
             self.capacity=float("inf")

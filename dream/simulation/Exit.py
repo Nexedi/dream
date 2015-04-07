@@ -37,15 +37,15 @@ class Exit(CoreObject):
     family='Exit'
     
     
-    def __init__(self, id, name, cancelCondition={},**kw):
+    def __init__(self, environment,id, name, cancelCondition={},**kw):
         self.type="Exit" # XXX needed ?
+        CoreObject.__init__(self, environment,id, name)
         #lists to hold statistics of multiple runs
         self.Exits=[]
         self.UnitExits=[]
         self.Lifespan=[] 
         self.TaktTime=[]   
         # if input is given in a dictionary
-        CoreObject.__init__(self, id, name) 
         self.cancelCondition=cancelCondition   
                    
     def initialize(self):

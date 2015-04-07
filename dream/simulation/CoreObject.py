@@ -35,8 +35,9 @@ from ManPyObject import ManPyObject
 class CoreObject(ManPyObject):
     class_name = 'Dream.CoreObject'
     
-    def __init__(self, id, name, **kw):
+    def __init__(self, environment,id, name, **kw):
         ManPyObject.__init__(self,id,name)
+        self.environment=environment
         self.objName = name
         #     lists that hold the previous and next objects in the flow
         self.next=[]                                #list with the next objects in the flow

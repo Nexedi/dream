@@ -82,7 +82,7 @@ class Source(CoreObject):
     #===========================================================================
     # the __init__method of the Source class
     #===========================================================================
-    def __init__(self, id, name, interArrivalTime=None, entity='Dream.Part',**kw):
+    def __init__(self, environment,id, name, interArrivalTime=None, entity='Dream.Part',**kw):
         # Default values
         if not interArrivalTime:
           interArrivalTime = {'Fixed': {'mean': 1}}
@@ -90,7 +90,7 @@ class Source(CoreObject):
               interArrivalTime['Normal'].get('max', None) is None:
           interArrivalTime['Normal']['max'] = interArrivalTime['Normal']['mean'] + 5 * interArrivalTime['Normal']['stdev']
 
-        CoreObject.__init__(self, id, name)
+        CoreObject.__init__(self, environment,id, name)
         # properties used for statistics
         self.totalinterArrivalTime = 0                  # the total interarrival time 
         self.numberOfArrivals = 0                       # the number of entities that were created

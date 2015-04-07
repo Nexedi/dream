@@ -216,10 +216,10 @@ def createObjectResourcesAndCoreObjects(environment,json_data):
         from dream.simulation.CoreObject import CoreObject
         if issubclass(objectType, CoreObject):
             # remove data that has to do with wip or object interruption. CoreObjects do not need it
-            inputDict=dict(element)           
+            inputDict=dict(element)        
+            inputDict['environment']=environment   
             # create the CoreObject
             coreObject=objectType(**inputDict)
-            coreObject.environment=environment
             environment.ObjList.append(coreObject)
             # update the nextIDs list of the object
             coreObject.nextIds=getSuccessorList(element['id'])           
