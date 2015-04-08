@@ -16,6 +16,7 @@
     /////////////////////////////////////////////////////////////////
     .declareMethod("startService", function () {
       var gadget = this;
+      gadget.props.codemirror.refresh();
       return new RSVP.Queue()
       .push(function () {
         return promiseEventListener(
