@@ -20,7 +20,7 @@
 import xlrd
 import datetime
 import os
-import ImportDatabase 
+from dream.KnowledgeExtraction.ImportDatabase import ConnectionData 
 #Static variables that hold the column's number in Workplan (Excel document - template)
 WPColumn=11
 OrderColumn=0
@@ -72,7 +72,7 @@ os.chdir(folder_path)
 #create a list that hold the already inserted orders
 alreadyInserted=[]
 #use of the KE tool object to connect to database
-cnxn=ImportDatabase.ConnectionData(seekName='ServerData', implicitExt='txt', number_of_cursors=6)
+cnxn=ConnectionData(seekName='ServerData', implicitExt='txt', number_of_cursors=6)
 cursor=cnxn.getCursors()
 #loop that searches the files in the given directory 
 for fileName in os.listdir("."):
@@ -118,7 +118,7 @@ for fileName in os.listdir("."):
 
     else:
         #follows the logic of the if part
-        check_order= cursor[3].execute("""
+        check_order= cursor[0].execute("""
                         select Order_id, ProjectName, Customer, Order_date, Due_date,FloorSpaceRequired 
                         from orders
                                 """)
@@ -127,30 +127,30 @@ for fileName in os.listdir("."):
             ind1=check_order.fetchone()
             dataExtraction(fileName)              
             for i in range(4,Main.nrows):
-                orderId=Main.cell(4,OrderColumn).value 
+                orderId=Main.cell(4,OrderColumn).value
                 projectName=Main.cell(4,ProjectColumn).value
             #check the existence of orderId
             if not orderId in ind1.Order_id:
                 add_order= ("INSERT INTO orders(`id`, `Order_id`, `ProjectName`, `Customer`, `Order_date`, `Due_date`, `FloorSpaceRequired`, `Status`)  VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
                     
-                cursor[3].execute("SELECT MAX(id)+1 AS ID from orders")
+                cursor[2].execute("SELECT MAX(id)+1 AS ID from orders")
                     
-                row = cursor[3].fetchone()
+                row = cursor[2].fetchone()
                 order_ref = row.ID
                 status= 'accepted'    
-                cursor[3].execute(add_order, (order_ref, orderId, projectName, workplan[orderId][projectName][0], workplan[orderId][projectName][1], workplan[orderId][projectName][2], workplan[orderId][projectName][3], status))
-                cursor[3].commit()
-                
+                cursor[2].execute(add_order, (order_ref, orderId, projectName, workplan[orderId][projectName][0], workplan[orderId][projectName][1], workplan[orderId][projectName][2], workplan[orderId][projectName][3], status))
+                cursor[2].commit()
+
                 add_sequence= ("INSERT INTO sequence(`seq_id`, `WP_id`, `Order_id`, `PartCode`, `PartName`, `Operation_Name`, `CapacityRequirement`, `EarliestStart`)  VALUES (?, ?, ?, ?, ?, ?, ?, ?) ")
                 
-                cursor[4].execute("SELECT MAX(seq_id)+1 AS ID from sequence")
-                row = cursor[4].fetchone()
+                cursor[5].execute("SELECT MAX(seq_id)+1 AS ID from sequence")
+                row = cursor[5].fetchone()
                 seq_ref = row.ID
                     
                 for i in range(4,Main.nrows):
                     wpId=Main.cell(i,WPColumn).value
-                    cursor[4].execute(add_sequence, (seq_ref, wpId, orderId, workplan[orderId][wpId][0], workplan[orderId][wpId][1], workplan[orderId][wpId][2], workplan[orderId][wpId][3], workplan[orderId][wpId][4]))
-                    cursor[4].commit()
+                    cursor[5].execute(add_sequence, (seq_ref, wpId, orderId, workplan[orderId][wpId][0], workplan[orderId][wpId][1], workplan[orderId][wpId][2], workplan[orderId][wpId][3], workplan[orderId][wpId][4]))
+                    cursor[5].commit()
                     seq_ref+=1
             else:
                 continue
