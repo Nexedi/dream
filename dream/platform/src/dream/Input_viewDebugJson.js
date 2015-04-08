@@ -1,4 +1,4 @@
-/*global rJS, promiseEventListener, initGadgetMixin, RSVP, CodeMirror */
+/*global rJS, promiseEventListener, initGadgetMixin, RSVP, CodeMirror, setTimeout, $ */
 (function (window, rJS, promiseEventListener, initGadgetMixin, RSVP, CodeMirror) {
   "use strict";
 
@@ -29,6 +29,10 @@
           "_id": gadget.props.jio_key,
          "_attachment": "body.json",
          "_data": gadget.props.codemirror.getValue()
+        }).push(function (){
+          // XXX quick way to get a popup message
+          $.mobile.loading( 'show', { text: "Configuration saved", textVisible: true, textonly: true });
+          setTimeout(function () { $.mobile.loading( "hide" ); }, 1000);
         });
       });
     })
@@ -57,6 +61,10 @@
                 "_id": gadget.props.jio_key,
                 "_attachment": "body.json",
                 "_data": instance.getValue()
+              }).push(function (){
+                // XXX quick way to get a popup message
+                $.mobile.loading( 'show', { text: "Configuration saved", textVisible: true, textonly: true });
+                setTimeout(function () { $.mobile.loading( "hide" ); }, 1000);
               });
             }
           }
