@@ -392,6 +392,10 @@
           "_class": "dream.plugins.JobShopKE.JobShopKE", 
           "input_id": "JobShopKE"
         },
+		{
+          "_class": "dream.KnowledgeExtraction.PilotCases.JobShop.DateTimeConvert.DateTimeConvert", 
+          "input_id": ""
+        },
         {
           "_class": "dream.plugins.ReadJSSkills.ReadJSSkills", 
           "input_id": "operator_skill_spreadsheet"
@@ -406,6 +410,10 @@
         }, 
         {
           "_class": "dream.plugins.SplitRoute.SplitRoute", 
+          "input_id": ""
+        }, 
+        {
+          "_class": "dream.plugins.ReadJSCompleted.ReadJSCompleted", 
           "input_id": ""
         }, 
         {
