@@ -1,10 +1,11 @@
-/*global rJS, promiseEventListener, initGadgetMixin, RSVP, CodeMirror */
+/*global rJS, promiseEventListener, initGadgetMixin, RSVP, CodeMirror, setTimeout, $ */
 (function(window, rJS, promiseEventListener, initGadgetMixin, RSVP, CodeMirror) {
     "use strict";
     var gadget_klass = rJS(window);
     initGadgetMixin(gadget_klass);
     gadget_klass.declareAcquiredMethod("aq_getAttachment", "jio_getAttachment").declareAcquiredMethod("aq_putAttachment", "jio_putAttachment").declareMethod("startService", function() {
         var gadget = this;
+        gadget.props.codemirror.refresh();
         return new RSVP.Queue().push(function() {
             return promiseEventListener(gadget.props.element.querySelector(".save_button"), "click", false);
         }).push(function() {
@@ -12,6 +13,16 @@
                 _id: gadget.props.jio_key,
                 _attachment: "body.json",
                 _data: gadget.props.codemirror.getValue()
+            }).push(function() {
+                // XXX quick way to get a popup message
+                $.mobile.loading("show", {
+                    text: "Configuration saved",
+                    textVisible: true,
+                    textonly: true
+                });
+                setTimeout(function() {
+                    $.mobile.loading("hide");
+                }, 1e3);
             });
         });
     }).declareMethod("render", function(options) {
@@ -40,6 +51,16 @@
                             _id: gadget.props.jio_key,
                             _attachment: "body.json",
                             _data: instance.getValue()
+                        }).push(function() {
+                            // XXX quick way to get a popup message
+                            $.mobile.loading("show", {
+                                text: "Configuration saved",
+                                textVisible: true,
+                                textonly: true
+                            });
+                            setTimeout(function() {
+                                $.mobile.loading("hide");
+                            }, 1e3);
                         });
                     }
                 }
