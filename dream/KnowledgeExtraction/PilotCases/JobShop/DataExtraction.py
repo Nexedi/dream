@@ -84,11 +84,12 @@ def DataExtraction(DBFilePath):
                 component={}
                 # and get the next row
                 ind1=c.fetchone()
-                name=ind1.PartName
-                component['name']=name
+                type=ind1.PartName
+                component['componentType'] = type
                 code=ind1.PartCode
                 WP=ind1.WP_id
                 component['id']=code
+                component['name']=code
                 component['route']=[]
                 #SQL query that extracts data from sequence table where PartCode is given
                 d=cursor[3].execute("""
@@ -115,11 +116,14 @@ def DataExtraction(DBFilePath):
                     step['quantity']=ind2.Quantity
                     step['completed']=ind2.Completed
                     ind3=f.fetchone()
-                    partsNeeded = ind3.PartsNeeded.split(';')       
+                    partsNeeded = ind3.PartsNeeded.replace(" ","").split(';')
+                    for part in partsNeeded:
+                        if part == '':
+                            partsNeeded.remove(part)
                     step['requiredParts']=partsNeeded       
                     step['processingTime']={}
-                    step['processingTime']['distribution']='Fixed'
-                    step['processingTime']['mean']=ind2.ProcessingTime  
+                    step['processingTime']['Fixed']={}
+                    step['processingTime']['Fixed']['mean']=ind2.ProcessingTime  
                     component['route'].append(step)
                 #The following checks if the component ids have been inserted to appended   
                 if not component['id'] in appended:
@@ -136,26 +140,18 @@ def DataExtraction(DBFilePath):
                     for x in range(e.rowcount):
                         ind3=e.fetchone()
                         
-                        for t in appended:
-                            if ind3.TIMEOUT:
-                                remTime= 0
-                            else:
-                                #calculate the time difference between the TIMEIN and the moment the user wants to run the simulation (e.g. datetime.now())
-                                timeDelta= datetime.now() - ind3.TIMEIN
-                                timeDiff= timeDelta.total_seconds() / 3600
-                                #calculate the remaining time the part needs to be processed 
-                                remTime= round((ind3.ProcessingTime - timeDiff),2) 
-                                
+                        for t in appended:      
                             data['WIP'][code]={}
                             data['WIP'][code]['station']=ind3.MachineName
                             data['WIP'][code]['operator']=ind3.PersonnelCode
                             data['WIP'][code]['task_id']=ind3.WP_id
                             data['WIP'][code]['sequence']=ind3.step
-                            data['WIP'][code]['remainingProcessingTime']=remTime
+                            timeIn=datetime.strptime(str(ind3.TIMEIN), '%Y-%m-%d %H:%M:%S')
+                            data['WIP'][code]['timeIn']=str(timeIn)
+                            timeOut=datetime.strptime(str(ind3.TIMEOUT), '%Y-%m-%d %H:%M:%S')
+                            data['WIP'][code]['timeOut']=str(timeOut)
         #in case the status is 'finished' continue to the next order                                   
         elif status == 'finished':
             continue    
-        data['productionOrders'].append(productionOrders.copy())           
-#     print data
+        data['productionOrders'].append(productionOrders.copy())
     return data
-DataExtraction("C:\Users\Panos\Documents\DB_Approach\JobShop")
