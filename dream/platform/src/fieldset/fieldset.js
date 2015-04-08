@@ -91,7 +91,7 @@
             gadget.props.fieldset_element.style["border-width"] = "1px";
           }
           if (node_id) {
-            addField('id', {'type': 'string'}, node_id);
+            addField('id', options.property_definition.properties.id || {'type': 'string'}, node_id);
           }
           Object.keys(options.property_definition.properties
             ).forEach(function (property_name) {
