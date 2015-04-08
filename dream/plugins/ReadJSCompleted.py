@@ -29,7 +29,7 @@ class ReadJSCompleted(plugin.InputPreparationPlugin):
           completed = step.get("completed", [])
           '''if the step consists of two sub_steps (Setup - Process) then check if only one of them is concluded'''
           for ind in range(len(completed)):
-            if completed[ind] == "No" or completed[ind] == "":
+            if completed[ind] == "No" or completed[ind] == "" or completed[ind] == None:
               routeConcluded = False
               ''''if the index is bigger than 0 (1,2,..) it means that there is not only processing but also setup or other types of operations to be performed. Check if the components is already in the WIP. if not add it to it and keep the operation processing time for the remainingProcessingTime'''
               if ind>=1:
