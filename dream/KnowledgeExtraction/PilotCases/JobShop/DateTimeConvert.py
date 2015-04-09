@@ -37,10 +37,14 @@ class DateTimeConvert(plugin.InputPreparationPlugin, TimeSupportMixin):
             proc_time = 0;
             timeOut = entity.pop('timeOut', None)
             timeIn = entity.pop('timeIn', 'NA')
+            if not timeIn=='NA':
+                timeIn = strptime(timeIn, '%Y-%m-%d %H:%M:%S')
             if timeOut:
                 entity['remainingProcessingTime'] = 0
             else:
                 #calculate the time difference between the TIMEIN and the moment the user wants to run the simulation (e.g. datetime.now())
+                print type(now)
+                print type(timeIn)
                 timeDelta= now - timeIn
                 if self.timeUnit == 'second':
                   timeDiff = timeDelta.total_seconds() #24 * 60 * 60
@@ -57,7 +61,7 @@ class DateTimeConvert(plugin.InputPreparationPlugin, TimeSupportMixin):
                 elif self.timeUnit == 'year':
                   timeDiff = timeDelta.total_seconds()/(60*60*24*7*30*360) #1 / 360.
                 else:
-                  raise ValueError("Unsupported time unit %s" % timeUnit)
+                  raise ValueError("Unsupported time unit %s" % self.timeUnit)
 
                 for order in orders:
                     comps = order.get('componentsList', [])
@@ -65,7 +69,8 @@ class DateTimeConvert(plugin.InputPreparationPlugin, TimeSupportMixin):
                         if comp['id'] == ent_key:
                             for step in comp.get('route', []):
                                 if step.get('task_id', None) == task_id:
-                                    proc_time = step.get('processingTime', None)
+                                    proc_time = step.get('processingTime', {}).get('Fixed',{}).get('mean', 0)
+                                    print proc_time
                                     break
                         if proc_time:
                             break
