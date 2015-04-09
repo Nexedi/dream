@@ -13,7 +13,7 @@ class InsertWIP(plugin.InputPreparationPlugin):
     """
     WIP = data["input"].get("BOM",{}).get("WIP", {})
     for partID, work in WIP.iteritems():
-      stationID = work.get("station", None)
+      stationID = work.get("station", None).replace(' ','').split('-')[0]
       if not stationID:
         break
       node = data["graph"]["node"].get(stationID, {})
