@@ -148,8 +148,9 @@ def DataExtraction(DBFilePath):
                             data['WIP'][code]['sequence']=ind3.step
                             timeIn=datetime.strptime(str(ind3.TIMEIN), '%Y-%m-%d %H:%M:%S')
                             data['WIP'][code]['timeIn']=str(timeIn)
-                            timeOut=datetime.strptime(str(ind3.TIMEOUT), '%Y-%m-%d %H:%M:%S')
-                            data['WIP'][code]['timeOut']=str(timeOut)
+                            if ind3.TIMEOUT:
+                                timeOut=datetime.strptime(str(ind3.TIMEOUT), '%Y-%m-%d %H:%M:%S')
+                                data['WIP'][code]['timeOut']=str(timeOut)
         #in case the status is 'finished' continue to the next order                                   
         elif status == 'finished':
             continue    
