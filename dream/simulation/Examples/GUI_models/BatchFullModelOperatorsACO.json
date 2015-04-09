@@ -2287,19 +2287,19 @@
       ], 
       [
         "PB_1", 
-        "St0M0,St0M1,St1M0,St1M1,St2M0,St2M2"
+        "St0M0,St0M1,St1M0,St1M1,St2M0,St2M1"
       ], 
       [
         "PB_2", 
-        "St0M0,St0M1,St1M0,St1M1,St2M0,St2M2"
+        "St0M0,St0M1,St1M0,St1M1,St2M0,St2M1"
       ], 
       [
         "PB_3", 
-        "St0M0,St0M1,St1M0,St1M1,St2M0,St2M2"
+        "St0M0,St0M1,St1M0,St1M1,St2M0,St2M1"
       ], 
       [
         "PB_4", 
-        "St0M0,St0M1,St1M0,St1M1,St2M0,St2M2"
+        "St0M0,St0M1,St1M0,St1M1,St2M0,St2M1"
       ], 
       [
         "PB_7", 
@@ -2315,7 +2315,7 @@
       ], 
       [
         "PB_12", 
-        "St1M0,St1M1,St2M0,St2M2,St6M0,St6M1"
+        "St1M0,St1M1,St2M0,St2M1,St6M0,St6M1"
       ], 
       [
         "PB_15", 
@@ -2339,7 +2339,7 @@
       ], 
       [
         "PB_25", 
-        "St1M0,St1M1,St2M0,St2M2,St8M0,St8M1"
+        "St1M0,St1M1,St2M0,St2M1,St8M0,St8M1"
       ], 
       [
         "PB_30", 
@@ -2349,7 +2349,7 @@
         "", 
         ""
       ]
-    ], 
+    ], 	
     "wip_spreadsheet": [
       [
         "ID", 
