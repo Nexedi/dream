@@ -29,82 +29,94 @@
                     }
                ]
           }, 
-          "general": {
-               "properties": {
-                    "numberOfReplications": {
-                         "default": 10, 
-                         "type": "number", 
-                         "description": "Number of replications to run", 
-                         "name": "Number of replications"
-                    }, 
-                    "trace": {
-                         "default": "No", 
-                         "enum": [
-                              "No", 
-                              "Yes"
-                         ], 
-                         "type": "string", 
-                         "description": "Create an excel trace file (Yes or No)", 
-                         "name": "Output Trace"
-                    }, 
-                    "ke_url": {
-                         "default": "http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/KnowledgeExtraction/Mockup_Processingtimes.xls", 
-                         "type": "string", 
-                         "description": "The URL for knowledge extraction to access its data for example http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/KnowledgeExtraction/Mockup_Processingtimes.xls", 
-                         "name": "URL for Knowledge Extraction Spreadsheet"
-                    }, 
-                    "processTimeout": {
-                         "default": 10, 
-                         "type": "number", 
-                         "description": "Number of seconds before the calculation process is interrupted", 
-                         "name": "Process timeout"
-                    }, 
-                    "seed": {
-                         "default": "1", 
-                         "type": "number", 
-                         "description": "When using the same seed, the random number generator produce the same sequence of numbers", 
-                         "name": "Seed for random number generator"
-                    }, 
-                    "confidenceLevel": {
-                         "default": 0.95, 
-                         "type": "number", 
-                         "description": "Confidence level for statistical analysis of stochastic experiments", 
-                         "name": "Confidence level"
-                    }, 
-                    "maxSimTime": {
-                         "default": 100, 
-                         "type": "number", 
-                         "description": "Length of the simulation run", 
-                         "name": "Length of experiment"
-                    }, 
-                    "timeUnit": {
-                         "default": "minute", 
-                         "enum": [
-                              "minute", 
-                              "hour", 
-                              "day", 
-                              "week", 
-                              "month", 
-                              "year"
-                         ], 
-                         "type": "string", 
-                         "description": "Used for input and reporting widgets.", 
-                         "name": "Time unit"
-                    }, 
-                    "currentDate": {
-                         "default": "2014/02/18", 
-                         "type": "string", 
-                         "description": "The day the experiment starts, in YYYY/MM/DD HH:MM:DD format", 
-                         "name": "Simulation start time"
-                    }, 
-                    "throughputTarget": {
-                         "default": 10, 
-                         "type": "number", 
-                         "description": "The daily throughput target in units.", 
-                         "name": "Daily throughput target"
-                    }
-               }
-          }, 
+		  "general": {
+			  "properties": {
+				"confidenceLevel": {
+				  "default": 0.95, 
+				  "description": "Confidence level for statistical analysis of stochastic experiments", 
+				  "name": "Confidence level", 
+				  "type": "number"
+				}, 
+				"currentDate": {
+				  "default": "2014/02/18", 
+				  "description": "The day the experiment starts, in YYYY/MM/DD HH:MM:DD format", 
+				  "name": "Simulation start time", 
+				  "type": "string"
+				}, 
+				"ke_url": {
+				  "default": "http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/KnowledgeExtraction/Mockup_Processingtimes.xls", 
+				  "description": "The URL for knowledge extraction to access its data for example http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/KnowledgeExtraction/Mockup_Processingtimes.xls", 
+				  "name": "URL for Knowledge Extraction Spreadsheet", 
+				  "type": "string"
+				}, 
+				"maxSimTime": {
+				  "default": 100, 
+				  "description": "Length of the simulation run", 
+				  "name": "Length of experiment", 
+				  "type": "number"
+				}, 
+				"numberOfReplications": {
+				  "default": 10, 
+				  "description": "Number of replications to run", 
+				  "name": "Number of replications", 
+				  "type": "number"
+				}, 
+				"processTimeout": {
+				  "default": 10, 
+				  "description": "Number of seconds before the calculation process is interrupted", 
+				  "name": "Process timeout", 
+				  "type": "number"
+				}, 
+				"seed": {
+				  "default": "1", 
+				  "description": "When using the same seed, the random number generator produce the same sequence of numbers", 
+				  "name": "Seed for random number generator", 
+				  "type": "number"
+				}, 
+				"throughputTarget": {
+				  "default": 10, 
+				  "description": "The daily throughput target in units.", 
+				  "name": "Daily throughput target", 
+				  "type": "number"
+				}, 
+			   "timeUnit": {
+				  "default": "minute",
+				  "description": "Used for input and reporting widgets.",
+				  "name": "Time unit",
+				  "type": "string",
+				  "enum": [
+					"minute",
+					"hour",
+					"day",
+					"week",
+					"month",
+					"year"
+				  ]
+				}, 
+				"trace": {
+				  "default": "No", 
+				  "description": "Create an excel trace file (Yes or No)", 
+				  "enum": [
+					"No", 
+					"Yes"
+				  ], 
+				  "name": "Output Trace", 
+				  "type": "string"
+				},
+				"numberOfGenerations":{
+				  "default": 1,
+				  "title": "Number of optimization generations",
+				  "description" : "Number of optimization generations",
+				  "type": "integer"
+				},
+				"numberOfAntsPerGenerations":{
+				  "default": 5,
+				  "title": "Number of scenarios per optimization generation",
+				  "description": "Number of scenarios per optimization generation",
+				  "type": "integer"
+				}
+			  }
+			}, 
           "output": {
                "view_buffer_state": {
                     "gadget": "Output_viewSpreadsheet", 
@@ -359,7 +371,7 @@
                ]
           }, 
           "processing_plugin": {
-               "_class": "dream.plugins.plugin.DefaultExecutionPlugin", 
+               "_class": "dream.plugins.Batches.BatchesACO.BatchesACO", 
                "description": ""
           }
      }, 

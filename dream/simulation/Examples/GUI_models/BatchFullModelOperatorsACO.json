@@ -73,6 +73,18 @@
           ], 
           "name": "Output Trace", 
           "type": "string"
+        },
+        "numberOfGenerations":{
+          "default": 1,
+          "title": "Number of optimization generations",
+          "description" : "Number of optimization generations",
+          "type": "integer"
+        },
+        "numberOfAntsPerGenerations":{
+          "default": 5,
+          "title": "Number of scenarios per optimization generation",
+          "description": "Number of scenarios per optimization generation",
+          "type": "integer"
         }
       }
     }, 
