@@ -14,12 +14,6 @@
           "name": "Simulation start time", 
           "type": "string"
         }, 
-        "ke_url": {
-          "default": "http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/KnowledgeExtraction/Mockup_Processingtimes.xls", 
-          "description": "The URL for knowledge extraction to access its data for example http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/KnowledgeExtraction/Mockup_Processingtimes.xls", 
-          "name": "URL for Knowledge Extraction Spreadsheet", 
-          "type": "string"
-        }, 
         "maxSimTime": {
           "default": 100, 
           "description": "Length of the simulation run", 
