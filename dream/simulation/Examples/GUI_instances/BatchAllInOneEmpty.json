@@ -209,25 +209,32 @@
         "configuration": {
           "columns": [
             {
-              "col1": "", 
-              "col2": "Obj1: Max number of assigned PB", 
-              "col3": "Obj2: Assignment to machines with higher WIP", 
-              "col4": "Obj3: Min assignment variations", 
-              "col5": "Obj4: Uniform assignment across stations", 
-              "col6": "Obj5: Machines with furthest last assignment time", 
-              "col7": "Obj6: Fill sub-line"
-            }, 
+              "name": "",
+              "type": "string"
+            },
             {
-              "col1": "Min value"
-            }, 
+              "name": "Obj1: Max number of assigned PB",
+              "type": "string"
+            },
             {
-              "col1": "Max value"
-            }, 
+              "name": "Obj2: Assignment to machines with higher WIP",
+              "type": "string"
+            },
             {
-              "col1": "Step"
-            }, 
+              "name": "Obj3: Min assignment variations",
+              "type": "string"
+            },
             {
-              "col1": "Static value"
+              "name": "Obj4: Uniform assignment across stations",
+              "type": "string"
+            },
+            {
+              "name": "Obj5: Machines with furthest last assignment time",
+              "type": "string"
+            },
+            {
+              "name": "Obj6: Fill sub-line",
+              "type": "string"
             }
           ]
         }, 
