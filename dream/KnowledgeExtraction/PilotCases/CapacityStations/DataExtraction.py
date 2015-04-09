@@ -44,40 +44,6 @@ def DataExtraction(DBFilePath):
         #get the next line
         ind1=b.fetchone() 
         process=ind1.OperationName
-        #create a dictionary to insert the process sequence
-#         data['operations'][process]={}
-#         #SQL query to extract the available capacity for each of the operations
-#         c= cursor[1].execute("""
-#                 select SMF, WELD, CNC, MCH, EEP, PPASB, ASBTST, PAINT 
-#                 from capacity
-#                         """)
-#         #create a dictionary to insert the available capacity
-#         dicta={}
-#         #insert operation's name as key in the dictionary
-#         dicta['name']=ind1.OperationName
-#         dicta['intervalCapacity']=[]
-#         for line in range(c.rowcount):
-#             ind2=c.fetchone()
-#             #operation's name is given by the SQL quesry
-#             operation=ind1.OperationName
-#             #Check the operation name and insert the interval capacity
-#             if operation=='SMF':
-#                 dicta['intervalCapacity'].append(ind2.SMF)
-#             elif operation=='WELD':
-#                 dicta['intervalCapacity'].append(ind2.WELD)
-#             elif operation=='CNC':
-#                 dicta['intervalCapacity'].append(ind2.CNC)
-#             elif operation=='MCH':
-#                 dicta['intervalCapacity'].append(ind2.MCH)
-#             elif operation=='EEP':
-#                 dicta['intervalCapacity'].append(ind2.EEP)
-#             elif operation=='PPASB':
-#                 dicta['intervalCapacity'].append(ind2.PPASB)
-#             elif operation=='ASBTST':
-#                 dicta['intervalCapacity'].append(ind2.ASBTST)
-#             else:
-#                 dicta['intervalCapacity'].append(ind2.PAINT)
-#         data['operations'][process]=dicta
 #         
     ###### Find the capacity ratio between SMF and WELD ######
     #SQL query in sequence table to extract the capacity required from each operation    
@@ -219,23 +185,8 @@ def DataExtraction(DBFilePath):
         #check capacity required for each task - if it's 0 then delete this task from WIP
         if data['WIP'][task]['Capacity required'] == 0:
             del data['WIP'][task]
-            #if it's SMF and capacity finished then delete the fake dictionary created to hold the WIP just before WELD
-#             if ind5.Operation_Name == 'SMF':
-#                 try:
-#                     del data['WIP']['WELD_id' +  orderID]
-#                 except KeyError:
-#                     continue
             if ind5.Operation_Name not in appended:
                 appended.append(ind5.Operation_Name)
-            #try syntax to check if the operation finished is one of the following three; if yes delete the fake dictionary created to hold the WIP just before PPASB assembly station 
-#             try: 
-#                 if 'CNC' and 'WELD' and 'MCH' in appended:
-#                     try:
-#                         del data['WIP']['PPASB_id' +  orderID]
-#                     except KeyError:
-#                         continue
-#             except KeyError:
-#                 continue
     #for every line in production_status table                        
     for x in range(e.rowcount):
         ind5=wipList[x]
