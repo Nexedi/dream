@@ -65,11 +65,23 @@ class BatchesACO(ACO):
             node['weightFactors']=weightFactors
     return ant_data
 
+  # checks if there are operators in the model. If not it is tactical model so no optimization, one scenario should be run
+  def checkIfThereAreOperators(self,data):
+    for node_id,node in data['graph']['node'].iteritems():
+      if 'Operator' in node['_class']:
+        return True
+    return False
+
   def run(self, data):
     ant_data = copy(data)
-    # below provisional values, to be updated (should the user set those?)
-    data['general']['numberOfSolutions']=1
-    data["general"]["numberOfGenerations"]=1
-    data["general"]["numberOfAntsPerGenerations"]=3
+    # if there are no operators act as default execution plugin
+    if not self.checkIfThereAreOperators(data):
+      data["result"]["result_list"] = self.runOneScenario(data)['result']['result_list']
+      data["result"]["result_list"][-1]["score"] = ''
+      data["result"]["result_list"][-1]["key"] = "Go To Results"
+      return data
+    # else run ACO
+    data['general']['numberOfSolutions']=1  # default of 1 solution for this instance
+    data["general"]["distributorURL"]=None  # no distributor currently, to be added in the GUI
     ACO.run(self, data)
     return data
