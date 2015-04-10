@@ -213,15 +213,7 @@
               "type": "string"
             },
             {
-              "name": "Obj1: Max number of assigned PB",
-              "type": "string"
-            },
-            {
-              "name": "Obj2: Assignment to machines with higher WIP",
-              "type": "string"
-            },
-            {
-              "name": "Obj3: Min assignment variations",
+              "name": "Obj2: Assignment to machines with higher WIPB",
               "type": "string"
             },
             {
@@ -229,11 +221,19 @@
               "type": "string"
             },
             {
-              "name": "Obj5: Machines with furthest last assignment time",
+              "name": "Obj3: Min assignment variations",
               "type": "string"
             },
             {
               "name": "Obj6: Fill sub-line",
+              "type": "string"
+            },
+            {
+              "name": "Obj5: Machines with furthest last assignment time",
+              "type": "string"
+            },
+            {
+              "name": "Obj1: Max number of assigned PB",
               "type": "string"
             }
           ]
