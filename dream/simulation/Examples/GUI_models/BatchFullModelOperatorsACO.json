@@ -297,27 +297,27 @@
 					  "type": "string"
 					},
 					{
-					  "name": "Obj2: Assignment to machines with higher WIPB",
+					  "name": "Assignment to machines with higher WIPB",
 					  "type": "string"
 					},
 					{
-					  "name": "Obj4: Uniform assignment across stations",
+					  "name": "Uniform assignment across stations",
 					  "type": "string"
 					},
 					{
-					  "name": "Obj3: Min assignment variations",
+					  "name": "Min assignment variations",
 					  "type": "string"
 					},
 					{
-					  "name": "Obj6: Fill sub-line",
+					  "name": "Fill sub-line",
 					  "type": "string"
 					},
 					{
-					  "name": "Obj5: Machines with furthest last assignment time",
+					  "name": "Machines with furthest last assignment time",
 					  "type": "string"
 					},
 					{
-					  "name": "Obj1: Max number of assigned PB",
+					  "name": "Max number of assigned PB",
 					  "type": "string"
 					}
 				  ]
@@ -2289,12 +2289,12 @@
           "ACO_weights_spreadsheet": [
                [
                     "",  
-                    "Obj2: Assignment to machines with higher WIP", 
-                    "Obj4: Uniform assignment across stations", 
-                    "Obj3: Min assignment variations", 
-                    "Obj6: Fill sub-line",
-                    "Obj5: Machines with furthest last assignment time", 
-					"Obj1: Max number of assigned PB"
+                    "Assignment to machines with higher WIP", 
+                    "Uniform assignment across stations", 
+                    "Min assignment variations", 
+                    "Fill sub-line",
+                    "Machines with furthest last assignment time", 
+					"Max number of assigned PB"
                ], 
                [
                     "Min weight value", 
