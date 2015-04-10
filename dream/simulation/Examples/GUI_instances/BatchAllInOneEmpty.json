@@ -487,12 +487,8 @@
             "id": {
               "default": "M", 
               "required": true, 
-              "type": "string"
-            }, 
-            "name": {
-              "default": "Machine", 
-              "name": "Name", 
-              "type": "string"
+              "type": "string",
+			  "name": "Name" 
             }, 
             "processingTime": {
               "$ref": "#/definitions/_dist", 
@@ -1178,13 +1174,9 @@
             "top": "number"
           }, 
           "type": "object"
-        }, 
-        "name": {
-          "type": "string"
-        }
+        } 
       }, 
       "required": [
-        "name", 
         "_class"
       ], 
       "type": "object"
