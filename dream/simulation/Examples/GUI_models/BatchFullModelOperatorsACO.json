@@ -289,43 +289,43 @@
                     "type": "object_view", 
                     "title": "Results"
                }, 
-               "view_ACO_weights_spreadsheet": {
-                    "gadget": "Input_viewSpreadsheet", 
-                    "configuration": {
-                         "columns": [
-                              {
-                                   "type": "string", 
-                                   "name": ""
-                              }, 
-                              {
-                                   "type": "string", 
-                                   "name": "Obj1: Max number of assigned PB"
-                              }, 
-                              {
-                                   "type": "string", 
-                                   "name": "Obj2: Assignment to machines with higher WIP"
-                              }, 
-                              {
-                                   "type": "string", 
-                                   "name": "Obj3: Min assignment variations"
-                              }, 
-                              {
-                                   "type": "string", 
-                                   "name": "Obj4: Uniform assignment across stations"
-                              }, 
-                              {
-                                   "type": "string", 
-                                   "name": "Obj5: Machines with furthest last assignment time"
-                              }, 
-                              {
-                                   "type": "string", 
-                                   "name": "Obj6: Fill sub-line"
-                              }
-                         ]
-                    }, 
-                    "type": "object_view", 
-                    "title": "Optimization Weights"
-               }, 
+			  "view_ACO_weights_spreadsheet": {
+				"configuration": {
+				  "columns": [
+					{
+					  "name": "",
+					  "type": "string"
+					},
+					{
+					  "name": "Obj2: Assignment to machines with higher WIPB",
+					  "type": "string"
+					},
+					{
+					  "name": "Obj4: Uniform assignment across stations",
+					  "type": "string"
+					},
+					{
+					  "name": "Obj3: Min assignment variations",
+					  "type": "string"
+					},
+					{
+					  "name": "Obj6: Fill sub-line",
+					  "type": "string"
+					},
+					{
+					  "name": "Obj5: Machines with furthest last assignment time",
+					  "type": "string"
+					},
+					{
+					  "name": "Obj1: Max number of assigned PB",
+					  "type": "string"
+					}
+				  ]
+				}, 
+				"gadget": "Input_viewSpreadsheet", 
+				"title": "Optimization Weights", 
+				"type": "object_view"
+			  },
                "view_run_simulation": {
                     "gadget": "Input_viewSimulation", 
                     "type": "object_view", 
@@ -2288,13 +2288,13 @@
           ], 
           "ACO_weights_spreadsheet": [
                [
-                    "", 
-                    "Obj1: Max number of assigned PB", 
+                    "",  
                     "Obj2: Assignment to machines with higher WIP", 
-                    "Obj3: Min assignment variations", 
                     "Obj4: Uniform assignment across stations", 
+                    "Obj3: Min assignment variations", 
+                    "Obj6: Fill sub-line",
                     "Obj5: Machines with furthest last assignment time", 
-                    "Obj6: Fill sub-line"
+					"Obj1: Max number of assigned PB"
                ], 
                [
                     "Min weight value", 
