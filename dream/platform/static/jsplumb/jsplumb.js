@@ -507,7 +507,7 @@
         var render_element = $(gadget.props.main), class_definition = gadget.props.data.class_definition[node_data._class], coordinate = node_data.coordinate, dom_element_id, box, absolute_position, domElement;
         dom_element_id = generateDomElementId(gadget.props.element);
         gadget.props.node_id_to_dom_element_id[node_id] = dom_element_id;
-        node_data.name = node_data.name || class_definition.name;
+        node_data.name = node_data.name || node_id;
         gadget.props.data.graph.node[node_id] = node_data;
         if (coordinate === undefined) {
             coordinate = {
