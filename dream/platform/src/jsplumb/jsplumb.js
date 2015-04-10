@@ -721,7 +721,7 @@
     dom_element_id = generateDomElementId(gadget.props.element);
     gadget.props.node_id_to_dom_element_id[node_id] = dom_element_id;
 
-    node_data.name = node_data.name || class_definition.name;
+    node_data.name = node_data.name || node_id;
     gadget.props.data.graph.node[node_id] = node_data;
 
     if (coordinate === undefined) {
