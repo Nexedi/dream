@@ -28,15 +28,18 @@ from dream.KnowledgeExtraction.DistributionFitting import Distributions
 from dream.KnowledgeExtraction.DistributionFitting import DistFittest
 from dream.KnowledgeExtraction.ExcelOutput import Output
 from dream.KnowledgeExtraction.JSONOutput import JSONOutput
+from dream.KnowledgeExtraction.CMSDOutput import CMSDOutput
 import dream.simulation.LineGenerationJSON as ManPyMain #import ManPy main JSON script
+from xml.etree import ElementTree as et
 import xlrd
 import json
 import os
 
 def main(test=0, ExcelFileName='inputData.xls',
                 JSONFileName='JSON_AssembleDismantle.json',
+                CMSDFileName='CMSD_AssemblyDismantle.xml',
                 workbook=None,
-                jsonFile=None):
+                jsonFile=None, cmsdFile=None):
     if not workbook:
         workbook = xlrd.open_workbook(os.path.join(os.path.dirname(os.path.realpath(__file__)), ExcelFileName))
     #Read from the given directory the Excel document with the input data
@@ -67,6 +70,20 @@ def main(test=0, ExcelFileName='inputData.xls',
     ProcTime_dist = D.ks_test(ProcTime)
     MTTF_dist = C.Exponential_distrfit(MTTF)
     MTTR_dist = C.Exponential_distrfit(MTTR)
+     #======================== Output preparation: output the values prepared in the CMSD information model of this model ====================================================#
+    if not cmsdFile:
+        datafile=(os.path.join(os.path.dirname(os.path.realpath(__file__)), CMSDFileName))       #It defines the name or the directory of the XML file that is manually written the CMSD information model
+        tree = et.parse(datafile)                                               #This file will be parsed using the XML.ETREE Python library
+    
+    exportCMSD=CMSDOutput()
+    stationId1='M1'
+    
+    procTime=exportCMSD.ProcessingTimes(tree, stationId1, ProcTime_dist) 
+    TTF=exportCMSD.TTF(procTime, stationId1, MTTF_dist)
+    TTR=exportCMSD.TTR(TTF, stationId1, MTTR_dist)
+    
+    TTR.write('CMSD_AssemblyDismantle_Output.xml',encoding="utf8")                         #It writes the element tree to a specified file, using the 'utf8' output encoding
+    
     #================================= Output preparation: output the updated values in the JSON file of this example =========================================================#
     if not jsonFile:
         jsonFile = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), JSONFileName),'r')      #It opens the JSON file 
@@ -77,6 +94,7 @@ def main(test=0, ExcelFileName='inputData.xls',
     
     exportJSON=JSONOutput()
     stationId='M1'
+    
     data=exportJSON.ProcessingTimes(data, stationId, ProcTime_dist)
     data1=exportJSON.TTF(data, stationId, MTTF_dist)
     data2=exportJSON.TTR(data1, stationId, MTTR_dist)
@@ -84,7 +102,6 @@ def main(test=0, ExcelFileName='inputData.xls',
     #================================ Call ManPy and run the simulation model =============================================#
     #calls ManPy main script with the input
     simulationOutput=ManPyMain.main(input_data=json.dumps(data2))
-    
     # if we run from test return the ManPy result
     if test:
         return simulationOutput
