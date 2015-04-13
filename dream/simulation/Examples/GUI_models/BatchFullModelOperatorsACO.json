@@ -578,7 +578,7 @@
                               }
                          }
                     }, 
-                    "workingBatchSize": 80, 
+                    "workingBatchSize": 10, 
                     "processingTime": {
                          "distribution": "Fixed", 
                          "Fixed": {
@@ -655,7 +655,7 @@
                               }
                          }
                     }, 
-                    "workingBatchSize": 80, 
+                    "workingBatchSize": 10, 
                     "processingTime": {
                          "distribution": "Fixed", 
                          "Fixed": {
@@ -811,7 +811,7 @@
                     "interruption": {
                          "failure": ""
                     }, 
-                    "workingBatchSize": 40, 
+                    "workingBatchSize": 10, 
                     "processingTime": {
                          "distribution": "Fixed", 
                          "Fixed": {
@@ -944,7 +944,7 @@
                               }
                          }
                     }, 
-                    "workingBatchSize": 80, 
+                    "workingBatchSize": 10, 
                     "processingTime": {
                          "distribution": "Fixed", 
                          "Fixed": {
