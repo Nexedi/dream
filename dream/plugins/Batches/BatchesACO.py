@@ -49,7 +49,7 @@ class BatchesACO(ACO):
             while 1:
                 collated[str(i)].append(round(float(value),2))
                 value+=float(stepValue)
-                if value>maxValue:
+                if value>float(maxValue):
                     break
     return collated    
 
