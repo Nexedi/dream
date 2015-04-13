@@ -43,7 +43,7 @@ class SkilledRouter(Router):
     #         chosen in case of multiple criteria for different Operators
     # ======================================================================= 
     def __init__(self,id='SkilledRouter01',name='SkilledRouter01',sorting=False,outputSolutions=True,
-                 weightFactors=[2, 1, 0, 2, 1, 1], tool={},checkCondition=False,**kw):
+                 weightFactors=[2, 1, 0, 2, 2, 1], tool={},checkCondition=False,**kw):
         Router.__init__(self)
         # Flag used to notify the need for re-allocation of skilled operators to operatorPools
         self.allocation=False
@@ -146,7 +146,12 @@ class SkilledRouter(Router):
                 #===================================================================
                 self.availableStationsDict={}
                 for station in self.availableStations:
-                    self.availableStationsDict[str(station.id)]={'stationID':str(station.id),'WIP':station.wip, 'lastAssignment':self.env.now}
+                    lastAssignmentTime=0
+                    for record in self.solutionList:
+                        if station.id in record["allocation"].values():
+                            lastAssignmentTime=record["time"]
+                    self.availableStationsDict[str(station.id)]={'stationID':str(station.id),'WIP':station.wip, 
+                                                                 'lastAssignment':0}
                 #===================================================================
                 # # operators and their skills set
                 #===================================================================
@@ -187,11 +192,10 @@ class SkilledRouter(Router):
 #                 print '-------'
 #                 print self.env.now, solution
                 
-                if self.outputSolutions:
-                    self.solutionList.append({
-                        "time":self.env.now,
-                        "allocation":solution
-                    })
+                self.solutionList.append({
+                    "time":self.env.now,
+                    "allocation":solution
+                })
                 
                 # XXX assign the operators to operatorPools
                 # pendingStations/ available stations not yet given operator
