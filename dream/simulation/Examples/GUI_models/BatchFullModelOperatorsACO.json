@@ -31,52 +31,6 @@
           }, 
           "general": {
                "properties": {
-                    "numberOfGenerations": {
-                         "default": 1, 
-                         "type": "integer", 
-                         "description": "Number of optimization generations", 
-                         "title": "Number of optimization generations"
-                    }, 
-                    "numberOfReplications": {
-                         "default": 10, 
-                         "type": "number", 
-                         "description": "Number of replications to run", 
-                         "name": "Number of replications"
-                    }, 
-                    "trace": {
-                         "default": "No", 
-                         "enum": [
-                              "No", 
-                              "Yes"
-                         ], 
-                         "type": "string", 
-                         "description": "Create an excel trace file (Yes or No)", 
-                         "name": "Output Trace"
-                    }, 
-                    "numberOfAntsPerGenerations": {
-                         "default": 5, 
-                         "type": "integer", 
-                         "description": "Number of scenarios per optimization generation", 
-                         "title": "Number of scenarios per optimization generation"
-                    }, 
-                    "processTimeout": {
-                         "default": 10, 
-                         "type": "number", 
-                         "description": "Number of seconds before the calculation process is interrupted", 
-                         "name": "Process timeout"
-                    }, 
-                    "seed": {
-                         "default": "1", 
-                         "type": "number", 
-                         "description": "When using the same seed, the random number generator produce the same sequence of numbers", 
-                         "name": "Seed for random number generator"
-                    }, 
-                    "confidenceLevel": {
-                         "default": 0.95, 
-                         "type": "number", 
-                         "description": "Confidence level for statistical analysis of stochastic experiments", 
-                         "name": "Confidence level"
-                    }, 
                     "maxSimTime": {
                          "default": 100, 
                          "type": "number", 
@@ -108,7 +62,53 @@
                          "type": "number", 
                          "description": "The daily throughput target in units.", 
                          "name": "Daily throughput target"
-                    }
+                    },
+                    "numberOfGenerations": {
+                         "default": 1, 
+                         "type": "integer", 
+                         "description": "Number of optimization generations", 
+                         "title": "Number of optimization generations"
+                    }, 
+                    "numberOfAntsPerGenerations": {
+                         "default": 5, 
+                         "type": "integer", 
+                         "description": "Number of scenarios per optimization generation", 
+                         "title": "Number of scenarios per optimization generation"
+                    }, 
+                    "numberOfReplications": {
+                         "default": 10, 
+                         "type": "number", 
+                         "description": "Number of replications to run", 
+                         "name": "Number of replications"
+                    }, 
+                    "trace": {
+                         "default": "No", 
+                         "enum": [
+                              "No", 
+                              "Yes"
+                         ], 
+                         "type": "string", 
+                         "description": "Create an excel trace file (Yes or No)", 
+                         "name": "Output Trace"
+                    }, 
+                    "processTimeout": {
+                         "default": 10, 
+                         "type": "number", 
+                         "description": "Number of seconds before the calculation process is interrupted", 
+                         "name": "Process timeout"
+                    }, 
+                    "seed": {
+                         "default": "1", 
+                         "type": "number", 
+                         "description": "When using the same seed, the random number generator produce the same sequence of numbers", 
+                         "name": "Seed for random number generator"
+                    }, 
+                    "confidenceLevel": {
+                         "default": 0.95, 
+                         "type": "number", 
+                         "description": "Confidence level for statistical analysis of stochastic experiments", 
+                         "name": "Confidence level"
+                    } 
                }
           }, 
           "output": {
