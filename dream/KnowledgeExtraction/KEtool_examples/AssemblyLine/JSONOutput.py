@@ -23,42 +23,52 @@ Created on 9 Oct 2014
 # ===========================================================================
 
 import json
-#Create a method that receives the three dictionaries from the KE tool main script, updates the JSON schema and returns it to the KE tool main script
-def JSON_example(list1,list2,list3):
-    jsonFile= open('JSON_example.json', 'r') #open the JSON_example.json file
-    data = json.load(jsonFile)
-    jsonFile.close()
-       
-    nodes=data.get('nodes',{})
-    batchWIP={}
-    for (element_id,element) in nodes.iteritems():
-        name=element.get('name')
-        wip=element.get('wip',[])
-        for key in list3.keys():    # conduct a loop statement in the keys of the list3, which actually is the WIP dict
-            batchWIP['_class']='Dream.Batch' # static inputs to batchWIP dict
-            batchWIP['numberOfUnits']="80"
-            batchWIP['name']='Batch'
-            if list3[key][0]== name:  # condition that checks if the element in the list3 dict is the same as the name of the element in JSON file  
-                batchWIP['id']=str(key) # input the container id of the WIP batch to the batchWIP dict
-                try:
-                    if list3[key][2]: # a condition to check if the WIP is in a station and not in a buffer
-                        batchWIP['unitsToProcess']=str(list3[key][2]) # input the unitsToProcess attribute to the batchWIP dict
-                        wip.append(batchWIP) # append in the wip attribute in JSON the batchWIP dict
-                        batchWIP={}       
-                except IndexError:
-                    wip.append(batchWIP)  # in case the WIP is not in a station but it's in a buffer; append again the batchWIP dict (without the unitsToProcess this time)
-                    batchWIP={} 
-            else:
-                continue             
-        if name in list1.keys():       # condition that checks if the element in the list1 is the same as the name of the element in JSON file  
-            element['processingTime']= list1[name]   # input the attributes of list1[name] to the JSON's element 'processingTime'
-        else:
-            continue
-        if name in list2.keys():      # condition that checks if the element in the list2 is the same as the name of the element in JSON file  
-            element['scrapQuantity']= list2[name]    # input the attributes of list2[name] to the JSON's element 'scrapQuantity'
-        else:
-            continue       
-        jsonFile = open('JSON_exampleOutput.json',"w")
-        jsonFile.write(json.dumps(data, indent=True))
+#Create an object that receives the three dictionaries from the KE tool main script, updates the JSON schema and returns it to the KE tool main script
+class JSONOutput(object):
+    
+    def Distributions(self,data):
+        data1={}
+        dist=data['distributionType']
+        del data['distributionType']
+        data1[dist]=data
+        data=data1
+        return data
+    
+    def JSONOutput(self,list1,list2,list3):
+        jsonFile= open('JSON_example.json', 'r') #open the JSON_example.json file
+        data = json.load(jsonFile)
         jsonFile.close()
-    return json.dumps(data, indent=True)        
+           
+        nodes=data['graph']['node'] 
+        batchWIP={}
+        for (element_id,element) in nodes.iteritems():
+            name=element.get('name')
+            wip=element.get('wip',[])
+            for key in list3.keys():    # conduct a loop statement in the keys of the list3, which actually is the WIP dict
+                batchWIP['_class']='Dream.Batch' # static inputs to batchWIP dict
+                batchWIP['numberOfUnits']="80"
+                batchWIP['name']='Batch'
+                if list3[key][0]== name:  # condition that checks if the element in the list3 dict is the same as the name of the element in JSON file  
+                    batchWIP['id']=str(key) # input the container id of the WIP batch to the batchWIP dict
+                    try:
+                        if list3[key][2]: # a condition to check if the WIP is in a station and not in a buffer
+                            batchWIP['unitsToProcess']=str(list3[key][2]) # input the unitsToProcess attribute to the batchWIP dict
+                            wip.append(batchWIP) # append in the wip attribute in JSON the batchWIP dict
+                            batchWIP={}       
+                    except IndexError:
+                        wip.append(batchWIP)  # in case the WIP is not in a station but it's in a buffer; append again the batchWIP dict (without the unitsToProcess this time)
+                        batchWIP={} 
+                else:
+                    continue             
+            if name in list1.keys():       # condition that checks if the element in the list1 is the same as the name of the element in JSON file  
+                element['processingTime']= self.Distributions(list1[name])   # input the attributes of list1[name] to the JSON's element 'processingTime'
+            else:
+                continue
+            if name in list2.keys():# condition that checks if the element in the list2 is the same as the name of the element in JSON file  
+                element['scrapQuantity']= self.Distributions(list2[name])    # input the attributes of list2[name] to the JSON's element 'scrapQuantity'
+            else:
+                continue       
+            jsonFile = open('JSON_exampleOutput.json',"w")
+            jsonFile.write(json.dumps(data, indent=True))
+            jsonFile.close()
+        return json.dumps(data, indent=True)        
