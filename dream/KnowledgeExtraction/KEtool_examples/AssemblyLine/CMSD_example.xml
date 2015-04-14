@@ -1,0 +1,881 @@
+<?xml version='1.0' encoding='utf8'?>
+<CMSDDocument>
+	<DataSection>
+		<PartType>
+			<Identifier>Part1</Identifier>
+		</PartType>
+		<PartType>
+			<Identifier>UnfinishedPart1</Identifier>
+		</PartType>
+		<Resource>
+			<Identifier>resource1</Identifier>
+			<Description>This resource describes the first of two parallel stations RO Marker Attach in Section 1</Description>
+			<ResourceType>station</ResourceType>
+			<Name>RO Marker Attach1</Name>
+		</Resource>
+		<Resource>
+			<Identifier>resource2</Identifier>
+			<Description>This resource describes the second of two parallel stations RO Marker Attach in Section 1</Description>
+			<ResourceType>station</ResourceType>
+			<Name>RO Marker Attach2</Name>
+		</Resource>
+		<Resource>
+			<Identifier>resource3</Identifier>
+			<Description>This resource describes the first of two parallel stations Proximal Balloon Attach in Section 1</Description>
+			<ResourceType>station</ResourceType>
+			<Name>Proximal Balloon Attach1</Name>
+		</Resource>
+		<Resource>
+			<Identifier>resource4</Identifier>
+			<Description>This resource describes the second of two parallel stations Proximal Balloon Attach in Section 1</Description>
+			<ResourceType>station</ResourceType>
+			<Name>Proximal Balloon Attach2</Name>
+		</Resource>
+		<Resource>
+			<Identifier>resource5</Identifier>
+			<Description>This resource describes the first of two parallel stations Distal Balloon Attach in Section 1</Description>
+			<ResourceType>station</ResourceType>
+			<Name>Distal Balloon Attach1</Name>
+		</Resource>
+		<Resource>
+			<Identifier>resource6</Identifier>
+			<Description>This resource describes the second of two parallel stations Distal Balloon Attach in Section 1</Description>
+			<ResourceType>station</ResourceType>
+			<Name>Distal Balloon Attach2</Name>
+		</Resource>
+		<Resource>
+			<Identifier>resource7</Identifier>
+			<Description>This resource describes the Moulding machine in Section 2</Description>
+			<ResourceType>machine</ResourceType>
+			<Name>Moulding</Name>
+		</Resource>
+		<Resource>
+			<Identifier>resource8</Identifier>
+			<Description>This resource describes the first of two parallel stations Pressure tests in Section 3</Description>
+			<ResourceType>station</ResourceType>
+			<Name>Pressure tests1</Name>
+		</Resource>
+		<Resource>
+			<Identifier>resource9</Identifier>
+			<Description>This resource describes the second of two parallel stations Pressure tests in Section 3</Description>
+			<ResourceType>station</ResourceType>
+			<Name>Pressure tests2</Name>
+		</Resource>
+		<Resource>
+			<Identifier>resource10</Identifier>
+			<Description>This resource describes the first of two parallel stations Packaging in Section 4</Description>
+			<ResourceType>station</ResourceType>
+			<Name>Packaging1</Name>
+		</Resource>
+		<Resource>
+			<Identifier>resource11</Identifier>
+			<Description>This resource describes the second of two parallel stations Packaging in Section 4</Description>
+			<ResourceType>station</ResourceType>
+			<Name>Packaging2</Name>
+		</Resource>
+		
+		<Resource>
+			<Identifier>A</Identifier>
+			<ResourceType>employee</ResourceType>
+		</Resource>
+		<Resource>
+			<Identifier>B</Identifier>
+			<ResourceType>employee</ResourceType>
+		</Resource>
+		<Resource>
+			<Identifier>C</Identifier>
+			<ResourceType>employee</ResourceType>
+		</Resource>
+		<Resource>
+			<Identifier>D</Identifier>
+			<ResourceType>employee</ResourceType>
+		</Resource>
+		<Resource>
+			<Identifier>E</Identifier>
+			<ResourceType>employee</ResourceType>
+		</Resource>
+		<Resource>
+			<Identifier>F</Identifier>
+			<ResourceType>employee</ResourceType>
+		</Resource>
+		
+		<ProcessPlan>
+			<Identifier>ProcessPlan:PPPlan1</Identifier>
+			<PartsProduced>
+				<Description>The part produced the process</Description>
+				<PartType>
+					<PartTypeIdentifier>Part1</PartTypeIdentifier>
+				</PartType>
+				<PartQuantity>1</PartQuantity>
+			</PartsProduced>
+			<PartsConsumed>
+				<Description>The part(s) consumed the process</Description>
+				<PartType>
+					<PartTypeIdentifier>UnfinishedPart1</PartTypeIdentifier>
+				</PartType>
+				<PartQuantity>1</PartQuantity>
+			</PartsConsumed>
+			<FirstProcess>
+				<ProcessIdentifier>PFirst</ProcessIdentifier>
+			</FirstProcess>
+			
+			<Process>
+				<Identifier>PFirst</Identifier>
+				<RepetitionCount>1</RepetitionCount>
+				<SubProcessGroup>
+					<Type>sequence</Type>
+					<Process>
+						<ProcessIdentifier>PA</ProcessIdentifier>
+					</Process>
+					<Process>
+						<ProcessIdentifier>PB</ProcessIdentifier>
+					</Process>
+					<Process>
+						<ProcessIdentifier>PC</ProcessIdentifier>
+					</Process>
+					<Process>
+						<ProcessIdentifier>PD</ProcessIdentifier>
+					</Process>
+				</SubProcessGroup>
+			</Process>
+			
+			<Process>	
+				<Identifier>PA</Identifier>
+				<SubProcessGroup>
+					<Type>decision</Type>
+					<Process>
+						<ProcessIdentifier>PA1</ProcessIdentifier>
+					</Process>
+					<Process>
+						<ProcessIdentifier>PA2</ProcessIdentifier>
+					</Process>
+				</SubProcessGroup>
+			</Process>
+				
+			<Process>	
+				<Identifier>PA1</Identifier>
+				<SubProcessGroup>
+					<Type>sequence</Type>
+					<Process>
+						<ProcessIdentifier>P1</ProcessIdentifier>
+					</Process>
+					<Process>
+						<ProcessIdentifier>P2</ProcessIdentifier>
+					</Process>
+					<Process>
+						<ProcessIdentifier>P3</ProcessIdentifier>
+					</Process>
+				</SubProcessGroup>
+			</Process>	
+					
+			<Process>	
+				<Identifier>PA2</Identifier>
+				<SubProcessGroup>
+					<Type>sequence</Type>
+					<Process>
+						<ProcessIdentifier>P4</ProcessIdentifier>
+					</Process>
+					<Process>
+						<ProcessIdentifier>P5</ProcessIdentifier>
+					</Process>
+					<Process>
+						<ProcessIdentifier>P6</ProcessIdentifier>
+					</Process>
+				</SubProcessGroup>
+			</Process>			
+					
+			<Process>	
+				<Identifier>PB</Identifier>
+				<SubProcessGroup>
+					<Type>sequence</Type>
+					<Process>		
+						<ProcessIdentifier>P7</ProcessIdentifier>
+					</Process>
+				</SubProcessGroup>
+			</Process>	
+				
+			<Process>	
+				<Identifier>PC</Identifier>
+				<SubProcessGroup>	
+					<Type>decision</Type>
+					<Process>
+						<ProcessIdentifier>P8</ProcessIdentifier>
+					</Process>
+					<Process>
+						<ProcessIdentifier>P9</ProcessIdentifier>
+					</Process>
+				</SubProcessGroup>
+			</Process>	
+				
+			<Process>	
+				<Identifier>PD</Identifier>
+				<SubProcessGroup>	
+					<Type>decision</Type>
+					<Process>
+						<ProcessIdentifier>P10</ProcessIdentifier>
+					</Process>
+					<Process>
+						<ProcessIdentifier>P11</ProcessIdentifier>
+					</Process>
+				</SubProcessGroup>
+			</Process>
+				
+			<Process>
+				<Identifier>P1</Identifier>
+				<Description>RO Marker Attach</Description>
+				<PartsProduced>
+					<Description>...</Description>
+					<PartType>
+						<PartTypeIdentifier>UnfinishedPart1</PartTypeIdentifier>
+					</PartType>
+					<PartQuantity>1</PartQuantity>
+				</PartsProduced>
+				<PartsConsumed>
+					<Description>The part that is an input to this process</Description>
+					<PartType>
+						<PartTypeIdentifier>UnfinishedPart1</PartTypeIdentifier>
+					</PartType>
+					<PartQuantity>1</PartQuantity>
+				</PartsConsumed>
+				<ResourcesRequired>
+					<Description>The employee performing the operation.</Description>
+					<Resource>
+						<ResourceIdentifier>A</ResourceIdentifier>
+					</Resource>
+				</ResourcesRequired>
+				<ResourcesRequired>
+					<Description>The resource where the operation is being performed.</Description>
+					<Resource>
+						<ResourceIdentifier>resource1</ResourceIdentifier>
+					</Resource>
+				</ResourcesRequired>
+				<OperationTime>
+					<Distribution>
+						<Name></Name>
+						<DistributionParameterA>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterA>
+						<DistributionParameterB>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterB>
+					</Distribution>							                   
+				</OperationTime>
+				
+				<Property>
+					<Name>ScrapQuantity</Name>
+					<Distribution>
+						<Name></Name>
+						<DistributionParameterA>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterA>
+						<DistributionParameterB>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterB>
+					</Distribution>	
+				</Property>
+			</Process>
+			
+			<Process>
+				<Identifier>P2</Identifier>
+				<Description>Proximal Balloon Attach</Description>
+				<PartsProduced>
+					<Description>...</Description>
+					<PartType>
+						<PartTypeIdentifier>UnfinishedPart1</PartTypeIdentifier>
+					</PartType>
+					<PartQuantity>1</PartQuantity>
+				</PartsProduced>
+				<PartsConsumed>
+					<Description>The part that is an input to this process</Description>
+					<PartType>
+						<PartTypeIdentifier>UnfinishedPart1</PartTypeIdentifier>
+					</PartType>
+					<PartQuantity>1</PartQuantity>
+				</PartsConsumed>
+				<ResourcesRequired>
+					<Description>The employee performing the operation.</Description>
+					<Resource>
+						<ResourceIdentifier>B</ResourceIdentifier>
+					</Resource>
+				</ResourcesRequired>
+				<ResourcesRequired>
+					<Description>The resource where the operation is being performed.</Description>
+					<Resource>
+						<ResourceIdentifier>resource3</ResourceIdentifier>
+					</Resource>
+				</ResourcesRequired>
+				<OperationTime>
+					<Distribution>
+						<Name></Name>
+						<DistributionParameterA>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterA>
+						<DistributionParameterB>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterB>
+					</Distribution>						                                                   
+				</OperationTime>
+				
+				<Property>
+					<Name>ScrapQuantity</Name>
+					<Distribution>
+						<Name></Name>
+						<DistributionParameterA>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterA>
+						<DistributionParameterB>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterB>
+					</Distribution>	
+				</Property>
+			</Process>
+			
+			<Process>
+				<Identifier>P3</Identifier>
+				<Description>Distal Balloon Attach</Description>
+				<PartsProduced>
+					<Description>...</Description>
+					<PartType>
+						<PartTypeIdentifier>UnfinishedPart1</PartTypeIdentifier>
+					</PartType>
+					<PartQuantity>1</PartQuantity>
+				</PartsProduced>
+				<PartsConsumed>
+					<Description>The part that is an input to this process</Description>
+					<PartType>
+						<PartTypeIdentifier>UnfinishedPart1</PartTypeIdentifier>
+					</PartType>
+					<PartQuantity>1</PartQuantity>
+				</PartsConsumed>
+				<ResourcesRequired>
+					<Description>The employee performing the operation.</Description>
+					<Resource>
+						<ResourceIdentifier>C</ResourceIdentifier>
+					</Resource>
+				</ResourcesRequired>
+				<ResourcesRequired>
+					<Description>The resource where the operation is being performed.</Description>
+					<Resource>
+						<ResourceIdentifier>resource5</ResourceIdentifier>
+					</Resource>
+				</ResourcesRequired>
+				<OperationTime>
+					<Distribution>
+						<Name></Name>
+						<DistributionParameterA>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterA>
+						<DistributionParameterB>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterB>
+					</Distribution>										
+				</OperationTime>
+				<Property>
+					<Name>ScrapQuantity</Name>
+					<Distribution>
+						<Name></Name>
+						<DistributionParameterA>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterA>
+						<DistributionParameterB>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterB>
+					</Distribution>										
+				</Property>
+			</Process>
+			
+			<Process>
+				<Identifier>P4</Identifier>
+				<Description>RO Marker Attach</Description>
+				<PartsProduced>
+					<Description>...</Description>
+					<PartType>
+						<PartTypeIdentifier>UnfinishedPart1</PartTypeIdentifier>
+					</PartType>
+					<PartQuantity>1</PartQuantity>
+				</PartsProduced>
+				<PartsConsumed>
+					<Description>The part that is an input to this process</Description>
+					<PartType>
+						<PartTypeIdentifier>UnfinishedPart1</PartTypeIdentifier>
+					</PartType>
+					<PartQuantity>1</PartQuantity>
+				</PartsConsumed>
+				<ResourcesRequired>
+					<Description>The employee performing the operation.</Description>
+					<Resource>
+						<ResourceIdentifier>A</ResourceIdentifier>
+					</Resource>
+				</ResourcesRequired>
+				<ResourcesRequired>
+					<Description>The resource where the operation is being performed.</Description>
+					<Resource>
+						<ResourceIdentifier>resource2</ResourceIdentifier>
+					</Resource>
+				</ResourcesRequired>
+				<OperationTime>
+					<Distribution>
+						<Name></Name>
+						<DistributionParameterA>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterA>
+						<DistributionParameterB>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterB>
+					</Distribution>										
+				</OperationTime>
+				
+				<Property>
+					<Name>ScrapQuantity</Name>
+					<Distribution>
+						<Name></Name>
+						<DistributionParameterA>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterA>
+						<DistributionParameterB>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterB>
+					</Distribution>	
+				</Property>
+			</Process>
+			
+			
+			<Process>
+				<Identifier>P5</Identifier>
+				<Description>Proximal Balloon Attach</Description>
+				<PartsProduced>
+					<Description>...</Description>
+					<PartType>
+						<PartTypeIdentifier>UnfinishedPart1</PartTypeIdentifier>
+					</PartType>
+					<PartQuantity>1</PartQuantity>
+				</PartsProduced>
+				<PartsConsumed>
+					<Description>The part that is an input to this process</Description>
+					<PartType>
+						<PartTypeIdentifier>UnfinishedPart1</PartTypeIdentifier>
+					</PartType>
+					<PartQuantity>1</PartQuantity>
+				</PartsConsumed>
+				<ResourcesRequired>
+					<Description>The employee performing the operation.</Description>
+					<Resource>
+						<ResourceIdentifier>B</ResourceIdentifier>
+					</Resource>
+				</ResourcesRequired>
+				<ResourcesRequired>
+					<Description>The resource where the operation is being performed.</Description>
+					<Resource>
+					<ResourceIdentifier>resource4</ResourceIdentifier>
+					</Resource>
+				</ResourcesRequired>
+				<OperationTime>
+					<Distribution>
+						<Name></Name>
+						<DistributionParameterA>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterA>
+						<DistributionParameterB>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterB>
+					</Distribution>										
+				</OperationTime>
+				
+				<Property>
+					<Name>ScrapQuantity</Name>
+					<Distribution>
+						<Name></Name>
+						<DistributionParameterA>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterA>
+						<DistributionParameterB>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterB>
+					</Distribution>	
+				</Property>
+			</Process>
+			
+			<Process>
+				<Identifier>P6</Identifier>
+				<Description>Distal Balloon Attach</Description>
+				<PartsProduced>
+					<Description>...</Description>
+					<PartType>
+						<PartTypeIdentifier>UnfinishedPart1</PartTypeIdentifier>
+					</PartType>
+					<PartQuantity>1</PartQuantity>
+				</PartsProduced>
+				<PartsConsumed>
+					<Description>The part that is an input to this process</Description>
+					<PartType>
+						<PartTypeIdentifier>UnfinishedPart1</PartTypeIdentifier>
+					</PartType>
+					<PartQuantity>1</PartQuantity>
+				</PartsConsumed>
+				<ResourcesRequired>
+					<Description>The employee performing the operation.</Description>
+					<Resource>
+						<ResourceIdentifier>C</ResourceIdentifier>
+					</Resource>
+				</ResourcesRequired>
+				<ResourcesRequired>
+					<Description>The resource where the operation is being performed.</Description>
+					<Resource>
+						<ResourceIdentifier>resource6</ResourceIdentifier>
+					</Resource>
+				</ResourcesRequired>
+				<OperationTime>
+					<Unit>minute</Unit>
+					<Distribution>
+						<Name></Name>
+						<DistributionParameterA>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterA>
+						<DistributionParameterB>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterB>
+					</Distribution>										
+				</OperationTime>
+				
+				<Property>
+					<Name>ScrapQuantity</Name>
+					<Distribution>
+						<Name></Name>
+						<DistributionParameterA>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterA>
+						<DistributionParameterB>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterB>
+					</Distribution>	
+				</Property>
+			</Process>
+			
+			<Process>
+				<Identifier>P7</Identifier>
+				<Description>Moulding machine</Description>
+				<PartsProduced>
+					<Description>...</Description>
+					<PartType>
+				<PartTypeIdentifier>UnfinishedPart1</PartTypeIdentifier>
+					</PartType>
+					<PartQuantity>1</PartQuantity>
+				</PartsProduced>
+				<PartsConsumed>
+					<Description>The part that is an input to this process</Description>
+					<PartType>
+						<PartTypeIdentifier>UnfinishedPart1</PartTypeIdentifier>
+					</PartType>
+					<PartQuantity>1</PartQuantity>
+				</PartsConsumed>
+				<ResourcesRequired>
+					<Description>The employee performing the operation.</Description>
+					<Resource>
+						<ResourceIdentifier>D</ResourceIdentifier>
+					</Resource>
+				</ResourcesRequired>
+				<ResourcesRequired>
+					<Description>The resource where the operation is being performed.</Description>
+					<Resource>
+					<ResourceIdentifier>resource7</ResourceIdentifier>
+					</Resource>
+				</ResourcesRequired>
+				<OperationTime>
+					<Unit>minute</Unit>
+					<Distribution>
+						<Name></Name>
+						<DistributionParameterA>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterA>
+						<DistributionParameterB>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterB>
+					</Distribution>	
+				</OperationTime>
+				
+				<Property>
+					<Name>ScrapQuantity</Name>
+					<Distribution>
+						<Name></Name>
+						<DistributionParameterA>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterA>
+						<DistributionParameterB>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterB>
+					</Distribution>	
+				</Property>
+			</Process>
+			
+			<Process>
+				<Identifier>P8</Identifier>
+				<Description>Pressure tests</Description>
+				<PartsProduced>
+					<Description>...</Description>
+					<PartType>
+						<PartTypeIdentifier>UnfinishedPart1</PartTypeIdentifier>
+					</PartType>
+					<PartQuantity>1</PartQuantity>
+				</PartsProduced>
+				<PartsConsumed>
+					<Description>The part that is an input to this process</Description>
+					<PartType>
+						<PartTypeIdentifier>UnfinishedPart1</PartTypeIdentifier>
+					</PartType>
+					<PartQuantity>1</PartQuantity>
+				</PartsConsumed>
+				<ResourcesRequired>
+					<Description>The employee performing the operation.</Description>
+					<Resource>
+						<ResourceIdentifier>E</ResourceIdentifier>
+					</Resource>
+				</ResourcesRequired>
+				<ResourcesRequired>
+					<Description>The resource where the operation is being performed.</Description>
+					<Resource>
+						<ResourceIdentifier>resource8</ResourceIdentifier>
+					</Resource>
+				</ResourcesRequired>
+				<OperationTime>
+					<Unit>minute</Unit>
+					<Distribution>
+						<Name></Name>
+						<DistributionParameterA>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterA>
+						<DistributionParameterB>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterB>
+					</Distribution>	
+				</OperationTime>
+				
+				<Property>
+					<Name>ScrapQuantity</Name>
+					<Distribution>
+						<Name></Name>
+						<DistributionParameterA>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterA>
+						<DistributionParameterB>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterB>
+					</Distribution>	
+				</Property>
+			</Process>
+			
+			<Process>
+				<Identifier>P9</Identifier>
+				<Description>Pressure tests</Description>
+				<PartsProduced>
+					<Description>...</Description>
+					<PartType>
+						<PartTypeIdentifier>UnfinishedPart1</PartTypeIdentifier>
+					</PartType>
+					<PartQuantity>1</PartQuantity>
+				</PartsProduced>
+				<PartsConsumed>
+					<Description>The part that is an input to this process</Description>
+					<PartType>
+						<PartTypeIdentifier>UnfinishedPart1</PartTypeIdentifier>
+					</PartType>
+					<PartQuantity>1</PartQuantity>
+				</PartsConsumed>
+				<ResourcesRequired>
+					<Description>The employee performing the operation.</Description>
+					<Resource>
+						<ResourceIdentifier>E</ResourceIdentifier>
+					</Resource>
+				</ResourcesRequired>
+				<ResourcesRequired>
+					<Description>The resource where the operation is being performed.</Description>
+					<Resource>
+						<ResourceIdentifier>resource9</ResourceIdentifier>
+					</Resource>
+				</ResourcesRequired>
+				<OperationTime>
+					<Unit>minute</Unit>
+					<Distribution>
+						<Name></Name>
+						<DistributionParameterA>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterA>
+						<DistributionParameterB>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterB>
+					</Distribution>	
+				</OperationTime>
+				
+				<Property>
+					<Name>ScrapQuantity</Name>
+					<Distribution>
+						<Name></Name>
+						<DistributionParameterA>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterA>
+						<DistributionParameterB>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterB>
+					</Distribution>	
+				</Property>
+			</Process>
+			
+			<Process>
+				<Identifier>P10</Identifier>
+				<Description>Packaging</Description>
+				<PartsProduced>
+					<Description>...</Description>
+					<PartType>
+						<PartTypeIdentifier>UnfinishedPart1</PartTypeIdentifier>
+					</PartType>
+					<PartQuantity>1</PartQuantity>
+				</PartsProduced>
+				<PartsConsumed>
+					<Description>The part that is an input to this process</Description>
+					<PartType>
+						<PartTypeIdentifier>UnfinishedPart1</PartTypeIdentifier>
+					</PartType>
+					<PartQuantity>1</PartQuantity>
+				</PartsConsumed>
+				<ResourcesRequired>
+					<Description>The employee performing the operation.</Description>
+					<Resource>
+						<ResourceIdentifier>F</ResourceIdentifier>
+					</Resource>
+				</ResourcesRequired>
+				<ResourcesRequired>
+					<Description>The resource where the operation is being performed.</Description>
+					<Resource>
+						<ResourceIdentifier>resource10</ResourceIdentifier>
+					</Resource>
+				</ResourcesRequired>
+				
+				<OperationTime>
+					<Unit>minute</Unit>
+					<Distribution>
+						<Name></Name>
+						<DistributionParameterA>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterA>
+						<DistributionParameterB>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterB>
+					</Distribution>	
+				</OperationTime>
+				
+				<Property>
+					<Name>ScrapQuantity</Name>
+					<Distribution>
+						<Name></Name>
+						<DistributionParameterA>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterA>
+						<DistributionParameterB>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterB>
+					</Distribution>										
+				</Property>
+			</Process>
+			
+			<Process>
+				<Identifier>P11</Identifier>
+				<Description>Packaging</Description>
+				<PartsProduced>
+					<Description>...</Description>
+					<PartType>
+						<PartTypeIdentifier>UnfinishedPart1</PartTypeIdentifier>
+					</PartType>
+					<PartQuantity>1</PartQuantity>
+				</PartsProduced>
+				<PartsConsumed>
+					<Description>The part that is an input to this process</Description>
+					<PartType>
+						<PartTypeIdentifier>UnfinishedPart1</PartTypeIdentifier>
+					</PartType>
+					<PartQuantity>1</PartQuantity>
+				</PartsConsumed>
+				<ResourcesRequired>
+					<Description>The employee performing the operation.</Description>
+					<Resource>
+						<ResourceIdentifier>F</ResourceIdentifier>
+					</Resource>
+				</ResourcesRequired>
+				<ResourcesRequired>
+					<Description>The resource where the operation is being performed.</Description>
+					<Resource>
+						<ResourceIdentifier>resource11</ResourceIdentifier>
+					</Resource>
+				</ResourcesRequired>
+				
+				<OperationTime>
+					<Unit>minute</Unit>
+					<Distribution>
+						<Name></Name>
+						<DistributionParameterA>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterA>
+						<DistributionParameterB>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterB>
+					</Distribution>	
+				</OperationTime>
+				
+				<Property>
+					<Name>ScrapQuantity</Name>
+					<Distribution>
+						<Name></Name>
+						<DistributionParameterA>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterA>
+						<DistributionParameterB>
+							<Name></Name>
+							<Value></Value>
+						</DistributionParameterB>
+					</Distribution>	
+				</Property>
+			</Process>
+			</ProcessPlan>
+	</DataSection>
+</CMSDDocument>
