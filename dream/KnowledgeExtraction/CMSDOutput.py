@@ -144,6 +144,33 @@ class CMSDOutput(object):
                     except IndexError:
                         continue
         return tree
+    
+    def ScrapQuantity(self,tree,stationId,distDict):
+        root=tree.getroot()
+        process=tree.findall('./DataSection/ProcessPlan/Process')               #It creates a new variable and using the 'findall' order in XML.ETREE library, this new variable holds all the processes defined in the XML file
+        for process in process:
+            process_identifier=process.find('Identifier').text                  #It creates a new variable that holds the text of the Identifier element in the XML file
+            if process_identifier==stationId:                                      #It checks using if...elif syntax the value of the process identifier 
+                scrapQuantity=process.find('./Property/Name')
+                if scrapQuantity.text=='ScrapQuantity':                                   
+                    Distribution=process.get('./Property/Distribution')
+                    Name=process.find('./Property/Distribution/Name')         
+                    Name.text=distDict['distributionType']
+                    names,values=self.Distributions(distDict)
+                    DistributionParameterA=process.get('./Property/Distribution/DistributionParameterA')
+                    Name=process.find('./Property/Distribution/DistributionParameterA/Name')
+                    Name.text=str(names[0])                               #It changes the text between the Name element tags, putting the name of the distribution's first parameter (e.g. in Normal that will be the mean)
+                    Value=process.find('./Property/Distribution/DistributionParameterA/Value')
+                    Value.text=str(values[0])                          #It changes the text between the Value element tags, putting the value of the distribution's first parameter (e.g. in Normal so for mean value that will be 5.0)
+                    DistributionParameterB=process.get('./Property/Distribution/DistributionParameterB')
+                    Name=process.find('./Property/Distribution/DistributionParameterB/Name')
+                    try:
+                        Name.text=str(names[1])                                #It changes the text between the Name element tags, putting the name of the distribution's second parameter (e.g. in Normal that will be the standarddeviation)
+                        Value=process.find('./Property/Distribution/DistributionParameterB/Value')
+                        Value.text=str(values[1])                           #It changes the text between the Value element tags, putting the value of the distribution's second parameter (e.g. in Normal so for standarddeviation value that will be 1.3)
+                    except IndexError:
+                        continue
+        return tree
                     
     
     
