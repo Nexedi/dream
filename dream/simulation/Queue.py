@@ -309,11 +309,14 @@ class Queue(CoreObject):
         elif criterion=="WINQ":
             from Globals import G
             for entity in activeObjectQ:
-                nextObjIds=entity.remainingRoute[1].get('stationIdsList',[])
-                for obj in G.ObjList:
-                    if obj.id in nextObjIds:
-                        nextObject=obj
-                entity.nextQueueLength=len(nextObject.Res.users)           
+                if len(entity.remainingRoute)>1:
+                    nextObjIds=entity.remainingRoute[1].get('stationIdsList',[])
+                    for obj in G.ObjList:
+                        if obj.id in nextObjIds:
+                            nextObject=obj
+                    entity.nextQueueLength=len(nextObject.Res.users) 
+                else:
+                    entity.nextQueueLength=0          
             activeObjectQ.sort(key=lambda x: x.nextQueueLength)
         else:
             assert False, "Unknown scheduling criterion %r" % (criterion, )
