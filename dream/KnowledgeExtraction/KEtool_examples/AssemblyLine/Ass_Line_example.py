@@ -30,7 +30,9 @@ from dream.KnowledgeExtraction.DistributionFitting import DistFittest
 from dream.KnowledgeExtraction.ReplaceMissingValues import HandleMissingValues
 from dream.KnowledgeExtraction.ImportExceldata import Import_Excel
 from dream.KnowledgeExtraction.DetectOutliers import HandleOutliers
-from JSON_Output import JSON_example
+from JSONOutput import JSONOutput
+from dream.KnowledgeExtraction.CMSDOutput import CMSDOutput
+from xml.etree import ElementTree as et
 from WIP_Identifier import currentWIP
 import xlrd
 from dateutil.parser import *
@@ -400,5 +402,37 @@ dictScrap['PrA']= D.Geometric_distrfit(PrA_Scrap)
 dictScrap['PrB']= D.Geometric_distrfit(PrB_Scrap)
 dictScrap['PaA']= D.Geometric_distrfit(PaA_Scrap)
 dictScrap['PaB']= D.Geometric_distrfit(PaB_Scrap)
-#Call the JSON_example method giving as attributes the dictionaries with the processing times distributions and the scrap quantities distributions and the WIP levels in the assembly line
-JSON_example(dictProc,dictScrap,WIP)
+
+#Call the CMSDOutput object giving as attributes the dictionaries with the processing times distributions and the scrap quantities distributions
+tree = et.parse("CMSD_example.xml")                                               #This file will be parsed using the XML.ETREE Python library
+exportCMSD=CMSDOutput()
+
+procTime1=exportCMSD.ProcessingTimes(tree, 'P1', dictProc['M1A']) 
+procTime2=exportCMSD.ProcessingTimes(procTime1, 'P4', dictProc['M1B'])
+procTime3=exportCMSD.ProcessingTimes(procTime2, 'P2', dictProc['M2A'])
+procTime4=exportCMSD.ProcessingTimes(procTime3, 'P5', dictProc['M2B'])
+procTime5=exportCMSD.ProcessingTimes(procTime4, 'P3', dictProc['M3A'])
+procTime6=exportCMSD.ProcessingTimes(procTime5, 'P6', dictProc['M3B'])
+procTime7=exportCMSD.ProcessingTimes(procTime6, 'P7', dictProc['MM'])
+procTime8=exportCMSD.ProcessingTimes(procTime7, 'P8', dictProc['PrA'])
+procTime9=exportCMSD.ProcessingTimes(procTime8, 'P9', dictProc['PrB'])
+procTime10=exportCMSD.ProcessingTimes(procTime9, 'P10', dictProc['PaA'])
+procTime11=exportCMSD.ProcessingTimes(procTime10, 'P11', dictProc['PaB'])
+
+scrapQuant1=exportCMSD.ScrapQuantity(procTime11, 'P1', dictScrap['M1A'])
+scrapQuant2=exportCMSD.ScrapQuantity(scrapQuant1, 'P4', dictScrap['M1B'])
+scrapQuant3=exportCMSD.ScrapQuantity(scrapQuant2, 'P2', dictScrap['M2A'])
+scrapQuant4=exportCMSD.ScrapQuantity(scrapQuant3, 'P5', dictScrap['M2B'])
+scrapQuant5=exportCMSD.ScrapQuantity(scrapQuant4, 'P3', dictScrap['M3A'])
+scrapQuant6=exportCMSD.ScrapQuantity(scrapQuant5, 'P6', dictScrap['M3B'])
+scrapQuant7=exportCMSD.ScrapQuantity(scrapQuant6, 'P7', dictScrap['MM'])
+scrapQuant8=exportCMSD.ScrapQuantity(scrapQuant7, 'P8', dictScrap['PrA'])
+scrapQuant9=exportCMSD.ScrapQuantity(scrapQuant8, 'P9', dictScrap['PrB'])
+scrapQuant10=exportCMSD.ScrapQuantity(scrapQuant9, 'P10', dictScrap['PaA'])
+scrapQuant11=exportCMSD.ScrapQuantity(scrapQuant10, 'P11', dictScrap['PaA'])
+
+scrapQuant11.write('CMSD_example_Output.xml',encoding="utf8")
+
+#Call the JSONOutput object giving as attributes the dictionaries with the processing times distributions and the scrap quantities distributions and the WIP levels in the assembly line
+exportJSON=JSONOutput()
+exportJSON.JSONOutput(dictProc,dictScrap,WIP)
