@@ -118,7 +118,13 @@ class ACO(plugin.ExecutionPlugin):
                     break
 
             for ant, result in zip(scenario_list, result_list):
-                ant['result'] = json.loads(result)['result']
+                result = json.loads(result)
+                if 'result' in result: # XXX is this still needed ???
+                  result = result['result']
+                  assert "result_list" in result
+                else:
+                  result = {'result_list': [result]}
+                ant['result'] = result
 
         for ant in scenario_list:
             ant['score'] = self._calculateAntScore(ant)
@@ -126,7 +132,7 @@ class ACO(plugin.ExecutionPlugin):
         ants.extend(scenario_list)
 
         # remove ants that outputs the same schedules
-        # XXX we in fact remove ands that produce the same output json
+        # XXX we in fact remove ants that produce the same output json
         ants_without_duplicates = dict()
         for ant in ants:
             ant_result, = copy(ant['result']['result_list'])
