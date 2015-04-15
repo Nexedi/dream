@@ -16,8 +16,8 @@
 .tool {
   border: 1px solid lightgray;
   box-shadow: 1px 1px 2px #aaa;
-  min-width:7em;
-  min-height:6em;
+  min-width:100px;
+  min-height:100px;
   box-sizing: border-box;
   z-index: 10001;
   color: gray;
