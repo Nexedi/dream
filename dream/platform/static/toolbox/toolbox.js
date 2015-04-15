@@ -52,7 +52,10 @@
                     tool.title = _class.description;
                 }
                 Object.keys(_class.css || {}).forEach(function(k) {
-                    tool.style[k] = _class.css[k];
+                    // some styles are ignored here, to keep the rendering of toolbox consistent.
+                    if (k != "line-height") {
+                        tool.style[k] = _class.css[k];
+                    }
                 });
                 tools_container.appendChild(tool);
             }
