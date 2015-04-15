@@ -511,6 +511,10 @@
         }
       ], 
       "css": {
+        "width": "80px",
+        "height": "80px",
+        "border-radius": "50px",
+        "line-height": "40px",
         "backgroundColor": "#fef", 
         "backgroundImage": "linear-gradient(to bottom, #fef 0%, #ede 100%)", 
         "border": "1px solid #cbc"
