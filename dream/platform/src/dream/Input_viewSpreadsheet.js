@@ -90,6 +90,7 @@
         })
         .push(function (result_list) {
           var content,
+            i, ctrlflag = true, def  = [],
             result = JSON.parse(result_list[0]),
             handsontable_options = {
               minSpareRows: 1,
@@ -109,6 +110,21 @@
             content = result.input[gadget.props.name];
           } else {
             content = options.action_definition.configuration.columns;
+            // XXX this is for the case of the initial setup
+            // if the content is not an array of arrays then create one
+            // from the content
+            for (i = 0; i <= content.length-1; i += 1) {
+              if (!(content[i].constructor === Array)) {
+                def.push(content[i].name);
+              } else {
+                // otherwise do not modify anything
+                def = content;
+                ctrlflag = false;
+                break;
+              }
+            }
+            if (ctrlflag) { def = [def]; }
+            content = def;
           }
           $.extend(handsontable_options, options.action_definition.configuration.handsontable_options || {});
           return result_list[1].render(
