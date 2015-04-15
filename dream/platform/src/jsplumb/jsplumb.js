@@ -365,12 +365,13 @@
                          edge_data.jsplumb_destination_endpoint],
             overlays: overlays
         });
-    } else {    
+    } else {
       connection = gadget.props.jsplumb_instance.connect({
         source: gadget.props.node_id_to_dom_element_id[edge_data.source],
         target: gadget.props.node_id_to_dom_element_id[edge_data.destination],
         Connector: [ "Bezier", {curviness: 75} ],
-        overlays: overlays
+        overlays: overlays,
+        endpoint: "Dot"
       });
     }
 
@@ -764,21 +765,28 @@
 
     // Add some flowchart endpoints
     // TODO: add them all !
-    gadget.props.jsplumb_instance.addEndpoint(dom_element_id, {
-        isSource:true,
-        maxConnections:-1,
-        connector:[ "Flowchart", { stub:[40, 60],
-                                   gap:10,
-                                   cornerRadius:5,
-                                   alwaysRespectStubs:true } ]
-        }, { anchor: "BottomCenter",
-            uuid: node_id + ".flowchartBottomCenter" });
-
-    gadget.props.jsplumb_instance.addEndpoint(dom_element_id,
-        { isTarget:true, maxConnections: -1 },
-        { anchor: "LeftMiddle", uuid: node_id + ".flowChartLeftMiddle" });
-
-
+    if (!class_definition.shape) {
+      gadget.props.jsplumb_instance.addEndpoint(dom_element_id, {
+          isSource:true,
+          maxConnections:-1,
+          connector:[ "Flowchart", { stub:[40, 60],
+                                     gap:10,
+                                     cornerRadius:5,
+                                     alwaysRespectStubs:true } ]
+          }, { anchor: "BottomCenter", uuid: node_id + ".flowchartBottomCenter" });
+      
+      gadget.props.jsplumb_instance.addEndpoint(dom_element_id,
+          { isTarget:true, maxConnections: -1 },
+          { anchor: "LeftMiddle", uuid: node_id + ".flowChartLeftMiddle" });
+    }
+    else { 
+      console.log("shape :)");
+        gadget.props.jsplumb_instance.addEndpoint(dom_element_id,
+        {
+         endpoint:"Dot",
+         anchor:[ "Perimeter", { shape:"Triangle" }]
+         });
+      }
     gadget.notifyDataChanged();
   }
 
