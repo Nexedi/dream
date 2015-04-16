@@ -39,7 +39,6 @@ class ReadSkilledOperators(plugin.InputPreparationPlugin):
               "ouputSchedule" : 1
             }
             operatorPresent = True
-            print PBId, newSkills
                   
         # if there is at least one operator
         if operatorPresent:
