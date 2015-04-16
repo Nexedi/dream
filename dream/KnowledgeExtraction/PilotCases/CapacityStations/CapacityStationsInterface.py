@@ -197,6 +197,7 @@ class Demo1(Frame):
             ind3=a.fetchone()
             WP=ind3.WP_id 
             row = cursor[7].fetchone()
+            print row
             order_ref = row.ID
             status1 = 'in progress'
             cursor[10].execute(update_order, (order_ref, WP, self.operationOption.get(), str(datetime.now()), self.capacity.get(), self.comments.get()))
