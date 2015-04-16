@@ -297,12 +297,9 @@
   function updateElementData(gadget, node_id, data) {
     var element_id = gadget.props.node_id_to_dom_element_id[node_id],
       new_id = data.id;
-    if (data.data.name) {
-      $(gadget.props.element).find("#" + element_id).text(data.data.name)
-        .attr("title", data.data.name)
+    $(gadget.props.element).find("#" + element_id).text(data.data.name || new_id)
+        .attr("title", data.data.name || new_id)
         .append('<div class="ep"></div></div>');
-      gadget.props.data.graph.node[node_id].name = data.data.name;
-    }
     delete data.id;
     $.extend(gadget.props.data.graph.node[node_id], data.data);
     if (new_id && new_id !== node_id) {
@@ -721,7 +718,6 @@
     dom_element_id = generateDomElementId(gadget.props.element);
     gadget.props.node_id_to_dom_element_id[node_id] = dom_element_id;
 
-    node_data.name = node_data.name || node_id;
     gadget.props.data.graph.node[node_id] = node_data;
 
     if (coordinate === undefined) {
@@ -739,8 +735,8 @@
       node_template({
         "class": node_data._class.replace('.', '-'),
         "element_id": dom_element_id,
-        "title": node_data.name || node_data.id,
-        "name": node_data.name || node_data.id
+        "title": node_data.name || node_id,
+        "name": node_data.name || node_id
       }),
       "text/html"
     ).querySelector('.window');
