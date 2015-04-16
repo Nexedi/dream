@@ -63,18 +63,20 @@ class UpdateWIP(SplitRoute.SplitRoute):
             if not last_step:
               # find the step that follows (normal processing)
               for step in route:
-                # the sequences must differ maximum one
-                if int(sequence)+1 == int(step.get('sequence',0)):
-                  # and the corresponding step must have a defined technology
-                  if step.get('technology', None):
-                    # the station defined by the WIP must start with the technology initials (only INJM, EDM, and MILL)
-                    if workStation.startswith(step['technology']):
-                      last_step = step
-                      # the time defined as remaining processing time is remainingSetupTime
-                      remainingSetupTime = remainingProcessingTime
-                      # and the remainingProcessingTime should be extracted from the step
-                      remainingProcessingTime = step.get('processingTime', 0)
-                      break
+                # introduced to fix the case were sequence is ''
+                if not step.get('sequence', 0) == '':
+                  # the sequences must differ maximum one
+                  if int(sequence)+1 == int(step.get('sequence',0)):
+                    # and the corresponding step must have a defined technology
+                    if step.get('technology', None):
+                      # the station defined by the WIP must start with the technology initials (only INJM, EDM, and MILL)
+                      if workStation.startswith(step['technology']):
+                        last_step = step
+                        # the time defined as remaining processing time is remainingSetupTime
+                        remainingSetupTime = remainingProcessingTime
+                        # and the remainingProcessingTime should be extracted from the step
+                        remainingProcessingTime = step.get('processingTime', 0)
+                        break
             # if the workstation provided is not a valid station but instead the name of a technology (this happens only with EDM, INJM, and MILL that have setup and processing seperate)
             if not workStation in last_step.get("stationIdsList", []):
               if workStation == last_step.get("technology", None):
