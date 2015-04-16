@@ -486,10 +486,6 @@
                          "Fixed": {
                               "mean": 0
                          }
-        "width": "80px",
-        "height": "80px",
-        "border-radius": "50px",
-        "line-height": "40px",
                     }, 
                     "coordinate": {
                          "top": 0.6281334023947263, 
