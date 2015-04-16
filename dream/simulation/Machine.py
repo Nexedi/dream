@@ -54,7 +54,7 @@ class Machine(CoreObject):
                   operatorPool='None',operationType='None',\
                   setupTime=None, loadTime=None,
                   preemption={},
-                  canDeliverOnInterruption=False, **kw):
+                  canDeliverOnInterruption=False, technology=None,**kw):
         self.type="Machine"                         #String that shows the type of object
         CoreObject.__init__(self, id, name)
         from Globals import G
@@ -120,7 +120,9 @@ class Machine(CoreObject):
             self.multOperationTypeList = OTlist
         else:
             self.multOperationTypeList.append(self.operationType)
- 
+        # technology is used to group machines that perform the same operation when needed
+        self.technology=technology
+
         # flags used for preemption purposes
         self.isPreemptive=False
         self.resetOnPreemption=False

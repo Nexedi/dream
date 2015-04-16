@@ -49,6 +49,7 @@ class BatchScrapMachine(Machine):
                  operatorPool='None',operationType='None',\
                  setupTime=None, loadTime=None,
                  canDeliverOnInterruption=False, 
+                 technology=None,
                  **kw):
         if not processingTime:
           processingTime = {'distributionType': 'Fixed',
@@ -60,7 +61,8 @@ class BatchScrapMachine(Machine):
                                     repairman=repairman,
                                     canDeliverOnInterruption=canDeliverOnInterruption,
                                     operatorPool=operatorPool,operationType=operationType,\
-                                    setupTime=setupTime, loadTime=loadTime,                   
+                                    setupTime=setupTime, loadTime=loadTime,     
+                                    technology=technology              
                                     )
 
         # set the attributes of the scrap quantity distribution
