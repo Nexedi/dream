@@ -103,6 +103,21 @@ class MouldAssemblyBuffer(ConditionalBuffer):
         if ConditionalBuffer.haveToDispose(self,callerObject):
             # update the local variable activeEntity
             activeEntity=activeObjectQueue[0]
+            # if we are at the start of the simulation then check if all the child components 
+            # of a specific order are present in the buffer and ready to be delivered to the assembly station
+            try:
+                # for all the components that have the same parent Order as the activeEntity
+                activeEntity.order.componentsReadyForAssembly = 1
+                for entity in activeEntity.order.getAssemblyComponents():
+                # if one of them has not reach the Buffer yet,
+                    if not entity.readyForAssembly:
+                # the mould is not ready for assembly
+                        activeEntity.order.componentsReadyForAssembly = 0
+                        break
+            # if the activeEntity is of type Mould
+            except:
+                pass
+
             try:
                 return thecaller.getActiveObjectQueue()[0].order is activeEntity.order\
                        and activeEntity.order.componentsReadyForAssembly
