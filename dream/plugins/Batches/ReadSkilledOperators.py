@@ -30,7 +30,10 @@ class ReadSkilledOperators(plugin.InputPreparationPlugin):
             for n_id,n in node.iteritems():
                 technology=n.get('technology',None)
                 if technology in skills and n_id not in newSkills:    
-                    newSkills.append(n_id)                       
+                    newSkills.append(n_id)      
+            # this so that models without technology also work          
+            if not newSkills:
+                newSkills=skills                                               
             node[PBId]={
               "_class": "Dream.Operator",
               "capacity": 1,
