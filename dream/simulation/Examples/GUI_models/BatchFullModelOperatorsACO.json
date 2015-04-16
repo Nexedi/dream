@@ -14,16 +14,16 @@
           "name": "Length of experiment", 
           "type": "number"
         }, 
-        "numberOfAntsPerGenerations": {
-          "default": 5, 
-          "description": "Number of scenarios per optimization generation", 
-          "title": "Number of scenarios per optimization generation", 
-          "type": "integer"
-        }, 
         "numberOfGenerations": {
           "default": 1, 
           "description": "Number of optimization generations", 
           "title": "Number of optimization generations", 
+          "type": "integer"
+        }, 
+        "numberOfAntsPerGenerations": {
+          "default": 5, 
+          "description": "Number of scenarios per optimization generation", 
+          "title": "Number of scenarios per optimization generation", 
           "type": "integer"
         }, 
         "numberOfReplications": {
@@ -255,7 +255,7 @@
           "output_id": "buffer_output"
         }, 
         "gadget": "Output_viewSpreadsheet", 
-        "title": "Buffer Levels", 
+        "title": "Buffer Statistics", 
         "type": "object_view"
       }, 
       "view_download_spreadsheet": {
@@ -263,7 +263,7 @@
           "output_id": "operator_spreadsheet"
         }, 
         "gadget": "Output_viewDownloadFile", 
-        "title": "Operator Schedule Spreadsheet", 
+        "title": "PB Schedule Spreadsheet", 
         "type": "object_view"
       }, 
       "view_exit_results": {
@@ -280,7 +280,7 @@
           "output_id": "operator_gantt"
         }, 
         "gadget": "Output_viewGantt", 
-        "title": "Operator Schedule Gantt", 
+        "title": "PB Schedule Gantt", 
         "type": "object_view"
       }, 
       "view_operator_utilization": {
@@ -288,7 +288,7 @@
           "output_id": "operator_utilization"
         }, 
         "gadget": "Output_viewGraph", 
-        "title": "Operator Utilization", 
+        "title": "PB Utilization", 
         "type": "object_view"
       }, 
       "view_queue_stats": {
@@ -296,7 +296,7 @@
           "output_id": "queue_statistics"
         }, 
         "gadget": "Output_viewGraph", 
-        "title": "Queue Statistics", 
+        "title": "Buffer Graph", 
         "type": "object_view"
       }, 
       "view_station_utilization": {
