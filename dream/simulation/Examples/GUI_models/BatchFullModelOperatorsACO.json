@@ -2,12 +2,6 @@
   "application_configuration": {
     "general": {
       "properties": {
-        "confidenceLevel": {
-          "default": 0.95, 
-          "description": "Confidence level for statistical analysis of stochastic experiments", 
-          "name": "Confidence level", 
-          "type": "number"
-        }, 
         "currentDate": {
           "default": "2014/02/18", 
           "description": "The day the experiment starts, in YYYY/MM/DD HH:MM:DD format", 
@@ -36,6 +30,12 @@
           "default": 10, 
           "description": "Number of replications to run", 
           "name": "Number of replications", 
+          "type": "number"
+        }, 
+        "confidenceLevel": {
+          "default": 0.95, 
+          "description": "Confidence level for statistical analysis of stochastic experiments", 
+          "name": "Confidence level", 
           "type": "number"
         }, 
         "processTimeout": {
