@@ -486,10 +486,16 @@
           "properties": {
             "id": {
               "default": "M", 
+              "name": "Unique Station Name", 
               "required": true, 
-              "type": "string",
-			  "name": "Name" 
+              "type": "string"
             }, 
+            "technology": {
+              "default": "M", 
+              "name": "Operation", 
+              "required": true, 
+              "type": "string"
+            },  
             "processingTime": {
               "$ref": "#/definitions/_dist", 
               "description": "The time that this station needs in order to process a unit", 
