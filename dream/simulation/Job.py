@@ -185,7 +185,6 @@ class Job(Entity):                                  # inherits from the Entity c
         if nextSequence==None or nextSequence=="":
             return True
         else:
-#             print nextSequence
             nextSequence = int(nextSequence)
         # flag that decides if the entity can proceed to the next station in its route
         mayProceed=False
@@ -237,6 +236,7 @@ class Job(Entity):                                  # inherits from the Entity c
                 for partID in requiredPartsIDs:
                     # find the objects with the corresponding IDs
                     part=findObjectById(partID)
+                    assert part!=None, 'the order Component just retrieved based on its ID cannot be None'
                     if not part in requiredParts:
                         requiredParts.append(part)
         return requiredParts
