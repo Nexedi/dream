@@ -26,15 +26,21 @@ class ReadSkilledOperators(plugin.InputPreparationPlugin):
             if not PBId:
                 continue
             skills=PBitem[1].split(',')
+            newSkills=[]
+            for n_id,n in node.iteritems():
+                technology=n.get('technology',None)
+                if technology in skills and n_id not in newSkills:    
+                    newSkills.append(n_id)                       
             node[PBId]={
               "_class": "Dream.Operator",
               "capacity": 1,
               "name":PBId,
-              "skills":skills,
+              "skills":newSkills,
               "ouputSchedule" : 1
             }
             operatorPresent = True
-                   
+            print PBId, newSkills
+                  
         # if there is at least one operator
         if operatorPresent:
             nodes=data['graph']['node']
