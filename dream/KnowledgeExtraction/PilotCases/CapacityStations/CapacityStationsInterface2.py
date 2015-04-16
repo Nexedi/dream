@@ -28,85 +28,104 @@ import pyodbc
 import tkMessageBox
 from datetime import datetime 
 
-class Demo1(Frame):     
-    def __init__(self):
+class Demo1(Frame):
+    def __init__( self ):
         tk.Frame.__init__(self)
         self.pack()
         self.master.title("CapacityStations Interface")
         
+        self.labelText = StringVar()
+        self.labelText.set('Welcome to the interface, please follow the instructions to update the system. \n Please click the following button to continue.')
+        self.label1 = Label(self, textvariable=self.labelText, height=2)
+        self.label1.pack()
+       
+        self.button = Button(self, text="Click here to continue", command=self.optionClicked).pack()  
+    
+    def optionClicked(self):
+        self.new_window()   
+        
+    def new_window(self):
+        self.newWindow = MainWindow()
+    
+class MainWindow(Frame):        
+    def __init__(self):
+        app=tk.Frame.__init__(self)
+        app=Toplevel(self)
+        app.title("CapacityStations Interface")
+        
         if not self.checkInsertedProject():
             self.labelText = StringVar()
             self.labelText.set('There is no new order inserted in the system, please insert one and try again')
-            label5 = Label(self, textvariable=self.labelText, height=5)
+            label5 = Label(app, textvariable=self.labelText, height=5)
             label5.pack()
         else:
             self.labelText = StringVar()
             self.labelText.set('Please follow the instructions to update the system.')
-            label1 = Label(self, textvariable=self.labelText, height=2)
+            label1 = Label(app, textvariable=self.labelText, height=2)
             label1.pack()
     
             self.labelText = StringVar()
             self.labelText.set('1. Please select order')
-            label2 = Label(self, textvariable=self.labelText, height=2)
+            label2 = Label(app, textvariable=self.labelText, height=2)
             label2.pack()
             
             self.OrderOption = StringVar()
             self.OrderOption.set(None)
             options = self.checkInsertedProject()
-            self.ProjectDropDown = OptionMenu(self, self.OrderOption, *options).pack()
+            self.ProjectDropDown = OptionMenu(app, self.OrderOption, *options).pack()
                 
             self.labelText = StringVar()
             self.labelText.set('2. Please select the operation')
-            label4 = Label(self, textvariable=self.labelText, height=2)
+            label4 = Label(app, textvariable=self.labelText, height=2)
             label4.pack()
             
             self.operationOption = StringVar()
             self.operationOption.set(None)
             options = ['SMF', 'WELD', 'CNC', 'MCH', 'EEP', 'PPASB', 'PAINT', 'ASBTST']
-            self.operationDropDown = OptionMenu(self, self.operationOption, *options).pack()
+            self.operationDropDown = OptionMenu(app, self.operationOption, *options).pack()
              
             self.labelText = StringVar()
             self.labelText.set('3. Please click below only once, when you insert a WP_id. \n If you have already clicked, please go to next step no 4')
-            label6 = Label(self, textvariable=self.labelText, height=2)
+            label6 = Label(app, textvariable=self.labelText, height=2)
             label6.pack()
             
             self.checkBoxVal1 = IntVar()
-            checkBox1 = Checkbutton(self, variable=self.checkBoxVal1, text='Click to record the START DATE', height=3, command=self.recordStartDate)
+            checkBox1 = Checkbutton(app, variable=self.checkBoxVal1, text='Click to record the START DATE', height=3, command=self.recordStartDate)
             checkBox1.pack()
             self.labelText = StringVar()
             
             self.labelText.set('4. Please insert estimated capacity left, to be completed')
-            label6 = Label(self, textvariable=self.labelText, height=2)
+            label6 = Label(app, textvariable=self.labelText, height=2)
             label6.pack()
             
             self.capleft = StringVar(None)
-            self.capacity = Entry(self, textvariable=self.capleft)
+            self.capacity = Entry(app, textvariable=self.capleft)
             self.capacity.pack()
             
             self.labelText = StringVar()
             self.labelText.set('5. Please insert any comments')
-            label2 = Label(self, textvariable=self.labelText, height=2)
+            label2 = Label(app, textvariable=self.labelText, height=2)
             label2.pack()
             
             self.remark = StringVar(None)
-            self.comments = Entry(self, textvariable=self.remark)
+            self.comments = Entry(app, textvariable=self.remark)
             self.comments.pack()
             
             self.labelText = StringVar()
             self.labelText.set('6. Please click below only when the operation finished')
-            label6 = Label(self, textvariable=self.labelText, height=2)
+            label6 = Label(app, textvariable=self.labelText, height=2)
             label6.pack()
             
             self.checkBoxVal2 = IntVar()
-            checkBox = Checkbutton(self, variable=self.checkBoxVal2, text='Click to record the END DATE', height=3, command=self.recordEndDate)
+            checkBox = Checkbutton(app, variable=self.checkBoxVal2, text='Click to record the END DATE', height=3, command=self.recordEndDate)
             checkBox.pack()
             
             self.labelText = StringVar()
             self.labelText.set('7. Please update the system clicking the button below')
-            label6 = Label(self, textvariable=self.labelText, height=2)
+            label6 = Label(app, textvariable=self.labelText, height=2)
             label6.pack()
             
-            self.button4 = Button(self, text='Update the system', width=20, command=self.updateDatabase)
+            self.button4 = Button(app, text='Update the system', width=20, command=self.updateDatabase)
             self.button4.pack()
         
     def recordStartDate(self):
@@ -176,6 +195,7 @@ class Demo1(Frame):
                                 """, self.operationOption.get(),order)
             ind4=b.fetchone()
             status2 = 'finished'
+            cursor.execute("SELECT @@IDENTITY AS ID")            
             row = cursor.fetchone()
             WP=ind4[0]
             order_ref = row.ID
@@ -195,7 +215,8 @@ class Demo1(Frame):
                                  from sequence where Order_id=? and Operation_Name=?
                                 """, order, self.operationOption.get())
             ind3=a.fetchone()
-            WP=ind3.WP_id 
+            WP=ind3.WP_id
+            cursor.execute("SELECT @@IDENTITY AS ID")            
             row = cursor.fetchone()
             order_ref = row.ID
             status1 = 'in progress'
