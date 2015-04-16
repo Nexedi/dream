@@ -33,7 +33,8 @@ class ReadJSCompleted(plugin.InputPreparationPlugin):
               routeConcluded = False
               ''''if the index is bigger than 0 (1,2,..) it means that there is not only processing but also setup or other types of operations to be performed. Check if the components is already in the WIP. if not add it to it and keep the operation processing time for the remainingProcessingTime'''
               if ind>=1:
-                if not component["id"] in wip.keys():
+                if not component["id"] in wip.keys() or (component['id'] in wip.keys() and 
+                                                         wip[component['id']]['task_id']!=step['task_id']):
                   processingTime = step.get("processingTime", {"Fixed":{"meam":0}})
                   # the distribution of the processing time is supposed to be fixed (see ReadJSWorkPlan))
                   processingTime = float(processingTime["Fixed"].get("mean",0))
