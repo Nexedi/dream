@@ -218,7 +218,7 @@ def main(*args):
     app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
   # start the server
-  app.run(debug=arguments.debug, host=arguments.host, port=arguments.port)
+  app.run(debug=arguments.debug, host=arguments.host, port=arguments.port, threaded=True)
 
 if __name__ == "__main__":
   main()
