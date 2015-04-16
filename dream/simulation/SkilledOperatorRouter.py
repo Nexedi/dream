@@ -198,6 +198,8 @@ class SkilledRouter(Router):
                 # TODO: a constant integer must be added to all WIP before provided to the opAss_LP
                 #     as it doesn't support zero WIP levels
                 #===================================================================
+                import time
+                startLP=time.time()
                 if LPFlag:
 #                     print self.env.now, 'LP called'
                     solution=opAss_LP(self.availableStationsDict, self.availableOperatorList, 
@@ -208,6 +210,7 @@ class SkilledRouter(Router):
                     solution={}
 #                 print '-------'
 #                 print self.env.now, solution
+#                 print 'time needed',time.time()-startLP
                 
                 self.solutionList.append({
                     "time":self.env.now,
