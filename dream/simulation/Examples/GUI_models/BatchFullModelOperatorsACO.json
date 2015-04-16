@@ -2311,59 +2311,59 @@
       ], 
       [
         "PB_1", 
-        "1_RO_E_M_A_A,1_RO_E_M_A_B,2_P_B_A_A,2_P_B_A_B,3_D_B_A_A,3_D_B_A_B"
+        "1_RO_E_M_A,2_P_B_A,3_D_B_A"
       ], 
       [
         "PB_2", 
-        "1_RO_E_M_A_A,1_RO_E_M_A_B,2_P_B_A_A,2_P_B_A_B,3_D_B_A_A,3_D_B_A_B"
+        "1_RO_E_M_A,2_P_B_A,3_D_B_A"
       ], 
       [
         "PB_3", 
-        "1_RO_E_M_A_A,1_RO_E_M_A_B,2_P_B_A_A,2_P_B_A_B,3_D_B_A_A,3_D_B_A_B"
+        "1_RO_E_M_A,2_P_B_A,3_D_B_A"
       ], 
       [
         "PB_4", 
-        "1_RO_E_M_A_A,1_RO_E_M_A_B,2_P_B_A_A,2_P_B_A_B,3_D_B_A_A,3_D_B_A_B"
+        "1_RO_E_M_A,2_P_B_A,3_D_B_A"
       ], 
       [
         "PB_7", 
-        "3_D_B_A_A,3_D_B_A_B,5_Moulding,6_Flag Labelling A,6_Flag Labelling B"
+        "3_D_B_A,5_Moulding,6_Flag Labelling"
       ], 
       [
         "PB_9", 
-        "4_Cut & Bend,5_Moulding,6_Flag Labelling A,6_Flag Labelling B"
+        "4_Cut & Bend,5_Moulding,6_Flag Labelling"
       ], 
       [
         "PB_10", 
-        "5_Moulding,6_Flag Labelling A,6_Flag Labelling B,7_Pressure A,7_Pressure B"
+        "5_Moulding,6_Flag Labelling,7_Pressure"
       ], 
       [
         "PB_12", 
-        "2_P_B_A_A,2_P_B_A_B,3_D_B_A_A,3_D_B_A_B,7_Pressure A,7_Pressure B"
+        "2_P_B_A,3_D_B_A,7_Pressure"
       ], 
       [
         "PB_15", 
-        "8_Carding,9_Packaging A,9_Packaging B"
+        "8_Carding,9_Packaging"
       ], 
       [
         "PB_16", 
-        "7_Pressure A,7_Pressure B,8_Carding,9_Packaging A,9_Packaging B"
+        "7_Pressure,8_Carding,9_Packaging"
       ], 
       [
         "PB_17", 
-        "4_Cut & Bend,7_Pressure A,7_Pressure B,9_Packaging A,9_Packaging B"
+        "4_Cut & Bend,7_Pressure,9_Packaging"
       ], 
       [
         "PB_20", 
-        "6_Flag Labelling A,6_Flag Labelling B,7_Pressure A,7_Pressure B,8_Carding"
+        "6_Flag Labelling,7_Pressure,8_Carding"
       ], 
       [
         "PB_21", 
-        "7_Pressure A,7_Pressure B,8_Carding,9_Packaging A,9_Packaging B"
+        "7_Pressure,8_Carding,9_Packaging"
       ], 
       [
         "PB_25", 
-        "2_P_B_A_A,2_P_B_A_B,3_D_B_A_A,3_D_B_A_B,9_Packaging A,9_Packaging B"
+        "2_P_B_A,3_D_B_A,9_Packaging"
       ], 
       [
         "PB_30", 
