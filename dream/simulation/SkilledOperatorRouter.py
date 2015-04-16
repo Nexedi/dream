@@ -150,14 +150,31 @@ class SkilledRouter(Router):
                     for record in self.solutionList:
                         if station.id in record["allocation"].values():
                             lastAssignmentTime=record["time"]
-                    self.availableStationsDict[str(station.id)]={'stationID':str(station.id),'WIP':station.wip, 
-                                                                 'lastAssignment':0}
+                    # it there is definition of 'technology' to group machines add this
+                    if station.technology:
+                        self.availableStationsDict[str(station.id)]={'stationID':station.technology,'machineID':station.id, 
+                                                                'WIP':station.wip,'lastAssignment':0}
+                    # otherwise add just the id
+                    else:
+                        self.availableStationsDict[str(station.id)]={'stationID':station.id, 
+                                                                'WIP':station.wip,'lastAssignment':0}                       
+                        
                 #===================================================================
                 # # operators and their skills set
                 #===================================================================
                 self.operators={}
+                import Globals
                 for operator in G.OperatorsList:
-                    self.operators[str(operator.id)]=operator.skillsList
+                    newSkillsList=[]
+                    for skill in operator.skillsList:
+                        newSkill=skill
+                        mach=Globals.findObjectById(skill)
+                        # if there is 'technology' defined for the stations send this to the LP solver
+                        if mach.technology: 
+                            newSkill=mach.technology
+                        if newSkill not in newSkillsList:
+                            newSkillsList.append(newSkill)
+                    self.operators[str(operator.id)]=newSkillsList
                 #===================================================================
                 # # available operators
                 #===================================================================
