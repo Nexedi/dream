@@ -53,7 +53,7 @@
                 }
                 Object.keys(_class.css || {}).forEach(function(k) {
                     // some styles are ignored here, to keep the rendering of toolbox consistent.
-                    if (k != "line-height") {
+                    if (k !== "line-height") {
                         tool.style[k] = _class.css[k];
                     }
                 });
