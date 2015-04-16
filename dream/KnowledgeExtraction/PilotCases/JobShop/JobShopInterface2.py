@@ -178,7 +178,7 @@ class TIMEIN(Frame):
         return availableWP
 
     def updateDatabase(self):
-        cnxn=pyodbc.connect("Driver={MySQL ODBC 3.51 Driver};SERVER=localhost; PORT=3306;DATABASE=bal_database;UID=root;PASSWORD=Pitheos10;")
+        cnxn=pyodbc.connect("Driver={MySQL ODBC 3.51 Driver};SERVER=localhost; PORT=3306;DATABASE=leo_database2;UID=root;PASSWORD=Pitheos10;")
         cursor = cnxn.cursor()
         update_order= ("INSERT INTO prod_status(`status_id`, `WP_id`, `PersonnelCode`, `MachineName`, `TIMEIN`)  VALUES (?, ?, ?, ?, ?)")
         cursor.execute("SELECT @@IDENTITY AS ID")
@@ -186,8 +186,9 @@ class TIMEIN(Frame):
         select WP_id, Order_id
         from sequence where WP_id=?
                 """, self.WPOption.get())
-        order = a.fetchone()
-        print order
+        ind1 = a.fetchone()
+        order=ind1[1]
+        cursor.execute("SELECT @@IDENTITY AS ID")            
         row = cursor.fetchone()
         order_ref = row.ID
         status1 = 'in progress'
@@ -275,7 +276,7 @@ class TIMEOUT(Frame):
         return
     
     def checkInsertedWP(self):
-        cnxn=pyodbc.connect("Driver={MySQL ODBC 3.51 Driver};SERVER=localhost; PORT=3306;DATABASE=bal_database;UID=root;PASSWORD=Pitheos10;")
+        cnxn=pyodbc.connect("Driver={MySQL ODBC 3.51 Driver};SERVER=localhost; PORT=3306;DATABASE=leo_database2;UID=root;PASSWORD=Pitheos10;")
         cursor = cnxn.cursor()
         
         b=cursor.execute("""
@@ -313,13 +314,14 @@ class TIMEOUT(Frame):
         return insertedWP
     
     def updateDatabase(self):
-        cnxn=pyodbc.connect("Driver={MySQL ODBC 3.51 Driver};SERVER=localhost; PORT=3306;DATABASE=bal_database;UID=root;PASSWORD=Pitheos10;")
+        cnxn=pyodbc.connect("Driver={MySQL ODBC 3.51 Driver};SERVER=localhost; PORT=3306;DATABASE=leo_database2;UID=root;PASSWORD=Pitheos10;")
         cursor = cnxn.cursor()
         a = cursor.execute("""
         select WP_id, Order_id
         from sequence where WP_id=?
                 """, self.WPOption.get())
-        order = a.fetchone()[1]
+        ind2 = a.fetchone()
+        order=ind2[1]
         b = cursor.execute("""
         select WP_id, Order_id, PartName
         from sequence where Order_id=?
