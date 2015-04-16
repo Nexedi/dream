@@ -140,7 +140,7 @@
       }
     }, 
     "output": {
-      "view_downaload_spreadsheet": {
+      "view_download_spreadsheet": {
         "configuration": {
           "output_id": "demand_planning_spreadsheet"
         }, 
@@ -148,22 +148,14 @@
         "title": "Download Result Spreadsheet", 
         "type": "object_view"
       },
-      "view_utilization_stats1": {
+      "view_bottleneck_utilization": {
         "configuration": {
-          "output_id": "BE_A_VF78_DSO_3"
+          "output_id": "bottleneck_utilization"
         }, 
-        "gadget": "Output_viewGraph", 
-        "title": "BE_A_VF78_DSO_3 Utilization", 
+        "gadget": "Output_viewBottleneckGraph", 
+        "title": "Bottleneck Utilization", 
         "type": "object_view"
-      },
-      "view_utilization_stats2": {
-        "configuration": {
-          "output_id": "BE_A_VK18_DKO_5"
-        }, 
-        "gadget": "Output_viewGraph", 
-        "title": "BE_A_VK18_DKO_5 Utilization", 
-        "type": "object_view"
-      }	  
+      }
     }, 
     "post_processing": {
       "plugin_list": [
