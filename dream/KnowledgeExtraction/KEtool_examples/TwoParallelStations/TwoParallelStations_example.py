@@ -31,15 +31,16 @@ from dream.KnowledgeExtraction.JSONOutput import JSONOutput
 import xlrd
 import json
 import dream.simulation.LineGenerationJSON as ManPyMain #import ManPy main JSON script
+import os
 
-def main(test=0, ExcelFileName='KEtool_examples/TwoParallelStations/inputData.xls',
-                JSONFileName='KEtool_examples/TwoParallelStations/JSON_TwoParallelStations.json',
+def main(test=0, ExcelFileName='inputData.xls',
+                JSONFileName='JSON_ParallelStations.json',
                 workbook=None,
                 jsonFile=None):
-
+    
     #Read from the given directory the Excel document with the input data
     if not workbook:
-        workbook = xlrd.open_workbook(ExcelFileName)
+        workbook = xlrd.open_workbook(os.path.join(os.path.dirname(os.path.realpath(__file__)), ExcelFileName))
     worksheets = workbook.sheet_names()
     worksheet_ProcessingTimes = worksheets[0]     #Define the worksheet with the Processing times data
     
@@ -63,56 +64,46 @@ def main(test=0, ExcelFileName='KEtool_examples/TwoParallelStations/inputData.xl
     
     
     #======================= Output preparation: output the updated values in the JSON file of this example ================================#
-jsonFile = open('JSON_ParallelStations.json','r')      #It opens the JSON file 
-        jsonFile = open(JSONFileName,'r')      #It opens the JSON file 
+    if not jsonFile:
+        jsonFile = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), JSONFileName),'r')      #It opens the JSON file 
         data = json.load(jsonFile)                                                              #It loads the file
         jsonFile.close()
     else:
         data = json.load(jsonFile) 
-    nodes = data['graph']['node']                                                         #It creates a variable that holds the 'nodes' dictionary
     
-    procTimeM1dict={}
-    procTimeM2dict={}
-    dist=M1ProcTime_dist['distributionType']
-    del M1ProcTime_dist['distributionType']
-    procTimeM1dict[dist]=M1ProcTime_dist
+    exportJSON=JSONOutput()
+    stationId1='St1'
+    stationId2='St2'
+    data1=exportJSON.ProcessingTimes(data, stationId1, M1ProcTime_dist)
+    data2=exportJSON.ProcessingTimes(data1, stationId2, M2ProcTime_dist)
+        
+    #================================ Call ManPy and run the simulation model =============================================#
+    #calls ManPy main script with the input
+    simulationOutput=ManPyMain.main(input_data=json.dumps(data2))
     
-    dist=M2ProcTime_dist['distributionType']
-    del M2ProcTime_dist['distributionType']
-    procTimeM2dict[dist]=M2ProcTime_dist
-    
-    for element in nodes:
+    # if we run from test return the ManPy result
+    if test:
+        return simulationOutput
 
-exportJSON=JSONOutput()
-stationId1='St1'
-stationId2='St2'
-data1=exportJSON.ProcessingTimes(data, stationId1, M1ProcTime_dist)
-data2=exportJSON.ProcessingTimes(data1, stationId2, M2ProcTime_dist)
-      
-jsonFile = open('JSON_ParallelStations_Output.json',"w")     #It opens the JSON file
-jsonFile.write(json.dumps(data2, indent=True))                                           #It writes the updated data to the JSON file 
-jsonFile.close()                                                                        #It closes the file
+    #=================== Ouput the JSON file ==========================#
+    jsonFile = open('JSON_ParallelStations_Output.json',"w")     #It opens the JSON file
+    jsonFile.write(json.dumps(data2, indent=True))               #It writes the updated data to the JSON file 
+    jsonFile.close()                                             #It closes the file
     
     #=================== Calling the ExcelOutput object, outputs the outcomes of the statistical analysis in xls files ==========================#
-    # save the KE output in xls
     export=Output()
     
-    # save KE results in Excel
     export.PrintStatisticalMeasures(M1_ProcTime,'M1_ProcTime_StatResults.xls')   
     export.PrintStatisticalMeasures(M2_ProcTime,'M2_ProcTime_StatResults.xls')
     
     export.PrintDistributionFit(M1_ProcTime,'M1_ProcTime_DistFitResults.xls')
     export.PrintDistributionFit(M2_ProcTime,'M2_ProcTime_DistFitResults.xls')
 
-    # save the KE output in JSON
-    jsonFile = open('JSON_ParallelStations_Output.json',"w")     #It opens the JSON file
-    jsonFile.write(json.dumps(data, indent=True))                                           #It writes the updated data to the JSON file 
-    jsonFile.close()                                                                        #It closes the file
 
     # save the simulation output
     jsonFile = open('ManPyOutput.json',"w")     #It opens the JSON file
     jsonFile.write(simulationOutput)                                           #It writes the updated data to the JSON file 
-    jsonFile.close()                                                                        #It closes the file
+    jsonFile.close()                                                           #It closes the file
 
 if __name__ == '__main__':
     main()
