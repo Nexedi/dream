@@ -43,7 +43,7 @@ class SkilledRouter(Router):
     #         chosen in case of multiple criteria for different Operators
     # ======================================================================= 
     def __init__(self,id='SkilledRouter01',name='SkilledRouter01',sorting=False,outputSolutions=True,
-                 weightFactors=[2, 1, 0, 2, 2, 1], tool={},checkCondition=False,**kw):
+                 weightFactors=[2, 1, 0, 2, 0, 1], tool={},checkCondition=False,**kw):
         Router.__init__(self)
         # Flag used to notify the need for re-allocation of skilled operators to operatorPools
         self.allocation=False
@@ -153,11 +153,11 @@ class SkilledRouter(Router):
                     # it there is definition of 'technology' to group machines add this
                     if station.technology:
                         self.availableStationsDict[str(station.id)]={'stationID':station.technology,'machineID':station.id, 
-                                                                'WIP':station.wip,'lastAssignment':0}
+                                                                'WIP':station.wip,'lastAssignment':lastAssignmentTime}
                     # otherwise add just the id
                     else:
                         self.availableStationsDict[str(station.id)]={'stationID':station.id, 
-                                                                'WIP':station.wip,'lastAssignment':0}                       
+                                                                'WIP':station.wip,'lastAssignment':lastAssignmentTime}                       
                         
                 #===================================================================
                 # # operators and their skills set
