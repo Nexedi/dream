@@ -72,6 +72,7 @@ class Broker(ObjectInterruption):
     # TODO: have to signal Router that broker is asking operator, and wait till the Router decides
     # =======================================================================    
     def run(self):
+        from Globals import G
         while 1:
             # TODO: add new broker event - brokerIsCalled
             
@@ -90,8 +91,6 @@ class Broker(ObjectInterruption):
                     # update the time that the station is waiting for the operator    
                     self.timeWaitForOperatorStarted=self.env.now
                     #===============================================================
-                    from Globals import G
-
                     # if the victim already holds an entity that means that the machine's operation type
                     #     is no Load or setup, in that case the router is already invoked and the machine is already assigned an operator
                     if not self.victimQueueIsEmpty():
