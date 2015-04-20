@@ -113,6 +113,19 @@
       return gadget.aq_pleasePublishMyState(forward_kw);
     });
   }
+  
+  function getNextStepLink(gadget, portal_type, options) {
+    if (options.action === "view_machine_shift_spreadsheet") {
+      var forward_kw = {
+        action: "view_run_simulation",
+        id: options.id
+      };
+      return gadget.aq_pleasePublishMyState(forward_kw);
+    }
+    else {
+      return false;
+    }
+  }
 
   function getTitle(gadget, portal_type, options) {
     var title;
@@ -443,7 +456,8 @@
             calculateNavigationHTML(gadget, portal_type, options),
             gadget.aq_pleasePublishMyState(back_kw),
             getTitle(gadget, portal_type, options),
-            getNextLink(gadget, portal_type, options)
+            getNextLink(gadget, portal_type, options),
+            getNextStepLink(gadget, portal_type, options)
           ]);
         }).push(function (result_list) {
           var nav_html = result_list[1],
@@ -461,7 +475,6 @@
           // Update forward link
           gadget.props.element
             .getElementsByClassName("next_link")[0].href = result_list[4];
-
           // Update the navigation panel
           // Clear the previous rendering
           while (nav_element.firstChild) {
@@ -480,6 +493,28 @@
           }
           element.appendChild(page_element);
           $(element).trigger('create');
+
+          return result_list[5];
+          
+        }).push(function (next_step_link) {
+          var button = gadget.props.element
+            .getElementsByClassName("next_step_link")[0];
+          $(button).hide();
+          var idle_timer;
+          function resetTimer() {
+            clearTimeout(idle_timer);
+            idle_timer = setTimeout(function () { $(button).show() },
+                                                            idle_seconds*1000);
+          }
+          if (next_step_link !== false) {
+            button.href = next_step_link;
+            var idle_seconds = 10;
+            $(document.body).on('keydown click', resetTimer);
+            resetTimer();
+          }
+          else {
+            $(document.body).off('keydown click', resetTimer);
+          }
 
           // XXX RenderJS hack to start sub gadget services
           // Only work if this gadget has no parent.
