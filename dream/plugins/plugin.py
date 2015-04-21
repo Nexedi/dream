@@ -59,7 +59,8 @@ class Plugin(object):
 class ExecutionPlugin(Plugin):
   """Plugin to handle the execution of multiple simulation runs.
   """
-  def runOneScenario(self, data):
+  @staticmethod
+  def runOneScenario(data):
     """default method for running one scenario
     """
     return json.loads(simulate_line_json(input_data=json.dumps(data)))

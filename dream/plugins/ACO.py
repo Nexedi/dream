@@ -6,13 +6,19 @@ import time
 import random
 import operator
 import xmlrpclib
+import signal
+from multiprocessing import Pool
 
 from dream.simulation.Queue import Queue
 from dream.simulation.Operator import Operator
 from dream.simulation.Globals import getClassFromName
 
-class ACO(plugin.ExecutionPlugin):
+# run an ant in a subrocess. Can be parrallelized.
+def runAntInSubProcess(ant):
+  ant['result'] = plugin.ExecutionPlugin.runOneScenario(ant['input'])['result']
+  return ant
 
+class ACO(plugin.ExecutionPlugin):
   def _calculateAntScore(self, ant):
     """Calculate the score of this ant.
     """
@@ -57,6 +63,8 @@ class ACO(plugin.ExecutionPlugin):
     if distributor_url:
         distributor = xmlrpclib.Server(distributor_url)
 
+    multiprocessorCount = data['general'].get('multiprocessorCount')
+
     tested_ants = set()
     start = time.time()         # start counting execution time
 
@@ -97,10 +105,24 @@ class ACO(plugin.ExecutionPlugin):
                 scenario_list.append(ant)
                        
         if distributor is None:
-            # synchronous
-            for ant in scenario_list:
-                ant['result'] = self.runOneScenario(ant['input'])['result']
-
+            if multiprocessorCount:
+                self.logger.info("running multiprocessing ACO with %s processes" % multiprocessorCount)
+                # We unset our signal handler to print traceback at the end
+                # otherwise logs are confusing. 
+                sigterm_handler = signal.getsignal(signal.SIGTERM)
+                pool = Pool(processes=multiprocessorCount)
+                try:
+                    signal.signal(signal.SIGTERM, signal.SIG_DFL)
+                    scenario_list = pool.map(runAntInSubProcess, scenario_list)
+                    pool.close()
+                    pool.join()
+                finally:
+                    signal.signal(signal.SIGTERM, sigterm_handler)
+            else:
+                # synchronous
+                for ant in scenario_list:
+                    ant['result'] = self.runOneScenario(ant['input'])['result']
+        
         else: # asynchronous
             self.logger.info("Registering a job for %s scenarios" % len(scenario_list))
             start_register = time.time()
