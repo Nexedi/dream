@@ -410,8 +410,14 @@ def runSimulation(objectList=[], maxSimTime=100, numberOfReplications=1, trace='
 
     #run the replications
     for i in range(G.numberOfReplications):    
+        if G.seed:
+            G.Rnd=Random('%s%s' % (G.seed, i))
+            G.numpyRnd.random.seed(G.seed)
+        else:
+            G.Rnd=Random()
+            G.numpyRnd.random.seed()
         G.seed+=1       #increment the seed so that we get different random numbers in each run.
-        
+
         G.env=simpy.Environment()   # define a simpy environment
                                     # this is where all the simulation object 'live'
 
