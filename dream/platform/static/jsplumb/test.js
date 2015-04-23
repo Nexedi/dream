@@ -122,7 +122,7 @@
             edge: {}
         }
     });
-    QUnit.config.testTimeout = 5e3;
+    QUnit.config.testTimeout = 3e4;
     rJS(window).ready(function(g) {
         test("Sample graph can be loaded and output is equal to input", function() {
             var jsplumb_gadget;
