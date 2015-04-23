@@ -195,6 +195,14 @@
         "gadget": "Output_viewGraph", 
         "title": "Queue Statistics", 
         "type": "object_view"
+      },
+      "view_download_trace": {
+        "configuration": {
+          "output_id": "download_trace"
+        }, 
+        "gadget": "Output_viewDownloadFile", 
+        "title": "Download Trace File", 
+        "type": "object_view"
       }
     }, 
     "post_processing": {
@@ -211,6 +219,10 @@
         {
           "_class": "dream.plugins.PostProcessQueueStatistics.PostProcessQueueStatistics", 
           "output_id": "queue_statistics"
+        },
+        {
+          "_class": "dream.plugins.ParseTraceFile.ParseTraceFile", 
+          "output_id": "download_trace"
         }
       ]
     }, 
