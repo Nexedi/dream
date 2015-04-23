@@ -171,32 +171,15 @@
       }
     }, 
     "output": {
-      "view_exit_stats": {
+      "view_tabular_results": {
         "configuration": {
-          "properties": {
-            "lifespan": {
-              "type": "number"
-            }, 
-            "taktTime": {
-              "type": "number"
-            }, 
-            "throughput": {
-              "type": "number"
-            }
-          }
+          "handsontable_options": {}, 
+          "output_id": "exit_output"
         }, 
-        "gadget": "Output_viewExitStatistics", 
+        "gadget": "Output_viewSpreadsheet", 
         "title": "Exit Statistics", 
         "type": "object_view"
-      }, 
-      "view_queue_stats": {
-        "configuration": {
-          "output_id": "queue_statistics"
-        }, 
-        "gadget": "Output_viewGraph", 
-        "title": "Queue Statistics", 
-        "type": "object_view"
-      }, 
+      },
       "view_station_utilization": {
         "configuration": {
           "output_id": "station_utilization"
@@ -204,14 +187,13 @@
         "gadget": "Output_viewGraph", 
         "title": "Station Utilization", 
         "type": "object_view"
-      }, 
-      "view_tabular_results": {
+      },
+      "view_queue_stats": {
         "configuration": {
-          "handsontable_options": {}, 
-          "output_id": "exit_output"
+          "output_id": "queue_statistics"
         }, 
-        "gadget": "Output_viewSpreadsheet", 
-        "title": "Tabular_Results", 
+        "gadget": "Output_viewGraph", 
+        "title": "Queue Statistics", 
         "type": "object_view"
       }
     }, 
