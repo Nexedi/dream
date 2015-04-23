@@ -24,10 +24,11 @@ class DefaultTabularExit(plugin.OutputPreparationPlugin):
                 # when found, add a row with the results of the specific exit
                 if family=='Exit':
                     exitId=record['id']
-                    throughput=record['results'].get('throughput','undefined')
-                    taktTime=record['results'].get('takt_time','undefined')
-                    lifespan=record['results'].get('lifespan','undefined')
-                    data['result']['result_list'][0]['exit_output'].append([exitId,throughput,taktTime,lifespan]) 
+                    print record['results'].get('throughput','undefined')
+                    throughput=int((record['results'].get('throughput','undefined'))[0])
+                    taktTime=float((record['results'].get('takt_time','undefined'))[0])
+                    lifespan=float((record['results'].get('lifespan','undefined'))[0])
+                    data['result']['result_list'][0]['exit_output'].append([exitId,throughput,round(taktTime,2),round(lifespan,2)]) 
         elif numberOfReplications>1:
             # create the titles of the columns
             data['result']['result_list'][0]['exit_output'] = [['Exit Id','','Throughput','' , '','Takt Time','','', 'Lifespan',''],
@@ -41,9 +42,16 @@ class DefaultTabularExit(plugin.OutputPreparationPlugin):
                     taktTime=self.getConfidenceInterval(record['results'].get('takt_time','undefined'),confidenceLevel)
                     lifespan=self.getConfidenceInterval(record['results'].get('lifespan','undefined'),confidenceLevel)                 
                     data['result']['result_list'][0]['exit_output'].append([exitId,
-                                                                            throughput['lb'],throughput['avg'],throughput['ub'],
-                                                                            taktTime['lb'],taktTime['avg'],taktTime['ub'],
-                                                                            lifespan['lb'],lifespan['avg'],lifespan['ub']]) 
+                                                                            round(float(throughput['lb']),2),
+                                                                            round(float(throughput['avg']),2),
+                                                                            round(float(throughput['ub']),2),
+                                                                            round(float(taktTime['lb']),2),
+                                                                            round(float(taktTime['avg']),2),
+                                                                            round(float(taktTime['ub']),2),      
+                                                                            round(float(lifespan['lb']),2),
+                                                                            round(float(lifespan['avg']),2),
+                                                                            round(float(lifespan['ub']),2)                                                               
+                                                                            ]) 
         return data
     
     def getConfidenceInterval(self, value_list, confidenceLevel):
