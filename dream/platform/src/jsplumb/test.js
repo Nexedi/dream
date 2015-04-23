@@ -146,7 +146,7 @@
       {class_definition: sample_class_definition, graph: {node: {}, edge: {}} }
     );
 
-  QUnit.config.testTimeout = 5000;
+  QUnit.config.testTimeout = 30000;
 
   rJS(window).ready(function (g) {
 
