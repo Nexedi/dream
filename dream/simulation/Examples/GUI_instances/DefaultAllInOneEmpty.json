@@ -2,24 +2,6 @@
   "application_configuration": {
     "general": {
       "properties": {
-        "confidenceLevel": {
-          "default": 0.95, 
-          "description": "Confidence level for statistical analysis of stochastic experiments", 
-          "title": "Confidence level", 
-          "type": "number"
-        }, 
-        "currentDate": {
-          "default": "2014/10/01 09:00:00", 
-          "description": "The day the experiment starts, in YYYY/MM/DD HH:MM:SS format", 
-          "title": "SimulationStartTime", 
-          "type": "string"
-        }, 
-        "ke_url": {
-          "default": "http: //git.erp5.org/gitweb/dream.git/blob_plain/HEAD: /dream/KnowledgeExtraction/Mockup_Processingtimes.xls", 
-          "description": "The URL for knowledge extraction to access its data for example http: //git.erp5.org/gitweb/dream.git/blob_plain/HEAD: /dream/KnowledgeExtraction/Mockup_Processingtimes.xls", 
-          "title": "URL for Knowledge Extraction Spreadsheet", 
-          "type": "string"
-        }, 
         "maxSimTime": {
           "default": 100, 
           "description": "Length of the simulation run", 
@@ -27,25 +9,25 @@
           "type": "number"
         }, 
         "numberOfReplications": {
-          "default": 10, 
+          "default": 1, 
           "description": "Number of replications to run", 
           "title": "Number of replications", 
           "type": "integer"
         }, 
-        "processTimeout": {
-          "default": 10, 
-          "description": "Number of seconds before the calculation process is interrupted", 
-          "title": "ProcessTimeout", 
-          "type": "number"
-        }, 
         "seed": {
           "default": 1, 
-          "description": "When using the same seed, the random number generator produce the same sequence of numbers", 
+          "description": "The seed of random number generation. If empty the seed will be random", 
           "title": "Seed for random number generator", 
+          "type": "number"
+        },
+        "confidenceLevel": {
+          "default": 0.95, 
+          "description": "Confidence level for statistical analysis of stochastic experiments", 
+          "title": "Confidence level", 
           "type": "number"
         }, 
         "timeUnit": {
-          "default": "hour", 
+          "default": "minute", 
           "description": "Used for input and reporting widgets.", 
           "enum": [
             "minute", 
@@ -57,7 +39,25 @@
           ], 
           "name": "Time unit", 
           "type": "string"
+        },
+        "currentDate": {
+          "default": "2014/10/01 09:00:00", 
+          "description": "The day the experiment starts, in YYYY/MM/DD HH:MM:SS format", 
+          "title": "SimulationStartTime", 
+          "type": "string"
         }, 
+        "processTimeout": {
+          "default": 10, 
+          "description": "Number of seconds before the calculation process is interrupted", 
+          "title": "ProcessTimeout", 
+          "type": "number"
+        }, 
+        "ke_url": {
+          "default": "", 
+          "description": "The URL for knowledge extraction to access its data for example http: //git.erp5.org/gitweb/dream.git/blob_plain/HEAD: /dream/KnowledgeExtraction/Mockup_Processingtimes.xls", 
+          "title": "URL for Knowledge Extraction Spreadsheet", 
+          "type": "string"
+        }, 		
         "trace": {
           "default": "No", 
           "description": "Create an excel trace file (Yes or No)", 
@@ -828,17 +828,7 @@
     }
   }, 
   "constraints": {}, 
-  "general": {
-    "confidenceLevel": 0.95, 
-    "currentDate": "2015/01/01 09:00:00", 
-    "ke_url": "", 
-    "maxSimTime": 1000, 
-    "numberOfReplications": "1", 
-    "processTimeout": 20, 
-    "seed": null, 
-    "timeUnit": "hour", 
-    "trace": "No"
-  }, 
+  "general": {}, 
   "graph": {
     "edge": {}, 
     "node": {}
