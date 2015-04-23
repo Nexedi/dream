@@ -291,7 +291,8 @@
             }, 
             "processingTime": {
               "$ref": "#/definitions/_dist", 
-              "required": true
+              "required": true,
+			  "default":{"Fixed":{"mean":1}}
             }, 
             "setupTime": {
               "$ref": "#/definitions/_dist", 
@@ -424,26 +425,27 @@
         }, 
         {
           "properties": {
-            "entity": {
-              "default": "Dream.Part", 
-              "description": "EntityClass", 
-              "required": true, 
-              "type": "string"
-            }, 
             "id": {
               "default": "S", 
               "required": true, 
               "type": "string"
             }, 
-            "interArrivalTime": {
-              "$ref": "#/definitions/_dist", 
-              "description": "Inter-arrivaltime", 
-              "required": true
-            }, 
             "name": {
               "default": "Source", 
               "type": "string"
-            }
+            },
+            "interArrivalTime": {
+              "$ref": "#/definitions/_dist", 
+              "description": "Inter-arrivaltime", 
+              "required": true,
+			  "default":{"Fixed":{"mean":2}}
+            },
+			"entity": {
+              "default": "Dream.Part", 
+              "description": "EntityClass", 
+              "required": true, 
+              "type": "string"
+            } 
           }, 
           "type": "object"
         }
@@ -653,7 +655,7 @@
           "description": "Fixed", 
           "properties": {
             "mean": {
-              "default": 0.75, 
+              "default": 0, 
               "required": true, 
               "type": "number"
             }
