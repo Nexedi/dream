@@ -285,23 +285,22 @@
               "required": true, 
               "type": "string"
             }, 
-            "interruption": {
-              "properties": {
-                "failure": {
-                  "$ref": "#/definitions/_failureDist", 
-                  "required": true
-                }
-              }, 
-              "type": "object"
-            }, 
-            "loadTime": {
-              "$ref": "#/definitions/_dist", 
-              "required": true
-            }, 
             "name": {
               "default": "Machine", 
               "type": "string"
             }, 
+            "processingTime": {
+              "$ref": "#/definitions/_dist", 
+              "required": true
+            }, 
+            "setupTime": {
+              "$ref": "#/definitions/_dist", 
+              "required": true
+            },
+            "loadTime": {
+              "$ref": "#/definitions/_dist", 
+              "required": true
+            }, 	
             "operationType": {
               "properties": {
                 "load": {
@@ -326,15 +325,16 @@
                 "processing"
               ], 
               "type": "object"
-            }, 
-            "processingTime": {
-              "$ref": "#/definitions/_dist", 
-              "required": true
-            }, 
-            "setupTime": {
-              "$ref": "#/definitions/_dist", 
-              "required": true
-            }
+            },			
+            "interruption": {
+              "properties": {
+                "failure": {
+                  "$ref": "#/definitions/_failureDist", 
+                  "required": true
+                }
+              }, 
+              "type": "object"
+            } 
           }, 
           "type": "object"
         }
