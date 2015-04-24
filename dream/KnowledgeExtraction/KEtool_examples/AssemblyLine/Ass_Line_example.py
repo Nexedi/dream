@@ -24,12 +24,12 @@ Created on 23 Sep 2014
 
 #================= Main script of KE tool  =====================================#
 from __future__ import division
-from dream.KnowledgeExtraction.StatisticalMeasures import BasicStatisticalMeasures
+from dream.KnowledgeExtraction.StatisticalMeasures import StatisticalMeasures
 from dream.KnowledgeExtraction.DistributionFitting import Distributions
 from dream.KnowledgeExtraction.DistributionFitting import DistFittest
-from dream.KnowledgeExtraction.ReplaceMissingValues import HandleMissingValues
-from dream.KnowledgeExtraction.ImportExceldata import Import_Excel
-from dream.KnowledgeExtraction.DetectOutliers import HandleOutliers
+from dream.KnowledgeExtraction.ReplaceMissingValues import ReplaceMissingValues
+from dream.KnowledgeExtraction.ImportExceldata import ImportExceldata
+from dream.KnowledgeExtraction.DetectOutliers import DetectOutliers
 from JSONOutput import JSONOutput
 from dream.KnowledgeExtraction.CMSDOutput import CMSDOutput
 from xml.etree import ElementTree as et
@@ -45,7 +45,7 @@ worksheets = workbook.sheet_names()
 main= workbook.sheet_by_name('Export Worksheet') 
 worksheet_ProdData = worksheets[0]     #Define the worksheet with the production data
 
-A=Import_Excel()                              #Call the Python object Import_Excel
+A=ImportExceldata()                              #Call the Python object Import_Excel
 ProdData= A.Input_data(worksheet_ProdData, workbook)   #Create the Production data dictionary with keys the labels of Excel's different columns 
 
 ##Get from the ProdData dictionary the different keys and define the following lists 
@@ -248,7 +248,7 @@ for key in processStory.keys():
                 continue
 
 #Call the HandleMissingValues object and delete the missing values in the lists with the scrap quantity and processing times data 
-B= HandleMissingValues()
+B= ReplaceMissingValues()
 MA_Scrap= B.DeleteMissingValue(MA.get('ScrapQuant',[]))
 MA_Proc= B.DeleteMissingValue(MA.get('ProcTime',[]))
 M1A_Scrap= B.DeleteMissingValue(M1A.get('ScrapQuant',[]))
@@ -275,7 +275,7 @@ PaB_Scrap= B.DeleteMissingValue(PaB.get('ScrapQuant',[]))
 PaB_Proc= B.DeleteMissingValue(PaB.get('ProcTime',[]))
 
 #Call the HandleOutliers object and delete the outliers in the lists with the processing times data of each station
-C= HandleOutliers()
+C= DetectOutliers()
 MA_Proc= C.DeleteOutliers(MA_Proc)
 M1A_Proc= C.DeleteOutliers(M1A_Proc)
 M1B_Proc= C.DeleteOutliers(M1B_Proc)
@@ -290,7 +290,7 @@ PaA_Proc= C.DeleteOutliers(PaA_Proc)
 PaB_Proc= C.DeleteOutliers(PaB_Proc)
 
 #Call the BasicStatisticalMeasures object and calculate the mean value of the processing times for each station 
-E= BasicStatisticalMeasures()
+E= StatisticalMeasures()
 meanMA_Proc= E.mean(MA_Proc)
 meanM1A_Proc= E.mean(M1A_Proc)
 meanM2A_Proc= E.mean(M2A_Proc)
