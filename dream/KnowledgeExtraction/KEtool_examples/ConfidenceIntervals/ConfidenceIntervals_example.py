@@ -22,9 +22,9 @@ Created on 13 Jun 2014
 # along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
 # ===========================================================================
 
-from dream.KnowledgeExtraction.ImportCSVdata import Import_CSV
-from dream.KnowledgeExtraction.ConfidenceIntervals import Intervals
-from dream.KnowledgeExtraction.DataManipulation import DataManagement
+from dream.KnowledgeExtraction.ImportCSVdata import ImportCSVdata
+from dream.KnowledgeExtraction.ConfidenceIntervals import ConfidenceIntervals
+from dream.KnowledgeExtraction.DataManipulation import DataManipulation
 
 def main(test=0, CSVFileName='DataSet.csv',
                  csvFile=None):
@@ -32,15 +32,15 @@ def main(test=0, CSVFileName='DataSet.csv',
         CSVFileName = csvFile.name
         
     filename = CSVFileName
-    data=Import_CSV()   #call the Import_CSV module and using its method Input_data import the data set from the CSV file to the tool
+    data=ImportCSVdata()   #call the Import_CSV module and using its method Input_data import the data set from the CSV file to the tool
     Data = data.Input_data(filename)
     
     ProcTime = Data.get('ProcessingTimes',[])       #get from the returned Python dictionary the three data sets
     MTTF = Data.get('MTTF',[])
     MTTR = Data.get('MTTR',[])
     
-    CI=Intervals()  #create a Intervals object
-    DM=DataManagement()
+    CI=ConfidenceIntervals()  #create a Intervals object
+    DM=DataManipulation()
     if test:
         return DM.round(CI.ConfidIntervals(ProcTime, 0.95)), CI.ConfidIntervals(MTTR, 0.95), DM.ceiling(CI.ConfidIntervals(MTTF, 0.90))
     #print the confidence intervals of the data sets applying either 90% or 95% probability
