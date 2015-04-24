@@ -22,10 +22,10 @@ Created on 19 Feb 2014
 
 @author: Panos
 '''
-from StatisticalMeasures import BasicStatisticalMeasures
+from StatisticalMeasures import StatisticalMeasures
 
 #The HandleMissingValues object
-class HandleMissingValues(BasicStatisticalMeasures):
+class ReplaceMissingValues(StatisticalMeasures):
 #Three different approaches to handle missing values are included in this object 
     def ReplaceWithZero(self,mylist):          #Replace in the given list the missing values with zero
         i=0   
