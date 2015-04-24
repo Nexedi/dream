@@ -25,13 +25,13 @@ Created on 28 Feb 2014
 import xlrd
 import json
 from DistributionFitting import DistFittest
-from ImportExceldata import Import_Excel
+from ImportExceldata import ImportExceldata
 
 workbook = xlrd.open_workbook('Mockup_ProcessingTimes.xls')      #Using xlrd library opens the Excel document with the input data 
 worksheets = workbook.sheet_names()
 worksheet_ProcessingTimes = worksheets[0]   #It defines the worksheet_ProcessingTimes as the first sheet of the Excel file
 
-A=Import_Excel()            #Call the Import_Excel object 
+A=ImportExceldata()            #Call the Import_Excel object 
 B=DistFittest()             #Call the Distribution Fitting object
 ProcessingTimes= A.Input_data(worksheet_ProcessingTimes, workbook)  #Create a dictionary with the imported data from the Excel file
 
