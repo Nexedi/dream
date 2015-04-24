@@ -34,13 +34,6 @@ def OutputPreparation(data,extractedData):
     currentDate=configurationJSON['general']['currentDate']
     currentDate=datetime.strptime(currentDate, '%Y/%m/%d')
     
-    # set the interval capacity of the stations
-#     for operationId, operation in operations.iteritems():
-#         intervalCapacity=operation.get('intervalCapacity',[])
-#         for stationId, station in stations.iteritems():
-#             if stationId==operationId:
-#                 station['intervalCapacity']=intervalCapacity
-    
     orders=dbJSON.get('orders',{})
     configurationJSON['input']['BOM']={}
     configurationJSON['input']['BOM']['productionOrders']=[]
@@ -98,9 +91,6 @@ def OutputPreparation(data,extractedData):
                                 "name": orderId+'_'+oper+'_'+str(requiredCapacity)                                                          
                             })
                         
-#     updatedModelJSONString=json.dumps(configurationJSON, indent=5)
-#     updatedModel=open('UpdatedModel.json', mode='w')
-#     updatedModel.write(updatedModelJSONString)
     return configurationJSON
 
 
