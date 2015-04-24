@@ -24,12 +24,12 @@ Created on 19 Feb 2014
 '''
 from xlwt import Workbook
 import rpy2.robjects as robjects
-from StatisticalMeasures import BasicStatisticalMeasures
+from StatisticalMeasures import StatisticalMeasures
 from DistributionFitting import DistFittest
 
 #=========================================== The ExcelOutput object =============================================================#
 #The ExcelOutput object export in Excel document both the calculated statistical measures and the distribution fitting test of a dataset 
-class Output(BasicStatisticalMeasures,DistFittest):
+class ExcelOutput(StatisticalMeasures,DistFittest):
     
     def PrintStatisticalMeasures(self,data,fileName="StatisticalMeasuresResults.xls"):
         data=robjects.FloatVector(data)     #The given list changes into float vector in order to be handled by RPy2
