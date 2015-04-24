@@ -6,6 +6,8 @@ class PostProcessQueueStatistics(plugin.OutputPreparationPlugin, TimeSupportMixi
   """
 
   def postprocess(self, data):
+      
+      
     self.initializeTimeSupport(data)
     result = data['result']['result_list'][-1]
 
@@ -26,6 +28,7 @@ class PostProcessQueueStatistics(plugin.OutputPreparationPlugin, TimeSupportMixi
       if obj.get('family') == self.configuration_dict.get('family', 'Buffer'):
         series.append({
          "label": obj.get('name', obj['id']),
-         "data": [(self.convertToTimeStamp(time) * 1000, value) for (time, value) in obj['results']['wip_stat_list'][0]]
+         "data": [(self.convertToTimeStamp(time) * 1000, value) for (time, value) in obj['results']['wip_stat_list'][0] 
+                  if not time==float("inf")]
         })
     return data
