@@ -22,12 +22,12 @@ Created on 4 Apr 2015
 # along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
 # ===========================================================================
 
-from dream.KnowledgeExtraction.ImportCSVdata import Import_CSV
+from dream.KnowledgeExtraction.ImportCSVdata import ImportCSVdata
 from dream.KnowledgeExtraction.DistributionFitting import Distributions
 from dream.KnowledgeExtraction.DistributionFitting import DistFittest
 from dream.KnowledgeExtraction.JSONOutput import JSONOutput
-from dream.KnowledgeExtraction.DetectOutliers import HandleOutliers
-from dream.KnowledgeExtraction.ReplaceMissingValues import HandleMissingValues
+from dream.KnowledgeExtraction.DetectOutliers import DetectOutliers
+from dream.KnowledgeExtraction.ReplaceMissingValues import ReplaceMissingValues
 import json
 import os
 ################### Import data using the ImportCSVdataobject ###################################
@@ -40,7 +40,7 @@ def main(test=0, CSVFileName1='InterArrivalData.csv',
     if csvFile1:
         CSVFileName1 = csvFile1.name
     
-    CSV=Import_CSV()   #call the Import_CSV module and using its method Input_data import the data set from the CSV file to the tool
+    CSV=ImportCSVdata()   #call the Import_CSV module and using its method Input_data import the data set from the CSV file to the tool
     procData=CSV.Input_data(CSVFileName2)
     sourceData=CSV.Input_data(CSVFileName1)
     M1=procData.get('M1',[])       #get from the returned Python dictionary the data sets
@@ -49,13 +49,13 @@ def main(test=0, CSVFileName1='InterArrivalData.csv',
     
     ################### Processing of the data sets calling the following objects ###################################
     #Replace missing values calling the corresponding object
-    missingValues=HandleMissingValues()
+    missingValues=ReplaceMissingValues()
     M1=missingValues.DeleteMissingValue(M1)
     M2=missingValues.DeleteMissingValue(M2)
     S1=missingValues.ReplaceWithMean(S1)
     
     #Detect outliers calling the DetectOutliers object
-    outliers=HandleOutliers()
+    outliers=DetectOutliers()
     M1=outliers.DeleteExtremeOutliers(M1)
     M2=outliers.DeleteExtremeOutliers(M2)
     S1=outliers.DeleteOutliers(S1)
