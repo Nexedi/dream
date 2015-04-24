@@ -27,7 +27,7 @@ import traceback
 import multiprocessing
 import Queue
 from dream.KnowledgeExtraction.DistributionFitting import DistFittest
-from dream.KnowledgeExtraction.ImportExceldata import Import_Excel
+from dream.KnowledgeExtraction.ImportExceldata import ImportExceldata
 from dream.plugins.plugin import PluginRegistry
 
 import os.path
@@ -184,7 +184,7 @@ def _runKnowledgeExtraction(parameter_dict):
     worksheets = workbook.sheet_names()
     worksheet_ProcessingTimes = worksheets[0]   #It defines the worksheet_ProcessingTimes as the first sheet of the Excel file
 
-    A=Import_Excel()            #Call the Import_Excel object 
+    A=ImportExceldata()            #Call the Import_Excel object 
     B=DistFittest()             #Call the Distribution Fitting object
     ProcessingTimes= A.Input_data(worksheet_ProcessingTimes, workbook)  #Create a dictionary with the imported data from the Excel file
 
