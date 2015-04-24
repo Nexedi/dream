@@ -22,7 +22,7 @@ Created on 3 Dec 2014
 # along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
 # ===========================================================================
 
-from dream.KnowledgeExtraction.ImportExceldata import Import_Excel
+from dream.KnowledgeExtraction.ImportExceldata import ImportExceldata
 from dream.KnowledgeExtraction.DistributionFitting import DistFittest
 from dream.KnowledgeExtraction.DistributionFitting import Distributions
 import xlrd
@@ -41,7 +41,7 @@ def main(test=0, ExcelFileName1='InterarrivalsData.xls',
     worksheets = workbook2.sheet_names()
     worksheet_Proc = worksheets[0]     #Define the worksheet with the Processing time data
     
-    importData = Import_Excel()   #Call the Python object Import_Excel
+    importData = ImportExceldata()   #Call the Python object Import_Excel
     procTimes = importData.Input_data(worksheet_Proc, workbook2)   #Create the Processing times dictionary with key the M1 and values the processing time data
     
     #Get from the above dictionaries the M1 key and the Source key and define the following lists with data
@@ -56,7 +56,7 @@ def main(test=0, ExcelFileName1='InterarrivalsData.xls',
     worksheets = workbook1.sheet_names()
     worksheet_Inter = worksheets[0]     #Define the worksheet with the Inter-arrivals time data
     
-    data = Import_Excel()
+    data = ImportExceldata()
     interTimes = data.Input_data(worksheet_Inter, workbook1) #Create the Inter-arrival times dictionary with key the Source and values the inter-arrival time data
     
     S1 = interTimes.get('Source',[])  
