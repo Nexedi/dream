@@ -22,10 +22,10 @@ Created on 24 Sep 2014
 # along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
 # ===========================================================================
 
-from StatisticalMeasures import BasicStatisticalMeasures 
+from StatisticalMeasures import StatisticalMeasures 
 
 #The DetectOuliers object
-class HandleOutliers(BasicStatisticalMeasures):
+class DetectOutliers(StatisticalMeasures):
 #Two different approaches to handle the outliers are included in this object, 
 #the first one delete both the mild and extreme outliers while the second approach delete only the extreme outliers in the given data set 
     def DeleteOutliers(self,mylist):              #Delete the ouliers (both mild and extreme) in a given data set
