@@ -22,11 +22,11 @@ Created on 19 Feb 2014
 # along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
 # ===========================================================================
 
-from dream.KnowledgeExtraction.ImportExceldata import Import_Excel
+from dream.KnowledgeExtraction.ImportExceldata import ImportExceldata
 from dream.KnowledgeExtraction.DistributionFitting import DistFittest
-from dream.KnowledgeExtraction.ExcelOutput import Output
+from dream.KnowledgeExtraction.ExcelOutput import ExcelOutput
 from dream.KnowledgeExtraction.JSONOutput import JSONOutput
-from dream.KnowledgeExtraction.ReplaceMissingValues import HandleMissingValues
+from dream.KnowledgeExtraction.ReplaceMissingValues import ReplaceMissingValues
 import dream.simulation.LineGenerationJSON as ManPyMain #import ManPy main JSON script
 from xml.etree import ElementTree as et
 from dream.KnowledgeExtraction.CMSDOutput import CMSDOutput
@@ -50,12 +50,12 @@ def main(test=0, ExcelFileName='inputsTwoServers.xls',
     worksheets = workbook.sheet_names()
     worksheet_OperationTime = worksheets[0]             #It creates a variable that holds the first Excel worksheet 
      
-    X=Import_Excel()                                    #Call the import_Excel object
+    X=ImportExceldata()                                    #Call the import_Excel object
     OperationTimes= X.Input_data(worksheet_OperationTime,workbook)      #It defines a Python dictionary, giving as name OpearationTimes and as value the returned dictionary from the import_Excel object 
     Machine1_OpearationTimes = OperationTimes.get('Machine1',[])        #Two lists are defined (Machine1_OpearationTimes, Machine2_OpearationTimes) with the operation times data of each machine
     Machine2_OpearationTimes = OperationTimes.get('Machine2',[])
     
-    A=HandleMissingValues()                                     #Call the HandleMissingValues object
+    A=ReplaceMissingValues()                                     #Call the HandleMissingValues object
     Machine1_OpearationTimes= A.DeleteMissingValue(Machine1_OpearationTimes)        #It deletes the missing values in the lists with the operation times data
     Machine2_OpearationTimes= A.DeleteMissingValue(Machine2_OpearationTimes)
     
@@ -106,7 +106,7 @@ def main(test=0, ExcelFileName='inputsTwoServers.xls',
     jsonFile.close()                                                                        #It closes the file
         
     #================================ Calling the ExcelOutput object, outputs the outcomes of the statistical analysis in Excel files =============================================#
-    C=Output()
+    C=ExcelOutput()
     C.PrintDistributionFit(Machine1_OpearationTimes,'Machine1_DistFitResults.xls')   
     C.PrintStatisticalMeasures(Machine1_OpearationTimes,'Machine1_StatResults.xls')
     C.PrintDistributionFit(Machine2_OpearationTimes,'Machine2_DistFitResults.xls')   
