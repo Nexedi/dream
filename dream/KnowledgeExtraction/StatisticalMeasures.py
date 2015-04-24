@@ -27,8 +27,8 @@ from rpy2.robjects.packages import importr
 
 MASS= importr('MASS')
 
-#The BasicStatisticalMeasures object
-class BasicStatisticalMeasures(object):
+#The StatisticalMeasures object
+class StatisticalMeasures(object):
 # A variety of statistical measures are calculated in this object
     def length(self, data):                      #Calculate the length of data sample
         data=robjects.FloatVector(data)          ##The given list changes into float vector in order to be handled by RPy2
