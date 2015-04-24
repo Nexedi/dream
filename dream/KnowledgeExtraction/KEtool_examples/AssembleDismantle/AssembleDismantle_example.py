@@ -22,11 +22,11 @@ Created on 12 Jun 2014
 # along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
 # ===========================================================================
 
-from dream.KnowledgeExtraction.ImportExceldata import Import_Excel
-from dream.KnowledgeExtraction.ReplaceMissingValues import HandleMissingValues
+from dream.KnowledgeExtraction.ImportExceldata import ImportExceldata
+from dream.KnowledgeExtraction.ReplaceMissingValues import ReplaceMissingValues
 from dream.KnowledgeExtraction.DistributionFitting import Distributions
 from dream.KnowledgeExtraction.DistributionFitting import DistFittest
-from dream.KnowledgeExtraction.ExcelOutput import Output
+from dream.KnowledgeExtraction.ExcelOutput import ExcelOutput
 from dream.KnowledgeExtraction.JSONOutput import JSONOutput
 from dream.KnowledgeExtraction.CMSDOutput import CMSDOutput
 import dream.simulation.LineGenerationJSON as ManPyMain #import ManPy main JSON script
@@ -48,7 +48,7 @@ def main(test=0, ExcelFileName='inputData.xls',
     worksheet_MTTF = worksheets[1]       #Define the worksheet with Time-to-Failure data
     worksheet_MTTR = worksheets[2]       #Define the worksheet with Time-to-Repair data
     
-    A = Import_Excel()                              #Call the Python object Import_Excel
+    A = ImportExceldata()                              #Call the Python object Import_Excel
     ProcessingTimes = A.Input_data(worksheet_ProcessingTimes, workbook)   #Create the Processing Times dictionary with key the Machine 1 and values the processing time data
     MTTF=A.Input_data(worksheet_MTTF, workbook)        #Create the MTTF dictionary with key the Machine 1 and time-to-failure data 
     MTTR=A.Input_data(worksheet_MTTR, workbook)        #Create the MTTR Quantity dictionary with key the Machine 1 and time-to-repair data 
@@ -59,7 +59,7 @@ def main(test=0, ExcelFileName='inputData.xls',
     MTTR = MTTR.get('M1',[])
     
     #Call the HandleMissingValues object and replace the missing values in the lists with the mean of the non-missing values
-    B =HandleMissingValues()
+    B = ReplaceMissingValues()
     ProcTime = B.ReplaceWithMean(ProcTime)
     MTTF = B.ReplaceWithMean(MTTF)
     MTTR = B.ReplaceWithMean(MTTR)
@@ -70,7 +70,7 @@ def main(test=0, ExcelFileName='inputData.xls',
     ProcTime_dist = D.ks_test(ProcTime)
     MTTF_dist = C.Exponential_distrfit(MTTF)
     MTTR_dist = C.Exponential_distrfit(MTTR)
-     #======================== Output preparation: output the values prepared in the CMSD information model of this model ====================================================#
+    #======================== Output preparation: output the values prepared in the CMSD information model of this model ====================================================#
     if not cmsdFile:
         datafile=(os.path.join(os.path.dirname(os.path.realpath(__file__)), CMSDFileName))       #It defines the name or the directory of the XML file that is manually written the CMSD information model
         tree = et.parse(datafile)                                               #This file will be parsed using the XML.ETREE Python library
@@ -111,7 +111,7 @@ def main(test=0, ExcelFileName='inputData.xls',
     jsonFile.write(json.dumps(data2, indent=True))                                           #It writes the updated data to the JSON file 
     jsonFile.close()                                                                        #It closes the file
     #================================ Calling the ExcelOutput object, outputs the outcomes of the statistical analysis in xls files =============================================#
-    C=Output()
+    C=ExcelOutput()
     C.PrintStatisticalMeasures(ProcTime,'ProcTime_StatResults.xls')   
     C.PrintStatisticalMeasures(MTTR,'MTTR_StatResults.xls')
     C.PrintStatisticalMeasures(MTTF,'MTTF_StatResults.xls')   
