@@ -22,7 +22,7 @@ Created on 3 Dec 2014
 # along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
 # ===========================================================================
 
-from dream.KnowledgeExtraction.Transformations import BasicTransformations
+from dream.KnowledgeExtraction.Transformations import Transformations
 from dream.KnowledgeExtraction.DistributionFitting import Distributions
 from xml.etree import ElementTree as et
 from dream.KnowledgeExtraction.Simul8XML import Simul8Output
@@ -61,7 +61,7 @@ def main(test=0, simul8XMLFileName='ParallelStations.xml',
         else:
             continue
     #The  BasicTransformations object is called to conduct some data transformations     
-    transform = BasicTransformations()
+    transform = Transformations()
     procTime_MILL1=[]
     for elem in MILL1:
         t1=[]
