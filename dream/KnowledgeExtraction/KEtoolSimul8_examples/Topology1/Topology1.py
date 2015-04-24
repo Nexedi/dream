@@ -26,8 +26,8 @@ from dream.KnowledgeExtraction.DistributionFitting import Distributions
 from dream.KnowledgeExtraction.DistributionFitting import DistFittest
 from xml.etree import ElementTree as et
 from dream.KnowledgeExtraction.Simul8XML import Simul8Output
-from dream.KnowledgeExtraction.ImportCSVdata import Import_CSV
-from dream.KnowledgeExtraction.ImportExceldata import Import_Excel
+from dream.KnowledgeExtraction.ImportCSVdata import ImportCSVdata
+from dream.KnowledgeExtraction.ImportExceldata import ImportExceldata
 import xlrd
 import os
 
@@ -39,7 +39,7 @@ def main(test=0, ExcelFileName='DataSet.xlsx',
     if csvFile:
         CSVFileName = csvFile.name    
     filename = CSVFileName
-    csv = Import_CSV()   #call the Import_CSV module and using its method Input_data import the data set from the CSV file to the tool
+    csv = ImportCSVdata()   #call the Import_CSV module and using its method Input_data import the data set from the CSV file to the tool
     Data = csv.Input_data(filename)
     
     Activity2_Proc = Data.get('Activity 2',[])       #get from the returned Python dictionary the two data sets
@@ -51,7 +51,7 @@ def main(test=0, ExcelFileName='DataSet.xlsx',
     worksheets = workbook.sheet_names()
     worksheet_Inter = worksheets[0]     #Define the worksheet with the Inter-arrivals time data
     
-    data = Import_Excel()
+    data = ImportExceldata()
     interTimes = data.Input_data(worksheet_Inter, workbook) #Create the Inter-arrival times dictionary with key the Source and values the inter-arrival time data
     
     S1 = interTimes.get('Source',[])  
@@ -60,7 +60,7 @@ def main(test=0, ExcelFileName='DataSet.xlsx',
     worksheets = workbook.sheet_names()
     worksheet_Fail = worksheets[1]     #Define the worksheet with the failures data (MTTF,MTTR)
     
-    data = Import_Excel()
+    data = ImportExceldata()
     failures = data.Input_data(worksheet_Fail, workbook) #Create the failures dictionary with key the MTTF and MTTR data points
     
     MTTF = failures.get('MTTF',[])  
