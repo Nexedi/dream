@@ -22,15 +22,15 @@ Created on 19 Feb 2014
 # along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
 # ===========================================================================
 
-from dream.KnowledgeExtraction.StatisticalMeasures import BasicStatisticalMeasures
-from dream.KnowledgeExtraction.DataManipulation import DataManagement
+from dream.KnowledgeExtraction.StatisticalMeasures import StatisticalMeasures
+from dream.KnowledgeExtraction.DataManipulation import DataManipulation
 from dream.KnowledgeExtraction.DistributionFitting import DistFittest
 from dream.KnowledgeExtraction.DistributionFitting import Distributions
 from CMSD_Output import CMSD_example
 from JSON_Output import JSON_example
-from dream.KnowledgeExtraction.ExcelOutput import Output
-from dream.KnowledgeExtraction.ReplaceMissingValues import HandleMissingValues
-from dream.KnowledgeExtraction.ImportExceldata import Import_Excel
+from dream.KnowledgeExtraction.ExcelOutput import ExcelOutput
+from dream.KnowledgeExtraction.ReplaceMissingValues import ReplaceMissingValues
+from dream.KnowledgeExtraction.ImportExceldata import ImportExceldata
 import xlrd
 #import ManPy main JSON script
 import dream.simulation.LineGenerationJSON as ManPyMain 
@@ -42,7 +42,7 @@ worksheets = workbook.sheet_names()
 worksheet_ProcessingTimes = worksheets[1]     #Define the worksheet with the Processing times data
 worksheet_ScrapQuantity = worksheets[0]       #Define the worksheet with the Scrap Quantity data
 
-A=Import_Excel()                              #Call the Python object Import_Excel
+A=ImportExceldata()                              #Call the Python object Import_Excel
 ProcessingTimes= A.Input_data(worksheet_ProcessingTimes, workbook)   #Create the Processing Times dictionary with keys the different stations in the line and values the processing times of different batches in these stations
 ScrapQuantity=A.Input_data(worksheet_ScrapQuantity, workbook)        #Create the Scrap Quantity dictionary with keys the different stations in the line and values the scrap quantity data of different batches in these stations
 
@@ -76,7 +76,7 @@ P11_Proc= ProcessingTimes.get('P11',[])
 
 #Call the HandleMissingValues object and replace with zero the missing values in the lists with the scrap quantity data 
 
-B=HandleMissingValues()
+B=ReplaceMissingValues()
 
 P1_Scrap= B.ReplaceWithZero(P1_Scrap)
 P2_Scrap= B.ReplaceWithZero(P2_Scrap)
@@ -91,11 +91,11 @@ P10_Scrap= B.ReplaceWithZero(P10_Scrap)
 P11_Scrap= B.ReplaceWithZero(P11_Scrap)
 
 # #Call the BasicSatatisticalMeasures object 
-C=BasicStatisticalMeasures()
+C=StatisticalMeasures()
 #Create a list with values the calculated mean value of scrap quantity on the different stations in the line
 listScrap=[C.mean(P1_Scrap),C.mean(P2_Scrap),C.mean(P3_Scrap),C.mean(P4_Scrap),C.mean(P5_Scrap),C.mean(P6_Scrap),C.mean(P7_Scrap),C.mean(P8_Scrap),C.mean(P9_Scrap),C.mean(P10_Scrap), C.mean(P11_Scrap)] 
  
-D= DataManagement()
+D= DataManipulation()
  
 listScrap=D.round(listScrap)       #Round the mean values of the list so as to get integers
 
@@ -126,7 +126,7 @@ dictProc['P9']= E.ks_test(P9_Proc)
 dictProc['P10']= E.ks_test(P10_Proc)
 dictProc['P11']= E.ks_test(P11_Proc) 
 
-F= Output()
+F= ExcelOutput()
 F.PrintDistributionFit(P2_Proc,"DistributionFittingResults_P2Proc.xls")
 F.PrintStatisticalMeasures(P2_Proc, "StatisticalMeasuresResults_P2Proc.xls")
 
