@@ -22,10 +22,10 @@ Created on 15 Jun 2014
 # along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
 # ===========================================================================
 
-from dream.KnowledgeExtraction.Transformations import BasicTransformations
+from dream.KnowledgeExtraction.Transformations import Transformations
 from dream.KnowledgeExtraction.DistributionFitting import DistFittest
 from dream.KnowledgeExtraction.DistributionFitting import Distributions
-from dream.KnowledgeExtraction.ExcelOutput import Output
+from dream.KnowledgeExtraction.ExcelOutput import ExcelOutput
 from dream.KnowledgeExtraction.JSONOutput import JSONOutput
 from dream.KnowledgeExtraction.ImportDatabase import ConnectionData
 from xml.etree import ElementTree as et
@@ -64,7 +64,7 @@ def main(test=0, JSONFileName='JSON_example.json',
         else:
             continue
         
-    transform = BasicTransformations()
+    transform = Transformations()
     procTime_MILL1=[]
     for elem in MILL1:
         t1=[]
@@ -178,7 +178,7 @@ def main(test=0, JSONFileName='JSON_example.json',
     jsonFile.close()                                             #It closes the file
     
     #=================== Calling the ExcelOutput object, outputs the outcomes of the statistical analysis in xls files ==========================#
-    export=Output()
+    export=ExcelOutput()
     
     export.PrintStatisticalMeasures(procTime_MILL1,'procTimeMILL1_StatResults.xls')   
     export.PrintStatisticalMeasures(procTime_MILL2,'procTimeMILL2_StatResults.xls')
