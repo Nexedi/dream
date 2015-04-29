@@ -1295,7 +1295,7 @@
       "con_39": {
         "_class": "Dream.Edge", 
         "destination": "BDA", 
-        "source": "Dream.BatchSource1"
+        "source": "Source"
       }, 
       "con_401": {
         "_class": "Dream.Edge", 
@@ -1315,7 +1315,7 @@
       "con_57": {
         "_class": "Dream.Edge", 
         "destination": "BDB", 
-        "source": "Dream.BatchSource1"
+        "source": "Source"
       }, 
       "con_581": {
         "_class": "Dream.Edge", 
@@ -1516,7 +1516,7 @@
 			"capacity": 4, 
 			"schedulingRule": "FIFO"
 	   }, 
-	   "Dream.BatchSource1": {
+	   "Source": {
 			"entity": "Dream.Batch", 
 			"interArrivalTime": {
 				 "distribution": "Fixed", 
@@ -1531,7 +1531,7 @@
 				 "left": 0.002304632153726827
 			}, 
 			"_class": "Dream.BatchSource", 
-			"id": "Dream.BatchSource1"
+			"id": "Source"
 	   }, 
 	   "St7D": {
 			"coordinate": {
