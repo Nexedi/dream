@@ -38,6 +38,7 @@ class TimeSupportMixin(object):
     """Convert simulation clock time to real world time, as python datetime object.
     """
     assert self.initialized, "initializeTimeSupport has not been called"
+    assert not simulation_time==float("inf"), "cannot convert infinite simulation time to real world time"
     return self.now + timedelta(days=simulation_time/self.timeUnitPerDay)
 
   def convertToFormattedRealWorldTime(self, simulation_time):
