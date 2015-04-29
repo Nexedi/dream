@@ -377,40 +377,7 @@
     }
   }, 
   "class_definition": {
-    "Dream.BatchDecomposition": {
-      "_class": "node", 
-      "allOf": [
-        {
-          "$ref": "#/node"
-        }, 
-        {
-          "properties": {
-            "id": {
-              "default": "D", 
-              "type": "string"
-            }, 
-            "name": {
-              "default": "Decomposition", 
-              "type": "string"
-            }, 
-            "numberOfSubBatches": {
-              "default": 10, 
-              "description": "Number Of Sub-Batches", 
-              "type": "number"
-            }
-          }, 
-          "type": "object"
-        }
-      ], 
-      "css": {
-        "backgroundColor": "#dfd", 
-        "backgroundImage": "linear-gradient(to bottom, #dfd 0%, #cec 100%)", 
-        "border": "1px solid #bcb"
-      }, 
-      "description": "A station that decomposes a batch into sub-batches", 
-      "name": "Decomposition"
-    }, 
-    "Dream.BatchDecompositionStartTime": {
+ "Dream.BatchDecompositionStartTime": {
       "_class": "Dream.BatchDecompositionStartTime", 
       "allOf": [
         {
@@ -420,11 +387,8 @@
           "properties": {
             "id": {
               "default": "D", 
-              "type": "string"
-            }, 
-            "name": {
-              "default": "Decomposition", 
-              "type": "string"
+              "type": "string",
+			  "name": "Name"
             }, 
             "numberOfSubBatches": {
               "default": 10, 
@@ -453,11 +417,8 @@
           "properties": {
             "id": {
               "default": "R", 
-              "type": "string"
-            }, 
-            "name": {
-              "default": "Reassembly", 
-              "type": "string"
+              "type": "string",
+			  "name": "Name"
             }, 
             "numberOfSubBatches": {
               "default": 10, 
@@ -475,7 +436,37 @@
       }, 
       "description": "A station that assembles sub-batches back into a parent batch", 
       "name": "Reassembly"
-    }, 
+    },
+    "Dream.BatchDecomposition": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "id": {
+              "default": "D", 
+              "type": "string",
+			  "name": "Name"
+            }, 
+            "numberOfSubBatches": {
+              "default": 10, 
+              "description": "Number Of Sub-Batches", 
+              "type": "number"
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#dfd", 
+        "backgroundImage": "linear-gradient(to bottom, #dfd 0%, #cec 100%)", 
+        "border": "1px solid #bcb"
+      }, 
+      "description": "A station that decomposes a batch into sub-batches", 
+      "name": "Decomposition"
+    },
     "Dream.BatchScrapMachine": {
       "_class": "node", 
       "allOf": [
@@ -495,19 +486,19 @@
               "name": "Operation", 
               "required": true, 
               "type": "string"
-            }, 
+            },  
             "processingTime": {
               "$ref": "#/definitions/_dist", 
-              "default": 0.1, 
               "description": "The time that this station needs in order to process a unit", 
+			  "default": 0.1, 
               "name": "Processing time (per unit)", 
               "required": true
             }, 
-            "workingBatchSize": {
-              "default": 10, 
-              "name": "Working batch size in this station", 
-              "type": "number"
-            }
+			"workingBatchSize": {
+			  "default": 10, 
+			  "name": "Working batch size in this station", 
+			  "type": "number"
+			} 
           }, 
           "type": "object"
         }
@@ -532,36 +523,34 @@
         }, 
         {
           "properties": {
+            "id": {
+              "default": "S", 
+              "name": "ID", 
+              "required": true, 
+              "type": "string",
+			  "name": "Name"
+            }, 
+            "interArrivalTime": {
+              "$ref": "#/definitions/_dist", 
+              "description": "Inter-arrival time", 
+              "name": "Inter-arrival time", 
+			  "default": {"Fixed":{"mean":1}}, 
+              "required": true
+            }, 
             "batchNumberOfUnits": {
               "description": "the number of units of the created batches", 
-              "name": "Number Of Units", 
-              "required": true, 
-              "type": "number"
-            }, 
+              "name": "Number Of Units",
+              "type": "number",
+			  "default": 80, 
+              "required": true
+            },
             "entity": {
               "default": "Dream.Batch", 
               "description": "Manpy class for entities", 
               "name": "Entity Class", 
               "required": true, 
               "type": "string"
-            }, 
-            "id": {
-              "default": "S", 
-              "name": "ID", 
-              "required": true, 
-              "type": "string"
-            }, 
-            "interArrivalTime": {
-              "$ref": "#/definitions/_dist", 
-              "description": "Inter-arrival time", 
-              "name": "Inter-arrival time", 
-              "required": true
-            }, 
-            "name": {
-              "default": "Source", 
-              "name": "Name", 
-              "type": "string"
-            }
+            } 
           }, 
           "type": "object"
         }
@@ -653,12 +642,9 @@
           "properties": {
             "id": {
               "default": "E", 
-              "required": true
-            }, 
-            "name": {
-              "default": "Exit", 
-              "type": "string"
-            }
+              "required": true,
+			  "name": "Name"	
+            } 
           }, 
           "type": "object"
         }
@@ -686,11 +672,8 @@
             }, 
             "id": {
               "default": "C", 
-              "type": "string"
-            }, 
-            "name": {
-              "default": "Clearance", 
-              "type": "string"
+              "type": "string",
+			  "name": "Name"
             }, 
             "schedulingRule": {
               "$ref": "#/definitions/_schedulingRule", 
@@ -738,11 +721,8 @@
             "id": {
               "default": "E", 
               "required": true, 
-              "type": "string"
-            }, 
-            "name": {
-              "default": "Entry", 
-              "type": "string"
+              "type": "string",
+			  "name": "Name"
             }
           }, 
           "type": "object"
@@ -764,17 +744,14 @@
         }, 
         {
           "properties": {
+            "id": {
+              "default": "Q", 
+              "type": "string",
+			  "name": "Name"
+            }, 
             "capacity": {
               "$ref": "#/definitions/_capacity", 
               "required": true
-            }, 
-            "id": {
-              "default": "Q", 
-              "type": "string"
-            }, 
-            "name": {
-              "default": "Queue", 
-              "type": "string"
             }, 
             "schedulingRule": {
               "$ref": "#/definitions/_schedulingRule", 
@@ -800,18 +777,15 @@
         }, 
         {
           "properties": {
+            "id": {
+              "default": "RQ", 
+              "type": "string",
+			  "name": "Name"
+            },
             "capacity": {
               "$ref": "#/definitions/_capacity", 
               "required": true
-            }, 
-            "id": {
-              "default": "RQ", 
-              "type": "string"
-            }, 
-            "name": {
-              "default": "RoutingQueue", 
-              "type": "string"
-            }, 
+            }, 			
             "schedulingRule": {
               "$ref": "#/definitions/_schedulingRule", 
               "required": true
@@ -831,8 +805,8 @@
     "definitions": {
       "_capacity": {
         "default": 1, 
+        "name": "Capacity",
         "description": "capacity of the queue. -1 means infinite", 
-        "name": "Capacity", 
         "oneOf": [
           {
             "enum": [
@@ -930,18 +904,19 @@
           }
         ]
       }, 
-      "_operationType": {
+      "_operationType": { 
         "description": "the type of operations that are performed manually in the machine", 
+        "name": "Operation type", 
         "enum": [
           "MT-Load", 
           "MT-Load-Setup", 
           "MT-Load-Setup-Processing"
         ], 
-        "name": "Operation type", 
         "type": "string"
       }, 
       "_schedulingRule": {
-        "default": "FIFO", 
+        "default": "FIFO",
+        "name": "Scheduling Rule",
         "description": "Scheduling Rule of this buffer", 
         "enum": [
           "FIFO", 
@@ -956,7 +931,6 @@
           "WINQ", 
           "WT"
         ], 
-        "name": "Scheduling Rule", 
         "type": "string"
       }, 
       "distributionTypes": {
@@ -1005,12 +979,12 @@
         "_failure": {
           "properties": {
             "TTF": {
-              "$ref": "#/definitions/_dist", 
-              "name": "Time to Failure"
+              "name": "Time to Failure",
+              "$ref": "#/definitions/_dist"
             }, 
             "TTR": {
-              "$ref": "#/definitions/_dist", 
-              "name": "Time to Repair"
+              "name": "Time to Repair",
+              "$ref": "#/definitions/_dist"
             }, 
             "repairman": {
               "description": "Repairman", 
@@ -1184,13 +1158,13 @@
             "top": "number"
           }, 
           "type": "object"
-        }
+        } 
       }, 
       "required": [
         "_class"
       ], 
       "type": "object"
-    }
+    }    
   }, 
   "constraints": {}, 
   "general": {
@@ -1396,760 +1370,741 @@
       }
     }, 
     "node": {
-      "1_RO_E_M_A_A": {
-        "_class": "Dream.BatchScrapMachine", 
-        "coordinate": {
-          "left": 0.20124013508759986, 
-          "top": 0.013362728902320656
-        }, 
-        "id": "1_RO_E_M_A_A", 
-        "interruption": {
-          "failure": {
-            "TTF": {
-              "Fixed": {
-                "mean": 0
-              }, 
-              "distribution": "Fixed"
-            }, 
-            "TTR": {
-              "Fixed": {
-                "mean": 0
-              }, 
-              "distribution": "Fixed"
-            }, 
-            "failureDistribution": "No", 
-            "repairman": ""
-          }
-        }, 
-        "processingTime": {
-          "Fixed": {
-            "mean": 0.75
-          }, 
-          "distribution": "Fixed"
-        }, 
-        "scrapping": {
-          "Fixed": {
-            "mean": 0
-          }, 
-          "distribution": "Fixed"
-        }, 
-        "technology": "1_RO_E_M_A", 
-        "workingBatchSize": 20
-      }, 
-      "1_RO_E_M_A_B": {
-        "_class": "Dream.BatchScrapMachine", 
-        "coordinate": {
-          "left": 0.2018021659108287, 
-          "top": 0.22399692088997386
-        }, 
-        "id": "1_RO_E_M_A_B", 
-        "interruption": {
-          "failure": {
-            "TTF": {
-              "Fixed": {
-                "mean": 0
-              }, 
-              "distribution": "Fixed"
-            }, 
-            "TTR": {
-              "Fixed": {
-                "mean": 0
-              }, 
-              "distribution": "Fixed"
-            }, 
-            "failureDistribution": "No", 
-            "repairman": ""
-          }
-        }, 
-        "processingTime": {
-          "Fixed": {
-            "mean": 0.75
-          }, 
-          "distribution": "Fixed"
-        }, 
-        "scrapping": {
-          "Fixed": {
-            "mean": 0
-          }, 
-          "distribution": "Fixed"
-        }, 
-        "technology": "1_RO_E_M_A", 
-        "workingBatchSize": 20
-      }, 
-      "2_P_B_A_A": {
-        "_class": "Dream.BatchScrapMachine", 
-        "coordinate": {
-          "left": 0.41773081483750907, 
-          "top": 0.01541903648040755
-        }, 
-        "id": "2_P_B_A_A", 
-        "interruption": {
-          "failure": {
-            "TTF": {
-              "Fixed": {
-                "mean": 0
-              }, 
-              "distribution": "Fixed"
-            }, 
-            "TTR": {
-              "Fixed": {
-                "mean": 0
-              }, 
-              "distribution": "Fixed"
-            }, 
-            "failureDistribution": "No", 
-            "repairman": ""
-          }
-        }, 
-        "processingTime": {
-          "Fixed": {
-            "mean": 0.75
-          }, 
-          "distribution": "Fixed"
-        }, 
-        "scrapping": {
-          "Fixed": {
-            "mean": 0
-          }, 
-          "distribution": "Fixed"
-        }, 
-        "technology": "2_P_B_A", 
-        "workingBatchSize": 20
-      }, 
-      "2_P_B_A_B": {
-        "_class": "Dream.BatchScrapMachine", 
-        "coordinate": {
-          "left": 0.41230602697692575, 
-          "top": 0.2219242159080133
-        }, 
-        "id": "2_P_B_A_B", 
-        "interruption": {
-          "failure": {
-            "TTF": {
-              "Fixed": {
-                "mean": 0
-              }, 
-              "distribution": "Fixed"
-            }, 
-            "TTR": {
-              "Fixed": {
-                "mean": 0
-              }, 
-              "distribution": "Fixed"
-            }, 
-            "failureDistribution": "No", 
-            "repairman": ""
-          }
-        }, 
-        "processingTime": {
-          "Fixed": {
-            "mean": 0.75
-          }, 
-          "distribution": "Fixed"
-        }, 
-        "scrapping": {
-          "Fixed": {
-            "mean": 0
-          }, 
-          "distribution": "Fixed"
-        }, 
-        "technology": "2_P_B_A", 
-        "workingBatchSize": 20
-      }, 
-      "3_D_B_A_A": {
-        "_class": "Dream.BatchScrapMachine", 
-        "coordinate": {
-          "left": 0.6332996089721042, 
-          "top": 0.01725281110758568
-        }, 
-        "id": "3_D_B_A_A", 
-        "interruption": {
-          "failure": {
-            "TTF": {
-              "Fixed": {
-                "mean": 0
-              }, 
-              "distribution": "Fixed"
-            }, 
-            "TTR": {
-              "Fixed": {
-                "mean": 0
-              }, 
-              "distribution": "Fixed"
-            }, 
-            "failureDistribution": "No", 
-            "repairman": ""
-          }
-        }, 
-        "processingTime": {
-          "Fixed": {
-            "mean": 0.75
-          }, 
-          "distribution": "Fixed"
-        }, 
-        "scrapping": {
-          "Fixed": {
-            "mean": 0
-          }, 
-          "distribution": "Fixed"
-        }, 
-        "technology": "3_D_B_A", 
-        "workingBatchSize": 20
-      }, 
-      "3_D_B_A_B": {
-        "_class": "Dream.BatchScrapMachine", 
-        "coordinate": {
-          "left": 0.6340488812407455, 
-          "top": 0.22379953969289082
-        }, 
-        "id": "3_D_B_A_B", 
-        "interruption": {
-          "failure": {
-            "TTF": {
-              "Fixed": {
-                "mean": 0
-              }, 
-              "distribution": "Fixed"
-            }, 
-            "TTR": {
-              "Fixed": {
-                "mean": 0
-              }, 
-              "distribution": "Fixed"
-            }, 
-            "failureDistribution": "No", 
-            "repairman": ""
-          }
-        }, 
-        "processingTime": {
-          "Fixed": {
-            "mean": 0.75
-          }, 
-          "distribution": "Fixed"
-        }, 
-        "scrapping": {
-          "Fixed": {
-            "mean": 0
-          }, 
-          "distribution": "Fixed"
-        }, 
-        "technology": "3_D_B_A", 
-        "workingBatchSize": 20
-      }, 
-      "4_Cut & Bend": {
-        "_class": "Dream.BatchScrapMachine", 
-        "coordinate": {
-          "left": 0.9660242062681554, 
-          "top": 0.17336308060894598
-        }, 
-        "id": "4_Cut & Bend", 
-        "interruption": {
-          "failure": {
-            "TTF": {
-              "Fixed": {
-                "mean": 0
-              }, 
-              "distribution": "Fixed"
-            }, 
-            "TTR": {
-              "Fixed": {
-                "mean": 0
-              }, 
-              "distribution": "Fixed"
-            }, 
-            "failureDistribution": "No", 
-            "repairman": ""
-          }
-        }, 
-        "processingTime": {
-          "Fixed": {
-            "mean": 0.1875
-          }, 
-          "distribution": "Fixed"
-        }, 
-        "scrapping": {
-          "Fixed": {
-            "mean": 0
-          }, 
-          "distribution": "Fixed"
-        }, 
-        "technology": "4_Cut & Bend", 
-        "workingBatchSize": 80
-      }, 
-      "5_Moulding": {
-        "_class": "Dream.BatchScrapMachine", 
-        "coordinate": {
-          "left": 0.10327653739447205, 
-          "top": 0.7730867922482839
-        }, 
-        "id": "5_Moulding", 
-        "interruption": {
-          "failure": ""
-        }, 
-        "processingTime": {
-          "Fixed": {
-            "mean": 0.375
-          }, 
-          "distribution": "Fixed"
-        }, 
-        "scrapping": {
-          "Fixed": {
-            "mean": 0
-          }, 
-          "distribution": "Fixed"
-        }, 
-        "technology": "5_Moulding", 
-        "workingBatchSize": 40
-      }, 
-      "6_Flag Labelling A": {
-        "_class": "Dream.BatchScrapMachine", 
-        "coordinate": {
-          "left": 0.2970488955292209, 
-          "top": 0.5764883070945124
-        }, 
-        "id": "6_Flag Labelling A", 
-        "interruption": {
-          "failure": {
-            "TTF": {
-              "Fixed": {
-                "mean": 0
-              }, 
-              "distribution": "Fixed"
-            }, 
-            "TTR": {
-              "Fixed": {
-                "mean": 0
-              }, 
-              "distribution": "Fixed"
-            }, 
-            "failureDistribution": "No", 
-            "repairman": ""
-          }
-        }, 
-        "processingTime": {
-          "Fixed": {
-            "mean": 0.1875
-          }, 
-          "distribution": "Fixed"
-        }, 
-        "scrapping": {
-          "Fixed": {
-            "mean": 0
-          }, 
-          "distribution": "Fixed"
-        }, 
-        "technology": "6_Flag Labelling", 
-        "workingBatchSize": 80
-      }, 
-      "6_Flag Labelling B": {
-        "_class": "Dream.BatchScrapMachine", 
-        "coordinate": {
-          "left": 0.2918428202821252, 
-          "top": 0.9611889446138
-        }, 
-        "id": "6_Flag Labelling B", 
-        "interruption": {
-          "failure": {
-            "TTF": {
-              "Fixed": {
-                "mean": 0
-              }, 
-              "distribution": "Fixed"
-            }, 
-            "TTR": {
-              "Fixed": {
-                "mean": 0
-              }, 
-              "distribution": "Fixed"
-            }, 
-            "failureDistribution": "No", 
-            "repairman": ""
-          }
-        }, 
-        "processingTime": {
-          "Fixed": {
-            "mean": 0.1875
-          }, 
-          "distribution": "Fixed"
-        }, 
-        "scrapping": {
-          "Fixed": {
-            "mean": 0
-          }, 
-          "distribution": "Fixed"
-        }, 
-        "technology": "6_Flag Labelling", 
-        "workingBatchSize": 80
-      }, 
-      "7_Pressure A": {
-        "_class": "Dream.BatchScrapMachine", 
-        "coordinate": {
-          "left": 0.4590469615218773, 
-          "top": 0.560438540581452
-        }, 
-        "id": "7_Pressure A", 
-        "interruption": {
-          "failure": {
-            "TTF": {
-              "Fixed": {
-                "mean": 0
-              }, 
-              "distribution": "Fixed"
-            }, 
-            "TTR": {
-              "Fixed": {
-                "mean": 0
-              }, 
-              "distribution": "Fixed"
-            }, 
-            "failureDistribution": "No", 
-            "repairman": ""
-          }
-        }, 
-        "processingTime": {
-          "Fixed": {
-            "mean": 1
-          }, 
-          "distribution": "Fixed"
-        }, 
-        "scrapping": {
-          "Fixed": {
-            "mean": 0
-          }, 
-          "distribution": "Fixed"
-        }, 
-        "technology": "7_Pressure", 
-        "workingBatchSize": 10
-      }, 
-      "7_Pressure B": {
-        "_class": "Dream.BatchScrapMachine", 
-        "coordinate": {
-          "left": 0.4590469615218773, 
-          "top": 0.9608962942130924
-        }, 
-        "id": "7_Pressure B", 
-        "interruption": {
-          "failure": {
-            "TTF": {
-              "Fixed": {
-                "mean": 0
-              }, 
-              "distribution": "Fixed"
-            }, 
-            "TTR": {
-              "Fixed": {
-                "mean": 0
-              }, 
-              "distribution": "Fixed"
-            }, 
-            "failureDistribution": "No", 
-            "repairman": ""
-          }
-        }, 
-        "processingTime": {
-          "Fixed": {
-            "mean": 1
-          }, 
-          "distribution": "Fixed"
-        }, 
-        "scrapping": {
-          "Fixed": {
-            "mean": 0
-          }, 
-          "distribution": "Fixed"
-        }, 
-        "technology": "7_Pressure", 
-        "workingBatchSize": 10
-      }, 
-      "8_Carding": {
-        "_class": "Dream.BatchScrapMachine", 
-        "coordinate": {
-          "left": 0.7066792229768067, 
-          "top": 0.6281334023947263
-        }, 
-        "id": "8_Carding", 
-        "interruption": {
-          "failure": {
-            "TTF": {
-              "Fixed": {
-                "mean": 0
-              }, 
-              "distribution": "Fixed"
-            }, 
-            "TTR": {
-              "Fixed": {
-                "mean": 0
-              }, 
-              "distribution": "Fixed"
-            }, 
-            "failureDistribution": "No", 
-            "repairman": ""
-          }
-        }, 
-        "processingTime": {
-          "Fixed": {
-            "mean": 0.5
-          }, 
-          "distribution": "Fixed"
-        }, 
-        "scrapping": {
-          "Fixed": {
-            "mean": 0
-          }, 
-          "distribution": "Fixed"
-        }, 
-        "technology": "8_Carding", 
-        "workingBatchSize": 10
-      }, 
-      "9_Packaging A": {
-        "_class": "Dream.BatchScrapMachine", 
-        "coordinate": {
-          "left": 0.8276143790849673, 
-          "top": 0.4918622893425504
-        }, 
-        "id": "9_Packaging A", 
-        "interruption": {
-          "failure": {
-            "TTF": {
-              "Fixed": {
-                "mean": 0
-              }, 
-              "distribution": "Fixed"
-            }, 
-            "TTR": {
-              "Fixed": {
-                "mean": 0
-              }, 
-              "distribution": "Fixed"
-            }, 
-            "failureDistribution": "No", 
-            "repairman": ""
-          }
-        }, 
-        "processingTime": {
-          "Fixed": {
-            "mean": 1
-          }, 
-          "distribution": "Fixed"
-        }, 
-        "scrapping": {
-          "Fixed": {
-            "mean": 0
-          }, 
-          "distribution": "Fixed"
-        }, 
-        "technology": "9_Packaging", 
-        "workingBatchSize": 10
-      }, 
-      "9_Packaging B": {
-        "_class": "Dream.BatchScrapMachine", 
-        "coordinate": {
-          "left": 0.8403105780796151, 
-          "top": 0.9232952413566464
-        }, 
-        "id": "9_Packaging B", 
-        "processingTime": {
-          "Fixed": {
-            "mean": 1
-          }, 
-          "distribution": "Fixed"
-        }, 
-        "technology": "9_Packaging", 
-        "workingBatchSize": 10
-      }, 
-      "B1": {
-        "_class": "Dream.LineClearance", 
-        "capacity": 2, 
-        "coordinate": {
-          "left": 0.3081327478571614, 
-          "top": 0.021036307350047176
-        }, 
-        "id": "B1", 
-        "name": "B1", 
-        "schedulingRule": "FIFO"
-      }, 
-      "B10": {
-        "_class": "Dream.Queue", 
-        "capacity": 4, 
-        "coordinate": {
-          "left": 0.37830510689257246, 
-          "top": 0.7550041875821227
-        }, 
-        "id": "B10", 
-        "name": "B10", 
-        "schedulingRule": "FIFO"
-      }, 
-      "B11": {
-        "_class": "Dream.Queue", 
-        "capacity": 4, 
-        "coordinate": {
-          "left": 0.5418509694588267, 
-          "top": 0.7716845469524345
-        }, 
-        "name": "B11", 
-        "schedulingRule": "FIFO"
-      }, 
-      "B12": {
-        "_class": "Dream.RoutingQueue", 
-        "capacity": 23, 
-        "coordinate": {
-          "left": 0.7780022382216776, 
-          "top": 0.7112343913913901
-        }, 
-        "name": "B12", 
-        "schedulingRule": "FIFO"
-      }, 
-      "B2": {
-        "_class": "Dream.LineClearance", 
-        "capacity": 2, 
-        "coordinate": {
-          "left": 0.5232485073555496, 
-          "top": 0.013666696062206444
-        }, 
-        "name": "B2", 
-        "schedulingRule": "FIFO"
-      }, 
-      "B3": {
-        "_class": "Dream.LineClearance", 
-        "capacity": 2, 
-        "coordinate": {
-          "left": 0.30516154587152466, 
-          "top": 0.21432431691821405
-        }, 
-        "name": "B3", 
-        "schedulingRule": "FIFO"
-      }, 
-      "B4": {
-        "_class": "Dream.LineClearance", 
-        "capacity": 2, 
-        "coordinate": {
-          "left": 0.5187142701900398, 
-          "top": 0.24087466145736686
-        }, 
-        "name": "B4", 
-        "schedulingRule": "FIFO"
-      }, 
-      "B7": {
-        "_class": "Dream.Queue", 
-        "capacity": 4, 
-        "coordinate": {
-          "left": 0.8453666868818541, 
-          "top": 0.07788764399810784
-        }, 
-        "name": "B7", 
-        "schedulingRule": "FIFO"
-      }, 
-      "B8": {
-        "_class": "Dream.Queue", 
-        "capacity": 4, 
-        "coordinate": {
-          "left": 0.004430433936801263, 
-          "top": 0.7879379917839283
-        }, 
-        "name": "B8", 
-        "schedulingRule": "FIFO"
-      }, 
-      "B9": {
-        "_class": "Dream.Queue", 
-        "capacity": 4, 
-        "coordinate": {
-          "left": 0.18889698258498985, 
-          "top": 0.7747840492453537
-        }, 
-        "name": "B9", 
-        "schedulingRule": "FIFO"
-      }, 
-      "BDA": {
-        "_class": "Dream.BatchDecomposition", 
-        "coordinate": {
-          "left": 0.09978623503357781, 
-          "top": 0.01725281110758568
-        }, 
-        "name": "BDA", 
-        "numberOfSubBatches": 4
-      }, 
-      "BDB": {
-        "_class": "Dream.BatchDecomposition", 
-        "coordinate": {
-          "left": 0.09762884137511894, 
-          "top": 0.22590515117972654
-        }, 
-        "name": "BDB", 
-        "numberOfSubBatches": 4
-      }, 
-      "BRA": {
-        "_class": "Dream.BatchReassembly", 
-        "coordinate": {
-          "left": 0.7345017315221779, 
-          "top": 0.005869386959240394
-        }, 
-        "name": "BRA", 
-        "numberOfSubBatches": 4
-      }, 
-      "BRB": {
-        "_class": "Dream.BatchReassembly", 
-        "coordinate": {
-          "left": 0.732266858260719, 
-          "top": 0.22001598561825875
-        }, 
-        "name": "BRB", 
-        "numberOfSubBatches": 4
-      }, 
-      "Dream.BatchSource1": {
-        "_class": "Dream.BatchSource", 
-        "batchNumberOfUnits": "80", 
-        "coordinate": {
-          "left": 0.002304632153726827, 
-          "top": 0.10443803914040899
-        }, 
-        "entity": "Dream.Batch", 
-        "id": "Dream.BatchSource1", 
-        "interArrivalTime": {
-          "Fixed": {
-            "mean": 0.5
-          }, 
-          "distribution": "Fixed"
-        }, 
-        "name": "Source", 
-        "numberOfUnits": "80"
-      }, 
-      "Dream.Exit1": {
-        "_class": "Dream.Exit", 
-        "coordinate": {
-          "left": 0.9994692573189933, 
-          "top": 0.7470423170386943
-        }, 
-        "name": "Exit"
-      }, 
-      "St7D": {
-        "_class": "Dream.BatchDecomposition", 
-        "coordinate": {
-          "left": 0.6385832092381459, 
-          "top": 0.7640847057948053
-        }, 
-        "name": "St7_D", 
-        "numberOfSubBatches": 8
-      }, 
-      "St8RA": {
-        "_class": "Dream.BatchReassembly", 
-        "coordinate": {
-          "left": 0.9697830337196626, 
-          "top": 0.5350013587825962
-        }, 
-        "id": "St8RA", 
-        "name": "St8R_A", 
-        "numberOfSubBatches": 8
-      }, 
-      "St8RB": {
-        "_class": "Dream.BatchReassembly", 
-        "coordinate": {
-          "left": 0.9770689321903234, 
-          "top": 0.960991679081057
-        }, 
-        "name": "St8R_B", 
-        "numberOfSubBatches": 8
-      }
-    }
+		   "1_RO_E_M_A_A": {
+				"interruption": {
+					 "failure": {
+						  "TTR": {
+							   "distribution": "Fixed", 
+							   "Fixed": {
+									"mean": 0
+							   }
+						  }, 
+						  "failureDistribution": "No", 
+						  "repairman": "", 
+						  "TTF": {
+							   "distribution": "Fixed", 
+							   "Fixed": {
+									"mean": 0
+							   }
+						  }
+					 }
+				}, 
+				"workingBatchSize": 20, 
+				"processingTime": {
+					 "distribution": "Fixed", 
+					 "Fixed": {
+						  "mean": 0.75
+					 }
+				}, 
+				"scrapping": {
+					 "distribution": "Fixed", 
+					 "Fixed": {
+						  "mean": 0
+					 }
+				}, 
+				"coordinate": {
+					 "top": 0.013362728902320656, 
+					 "left": 0.20124013508759986
+				}, 
+				"_class": "Dream.BatchScrapMachine", 
+				"technology": "1_RO_E_M_A", 
+				"id": "1_RO_E_M_A_A"
+		   }, 
+		   "1_RO_E_M_A_B": {
+				"interruption": {
+					 "failure": {
+						  "TTR": {
+							   "distribution": "Fixed", 
+							   "Fixed": {
+									"mean": 0
+							   }
+						  }, 
+						  "failureDistribution": "No", 
+						  "repairman": "", 
+						  "TTF": {
+							   "distribution": "Fixed", 
+							   "Fixed": {
+									"mean": 0
+							   }
+						  }
+					 }
+				}, 
+				"workingBatchSize": 20, 
+				"processingTime": {
+					 "distribution": "Fixed", 
+					 "Fixed": {
+						  "mean": 0.75
+					 }
+				}, 
+				"scrapping": {
+					 "distribution": "Fixed", 
+					 "Fixed": {
+						  "mean": 0
+					 }
+				}, 
+				"coordinate": {
+					 "top": 0.22399692088997386, 
+					 "left": 0.2018021659108287
+				}, 
+				"_class": "Dream.BatchScrapMachine", 
+				"technology": "1_RO_E_M_A", 
+				"id": "1_RO_E_M_A_B"
+		   }, 
+		   "8_Carding": {
+				"interruption": {
+					 "failure": {
+						  "TTR": {
+							   "distribution": "Fixed", 
+							   "Fixed": {
+									"mean": 0
+							   }
+						  }, 
+						  "failureDistribution": "No", 
+						  "repairman": "", 
+						  "TTF": {
+							   "distribution": "Fixed", 
+							   "Fixed": {
+									"mean": 0
+							   }
+						  }
+					 }
+				}, 
+				"workingBatchSize": 10, 
+				"processingTime": {
+					 "distribution": "Fixed", 
+					 "Fixed": {
+						  "mean": 0.5
+					 }
+				}, 
+				"scrapping": {
+					 "distribution": "Fixed", 
+					 "Fixed": {
+						  "mean": 0
+					 }
+				}, 
+				"coordinate": {
+					 "top": 0.6281334023947263, 
+					 "left": 0.7066792229768067
+				}, 
+				"_class": "Dream.BatchScrapMachine", 
+				"technology": "8_Carding", 
+				"id": "8_Carding"
+		   }, 
+		   "B12": {
+				"coordinate": {
+					 "top": 0.7112343913913901, 
+					 "left": 0.7780022382216776
+				}, 
+				"_class": "Dream.RoutingQueue", 
+				"capacity": 23, 
+				"schedulingRule": "FIFO"
+		   }, 
+		   "B10": {
+				"capacity": 4, 
+				"coordinate": {
+					 "top": 0.7550041875821227, 
+					 "left": 0.37830510689257246
+				}, 
+				"_class": "Dream.Queue", 
+				"id": "B10", 
+				"schedulingRule": "FIFO"
+		   }, 
+		   "B11": {
+				"coordinate": {
+					 "top": 0.7716845469524345, 
+					 "left": 0.5418509694588267
+				}, 
+				"_class": "Dream.Queue", 
+				"capacity": 4, 
+				"schedulingRule": "FIFO"
+		   }, 
+		   "Dream.BatchSource1": {
+				"entity": "Dream.Batch", 
+				"interArrivalTime": {
+					 "distribution": "Fixed", 
+					 "Fixed": {
+						  "mean": 0.5
+					 }
+				}, 
+				"batchNumberOfUnits": "80", 
+				"numberOfUnits": "80", 
+				"coordinate": {
+					 "top": 0.10443803914040899, 
+					 "left": 0.002304632153726827
+				}, 
+				"_class": "Dream.BatchSource", 
+				"id": "Dream.BatchSource1"
+		   }, 
+		   "St7D": {
+				"coordinate": {
+					 "top": 0.7640847057948053, 
+					 "left": 0.6385832092381459
+				}, 
+				"_class": "Dream.BatchDecomposition", 
+				"numberOfSubBatches": 8
+		   }, 
+		   "Dream.Exit1": {
+				"coordinate": {
+					 "top": 0.7470423170386943, 
+					 "left": 0.9994692573189933
+				}, 
+				"_class": "Dream.Exit"
+		   }, 
+		   "6_Flag Labelling B": {
+				"interruption": {
+					 "failure": {
+						  "TTR": {
+							   "distribution": "Fixed", 
+							   "Fixed": {
+									"mean": 0
+							   }
+						  }, 
+						  "failureDistribution": "No", 
+						  "repairman": "", 
+						  "TTF": {
+							   "distribution": "Fixed", 
+							   "Fixed": {
+									"mean": 0
+							   }
+						  }
+					 }
+				}, 
+				"workingBatchSize": 80, 
+				"processingTime": {
+					 "distribution": "Fixed", 
+					 "Fixed": {
+						  "mean": 0.1875
+					 }
+				}, 
+				"scrapping": {
+					 "distribution": "Fixed", 
+					 "Fixed": {
+						  "mean": 0
+					 }
+				}, 
+				"coordinate": {
+					 "top": 0.9611889446138, 
+					 "left": 0.2918428202821252
+				}, 
+				"_class": "Dream.BatchScrapMachine", 
+				"technology": "6_Flag Labelling", 
+				"id": "6_Flag Labelling B"
+		   }, 
+		   "3_D_B_A_A": {
+				"interruption": {
+					 "failure": {
+						  "TTR": {
+							   "distribution": "Fixed", 
+							   "Fixed": {
+									"mean": 0
+							   }
+						  }, 
+						  "failureDistribution": "No", 
+						  "repairman": "", 
+						  "TTF": {
+							   "distribution": "Fixed", 
+							   "Fixed": {
+									"mean": 0
+							   }
+						  }
+					 }
+				}, 
+				"workingBatchSize": 20, 
+				"processingTime": {
+					 "distribution": "Fixed", 
+					 "Fixed": {
+						  "mean": 0.75
+					 }
+				}, 
+				"scrapping": {
+					 "distribution": "Fixed", 
+					 "Fixed": {
+						  "mean": 0
+					 }
+				}, 
+				"coordinate": {
+					 "top": 0.01725281110758568, 
+					 "left": 0.6332996089721042
+				}, 
+				"_class": "Dream.BatchScrapMachine", 
+				"technology": "3_D_B_A", 
+				"id": "3_D_B_A_A"
+		   }, 
+		   "6_Flag Labelling A": {
+				"interruption": {
+					 "failure": {
+						  "TTR": {
+							   "distribution": "Fixed", 
+							   "Fixed": {
+									"mean": 0
+							   }
+						  }, 
+						  "failureDistribution": "No", 
+						  "repairman": "", 
+						  "TTF": {
+							   "distribution": "Fixed", 
+							   "Fixed": {
+									"mean": 0
+							   }
+						  }
+					 }
+				}, 
+				"workingBatchSize": 80, 
+				"processingTime": {
+					 "distribution": "Fixed", 
+					 "Fixed": {
+						  "mean": 0.1875
+					 }
+				}, 
+				"scrapping": {
+					 "distribution": "Fixed", 
+					 "Fixed": {
+						  "mean": 0
+					 }
+				}, 
+				"coordinate": {
+					 "top": 0.5764883070945124, 
+					 "left": 0.2970488955292209
+				}, 
+				"_class": "Dream.BatchScrapMachine", 
+				"technology": "6_Flag Labelling", 
+				"id": "6_Flag Labelling A"
+		   }, 
+		   "3_D_B_A_B": {
+				"interruption": {
+					 "failure": {
+						  "TTR": {
+							   "distribution": "Fixed", 
+							   "Fixed": {
+									"mean": 0
+							   }
+						  }, 
+						  "failureDistribution": "No", 
+						  "repairman": "", 
+						  "TTF": {
+							   "distribution": "Fixed", 
+							   "Fixed": {
+									"mean": 0
+							   }
+						  }
+					 }
+				}, 
+				"workingBatchSize": 20, 
+				"processingTime": {
+					 "distribution": "Fixed", 
+					 "Fixed": {
+						  "mean": 0.75
+					 }
+				}, 
+				"scrapping": {
+					 "distribution": "Fixed", 
+					 "Fixed": {
+						  "mean": 0
+					 }
+				}, 
+				"coordinate": {
+					 "top": 0.22379953969289082, 
+					 "left": 0.6340488812407455
+				}, 
+				"_class": "Dream.BatchScrapMachine", 
+				"technology": "3_D_B_A", 
+				"id": "3_D_B_A_B"
+		   }, 
+		   "BDA": {
+				"coordinate": {
+					 "top": 0.01725281110758568, 
+					 "left": 0.09978623503357781
+				}, 
+				"_class": "Dream.BatchDecomposition", 
+				"numberOfSubBatches": 4
+		   }, 
+		   "BDB": {
+				"coordinate": {
+					 "top": 0.22590515117972654, 
+					 "left": 0.09762884137511894
+				}, 
+				"_class": "Dream.BatchDecomposition", 
+				"numberOfSubBatches": 4
+		   }, 
+		   "2_P_B_A_A": {
+				"interruption": {
+					 "failure": {
+						  "TTR": {
+							   "distribution": "Fixed", 
+							   "Fixed": {
+									"mean": 0
+							   }
+						  }, 
+						  "failureDistribution": "No", 
+						  "repairman": "", 
+						  "TTF": {
+							   "distribution": "Fixed", 
+							   "Fixed": {
+									"mean": 0
+							   }
+						  }
+					 }
+				}, 
+				"workingBatchSize": 20, 
+				"processingTime": {
+					 "distribution": "Fixed", 
+					 "Fixed": {
+						  "mean": 0.75
+					 }
+				}, 
+				"scrapping": {
+					 "distribution": "Fixed", 
+					 "Fixed": {
+						  "mean": 0
+					 }
+				}, 
+				"coordinate": {
+					 "top": 0.01541903648040755, 
+					 "left": 0.41773081483750907
+				}, 
+				"_class": "Dream.BatchScrapMachine", 
+				"technology": "2_P_B_A", 
+				"id": "2_P_B_A_A"
+		   }, 
+		   "2_P_B_A_B": {
+				"interruption": {
+					 "failure": {
+						  "TTR": {
+							   "distribution": "Fixed", 
+							   "Fixed": {
+									"mean": 0
+							   }
+						  }, 
+						  "failureDistribution": "No", 
+						  "repairman": "", 
+						  "TTF": {
+							   "distribution": "Fixed", 
+							   "Fixed": {
+									"mean": 0
+							   }
+						  }
+					 }
+				}, 
+				"workingBatchSize": 20, 
+				"processingTime": {
+					 "distribution": "Fixed", 
+					 "Fixed": {
+						  "mean": 0.75
+					 }
+				}, 
+				"scrapping": {
+					 "distribution": "Fixed", 
+					 "Fixed": {
+						  "mean": 0
+					 }
+				}, 
+				"coordinate": {
+					 "top": 0.2219242159080133, 
+					 "left": 0.41230602697692575
+				}, 
+				"_class": "Dream.BatchScrapMachine", 
+				"technology": "2_P_B_A", 
+				"id": "2_P_B_A_B"
+		   }, 
+		   "5_Moulding": {
+				"interruption": {
+					 "failure": ""
+				}, 
+				"workingBatchSize": 40, 
+				"processingTime": {
+					 "distribution": "Fixed", 
+					 "Fixed": {
+						  "mean": 0.375
+					 }
+				}, 
+				"scrapping": {
+					 "distribution": "Fixed", 
+					 "Fixed": {
+						  "mean": 0
+					 }
+				}, 
+				"coordinate": {
+					 "top": 0.7730867922482839, 
+					 "left": 0.10327653739447205
+				}, 
+				"_class": "Dream.BatchScrapMachine", 
+				"technology": "5_Moulding", 
+				"id": "5_Moulding"
+		   }, 
+		   "7_Pressure B": {
+				"interruption": {
+					 "failure": {
+						  "TTR": {
+							   "distribution": "Fixed", 
+							   "Fixed": {
+									"mean": 0
+							   }
+						  }, 
+						  "failureDistribution": "No", 
+						  "repairman": "", 
+						  "TTF": {
+							   "distribution": "Fixed", 
+							   "Fixed": {
+									"mean": 0
+							   }
+						  }
+					 }
+				}, 
+				"workingBatchSize": 10, 
+				"processingTime": {
+					 "distribution": "Fixed", 
+					 "Fixed": {
+						  "mean": 1
+					 }
+				}, 
+				"scrapping": {
+					 "distribution": "Fixed", 
+					 "Fixed": {
+						  "mean": 0
+					 }
+				}, 
+				"coordinate": {
+					 "top": 0.9608962942130924, 
+					 "left": 0.4590469615218773
+				}, 
+				"_class": "Dream.BatchScrapMachine", 
+				"technology": "7_Pressure", 
+				"id": "7_Pressure B"
+		   }, 
+		   "7_Pressure A": {
+				"interruption": {
+					 "failure": {
+						  "TTR": {
+							   "distribution": "Fixed", 
+							   "Fixed": {
+									"mean": 0
+							   }
+						  }, 
+						  "failureDistribution": "No", 
+						  "repairman": "", 
+						  "TTF": {
+							   "distribution": "Fixed", 
+							   "Fixed": {
+									"mean": 0
+							   }
+						  }
+					 }
+				}, 
+				"workingBatchSize": 10, 
+				"processingTime": {
+					 "distribution": "Fixed", 
+					 "Fixed": {
+						  "mean": 1
+					 }
+				}, 
+				"scrapping": {
+					 "distribution": "Fixed", 
+					 "Fixed": {
+						  "mean": 0
+					 }
+				}, 
+				"coordinate": {
+					 "top": 0.560438540581452, 
+					 "left": 0.4590469615218773
+				}, 
+				"_class": "Dream.BatchScrapMachine", 
+				"technology": "7_Pressure", 
+				"id": "7_Pressure A"
+		   }, 
+		   "St8RA": {
+				"coordinate": {
+					 "top": 0.5350013587825962, 
+					 "left": 0.9697830337196626
+				}, 
+				"_class": "Dream.BatchReassembly", 
+				"numberOfSubBatches": 8, 
+				"id": "St8RA"
+		   }, 
+		   "St8RB": {
+				"coordinate": {
+					 "top": 0.960991679081057, 
+					 "left": 0.9770689321903234
+				}, 
+				"_class": "Dream.BatchReassembly", 
+				"numberOfSubBatches": 8
+		   }, 
+		   "4_Cut & Bend": {
+				"interruption": {
+					 "failure": {
+						  "TTR": {
+							   "distribution": "Fixed", 
+							   "Fixed": {
+									"mean": 0
+							   }
+						  }, 
+						  "failureDistribution": "No", 
+						  "repairman": "", 
+						  "TTF": {
+							   "distribution": "Fixed", 
+							   "Fixed": {
+									"mean": 0
+							   }
+						  }
+					 }
+				}, 
+				"workingBatchSize": 80, 
+				"processingTime": {
+					 "distribution": "Fixed", 
+					 "Fixed": {
+						  "mean": 0.1875
+					 }
+				}, 
+				"scrapping": {
+					 "distribution": "Fixed", 
+					 "Fixed": {
+						  "mean": 0
+					 }
+				}, 
+				"coordinate": {
+					 "top": 0.17336308060894598, 
+					 "left": 0.9660242062681554
+				}, 
+				"_class": "Dream.BatchScrapMachine", 
+				"technology": "4_Cut & Bend", 
+				"id": "4_Cut & Bend"
+		   }, 
+		   "BRB": {
+				"coordinate": {
+					 "top": 0.22001598561825875, 
+					 "left": 0.732266858260719
+				}, 
+				"_class": "Dream.BatchReassembly", 
+				"numberOfSubBatches": 4
+		   }, 
+		   "B4": {
+				"coordinate": {
+					 "top": 0.24087466145736686, 
+					 "left": 0.5187142701900398
+				}, 
+				"_class": "Dream.LineClearance", 
+				"capacity": 2, 
+				"schedulingRule": "FIFO"
+		   }, 
+		   "B7": {
+				"coordinate": {
+					 "top": 0.07788764399810784, 
+					 "left": 0.8453666868818541
+				}, 
+				"_class": "Dream.Queue", 
+				"capacity": 4, 
+				"schedulingRule": "FIFO"
+		   }, 
+		   "B1": {
+				"capacity": 2, 
+				"coordinate": {
+					 "top": 0.021036307350047176, 
+					 "left": 0.3081327478571614
+				}, 
+				"_class": "Dream.LineClearance", 
+				"id": "B1", 
+				"schedulingRule": "FIFO"
+		   }, 
+		   "B2": {
+				"coordinate": {
+					 "top": 0.013666696062206444, 
+					 "left": 0.5232485073555496
+				}, 
+				"_class": "Dream.LineClearance", 
+				"capacity": 2, 
+				"schedulingRule": "FIFO"
+		   }, 
+		   "B3": {
+				"coordinate": {
+					 "top": 0.21432431691821405, 
+					 "left": 0.30516154587152466
+				}, 
+				"_class": "Dream.LineClearance", 
+				"capacity": 2, 
+				"schedulingRule": "FIFO"
+		   }, 
+		   "9_Packaging A": {
+				"interruption": {
+					 "failure": {
+						  "TTR": {
+							   "distribution": "Fixed", 
+							   "Fixed": {
+									"mean": 0
+							   }
+						  }, 
+						  "failureDistribution": "No", 
+						  "repairman": "", 
+						  "TTF": {
+							   "distribution": "Fixed", 
+							   "Fixed": {
+									"mean": 0
+							   }
+						  }
+					 }
+				}, 
+				"workingBatchSize": 10, 
+				"processingTime": {
+					 "distribution": "Fixed", 
+					 "Fixed": {
+						  "mean": 1
+					 }
+				}, 
+				"scrapping": {
+					 "distribution": "Fixed", 
+					 "Fixed": {
+						  "mean": 0
+					 }
+				}, 
+				"coordinate": {
+					 "top": 0.4918622893425504, 
+					 "left": 0.8276143790849673
+				}, 
+				"_class": "Dream.BatchScrapMachine", 
+				"technology": "9_Packaging", 
+				"id": "9_Packaging A"
+		   }, 
+		   "9_Packaging B": {
+				"workingBatchSize": 10, 
+				"processingTime": {
+					 "distribution": "Fixed", 
+					 "Fixed": {
+						  "mean": 1
+					 }
+				}, 
+				"coordinate": {
+					 "top": 0.9232952413566464, 
+					 "left": 0.8403105780796151
+				}, 
+				"_class": "Dream.BatchScrapMachine", 
+				"technology": "9_Packaging", 
+				"id": "9_Packaging B"
+		   }, 
+		   "B8": {
+				"coordinate": {
+					 "top": 0.7879379917839283, 
+					 "left": 0.004430433936801263
+				}, 
+				"_class": "Dream.Queue", 
+				"capacity": 4, 
+				"schedulingRule": "FIFO"
+		   }, 
+		   "B9": {
+				"coordinate": {
+					 "top": 0.7747840492453537, 
+					 "left": 0.18889698258498985
+				}, 
+				"_class": "Dream.Queue", 
+				"capacity": 4, 
+				"schedulingRule": "FIFO"
+		   }, 
+		   "BRA": {
+				"coordinate": {
+					 "top": 0.005869386959240394, 
+					 "left": 0.7345017315221779
+				}, 
+				"_class": "Dream.BatchReassembly", 
+				"numberOfSubBatches": 4
+		   }
+	   }
   }, 
   "input": {
     "ACO_weights_spreadsheet": [
