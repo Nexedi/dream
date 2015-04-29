@@ -23,10 +23,9 @@ class AddBatchStations(plugin.InputPreparationPlugin):
             if node['_class']=='Dream.BatchSource':
                 standardBatchUnits=int(node['batchNumberOfUnits'])    
                 
-        # loop through all the machines and set that the name will be equal to the id
+        # loop through all the objects and set that the name will be equal to the id
         for node_id, node in nodes.iteritems():
-            if node['_class']=='Dream.BatchScrapMachine':
-                node['name']=node_id
+            node['name']=node_id
         
         # loop in BatchScrapMachines to change the classes if need be       
         for node_id, node in nodes.iteritems():
