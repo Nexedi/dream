@@ -387,11 +387,8 @@
           "properties": {
             "id": {
               "default": "D", 
-              "type": "string"
-            }, 
-            "name": {
-              "default": "Decomposition", 
-              "type": "string"
+              "type": "string",
+			  "name": "Name"
             }, 
             "numberOfSubBatches": {
               "default": 10, 
@@ -420,11 +417,8 @@
           "properties": {
             "id": {
               "default": "R", 
-              "type": "string"
-            }, 
-            "name": {
-              "default": "Reassembly", 
-              "type": "string"
+              "type": "string",
+			  "name": "Name"
             }, 
             "numberOfSubBatches": {
               "default": 10, 
@@ -453,11 +447,8 @@
           "properties": {
             "id": {
               "default": "D", 
-              "type": "string"
-            }, 
-            "name": {
-              "default": "Decomposition", 
-              "type": "string"
+              "type": "string",
+			  "name": "Name"
             }, 
             "numberOfSubBatches": {
               "default": 10, 
@@ -532,36 +523,34 @@
         }, 
         {
           "properties": {
-            "entity": {
-              "default": "Dream.Batch", 
-              "description": "Manpy class for entities", 
-              "name": "Entity Class", 
-              "required": true, 
-              "type": "string"
-            }, 
             "id": {
               "default": "S", 
               "name": "ID", 
               "required": true, 
-              "type": "string"
+              "type": "string",
+			  "name": "Name"
             }, 
             "interArrivalTime": {
               "$ref": "#/definitions/_dist", 
               "description": "Inter-arrival time", 
               "name": "Inter-arrival time", 
+			  "default": {"Fixed":{"mean":1}}, 
               "required": true
             }, 
             "batchNumberOfUnits": {
               "description": "the number of units of the created batches", 
               "name": "Number Of Units",
               "type": "number",
+			  "default": 80, 
               "required": true
-            }, 
-            "name": {
-              "default": "Source", 
-              "name": "Name", 
+            },
+            "entity": {
+              "default": "Dream.Batch", 
+              "description": "Manpy class for entities", 
+              "name": "Entity Class", 
+              "required": true, 
               "type": "string"
-            }
+            } 
           }, 
           "type": "object"
         }
@@ -653,12 +642,9 @@
           "properties": {
             "id": {
               "default": "E", 
-              "required": true
-            }, 
-            "name": {
-              "default": "Exit", 
-              "type": "string"
-            }
+              "required": true,
+			  "name": "Name"	
+            } 
           }, 
           "type": "object"
         }
@@ -686,11 +672,8 @@
             }, 
             "id": {
               "default": "C", 
-              "type": "string"
-            }, 
-            "name": {
-              "default": "Clearance", 
-              "type": "string"
+              "type": "string",
+			  "name": "Name"
             }, 
             "schedulingRule": {
               "$ref": "#/definitions/_schedulingRule", 
@@ -738,11 +721,8 @@
             "id": {
               "default": "E", 
               "required": true, 
-              "type": "string"
-            }, 
-            "name": {
-              "default": "Entry", 
-              "type": "string"
+              "type": "string",
+			  "name": "Name"
             }
           }, 
           "type": "object"
@@ -764,17 +744,14 @@
         }, 
         {
           "properties": {
+            "id": {
+              "default": "Q", 
+              "type": "string",
+			  "name": "Name"
+            }, 
             "capacity": {
               "$ref": "#/definitions/_capacity", 
               "required": true
-            }, 
-            "id": {
-              "default": "Q", 
-              "type": "string"
-            }, 
-            "name": {
-              "default": "Queue", 
-              "type": "string"
             }, 
             "schedulingRule": {
               "$ref": "#/definitions/_schedulingRule", 
@@ -800,18 +777,15 @@
         }, 
         {
           "properties": {
+            "id": {
+              "default": "RQ", 
+              "type": "string",
+			  "name": "Name"
+            },
             "capacity": {
               "$ref": "#/definitions/_capacity", 
               "required": true
-            }, 
-            "id": {
-              "default": "RQ", 
-              "type": "string"
-            }, 
-            "name": {
-              "default": "RoutingQueue", 
-              "type": "string"
-            }, 
+            }, 			
             "schedulingRule": {
               "$ref": "#/definitions/_schedulingRule", 
               "required": true
