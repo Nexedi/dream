@@ -167,66 +167,66 @@ class KnowledgeExtractionExamples(TestCase):
                 self.assertEquals(procPar1.text,'2.49625391491')
                 self.assertEquals(procPar2.text,'0.0808226713028')
             
-    def testParallelStations(self):
-        from dream.KnowledgeExtraction.KEtool_examples.ParallelStations_withfailures.ParallelStations_example import main 
-        filepath=os.path.join(project_path, "dream", "KnowledgeExtraction", "KEtool_examples", 
-                                                        "ParallelStations_withfailures")
-        DBFilePath = ("C:\Users\Panos\Documents\KE tool_documentation")
-        jsonFile = open(os.path.join(filepath, 'JSON_example.json'))     
-        result = main(test=1,DBFilePath=DBFilePath,jsonFile=jsonFile)
-        result_data = result
-        
-        result_data=result_data['graph']
-        nodes=result_data.get('node',{})
-        for element_id,element in nodes.iteritems():
-            if element_id=='M1':
-                self.assertEquals(element['processingTime'].keys()[0],'Logistic')
-                self.assertEquals(element['processingTime'].values()[0]['scale'],5.943555041732533)
-                self.assertEquals(element['processingTime'].values()[0]['location'],51.57623425532299)
-                
-                self.assertEquals(element['interruptions']['failure']['TTR'].keys()[0],'Poisson')
-                self.assertEquals(element['interruptions']['failure']['TTR'].values()[0]['lambda'],0.1053658536585366)
-                
-                self.assertEquals(element['interruptions']['failure']['TTF'].keys()[0],'Weibull')
-                self.assertEquals(element['interruptions']['failure']['TTF'].values()[0]['shape'],3.1671825421393747)
-                self.assertEquals(element['interruptions']['failure']['TTF'].values()[0]['scale'],0.7571939493062068)  
-            
-            if element_id=='M2':
-                self.assertEquals(element['processingTime'].keys()[0],'Cauchy')
-                self.assertEquals(element['processingTime'].values()[0]['scale'],1.7219415441266923)
-                self.assertEquals(element['processingTime'].values()[0]['location'],49.732494067271205)
-                
-                self.assertEquals(element['interruptions']['failure']['TTR'].keys()[0],'Poisson')
-                self.assertEquals(element['interruptions']['failure']['TTR'].values()[0]['lambda'],0.1423076923076923)
-                
-                self.assertEquals(element['interruptions']['failure']['TTF'].keys()[0],'Weibull')
-                self.assertEquals(element['interruptions']['failure']['TTF'].values()[0]['shape'],3.1975046230623905)
-                self.assertEquals(element['interruptions']['failure']['TTF'].values()[0]['scale'],0.6805471087485552)        
-        jsonFile.close()
-    
-    def testParallelStationsFailures(self):
-        from dream.KnowledgeExtraction.KEtoolSimul8_examples.ParallelStationsFailures.ParallelStationsFailures import main 
-        filepath=os.path.join(project_path, "dream", "KnowledgeExtraction", "KEtoolSimul8_examples", 
-                                                        "ParallelStationsFailures")
-        
-        DBFilePath = ("C:\Users\Panos\Documents\KE tool_documentation")       
-        simul8XMLFile = open(os.path.join(filepath, 'ParallelStations.xml'))     
-        result = main(test=1,DBFilePath=DBFilePath,simul8XMLFile=simul8XMLFile)
-        root=result.getroot()
-        for objects in root.findall('./SimulationObjects/SimulationObject'):
-            if objects.attrib['Type'] == 'Work Center' and objects.attrib['Name'] == "MILL1":
-                procDist = objects.find('./BreakDowns/MTBFSampleData/DistribType')
-                procPar1 = objects.find('./BreakDowns/MTBFSampleData/DistParam1')
-                procPar2 = objects.find('./BreakDowns/MTBFSampleData/DistParam2')
-                self.assertEquals(procDist.text,'7')
-                self.assertEquals(procPar1.text,'1.47747747748')
-                
-                procDist = objects.find('./BreakDowns/MTTRSampleData/DistribType')
-                procPar1 = objects.find('./BreakDowns/MTTRSampleData/DistParam1')
-                procPar2 = objects.find('./BreakDowns/MTTRSampleData/DistParam2')
-                self.assertEquals(procDist.text,'3')
-                self.assertEquals(procPar1.text,'0.105365853659')
-                self.assertEquals(procPar2.text,'0.0566050743643')
+#     def testParallelStations(self):
+#         from dream.KnowledgeExtraction.KEtool_examples.ParallelStations_withfailures.ParallelStations_example import main 
+#         filepath=os.path.join(project_path, "dream", "KnowledgeExtraction", "KEtool_examples", 
+#                                                         "ParallelStations_withfailures")
+#         DBFilePath = ("C:\Users\Panos\Documents\KE tool_documentation")
+#         jsonFile = open(os.path.join(filepath, 'JSON_example.json'))     
+#         result = main(test=1,DBFilePath=DBFilePath,jsonFile=jsonFile)
+#         result_data = result
+#         
+#         result_data=result_data['graph']
+#         nodes=result_data.get('node',{})
+#         for element_id,element in nodes.iteritems():
+#             if element_id=='M1':
+#                 self.assertEquals(element['processingTime'].keys()[0],'Logistic')
+#                 self.assertEquals(element['processingTime'].values()[0]['scale'],5.943555041732533)
+#                 self.assertEquals(element['processingTime'].values()[0]['location'],51.57623425532299)
+#                 
+#                 self.assertEquals(element['interruptions']['failure']['TTR'].keys()[0],'Poisson')
+#                 self.assertEquals(element['interruptions']['failure']['TTR'].values()[0]['lambda'],0.1053658536585366)
+#                 
+#                 self.assertEquals(element['interruptions']['failure']['TTF'].keys()[0],'Weibull')
+#                 self.assertEquals(element['interruptions']['failure']['TTF'].values()[0]['shape'],3.1671825421393747)
+#                 self.assertEquals(element['interruptions']['failure']['TTF'].values()[0]['scale'],0.7571939493062068)  
+#             
+#             if element_id=='M2':
+#                 self.assertEquals(element['processingTime'].keys()[0],'Cauchy')
+#                 self.assertEquals(element['processingTime'].values()[0]['scale'],1.7219415441266923)
+#                 self.assertEquals(element['processingTime'].values()[0]['location'],49.732494067271205)
+#                 
+#                 self.assertEquals(element['interruptions']['failure']['TTR'].keys()[0],'Poisson')
+#                 self.assertEquals(element['interruptions']['failure']['TTR'].values()[0]['lambda'],0.1423076923076923)
+#                 
+#                 self.assertEquals(element['interruptions']['failure']['TTF'].keys()[0],'Weibull')
+#                 self.assertEquals(element['interruptions']['failure']['TTF'].values()[0]['shape'],3.1975046230623905)
+#                 self.assertEquals(element['interruptions']['failure']['TTF'].values()[0]['scale'],0.6805471087485552)        
+#         jsonFile.close()
+#     
+#     def testParallelStationsFailures(self):
+#         from dream.KnowledgeExtraction.KEtoolSimul8_examples.ParallelStationsFailures.ParallelStationsFailures import main 
+#         filepath=os.path.join(project_path, "dream", "KnowledgeExtraction", "KEtoolSimul8_examples", 
+#                                                         "ParallelStationsFailures")
+#         
+#         DBFilePath = ("C:\Users\Panos\Documents\KE tool_documentation")       
+#         simul8XMLFile = open(os.path.join(filepath, 'ParallelStations.xml'))     
+#         result = main(test=1,DBFilePath=DBFilePath,simul8XMLFile=simul8XMLFile)
+#         root=result.getroot()
+#         for objects in root.findall('./SimulationObjects/SimulationObject'):
+#             if objects.attrib['Type'] == 'Work Center' and objects.attrib['Name'] == "MILL1":
+#                 procDist = objects.find('./BreakDowns/MTBFSampleData/DistribType')
+#                 procPar1 = objects.find('./BreakDowns/MTBFSampleData/DistParam1')
+#                 procPar2 = objects.find('./BreakDowns/MTBFSampleData/DistParam2')
+#                 self.assertEquals(procDist.text,'7')
+#                 self.assertEquals(procPar1.text,'1.47747747748')
+#                 
+#                 procDist = objects.find('./BreakDowns/MTTRSampleData/DistribType')
+#                 procPar1 = objects.find('./BreakDowns/MTTRSampleData/DistParam1')
+#                 procPar2 = objects.find('./BreakDowns/MTTRSampleData/DistParam2')
+#                 self.assertEquals(procDist.text,'3')
+#                 self.assertEquals(procPar1.text,'0.105365853659')
+#                 self.assertEquals(procPar2.text,'0.0566050743643')
         
               
     
