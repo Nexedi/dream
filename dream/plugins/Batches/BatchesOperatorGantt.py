@@ -48,16 +48,25 @@ class BatchesOperatorGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
 
     for element in resultElements:
         if element['_class']=="Dream.Operator":
-            operatorId=element['id']
+            operatorId=element['id']       
+            schedule=copy(element['results']['schedule']) 
+            hasOnShift=False
+            
+            # if the operator was off-shift all through the simulation run no need to be outputted in Gantt
+            for record in schedule: 
+                if not record['stationId']=='off-shift':
+                    hasOnShift=True
+                    break
+            if not hasOnShift:
+                continue
+            
             # add the operator in the task_dict
             task_dict[element['id']] = dict(
             id=operatorId,
             text=operatorId,
             type='operator',
             open=False)
-        
-            
-            schedule=copy(element['results']['schedule']) 
+                    
             # in the cases the operator exits and the enters in the same station merge those records
             k=0
             for record in schedule:
