@@ -55,10 +55,10 @@ class DefaultTabularExit(plugin.OutputPreparationPlugin):
         return data
     
     def getConfidenceInterval(self, value_list, confidenceLevel):
-        from dream.KnowledgeExtraction.ConfidenceIntervals import Intervals
-        from dream.KnowledgeExtraction.StatisticalMeasures import BasicStatisticalMeasures
-        BSM=BasicStatisticalMeasures()
-        lb, ub = Intervals().ConfidIntervals(value_list, confidenceLevel)
+        from dream.KnowledgeExtraction.ConfidenceIntervals import ConfidenceIntervals
+        from dream.KnowledgeExtraction.StatisticalMeasures import StatisticalMeasures
+        BSM=StatisticalMeasures()
+        lb, ub = ConfidenceIntervals().ConfidIntervals(value_list, confidenceLevel)
         return {'lb': lb,
                 'ub': ub,
                 'avg': BSM.mean(value_list) 
