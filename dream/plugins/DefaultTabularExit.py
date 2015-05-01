@@ -53,13 +53,3 @@ class DefaultTabularExit(plugin.OutputPreparationPlugin):
                                                                             round(float(lifespan['ub']),2)                                                               
                                                                             ]) 
         return data
-    
-    def getConfidenceInterval(self, value_list, confidenceLevel):
-        from dream.KnowledgeExtraction.ConfidenceIntervals import ConfidenceIntervals
-        from dream.KnowledgeExtraction.StatisticalMeasures import StatisticalMeasures
-        BSM=StatisticalMeasures()
-        lb, ub = ConfidenceIntervals().ConfidIntervals(value_list, confidenceLevel)
-        return {'lb': lb,
-                'ub': ub,
-                'avg': BSM.mean(value_list) 
-            }

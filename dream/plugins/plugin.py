@@ -33,7 +33,7 @@ class Plugin(object):
             successors.append(edge['destination'])
     return successors
 
-  # calcualted the confidence inteval for a list and a confidence level
+  # calculate the confidence interval for a list and a confidence level
   def getConfidenceInterval(self, value_list, confidenceLevel):
     from dream.KnowledgeExtraction.ConfidenceIntervals import ConfidenceIntervals
     from dream.KnowledgeExtraction.StatisticalMeasures import StatisticalMeasures
