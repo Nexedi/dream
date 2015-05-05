@@ -1509,12 +1509,6 @@
     "type": "operator"
    }, 
    {
-    "id": "PB_10", 
-    "open": false, 
-    "text": "PB_10", 
-    "type": "operator"
-   }, 
-   {
     "id": "PB_12", 
     "open": false, 
     "text": "PB_12", 
@@ -1542,18 +1536,6 @@
     "id": "PB_2", 
     "open": false, 
     "text": "PB_2", 
-    "type": "operator"
-   }, 
-   {
-    "id": "PB_20", 
-    "open": false, 
-    "text": "PB_20", 
-    "type": "operator"
-   }, 
-   {
-    "id": "PB_21", 
-    "open": false, 
-    "text": "PB_21", 
     "type": "operator"
    }, 
    {
@@ -1602,17 +1584,6 @@
     "start_date": "16-02-2015 07:00", 
     "stop_date": "16-02-2015 07:02", 
     "text": "St1M0"
-   }, 
-   {
-    "color": "white", 
-    "duration": 2.0, 
-    "entranceTime": 0, 
-    "id": "PB_10off-shift2", 
-    "open": false, 
-    "parent": "PB_10", 
-    "start_date": "16-02-2015 07:00", 
-    "stop_date": "16-02-2015 07:02", 
-    "text": "off-shift"
    }, 
    {
     "color": "DarkRed", 
@@ -1668,28 +1639,6 @@
     "start_date": "16-02-2015 07:00", 
     "stop_date": "16-02-2015 07:02", 
     "text": "St2M1"
-   }, 
-   {
-    "color": "white", 
-    "duration": 2.0, 
-    "entranceTime": 0, 
-    "id": "PB_20off-shift2", 
-    "open": false, 
-    "parent": "PB_20", 
-    "start_date": "16-02-2015 07:00", 
-    "stop_date": "16-02-2015 07:02", 
-    "text": "off-shift"
-   }, 
-   {
-    "color": "white", 
-    "duration": 2.0, 
-    "entranceTime": 0, 
-    "id": "PB_21off-shift2", 
-    "open": false, 
-    "parent": "PB_21", 
-    "start_date": "16-02-2015 07:00", 
-    "stop_date": "16-02-2015 07:02", 
-    "text": "off-shift"
    }, 
    {
     "color": "magenta", 
