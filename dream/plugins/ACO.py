@@ -66,6 +66,7 @@ class ACO(plugin.ExecutionPlugin):
     # generation can have more than 1 ant)
     seedPlus = 0
     for i in range(int(data["general"]["numberOfGenerations"])):
+        antsInCurrentGeneration=[]
         scenario_list = [] # for the distributor
         # number of ants created per generation
         for j in range(int(data["general"]["numberOfAntsPerGenerations"])):
@@ -138,24 +139,20 @@ class ACO(plugin.ExecutionPlugin):
             ant['score'] = self._calculateAntScore(ant)
 
         ants.extend(scenario_list)
+        antsInCurrentGeneration.extend(scenario_list)
 
-        # remove ants that outputs the same schedules
+        # in this generation remove ants that outputs the same schedules
         # XXX we in fact remove ants that produce the same output json
-        ants_without_duplicates = dict()
-        for ant in ants:
+        uniqueAntsInThisGeneration = dict()
+        for ant in antsInCurrentGeneration:
             ant_result, = copy(ant['result']['result_list'])
             ant_result['general'].pop('totalExecutionTime', None)
             ant_result = json.dumps(ant_result, sort_keys=True)
-            ants_without_duplicates[ant_result] = ant
-
-        # The ants in this generation are ranked based on their scores and the
-        # best (max_results) are selected
-        ants = sorted(ants_without_duplicates.values(),
-          key=operator.itemgetter('score'))[:max_results]
-          
+            uniqueAntsInThisGeneration[ant_result] = ant
+         
         # The ants in this generation are ranked based on their scores and the
         # best (numberOfAntsForNextGeneration) are selected to carry their pheromones to next generation
-        antsForNextGeneration = sorted(ants_without_duplicates.values(),
+        antsForNextGeneration = sorted(uniqueAntsInThisGeneration.values(),
           key=operator.itemgetter('score'))[:numberOfAntsForNextGeneration]
 
         for l in antsForNextGeneration:
@@ -167,6 +164,20 @@ class ACO(plugin.ExecutionPlugin):
                 # 'EDD' is added to Q1 so there is a higher chance that it is
                 # selected by the next ants.
                 collated[m].append(l[m])
+
+    # from all the ants in the experiment remove ants that outputs the same schedules
+    # XXX we in fact remove ants that produce the same output json
+    uniqueAnts = dict()
+    for ant in ants:
+        ant_result, = copy(ant['result']['result_list'])
+        ant_result['general'].pop('totalExecutionTime', None)
+        ant_result = json.dumps(ant_result, sort_keys=True)
+        uniqueAnts[ant_result] = ant
+
+    # The ants in this generation are ranked based on their scores and the
+    # best (max_results) are selected
+    ants = sorted(uniqueAnts.values(),
+      key=operator.itemgetter('score'))[:max_results]
 
     data['result']['result_list'] = result_list = []
     for ant in ants:
