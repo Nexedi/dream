@@ -55,7 +55,10 @@ class ACO(plugin.ExecutionPlugin):
     assert collated 
 
     max_results = int(data['general'].get('numberOfSolutions',0))
+    numberOfAntsForNextGeneration=int(data['general'].get('numberOfAntsForNextGeneration',1))
     assert max_results >= 1
+    assert numberOfAntsForNextGeneration>=1 \
+                and numberOfAntsForNextGeneration<=int(data["general"]["numberOfAntsPerGenerations"])
 
     ants = [] #list of ants for keeping track of their performance
 
@@ -149,8 +152,13 @@ class ACO(plugin.ExecutionPlugin):
         # best (max_results) are selected
         ants = sorted(ants_without_duplicates.values(),
           key=operator.itemgetter('score'))[:max_results]
+          
+        # The ants in this generation are ranked based on their scores and the
+        # best (numberOfAntsForNextGeneration) are selected to carry their pheromones to next generation
+        antsForNextGeneration = sorted(ants_without_duplicates.values(),
+          key=operator.itemgetter('score'))[:numberOfAntsForNextGeneration]
 
-        for l in ants:
+        for l in antsForNextGeneration:
             # update the options list to ensure that good performing queue-rule
             # combinations have increased representation and good chance of
             # being selected in the next generation
