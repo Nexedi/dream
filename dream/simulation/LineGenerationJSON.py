@@ -248,6 +248,7 @@ def createObjectInterruptions():
     G.FailureList=[]
     G.BreakList=[]
     G.ShiftSchedulerList=[]
+    G.ScheduledBreakList=[]
     G.EventGeneratorList=[]
     G.CapacityStationControllerList=[]
     G.PeriodicMaintenanceList=[]
@@ -286,6 +287,7 @@ def createObjectInterruptions():
     from dream.simulation.Failure import Failure
     from dream.simulation.PeriodicMaintenance import PeriodicMaintenance    
     from dream.simulation.ShiftScheduler import ShiftScheduler
+    from dream.simulation.ScheduledBreak import ScheduledBreak
     from dream.simulation.Break import Break
     for (element_id, element) in nodes.iteritems():
         element['id'] = element_id
@@ -345,9 +347,29 @@ def createObjectInterruptions():
                               rolling=rolling, lastOffShiftDuration=lastOffShiftDuration)
             G.ObjectInterruptionList.append(SS)
             G.ShiftSchedulerList.append(SS)
+        scheduledBreak=element.get('interruptions',{}).get('scheduledBreak', None)
+        # if there are scheduled breaks assigned initiate them  
+        if scheduledBreak:
+            victim=Globals.findObjectById(element['id'])
+            breakPattern=list(scheduledBreak.get('breakPattern', []))
+            for index, record in enumerate(breakPattern):
+                if record is breakPattern[-1]:
+                    break
+                next = breakPattern[index + 1]
+                if record[1]==next[0]:
+                    record[1]=next[1]
+                    shiftPattern.remove(next)
+            endUnfinished=bool(int(scheduledBreak.get('endUnfinished', 0)))
+            receiveBeforeEndThreshold=float(scheduledBreak.get('receiveBeforeEndThreshold', 0))
+            rolling=bool(int(scheduledBreak.get('rolling', 0)))
+            lastNoBreakDuration=float(scheduledBreak.get('lastOffShiftDuration', 10))
+            SB=ScheduledBreak(victim=victim, breakPattern=breakPattern, endUnfinished=endUnfinished, 
+                              receiveBeforeEndThreshold=receiveBeforeEndThreshold,
+                              rolling=rolling, lastNoBreakDuration=lastNoBreakDuration)
+            G.ObjectInterruptionList.append(SB)
+            G.ShiftSchedulerList.append(SB)            
         br=element.get('interruptions',{}).get('break', None)
-        # if there are breaks assigned 
-        # initiate them   
+        # if there are random breaks assigned initiate them 
         if br:
             victim=Globals.findObjectById(element['id'])
             endUnfinished=bool(int(br.get('endUnfinished', 1)))
