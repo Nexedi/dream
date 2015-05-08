@@ -1197,50 +1197,7 @@
     "edge": {}, 
     "node": {}
   }, 
-  "input": {
-    "machine_shift_spreadsheet": [
-      [
-        "Date", 
-        "Machines", 
-        "Start", 
-        "Stop"
-      ], 
-      [
-        "", 
-        "", 
-        "", 
-        ""
-      ]
-    ], 
-    "operator_skill_spreadsheet": [
-      [
-        "Product Builder", 
-        "Skills"
-      ], 
-      [
-        null, 
-        null
-      ]
-    ], 
-    "wip_spreadsheet": [
-      [
-        "ID", 
-        "StationID", 
-        "Number of Units", 
-        "Remaining Units", 
-        "Type", 
-        "Batch ID"
-      ], 
-      [
-        null, 
-        null, 
-        null, 
-        null, 
-        null, 
-        null
-      ]
-    ]
-  }, 
+  "input": {}, 
   "result": {
     "result_list": []
   }
