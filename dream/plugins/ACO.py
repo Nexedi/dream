@@ -74,6 +74,8 @@ class ACO(plugin.ExecutionPlugin):
     max_results = int(data['general'].get('numberOfSolutions',0))
     assert max_results >= 1
 
+    numberOfAntsForNextGeneration = int(data['general'].get('numberOfAntsForNextGeneration', max_results))
+
     ants = [] #list of ants for keeping track of their performance
 
     # Number of times new ants are to be created, i.e. number of generations (a
@@ -163,9 +165,11 @@ class ACO(plugin.ExecutionPlugin):
             ants_without_duplicates[ant_result] = ant
 
         # The ants in this generation are ranked based on their scores and the
-        # best (max_results) are selected
+        # best (numberOfAntsForNextGeneration) are added again to the list to increase
+        # the probability of their characteristics since they are more likely to
+        # be selected again
         ants = sorted(ants_without_duplicates.values(),
-          key=operator.itemgetter('score'))[:max_results]
+          key=operator.itemgetter('score'))[:numberOfAntsForNextGeneration]
 
         for l in ants:
             # update the options list to ensure that good performing queue-rule
@@ -178,7 +182,7 @@ class ACO(plugin.ExecutionPlugin):
                 collated[m].append(l[m])
 
     data['result']['result_list'] = result_list = []
-    for ant in ants:
+    for ant in ants[:max_results]:
       result, = ant['result']['result_list']
       result['score'] = ant['score']
       result['key'] = ant['key']
