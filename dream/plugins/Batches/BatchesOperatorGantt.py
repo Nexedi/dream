@@ -28,7 +28,7 @@ class BatchesOperatorGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
     # loop in the results to find Operators
     
     colorList=['blue','green','red',
-               'gold','black','Aqua',
+               'gold','Aqua',
                'DarkRed','Fuchsia','Gray',
                'magenta','yellow','Olive',
                'orange','purple','pink']
@@ -45,6 +45,7 @@ class BatchesOperatorGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
                 i=0
     # set off-shift color to white
     colorDict['off-shift']='white'
+    colorDict['on-break']='black'
 
     for element in resultElements:
         if element['_class']=="Dream.Operator":
