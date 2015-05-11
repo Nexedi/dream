@@ -391,6 +391,10 @@
         {
           "_class": "dream.plugins.Batches.BatchesShift.BatchesShift", 
           "input_id": "ShiftSpreadsheet"
+        },
+        {
+          "_class": "dream.plugins.Batches.BatchesOperatorBreaks.BatchesOperatorBreaks", 
+          "input_id": "BreakSpreadsheet"
         }
       ]
     }, 
