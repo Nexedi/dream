@@ -31,7 +31,9 @@ class BatchesOperatorGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
                'gold','Aqua',
                'DarkRed','Fuchsia','Gray',
                'magenta','yellow','Olive',
-               'orange','purple','pink']
+               'orange','purple','pink','BlanchedAlmond',
+               'BurlyWood','HotPink','LightGoldenRodYellow'               
+               ]
         
     # create a dictionary so that all stations have their own color
     colorDict={}
