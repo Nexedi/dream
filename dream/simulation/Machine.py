@@ -1196,7 +1196,7 @@ class Machine(CoreObject):
         if station:
             if issubclass(station.__class__, CoreObject):
                 operator.schedule[-1]["exitTime"] = self.env.now
-            elif not operator.schedule[-1]["station"].get("id", None)== "off-shift":
+            elif not operator.schedule[-1]["station"].get("id", None) in ["off-shift","on-break"]:
                 operator.schedule[-1]["exitTime"] = self.env.now
         # if the operator becomes unavailable
         if (not self.currentOperator.onShift) or self.currentOperator.onBreak:
