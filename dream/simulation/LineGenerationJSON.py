@@ -668,7 +668,7 @@ def main(argv=[], input_data=None):
         
         if G.seed:
             G.Rnd=Random('%s%s' % (G.seed, i))
-            G.numpyRnd.random.seed(G.seed)
+            G.numpyRnd.random.seed(G.seed+i)
         else:
             G.Rnd=Random()
             G.numpyRnd.random.seed()
