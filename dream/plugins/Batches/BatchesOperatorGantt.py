@@ -74,6 +74,10 @@ class BatchesOperatorGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
             k=0
             for record in schedule:
                 for nextRecord in schedule[k+1:]:
+                    # break on the first element with different stationId
+                    if not (nextRecord['stationId']==record['stationId']):
+                        break
+                    # if the stationId is the same break
                     if nextRecord['stationId']==record['stationId']\
                             and not record is schedule[-1]:
                         nextExitTime=nextRecord.get('exitTime',maxSimTime)
