@@ -107,7 +107,7 @@ class ScheduledBreak(ObjectInterruption):
                 self.victim.onBreak=False
                 self.victim.totalBreakTime+=self.env.now-self.victim.timeLastBreakStarted
                 self.victim.timeLastBreakEnded=self.env.now
-                self.outputTrace(self.victim.name,"rerurned from break")
+                self.outputTrace(self.victim.name,"returned from break")
                 if self.victim.schedule:
                     if not self.victim.schedule[-1].get("exitTime", None):
                         self.victim.schedule[-1]["exitTime"] = self.env.now

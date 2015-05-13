@@ -28,10 +28,12 @@ class BatchesOperatorGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
     # loop in the results to find Operators
     
     colorList=['blue','green','red',
-               'gold','black','Aqua',
+               'gold','Aqua',
                'DarkRed','Fuchsia','Gray',
                'magenta','yellow','Olive',
-               'orange','purple','pink']
+               'orange','purple','pink','BlanchedAlmond',
+               'BurlyWood','HotPink','LightGoldenRodYellow'               
+               ]
         
     # create a dictionary so that all stations have their own color
     colorDict={}
@@ -45,6 +47,7 @@ class BatchesOperatorGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
                 i=0
     # set off-shift color to white
     colorDict['off-shift']='white'
+    colorDict['on-break']='black'
 
     for element in resultElements:
         if element['_class']=="Dream.Operator":
@@ -71,6 +74,10 @@ class BatchesOperatorGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
             k=0
             for record in schedule:
                 for nextRecord in schedule[k+1:]:
+                    # break on the first element with different stationId
+                    if not (nextRecord['stationId']==record['stationId']):
+                        break
+                    # if the stationId is the same break
                     if nextRecord['stationId']==record['stationId']\
                             and not record is schedule[-1]:
                         nextExitTime=nextRecord.get('exitTime',maxSimTime)

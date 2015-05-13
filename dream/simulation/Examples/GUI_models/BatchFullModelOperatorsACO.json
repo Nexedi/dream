@@ -162,30 +162,53 @@
         "type": "object_view"
       }, 
       "view_operator_shift_spreadsheet": {
-        "configuration": {
-          "columns": [
-            {
-              "format": "date-time", 
-              "name": "Date", 
-              "type": "string"
-            }, 
-            {
-              "name": "Product Builder", 
-              "type": "string"
-            }, 
-            {
-              "name": "Start", 
-              "type": "string"
-            }, 
-            {
-              "name": "Stop", 
-              "type": "string"
-            }
-          ]
-        }, 
-        "gadget": "Input_viewSpreadsheet", 
-        "title": "Product Builder Shifts Spreadsheet", 
-        "type": "object_view"
+       "configuration": {
+			"extend": [
+				"x",
+				"y"
+			],
+			"columns": [
+				{
+				  "format": "date-time", 
+				  "name": "Date", 
+				  "type": "string"
+				}, 
+				{
+				  "name": "Product Builder", 
+				  "type": "string"
+				}, 
+				{
+				  "name": "Start", 
+				  "type": "string"
+				}, 
+				{
+				  "name": "Stop", 
+				  "type": "string"
+				},
+				{
+				  "name": "Break1 Start", 
+				  "type": "string"
+				},
+				{
+				  "name": "Break1 Stop", 
+				  "type": "string"
+				},
+				{
+				  "name": "Break2 Start", 
+				  "type": "string"
+				},
+				{
+				  "name": "Break2 Stop", 
+				  "type": "string"
+				}
+			  ],
+			 "handsontable_options": {
+				"minSpareCols": 1
+			 }
+		},
+		"gadget": "Input_viewSpreadsheet", 
+		"title": "Product Builder Shifts Spreadsheet", 
+		"type": "object_view"
       }, 
       "view_operator_skill_spreadsheet": {
         "configuration": {
@@ -368,6 +391,10 @@
         {
           "_class": "dream.plugins.Batches.BatchesShift.BatchesShift", 
           "input_id": "ShiftSpreadsheet"
+        },
+        {
+          "_class": "dream.plugins.Batches.BatchesOperatorBreaks.BatchesOperatorBreaks", 
+          "input_id": "BreakSpreadsheet"
         }
       ]
     }, 
@@ -2145,7 +2172,7 @@
         0.1
       ], 
       [
-        "Static weight value", 
+        "Static weight value",
         "1.6", 
         "1.3", 
         "0", 
@@ -2213,56 +2240,68 @@
         ""
       ]
     ], 
-    "operator_shift_spreadsheet": [
+"operator_shift_spreadsheet": [
       [
-        "Date", 
-        "Product Builder", 
-        "Start", 
-        "Stop"
-      ], 
+        "Date",
+        "Product Builder",
+        "Start",
+        "Stop",
+        "Break1 Start",
+        "Break1 Stop",
+        "Break2 Start",
+        "Break2 Stop",
+        null
+      ],
       [
-        "2015/02/16", 
-        "PB_1,PB_2,PB_3,PB_4,PB_7,PB_9,PB_16,PB_15,PB_17,PB_25,PB_30,PB_12", 
-        "07:00", 
-        "16:00"
-      ], 
+        "2015/02/16",
+        "PB_1,PB_2,PB_3,PB_4,PB_7,PB_9,PB_16,PB_15,PB_17,PB_25,PB_30,PB_12",
+        "07:00",
+        "16:00",
+        null
+      ],
       [
-        "2015/02/16", 
-        "PB_1,PB_2,PB_3,PB_4,PB_7,PB_9,PB_10,PB_20,PB_21,PB_16,PB_15,PB_17,PB_25", 
-        "16:00", 
-        "01:00"
-      ], 
+        "2015/02/16",
+        "PB_1,PB_2,PB_3,PB_4,PB_7,PB_9,PB_10,PB_20,PB_21,PB_16,PB_15,PB_17,PB_25",
+        "16:00",
+        "01:00",
+        null
+      ],
       [
-        "2015/02/17", 
-        "PB_1,PB_2,PB_3,PB_4,PB_7,PB_9,PB_16,PB_15,PB_17,PB_25,PB_30,PB_12", 
-        "07:00", 
-        "16:00"
-      ], 
+        "2015/02/17",
+        "PB_1,PB_2,PB_3,PB_4,PB_7,PB_9,PB_16,PB_15,PB_17,PB_25,PB_30,PB_12",
+        "07:00",
+        "16:00",
+        null
+      ],
       [
-        "2015/02/17", 
-        "PB_1,PB_2,PB_3,PB_4,PB_7,PB_9,PB_10,PB_20,PB_21,PB_16,PB_15,PB_17,PB_25", 
-        "16:00", 
-        "01:00"
-      ], 
+        "2015/02/17",
+        "PB_1,PB_2,PB_3,PB_4,PB_7,PB_9,PB_10,PB_20,PB_21,PB_16,PB_15,PB_17,PB_25",
+        "16:00",
+        "01:00",
+        null
+      ],
       [
-        "2015/02/18", 
-        "PB_1,PB_2,PB_3,PB_4,PB_7,PB_9,PB_16,PB_15,PB_17,PB_25,PB_30,PB_12", 
-        "07:00", 
-        "16:00"
-      ], 
+        "2015/02/18",
+        "PB_1,PB_2,PB_3,PB_4,PB_7,PB_9,PB_16,PB_15,PB_17,PB_25,PB_30,PB_12",
+        "07:00",
+        "16:00",
+        null
+      ],
       [
-        "2015/02/18", 
-        "PB_1,PB_2,PB_3,PB_4,PB_7,PB_9,PB_10,PB_20,PB_21,PB_16,PB_15,PB_17,PB_25", 
-        "16:00", 
-        "01:00"
-      ], 
+        "2015/02/18",
+        "PB_1,PB_2,PB_3,PB_4,PB_7,PB_9,PB_10,PB_20,PB_21,PB_16,PB_15,PB_17,PB_25",
+        "16:00",
+        "01:00",
+        null
+      ],
       [
-        null, 
-        null, 
-        null, 
+        null,
+        null,
+        null,
+        null,
         null
       ]
-    ], 
+    ],	
     "operator_skill_spreadsheet": [
       [
         "Product Builder", 

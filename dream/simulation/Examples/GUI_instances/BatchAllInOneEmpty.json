@@ -126,30 +126,53 @@
       }, 
       "view_operator_shift_spreadsheet": {
         "configuration": {
-          "columns": [
-            {
-              "format": "date-time", 
-              "name": "Date", 
-              "type": "string"
-            }, 
-            {
-              "name": "Product Builder", 
-              "type": "string"
-            }, 
-            {
-              "name": "Start", 
-              "type": "string"
-            }, 
-            {
-              "name": "Stop", 
-              "type": "string"
-            }
-          ]
-        }, 
-        "gadget": "Input_viewSpreadsheet", 
-        "title": "Product Builder Shifts Spreadsheet", 
-        "type": "object_view"
-      }, 
+			"extend": [
+				"x",
+				"y"
+			],
+			"columns": [
+				{
+				  "format": "date-time", 
+				  "name": "Date", 
+				  "type": "string"
+				}, 
+				{
+				  "name": "Product Builder", 
+				  "type": "string"
+				}, 
+				{
+				  "name": "Start", 
+				  "type": "string"
+				}, 
+				{
+				  "name": "Stop", 
+				  "type": "string"
+				},
+				{
+				  "name": "Break1 Start", 
+				  "type": "string"
+				},
+				{
+				  "name": "Break1 Stop", 
+				  "type": "string"
+				},
+				{
+				  "name": "Break2 Start", 
+				  "type": "string"
+				},
+				{
+				  "name": "Break2 Stop", 
+				  "type": "string"
+				}
+			  ],
+			 "handsontable_options": {
+				"minSpareCols": 1
+			 }
+		},
+		"gadget": "Input_viewSpreadsheet", 
+		"title": "Product Builder Shifts Spreadsheet", 
+		"type": "object_view"
+	  }, 
       "view_operator_skill_spreadsheet": {
         "configuration": {
           "columns": [
@@ -1174,64 +1197,7 @@
     "edge": {}, 
     "node": {}
   }, 
-  "input": {
-    "machine_shift_spreadsheet": [
-      [
-        "Date", 
-        "Machines", 
-        "Start", 
-        "Stop"
-      ], 
-      [
-        "", 
-        "", 
-        "", 
-        ""
-      ]
-    ], 
-    "operator_shift_spreadsheet": [
-      [
-        "Date", 
-        "Product Builder", 
-        "Start", 
-        "Stop"
-      ], 
-      [
-        null, 
-        null, 
-        null, 
-        null
-      ]
-    ], 
-    "operator_skill_spreadsheet": [
-      [
-        "Product Builder", 
-        "Skills"
-      ], 
-      [
-        null, 
-        null
-      ]
-    ], 
-    "wip_spreadsheet": [
-      [
-        "ID", 
-        "StationID", 
-        "Number of Units", 
-        "Remaining Units", 
-        "Type", 
-        "Batch ID"
-      ], 
-      [
-        null, 
-        null, 
-        null, 
-        null, 
-        null, 
-        null
-      ]
-    ]
-  }, 
+  "input": {}, 
   "result": {
     "result_list": []
   }

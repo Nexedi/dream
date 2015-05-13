@@ -1198,7 +1198,7 @@ class Machine(CoreObject):
         if station:
             if issubclass(station.__class__, CoreObject):
                 operator.schedule[-1]["exitTime"] = self.env.now
-            elif not operator.schedule[-1]["station"].get("id", None)== "off-shift":
+            elif not operator.schedule[-1]["station"].get("id", None) in ["off-shift","on-break"]:
                 operator.schedule[-1]["exitTime"] = self.env.now
         # if the operator becomes unavailable
         if (not self.currentOperator.onShift) or self.currentOperator.onBreak:
@@ -1208,6 +1208,7 @@ class Machine(CoreObject):
                 operator.timeLastBreakStarted=self.env.now   
             operator.unAssign()     # set the flag operatorAssignedTo to None     
             operator.workingStation=None  
+            operator.operatorDedicatedTo=None
             self.toBeOperated = False
             self.outputTrace(operator.name, "released from "+ self.objName)
         # XXX in case of skilled operators which stay at the same station should that change
