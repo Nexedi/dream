@@ -1206,6 +1206,7 @@ class Machine(CoreObject):
                 operator.timeLastBreakStarted=self.env.now   
             operator.unAssign()     # set the flag operatorAssignedTo to None     
             operator.workingStation=None  
+            operator.operatorDedicatedTo=None
             self.toBeOperated = False
             self.outputTrace(operator.name, "released from "+ self.objName)
         # XXX in case of skilled operators which stay at the same station should that change
