@@ -1,0 +1,102 @@
+{
+ "_class": "Dream.Simulation", 
+ "elementList": [
+  {
+   "_class": "Dream.Exit", 
+   "family": "Exit", 
+   "id": "E1", 
+   "results": {
+    "lifespan": [
+     3.25
+    ], 
+    "takt_time": [
+     4.75
+    ], 
+    "throughput": [
+     2
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "family": "Server", 
+   "id": "M1", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     40.0
+    ], 
+    "working_ratio": [
+     60.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "family": "Operator", 
+   "id": "O1", 
+   "results": {
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "on_break_ratio": [
+     25.0
+    ], 
+    "waiting_ratio": [
+     15.0
+    ], 
+    "working_ratio": [
+     60.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.SkilledRouter", 
+   "id": "SkilledRouter01", 
+   "results": {
+    "solutionList": [
+     {
+      "allocation": {
+       "O1": "M1"
+      }, 
+      "time": 0
+     }, 
+     {
+      "allocation": {}, 
+      "time": 4.0
+     }, 
+     {
+      "allocation": {
+       "O1": "M1"
+      }, 
+      "time": 6.5
+     }, 
+     {
+      "allocation": {}, 
+      "time": 10.0
+     }
+    ]
+   }
+  }
+ ], 
+ "general": {
+  "_class": "Dream.Configuration"
+ }
+}
