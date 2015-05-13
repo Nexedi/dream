@@ -180,7 +180,7 @@ class SkilledRouter(Router):
                 #===================================================================
                 self.availableOperatorList=[]
                 for operator in G.OperatorsList:
-                    if operator.available and operator.onShift:
+                    if operator.available and operator.onShift and not operator.onBreak:
                         self.availableOperatorList.append(operator.id)
                         
                         
