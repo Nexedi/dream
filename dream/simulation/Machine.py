@@ -194,6 +194,8 @@ class Machine(CoreObject):
         # events about the availability of process operator
         # TODO group those operator relate events
         self.processOperatorUnavailable=self.env.event()
+        # holds the Operator currently processing the Machine
+        self.currentOperator=None
 
     @staticmethod
     def getOperationTime(time):
