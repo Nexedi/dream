@@ -155,12 +155,7 @@ class PluginRegistry(object):
     """Preprocess, execute & postprocess.
     """
     for input_preparation in self.input_preparation_list:
-        data = input_preparation.preprocess(deepcopy(data))
-
-    outputJSONString=json.dumps(data, indent=5)
-    outputJSONFile=open('sentToManPy.json', mode='w')
-    outputJSONFile.write(outputJSONString)
-    
+        data = input_preparation.preprocess(deepcopy(data))   
     
     data = self.execution_plugin.run(data)
 
