@@ -7,9 +7,6 @@ from datetime import datetime
 
 from dream.plugins import plugin
 
-# XXX HARDCODED
-MACHINE_TYPE_SET = set(["Dream.MachineJobShop", "Dream.MouldAssembly","Dream.Machine","Dream.BatchScrapMachine"])
-
 class SetTriangular(plugin.InputPreparationPlugin):
     """ Input preparation
         takes a model with deterministic processing time and sets it to triangular
