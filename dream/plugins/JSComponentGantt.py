@@ -49,7 +49,7 @@ class JSComponentGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
                     id=order_id,
                     text=order.get('name', order_id),
                     type='project',
-                    open=True)
+                    open=False)
                 break
           # add the component in the task_dict
           task_dict[element['id']] = dict(
@@ -57,7 +57,8 @@ class JSComponentGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
             text=componentId,
             type='project',
             open=False,
-            parent=order_id)
+            parent=order_id,
+            color='DodgerBlue')
       
           k=1
           
@@ -94,6 +95,7 @@ class JSComponentGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
                         exitTime).strftime(date_format),
                   open=False,
                   entranceTime=entranceTime,
+                  color='cyan',
                   duration=exitTime-entranceTime,
                 )           
            

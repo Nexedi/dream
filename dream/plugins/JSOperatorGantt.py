@@ -42,7 +42,8 @@ class JSOperatorGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
               id=operatorId,
               text=operatorId,
               type='operator',
-              open=False)
+              open=False,
+              color='DodgerBlue')
 
             for record in schedule:
               entranceTime=record['entranceTime']
@@ -73,6 +74,7 @@ class JSOperatorGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
                       exitTime).strftime(date_format),
                 open=False,
                 entranceTime=entranceTime,
+                color='cyan',
                 duration=exitTime-entranceTime,
               )
               if task_id == 'off-shift':
