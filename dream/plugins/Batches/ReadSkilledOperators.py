@@ -26,6 +26,7 @@ class ReadSkilledOperators(plugin.InputPreparationPlugin):
             if not PBId:
                 continue
             skills=PBitem[1].split(',')
+            skills = filter(bool, skills) 
             newSkills=[]
             for n_id,n in node.iteritems():
                 technology=n.get('technology',None)
