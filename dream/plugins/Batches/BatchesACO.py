@@ -85,7 +85,7 @@ class BatchesACO(ACO):
     data["general"]["distributorURL"]=None  # no distributor currently, to be added in the GUI
     # use multiprocessing in the PC. This can be an option, but default for now
     import multiprocessing                  
-    data["general"]["multiprocessorCount"] = multiprocessing.cpu_count()-1 or 1
+    data["general"]["multiprocessorCount"] = None # multiprocessing.cpu_count()-1 or 1
     ACO.run(self, data)
     data["result"]["result_list"][-1]["score"] = ''
     data["result"]["result_list"][-1]["key"] = "Go To Results Page"
