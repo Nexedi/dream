@@ -63,7 +63,6 @@ class BatchesShift(ReadShiftFromSpreadsheet):
             # if element has no shift defined in the spreadsheet it needs to be off-shift. For this we declare a dummy
             # shift that is on-shift only after the completion of simulation
             if not shiftExists:
-                print 'Setting for', node_id
                 node['interruptions']=node.get('interruptions',{})
                 node['interruptions']['shift']={}
                 node['interruptions']['shift']['shiftPattern']=[[maxSimTime+1,maxSimTime+2]]      
