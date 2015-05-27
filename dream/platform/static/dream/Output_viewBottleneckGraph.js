@@ -14,6 +14,9 @@
         }).push(function(simulation_json) {
             var json_data = JSON.parse(simulation_json);
             gadget.props.data = json_data.result.result_list[options.result][options.action_definition.configuration.output_id];
+            if (options.action_definition.configuration.select_label) {
+                $(gadget.props.element.querySelector(".select_label")).text(options.action_definition.configuration.select_label);
+            }
         });
     }).declareMethod("startService", function() {
         var first_option, datasets = this.props.data, graph_container = this.props.element.querySelector(".graph_container"), select = $(this.props.element.querySelector("select.choices"));
