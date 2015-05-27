@@ -232,6 +232,11 @@ module.exports = function (grunt) {
         relative_dest: 'lib/jquery.flot.time.js',
         dest: '<%= global_config.dest %>/<%= curl.jqueryflottime.relative_dest %>'
       },
+      jqueryflotorderbars: {
+        src: '<%= curl.jqueryflot.url_base%>jquery.flot.orderBars.js',
+        relative_dest: 'lib/jquery.flot.orderBars.js',
+        dest: '<%= global_config.dest %>/<%= curl.jqueryflotorderbars.relative_dest %>'
+      },
       dhtmlxgantt: {
         src: 'http://dhtmlx.com/x/download/regular/dhtmlxGantt.zip',
         dest: '<%= global_config.tmp %>/dhtmlxGantt.zip'
