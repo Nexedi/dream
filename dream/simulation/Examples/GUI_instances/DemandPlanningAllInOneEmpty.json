@@ -148,12 +148,22 @@
         "title": "Download Result Spreadsheet", 
         "type": "object_view"
       },
-      "view_bottleneck_utilization": {
+      "view_bottleneck_utilization_by_bottleneck": {
         "configuration": {
-          "output_id": "bottleneck_utilization"
-        }, 
-        "gadget": "Output_viewBottleneckGraph", 
-        "title": "Bottleneck Utilization", 
+          "output_id": "bottleneck_utilization",
+          "select_label": "Please select bottleneck:"
+        },
+        "gadget": "Output_viewBottleneckGraph",
+        "title": "Bottleneck Utilization by Bottleneck",
+        "type": "object_view"
+      },
+      "view_bottleneck_utilization_by_week": {
+        "configuration": {
+          "output_id": "bottleneck_utilization_by_week",
+          "select_label": "Please select week:"
+        },
+        "gadget": "Output_viewBottleneckGraph",
+        "title": "Bottleneck Utilization by Week",
         "type": "object_view"
       }
     }, 
@@ -166,6 +176,10 @@
         {
           "_class": "dream.plugins.DemandPlanning.DemandPlanningLine.DemandPlanningLine", 
           "output_id": "bottleneck_utilization"
+        },
+        {
+          "_class": "dream.plugins.DemandPlanning.DemandPlanningLine.BottleNeckByWeek",
+          "output_id": "bottleneck_utilization_by_week"
         }
       ]
     }, 
