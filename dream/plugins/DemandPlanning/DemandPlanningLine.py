@@ -79,12 +79,12 @@ class BottleNeckByWeek(plugin.OutputPreparationPlugin, TimeSupportMixin):
     by_week = {}
     # change {bottleneck: {week: data }} in {week: {bottleneck: data}}
     for bottleneck, bottleNeckUtilization in G.Utilisation.iteritems():
-        for record_id, record in bottleNeckUtilization.iteritems():
-            by_week.setdefault(record_id, {})[bottleneck] = record
+      for record_id, record in bottleNeckUtilization.iteritems():
+        by_week.setdefault(record_id, {})[bottleneck] = record
 
     for week, bottleneckData in by_week.items():
       series = []
-      ticks = [list(enumerate(bottleneckData.keys()))]
+      ticks = list(enumerate(bottleneckData.keys()))
       
       options = {
         "xaxis": {
