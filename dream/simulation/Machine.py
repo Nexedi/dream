@@ -54,7 +54,9 @@ class Machine(CoreObject):
                   operatorPool='None',operationType='None',\
                   setupTime=None, loadTime=None,
                   preemption={},
-                  canDeliverOnInterruption=False, technology=None,**kw):
+                  canDeliverOnInterruption=False, technology=None,
+                  priority=0,
+                  **kw):
         self.type="Machine"                         #String that shows the type of object
         CoreObject.__init__(self, id, name)
         from Globals import G
@@ -140,6 +142,8 @@ class Machine(CoreObject):
         G.MachineList.append(self)                             # add machine to global MachineList
         if self.operatorPool!="None":
             G.OperatedMachineList.append(self)                 # add the machine to the operatedMachines List
+        # attribute to prioritize against competing parallel machines
+        self.priority=priority
    
     # =======================================================================
     # initialize the machine
