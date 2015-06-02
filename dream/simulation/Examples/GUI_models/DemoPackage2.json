@@ -777,8 +777,99 @@
   "constraints": {}, 
   "general": {}, 
   "graph": {
-    "edge": {}, 
-    "node": {}
+"edge": {
+      "con_35": {
+        "_class": "Dream.Edge", 
+        "destination": "Q1", 
+        "source": "S1"
+      }, 
+      "con_51": {
+        "_class": "Dream.Edge", 
+        "destination": "M1", 
+        "source": "Q1"
+      }, 
+      "con_65": {
+        "_class": "Dream.Edge", 
+        "destination": "E1", 
+        "source": "M1"
+      }, 
+      "con_77": {
+        "_class": "Dream.Edge", 
+        "destination": "E1", 
+        "source": "M2"
+      }, 
+      "con_93": {
+        "_class": "Dream.Edge", 
+        "destination": "M2", 
+        "source": "Q1"
+      }
+    }, 
+    "node": {
+      "E1": {
+        "_class": "Dream.Exit", 
+        "coordinate": {
+          "left": 0.4968077327864016, 
+          "top": 0.41003430046834116
+        }, 
+        "name": "Exit"
+      }, 
+      "M1": {
+        "_class": "Dream.Machine", 
+        "coordinate": {
+          "left": 0.3100792490752088, 
+          "top": 0.16472001938316602
+        }, 
+        "id": "M1", 
+        "name": "Milling1", 
+        "priority": 0, 
+        "processingTime": {
+          "Fixed": {
+            "mean": 0.25
+          }, 
+          "distribution": "Fixed"
+        }
+      }, 
+      "M2": {
+        "_class": "Dream.Machine", 
+        "coordinate": {
+          "left": 0.3116224589517524, 
+          "top": 0.6149796893547643
+        }, 
+        "name": "Milling2", 
+        "priority": 0, 
+        "processingTime": {
+          "Fixed": {
+            "mean": 0.25
+          }, 
+          "distribution": "Fixed"
+        }
+      }, 
+      "Q1": {
+        "_class": "Dream.Queue", 
+        "capacity": 1, 
+        "coordinate": {
+          "left": 0.19397797096269062, 
+          "top": 0.42132766905892605
+        }, 
+        "name": "Queue", 
+        "routingOut": "Cycle"
+      }, 
+      "S1": {
+        "_class": "Dream.Source", 
+        "coordinate": {
+          "left": 0.04437233697008896, 
+          "top": 0.37432632430104185
+        }, 
+        "entity": "Dream.Part", 
+        "interArrivalTime": {
+          "Fixed": {
+            "mean": 0.5
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "name": "Source"
+      }
+    }
   }, 
   "input": {
     "machine_shift_spreadsheet": [
