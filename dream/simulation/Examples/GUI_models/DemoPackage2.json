@@ -364,39 +364,6 @@
       "description": "A buffer where entites can be hold until the next station is ready to process them", 
       "name": "Queue"
     }, 
-    "Dream.Repairman": {
-      "_class": "node", 
-      "allOf": [
-        {
-          "$ref": "#/node"
-        }, 
-        {
-          "properties": {
-            "capacity": {
-              "$ref": "#/definitions/_capacity", 
-              "required": true
-            }, 
-            "id": {
-              "default": "R", 
-              "required": true, 
-              "type": "string"
-            }, 
-            "name": {
-              "default": "Repairman", 
-              "type": "string"
-            }
-          }, 
-          "type": "object"
-        }
-      ], 
-      "css": {
-        "backgroundColor": "#fdd", 
-        "backgroundImage": "linear-gradient(to bottom, #fdd 0%, #dcc 100%)", 
-        "border": "1px solid #cbb"
-      }, 
-      "description": "A resource that repairs stations in failure", 
-      "name": "Repairman"
-    }, 
     "Dream.Source": {
       "_class": "node", 
       "allOf": [
