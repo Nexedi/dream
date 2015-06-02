@@ -189,11 +189,18 @@ def _runKnowledgeExtraction(parameter_dict):
     ProcessingTimes= A.Input_data(worksheet_ProcessingTimes, workbook)  #Create a dictionary with the imported data from the Excel file
 
     data = parameter_dict                            #It loads the file
-    nodes = data['nodes'] 
+#     nodes = data['nodes'] 
+    nodes = data['graph']['node']
 
     for station, values in ProcessingTimes.items():             #This loop searches the elements of the Excel imported data and if these elements exist in json file append the distribution fitting results in a dictionary   
-      if station in nodes:
-        parameter_dict['nodes'][station]['processingTime'] = B.ks_test(values)
+      if station in nodes: 
+        temp= B.ks_test(values)
+        dist=temp['distributionType']
+        del temp['distributionType']
+        temp={dist:temp}
+        from pprint import pprint
+        pprint(temp)
+        parameter_dict['graph']['node'][station]['processingTime'] = temp
     return dict(success=True, data=parameter_dict)
   except Exception, e:
     tb = traceback.format_exc()
