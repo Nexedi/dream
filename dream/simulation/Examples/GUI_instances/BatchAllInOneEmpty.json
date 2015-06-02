@@ -248,10 +248,6 @@
               "type": "string"
             },
             {
-              "name": "Fill sub-line",
-              "type": "string"
-            },
-            {
               "name": "Machines with furthest last assignment time",
               "type": "string"
             },
