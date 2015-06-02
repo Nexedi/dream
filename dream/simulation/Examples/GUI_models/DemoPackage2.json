@@ -305,49 +305,11 @@
               "$ref": "#/definitions/_dist", 
               "required": true,
 			  "default":{"Fixed":{"mean":1}}
-            }, 
-            "setupTime": {
-              "$ref": "#/definitions/_dist", 
-              "required": true
             },
-            "loadTime": {
-              "$ref": "#/definitions/_dist", 
-              "required": true
-            }, 	
-            "operationType": {
-              "properties": {
-                "load": {
-                  "$ref": "#/definitions/_operationType", 
-                  "description": "Operation type for loading",
-                  "name": "Load Operation type"
-                }, 
-                "processing": {
-                  "$ref": "#/definitions/_operationType", 
-                  "description": "Operation type for processing",
-                  "name": "Processing Operation type"
-                }, 
-                "setup": {
-                  "$ref": "#/definitions/_operationType", 
-                  "description": "Operation type for setup",
-                  "name": "Setup Operation type"
-                }
-              }, 
-              "required": [
-                "load", 
-                "setup", 
-                "processing"
-              ], 
-              "type": "object"
-            },			
-            "interruption": {
-              "properties": {
-                "failure": {
-                  "$ref": "#/definitions/_failureDist", 
-                  "required": true
-                }
-              }, 
-              "type": "object"
-            } 
+            "priority": {
+              "default": 0, 
+              "type": "number"
+            } 				
           }, 
           "type": "object"
         }
