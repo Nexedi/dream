@@ -236,6 +236,10 @@
         {
           "_class": "dream.plugins.WIPSpreadsheet.WIPSpreadsheet", 
           "input_id": "WIPdata"
+        },
+        {
+          "_class": "dream.plugins.SetRoutingOut.SetRoutingOut", 
+          "input_id": "routingOut"
         }
       ]
     }, 
