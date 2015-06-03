@@ -24,7 +24,6 @@ class DefaultTabularExit(plugin.OutputPreparationPlugin):
                 # when found, add a row with the results of the specific exit
                 if family=='Exit':
                     exitId=record['id']
-                    print record['results'].get('throughput','undefined')
                     throughput=int((record['results'].get('throughput','undefined'))[0])
                     taktTime=float((record['results'].get('takt_time','undefined'))[0])
                     lifespan=float((record['results'].get('lifespan','undefined'))[0])
