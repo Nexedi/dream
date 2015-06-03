@@ -4,9 +4,10 @@ from dream.simulation.imports import Queue
 class SelectiveQueue(Queue):
     #override so that it chooses receiver according to priority
     def selectReceiver(self,possibleReceivers=[]):
-        #if the priorities are the same work as cycle
-        if possibleReceivers[0].priority==possibleReceivers[1].priority:
-            return Queue.selectReceiver(possibleReceivers)        
+        #if all the possibleReceivers have the same priority work as cycle
+        if len(possibleReceivers):
+            if possibleReceivers.count(possibleReceivers[0]) == len(possibleReceivers):
+                return Queue.selectReceiver(possibleReceivers)        
         # sort the receivers according to their priority
         possibleReceivers.sort(key=lambda x: x.priority, reverse=True)
         if possibleReceivers[0].canAccept():
