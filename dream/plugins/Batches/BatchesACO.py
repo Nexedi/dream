@@ -59,8 +59,6 @@ class BatchesACO(ACO):
                 value+=float(stepValue)
                 if value>float(maxValue):
                     break
-    from pprint import pprint
-    pprint(collated)
     return collated    
 
   # creates the ant scenario based on what ACO randomly selected
