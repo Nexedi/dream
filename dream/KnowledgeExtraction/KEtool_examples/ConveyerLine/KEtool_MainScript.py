@@ -47,14 +47,6 @@ def main(test=0, CSVFileName1='InterArrivalData.csv',
     M2=procData.get('M2',[])
     S1=sourceData.get('S1',[])
     
-    #call the Import_CSV object and use its method Input_data to import the data set from the CSV files to the tool
-    CSV=ImportCSVdata()   
-    procData=CSV.Input_data('DataSet.csv')
-    sourceData=CSV.Input_data('InterArrivalData.csv')
-    M1=procData.get('M1',[])      #get from the returned Python dictionary the data sets
-    M2=procData.get('M2',[])
-    S1=sourceData.get('S1',[])
-    
     ################### Processing of the data sets calling the following objects ###################################
     #Replace missing values calling the corresponding object
     missingValues=ReplaceMissingValues()
