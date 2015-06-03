@@ -197,7 +197,7 @@ def _runKnowledgeExtraction(parameter_dict):
         temp= B.ks_test(values)
         dist=temp['distributionType']
         del temp['distributionType']
-        temp={dist:temp}
+        temp={dist:temp, "distribution": dist}
         from pprint import pprint
         pprint(temp)
         parameter_dict['graph']['node'][station]['processingTime'] = temp
