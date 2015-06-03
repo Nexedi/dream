@@ -5,10 +5,13 @@ class SelectiveQueue(Queue):
     #override so that it chooses receiver according to priority
     def selectReceiver(self,possibleReceivers=[]):
         #if all the possibleReceivers have the same priority work as cycle
-        if len(possibleReceivers):
-            if possibleReceivers.count(possibleReceivers[0]) == len(possibleReceivers):
+        priorityList=[]
+        for element in possibleReceivers:
+            priorityList.append(element.priority)
+        if len(priorityList):
+            if priorityList.count(priorityList[0]) == len(priorityList):
                 return Queue.selectReceiver(possibleReceivers)        
-        # sort the receivers according to their priority
+        # else sort the receivers according to their priority
         possibleReceivers.sort(key=lambda x: x.priority, reverse=True)
         if possibleReceivers[0].canAccept():
             return possibleReceivers[0]
