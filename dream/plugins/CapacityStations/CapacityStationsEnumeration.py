@@ -17,7 +17,24 @@ from multiprocessing import Pool
 # enumeration in order to search for the optimal threshold
 class CapacityStationsEnumeration(Enumeration):
     def calculateScenarioScore(self, scenario):
-        return 1
+        """Calculate the score of this scenario.
+        """
+        totalDelay=0    #set the total delay to 0
+        result, = scenario['result']['result_list']  #read the result as JSON
+        #loop through the elements
+        for element in result['elementList']:
+            #id the class is Job
+            if element.get('_class', None) == "Dream.CapacityProject":
+                id=element['id']
+                exitDay=element['results']['schedule'][-1]['exitTime']
+                for project in scenario['input']['input']['BOM']['productionOrders']:
+                    if project['id']==id:
+                        dueDate=project['dueDate']
+                delay = exitDay-dueDate
+                # A negative delay would mean we are ahead of schedule. This
+                # should not be considered better than being on time.
+                totalDelay += max(delay, 0)
+        return totalDelay
         
     # creates the collated scenarios, i.e. the list 
     # of options collated into a dictionary for ease of referencing in ManPy
