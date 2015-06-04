@@ -45,18 +45,19 @@ class Enumeration(plugin.ExecutionPlugin):
     
       start = time.time()         # start counting execution time
     
-      numberOfSolutions = int(data['general'].get('numberOfSolutions',0))
+      numberOfSolutions = int(data['general'].get('numberOfSolutions',3))
       assert numberOfSolutions >= 1
       scenarioList=self.createScenarioList(data)
       
       for scenario in scenarioList: 
           scenario['input']=self.createScenarioData(data, scenario)
           scenario['result'] = self.runOneScenario(scenario['input'])['result']
+          scenario['score'] = self.calculateScenarioScore(scenario)
           if self.checkIfShouldTerminate(data, scenarioList):
               break
-          
+    
       # rand the scenarios based on their score and take only the numberOfSolutions best
-      scenariosToReturn = sorted(scenarioList.values(),key=operator.itemgetter('score'))[:numberOfSolutions]
+      scenariosToReturn = sorted(scenarioList,key=operator.itemgetter('score'))[:numberOfSolutions]
     
       # return the number of scenarios that need to be returned
       data['result']['result_list'] = result_list = []
