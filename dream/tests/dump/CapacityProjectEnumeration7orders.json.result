@@ -1,0 +1,5161 @@
+{
+ "_class": "Dream.Simulation", 
+ "capacity_project_gantt": {
+  "task_list": [
+   {
+    "color": "DodgerBlue", 
+    "id": "P1", 
+    "open": false, 
+    "text": "Project P1", 
+    "type": "project"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "id": "P2", 
+    "open": false, 
+    "text": "Project P2", 
+    "type": "project"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "id": "P3", 
+    "open": false, 
+    "text": "Project P3", 
+    "type": "project"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "id": "P4", 
+    "open": false, 
+    "text": "Project P4", 
+    "type": "project"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "id": "P5", 
+    "open": false, 
+    "text": "Project P5", 
+    "type": "project"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "id": "P6", 
+    "open": false, 
+    "text": "Project P6", 
+    "type": "project"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "id": "P7", 
+    "open": false, 
+    "text": "Project P7", 
+    "type": "project"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 0.0, 
+    "id": "P1CNC", 
+    "open": false, 
+    "parent": "P1", 
+    "start_date": "18-02-2014 00:00", 
+    "stop_date": "19-02-2014 00:00", 
+    "text": "CNC"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 0.0, 
+    "id": "P1EEP", 
+    "open": false, 
+    "parent": "P1", 
+    "start_date": "18-02-2014 00:00", 
+    "stop_date": "19-02-2014 00:00", 
+    "text": "EEP"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 2, 
+    "entranceTime": 0.0, 
+    "id": "P1MCH", 
+    "open": false, 
+    "parent": "P1", 
+    "start_date": "18-02-2014 00:00", 
+    "stop_date": "20-02-2014 00:00", 
+    "text": "MCH"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 2, 
+    "entranceTime": 0.0, 
+    "id": "P1SMF", 
+    "open": false, 
+    "parent": "P1", 
+    "start_date": "18-02-2014 00:00", 
+    "stop_date": "20-02-2014 00:00", 
+    "text": "SMF"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 2, 
+    "entranceTime": 1.0, 
+    "id": "P1WELD", 
+    "open": false, 
+    "parent": "P1", 
+    "start_date": "19-02-2014 00:00", 
+    "stop_date": "21-02-2014 00:00", 
+    "text": "WELD"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 6, 
+    "entranceTime": 3.0, 
+    "id": "P1PPASB", 
+    "open": false, 
+    "parent": "P1", 
+    "start_date": "21-02-2014 00:00", 
+    "stop_date": "27-02-2014 00:00", 
+    "text": "PPASB"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 9.0, 
+    "id": "P1PAINT", 
+    "open": false, 
+    "parent": "P1", 
+    "start_date": "27-02-2014 00:00", 
+    "stop_date": "28-02-2014 00:00", 
+    "text": "PAINT"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 4, 
+    "entranceTime": 18.0, 
+    "id": "P1ASBTST", 
+    "open": false, 
+    "parent": "P1", 
+    "start_date": "08-03-2014 00:00", 
+    "stop_date": "12-03-2014 00:00", 
+    "text": "ASBTST"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 0.0, 
+    "id": "P2CNC", 
+    "open": false, 
+    "parent": "P2", 
+    "start_date": "18-02-2014 00:00", 
+    "stop_date": "19-02-2014 00:00", 
+    "text": "CNC"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 0.0, 
+    "id": "P2EEP", 
+    "open": false, 
+    "parent": "P2", 
+    "start_date": "18-02-2014 00:00", 
+    "stop_date": "19-02-2014 00:00", 
+    "text": "EEP"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 1.0, 
+    "id": "P2MCH", 
+    "open": false, 
+    "parent": "P2", 
+    "start_date": "19-02-2014 00:00", 
+    "stop_date": "20-02-2014 00:00", 
+    "text": "MCH"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 1.0, 
+    "id": "P2SMF", 
+    "open": false, 
+    "parent": "P2", 
+    "start_date": "19-02-2014 00:00", 
+    "stop_date": "20-02-2014 00:00", 
+    "text": "SMF"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 2, 
+    "entranceTime": 2.0, 
+    "id": "P2WELD", 
+    "open": false, 
+    "parent": "P2", 
+    "start_date": "20-02-2014 00:00", 
+    "stop_date": "22-02-2014 00:00", 
+    "text": "WELD"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 9, 
+    "entranceTime": 9.0, 
+    "id": "P2PPASB", 
+    "open": false, 
+    "parent": "P2", 
+    "start_date": "27-02-2014 00:00", 
+    "stop_date": "08-03-2014 00:00", 
+    "text": "PPASB"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 6, 
+    "entranceTime": 18.0, 
+    "id": "P2PAINT", 
+    "open": false, 
+    "parent": "P2", 
+    "start_date": "08-03-2014 00:00", 
+    "stop_date": "14-03-2014 00:00", 
+    "text": "PAINT"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 2, 
+    "entranceTime": 29.0, 
+    "id": "P2ASBTST", 
+    "open": false, 
+    "parent": "P2", 
+    "start_date": "19-03-2014 00:00", 
+    "stop_date": "21-03-2014 00:00", 
+    "text": "ASBTST"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 1.0, 
+    "id": "P3EEP", 
+    "open": false, 
+    "parent": "P3", 
+    "start_date": "19-02-2014 00:00", 
+    "stop_date": "20-02-2014 00:00", 
+    "text": "EEP"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 2.0, 
+    "id": "P3CNC", 
+    "open": false, 
+    "parent": "P3", 
+    "start_date": "20-02-2014 00:00", 
+    "stop_date": "21-02-2014 00:00", 
+    "text": "CNC"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 3.0, 
+    "id": "P3MCH", 
+    "open": false, 
+    "parent": "P3", 
+    "start_date": "21-02-2014 00:00", 
+    "stop_date": "22-02-2014 00:00", 
+    "text": "MCH"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 2, 
+    "entranceTime": 7.0, 
+    "id": "P3SMF", 
+    "open": false, 
+    "parent": "P3", 
+    "start_date": "25-02-2014 00:00", 
+    "stop_date": "27-02-2014 00:00", 
+    "text": "SMF"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 3, 
+    "entranceTime": 8.0, 
+    "id": "P3WELD", 
+    "open": false, 
+    "parent": "P3", 
+    "start_date": "26-02-2014 00:00", 
+    "stop_date": "01-03-2014 00:00", 
+    "text": "WELD"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 7, 
+    "entranceTime": 58.0, 
+    "id": "P3PPASB", 
+    "open": false, 
+    "parent": "P3", 
+    "start_date": "17-04-2014 00:00", 
+    "stop_date": "24-04-2014 00:00", 
+    "text": "PPASB"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 65.0, 
+    "id": "P3PAINT", 
+    "open": false, 
+    "parent": "P3", 
+    "start_date": "24-04-2014 00:00", 
+    "stop_date": "25-04-2014 00:00", 
+    "text": "PAINT"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 4, 
+    "entranceTime": 66.0, 
+    "id": "P3ASBTST", 
+    "open": false, 
+    "parent": "P3", 
+    "start_date": "25-04-2014 00:00", 
+    "stop_date": "29-04-2014 00:00", 
+    "text": "ASBTST"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 2, 
+    "entranceTime": 0.0, 
+    "id": "P4CNC", 
+    "open": false, 
+    "parent": "P4", 
+    "start_date": "18-02-2014 00:00", 
+    "stop_date": "20-02-2014 00:00", 
+    "text": "CNC"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 0.0, 
+    "id": "P4EEP", 
+    "open": false, 
+    "parent": "P4", 
+    "start_date": "18-02-2014 00:00", 
+    "stop_date": "19-02-2014 00:00", 
+    "text": "EEP"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 2, 
+    "entranceTime": 1.0, 
+    "id": "P4MCH", 
+    "open": false, 
+    "parent": "P4", 
+    "start_date": "19-02-2014 00:00", 
+    "stop_date": "21-02-2014 00:00", 
+    "text": "MCH"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 3, 
+    "entranceTime": 1.0, 
+    "id": "P4SMF", 
+    "open": false, 
+    "parent": "P4", 
+    "start_date": "19-02-2014 00:00", 
+    "stop_date": "22-02-2014 00:00", 
+    "text": "SMF"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 5, 
+    "entranceTime": 3.0, 
+    "id": "P4WELD", 
+    "open": false, 
+    "parent": "P4", 
+    "start_date": "21-02-2014 00:00", 
+    "stop_date": "26-02-2014 00:00", 
+    "text": "WELD"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 7, 
+    "entranceTime": 22.0, 
+    "id": "P4PPASB", 
+    "open": false, 
+    "parent": "P4", 
+    "start_date": "12-03-2014 00:00", 
+    "stop_date": "19-03-2014 00:00", 
+    "text": "PPASB"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 2, 
+    "entranceTime": 29.0, 
+    "id": "P4PAINT", 
+    "open": false, 
+    "parent": "P4", 
+    "start_date": "19-03-2014 00:00", 
+    "stop_date": "21-03-2014 00:00", 
+    "text": "PAINT"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 4, 
+    "entranceTime": 31.0, 
+    "id": "P4ASBTST", 
+    "open": false, 
+    "parent": "P4", 
+    "start_date": "21-03-2014 00:00", 
+    "stop_date": "25-03-2014 00:00", 
+    "text": "ASBTST"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 2, 
+    "entranceTime": 1.0, 
+    "id": "P5CNC", 
+    "open": false, 
+    "parent": "P5", 
+    "start_date": "19-02-2014 00:00", 
+    "stop_date": "21-02-2014 00:00", 
+    "text": "CNC"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 1.0, 
+    "id": "P5EEP", 
+    "open": false, 
+    "parent": "P5", 
+    "start_date": "19-02-2014 00:00", 
+    "stop_date": "20-02-2014 00:00", 
+    "text": "EEP"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 2, 
+    "entranceTime": 2.0, 
+    "id": "P5MCH", 
+    "open": false, 
+    "parent": "P5", 
+    "start_date": "20-02-2014 00:00", 
+    "stop_date": "22-02-2014 00:00", 
+    "text": "MCH"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 3.0, 
+    "id": "P5SMF", 
+    "open": false, 
+    "parent": "P5", 
+    "start_date": "21-02-2014 00:00", 
+    "stop_date": "22-02-2014 00:00", 
+    "text": "SMF"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 2, 
+    "entranceTime": 7.0, 
+    "id": "P5WELD", 
+    "open": false, 
+    "parent": "P5", 
+    "start_date": "25-02-2014 00:00", 
+    "stop_date": "27-02-2014 00:00", 
+    "text": "WELD"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 5, 
+    "entranceTime": 42.0, 
+    "id": "P5PPASB", 
+    "open": false, 
+    "parent": "P5", 
+    "start_date": "01-04-2014 00:00", 
+    "stop_date": "06-04-2014 00:00", 
+    "text": "PPASB"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 3, 
+    "entranceTime": 48.0, 
+    "id": "P5PAINT", 
+    "open": false, 
+    "parent": "P5", 
+    "start_date": "07-04-2014 00:00", 
+    "stop_date": "10-04-2014 00:00", 
+    "text": "PAINT"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 6, 
+    "entranceTime": 51.0, 
+    "id": "P5ASBTST", 
+    "open": false, 
+    "parent": "P5", 
+    "start_date": "10-04-2014 00:00", 
+    "stop_date": "16-04-2014 00:00", 
+    "text": "ASBTST"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 1.0, 
+    "id": "P6EEP", 
+    "open": false, 
+    "parent": "P6", 
+    "start_date": "19-02-2014 00:00", 
+    "stop_date": "20-02-2014 00:00", 
+    "text": "EEP"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 2.0, 
+    "id": "P6CNC", 
+    "open": false, 
+    "parent": "P6", 
+    "start_date": "20-02-2014 00:00", 
+    "stop_date": "21-02-2014 00:00", 
+    "text": "CNC"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 3.0, 
+    "id": "P6MCH", 
+    "open": false, 
+    "parent": "P6", 
+    "start_date": "21-02-2014 00:00", 
+    "stop_date": "22-02-2014 00:00", 
+    "text": "MCH"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 5, 
+    "entranceTime": 3.0, 
+    "id": "P6SMF", 
+    "open": false, 
+    "parent": "P6", 
+    "start_date": "21-02-2014 00:00", 
+    "stop_date": "26-02-2014 00:00", 
+    "text": "SMF"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 8.0, 
+    "id": "P6WELD", 
+    "open": false, 
+    "parent": "P6", 
+    "start_date": "26-02-2014 00:00", 
+    "stop_date": "27-02-2014 00:00", 
+    "text": "WELD"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 2, 
+    "entranceTime": 49.0, 
+    "id": "P6PPASB", 
+    "open": false, 
+    "parent": "P6", 
+    "start_date": "08-04-2014 00:00", 
+    "stop_date": "10-04-2014 00:00", 
+    "text": "PPASB"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 51.0, 
+    "id": "P6PAINT", 
+    "open": false, 
+    "parent": "P6", 
+    "start_date": "10-04-2014 00:00", 
+    "stop_date": "11-04-2014 00:00", 
+    "text": "PAINT"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 57.0, 
+    "id": "P6ASBTST", 
+    "open": false, 
+    "parent": "P6", 
+    "start_date": "16-04-2014 00:00", 
+    "stop_date": "17-04-2014 00:00", 
+    "text": "ASBTST"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 2, 
+    "entranceTime": 0.0, 
+    "id": "P7EEP", 
+    "open": false, 
+    "parent": "P7", 
+    "start_date": "18-02-2014 00:00", 
+    "stop_date": "20-02-2014 00:00", 
+    "text": "EEP"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 1.0, 
+    "id": "P7CNC", 
+    "open": false, 
+    "parent": "P7", 
+    "start_date": "19-02-2014 00:00", 
+    "stop_date": "20-02-2014 00:00", 
+    "text": "CNC"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 2.0, 
+    "id": "P7MCH", 
+    "open": false, 
+    "parent": "P7", 
+    "start_date": "20-02-2014 00:00", 
+    "stop_date": "21-02-2014 00:00", 
+    "text": "MCH"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 3.0, 
+    "id": "P7SMF", 
+    "open": false, 
+    "parent": "P7", 
+    "start_date": "21-02-2014 00:00", 
+    "stop_date": "22-02-2014 00:00", 
+    "text": "SMF"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 7.0, 
+    "id": "P7WELD", 
+    "open": false, 
+    "parent": "P7", 
+    "start_date": "25-02-2014 00:00", 
+    "stop_date": "26-02-2014 00:00", 
+    "text": "WELD"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 7, 
+    "entranceTime": 35.0, 
+    "id": "P7PPASB", 
+    "open": false, 
+    "parent": "P7", 
+    "start_date": "25-03-2014 00:00", 
+    "stop_date": "01-04-2014 00:00", 
+    "text": "PPASB"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 3, 
+    "entranceTime": 42.0, 
+    "id": "P7PAINT", 
+    "open": false, 
+    "parent": "P7", 
+    "start_date": "01-04-2014 00:00", 
+    "stop_date": "04-04-2014 00:00", 
+    "text": "PAINT"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 48.0, 
+    "id": "P7ASBTST", 
+    "open": false, 
+    "parent": "P7", 
+    "start_date": "07-04-2014 00:00", 
+    "stop_date": "08-04-2014 00:00", 
+    "text": "ASBTST"
+   }
+  ], 
+  "time_unit": "day"
+ }, 
+ "capacity_station_gantt": {
+  "task_list": [
+   {
+    "color": "DodgerBlue", 
+    "id": "ASBTST", 
+    "open": false, 
+    "text": "Station ASBTST", 
+    "type": "station"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "id": "CNC", 
+    "open": false, 
+    "text": "Station CNC", 
+    "type": "station"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "id": "EEP", 
+    "open": false, 
+    "text": "Station EEP", 
+    "type": "station"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "id": "MCH", 
+    "open": false, 
+    "text": "Station MCH", 
+    "type": "station"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "id": "PAINT", 
+    "open": false, 
+    "text": "Station PAINT", 
+    "type": "station"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "id": "PPASB", 
+    "open": false, 
+    "text": "Station PPASB", 
+    "type": "station"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "id": "SMF", 
+    "open": false, 
+    "text": "Station SMF", 
+    "type": "station"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "id": "WELD", 
+    "open": false, 
+    "text": "Station WELD", 
+    "type": "station"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 4, 
+    "entranceTime": 18, 
+    "id": "ASBTSTP1", 
+    "open": false, 
+    "parent": "ASBTST", 
+    "start_date": "08-03-2014 00:00", 
+    "stop_date": "12-03-2014 00:00", 
+    "text": "P1"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 2, 
+    "entranceTime": 29, 
+    "id": "ASBTSTP2", 
+    "open": false, 
+    "parent": "ASBTST", 
+    "start_date": "19-03-2014 00:00", 
+    "stop_date": "21-03-2014 00:00", 
+    "text": "P2"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 4, 
+    "entranceTime": 31, 
+    "id": "ASBTSTP4", 
+    "open": false, 
+    "parent": "ASBTST", 
+    "start_date": "21-03-2014 00:00", 
+    "stop_date": "25-03-2014 00:00", 
+    "text": "P4"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 48, 
+    "id": "ASBTSTP7", 
+    "open": false, 
+    "parent": "ASBTST", 
+    "start_date": "07-04-2014 00:00", 
+    "stop_date": "08-04-2014 00:00", 
+    "text": "P7"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 6, 
+    "entranceTime": 51, 
+    "id": "ASBTSTP5", 
+    "open": false, 
+    "parent": "ASBTST", 
+    "start_date": "10-04-2014 00:00", 
+    "stop_date": "16-04-2014 00:00", 
+    "text": "P5"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 57, 
+    "id": "ASBTSTP6", 
+    "open": false, 
+    "parent": "ASBTST", 
+    "start_date": "16-04-2014 00:00", 
+    "stop_date": "17-04-2014 00:00", 
+    "text": "P6"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 4, 
+    "entranceTime": 66, 
+    "id": "ASBTSTP3", 
+    "open": false, 
+    "parent": "ASBTST", 
+    "start_date": "25-04-2014 00:00", 
+    "stop_date": "29-04-2014 00:00", 
+    "text": "P3"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 0, 
+    "id": "CNCP1", 
+    "open": false, 
+    "parent": "CNC", 
+    "start_date": "18-02-2014 00:00", 
+    "stop_date": "19-02-2014 00:00", 
+    "text": "P1"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 0, 
+    "id": "CNCP2", 
+    "open": false, 
+    "parent": "CNC", 
+    "start_date": "18-02-2014 00:00", 
+    "stop_date": "19-02-2014 00:00", 
+    "text": "P2"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 2, 
+    "entranceTime": 0, 
+    "id": "CNCP4", 
+    "open": false, 
+    "parent": "CNC", 
+    "start_date": "18-02-2014 00:00", 
+    "stop_date": "20-02-2014 00:00", 
+    "text": "P4"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 2, 
+    "entranceTime": 1, 
+    "id": "CNCP5", 
+    "open": false, 
+    "parent": "CNC", 
+    "start_date": "19-02-2014 00:00", 
+    "stop_date": "21-02-2014 00:00", 
+    "text": "P5"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 1, 
+    "id": "CNCP7", 
+    "open": false, 
+    "parent": "CNC", 
+    "start_date": "19-02-2014 00:00", 
+    "stop_date": "20-02-2014 00:00", 
+    "text": "P7"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 2, 
+    "id": "CNCP3", 
+    "open": false, 
+    "parent": "CNC", 
+    "start_date": "20-02-2014 00:00", 
+    "stop_date": "21-02-2014 00:00", 
+    "text": "P3"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 2, 
+    "id": "CNCP6", 
+    "open": false, 
+    "parent": "CNC", 
+    "start_date": "20-02-2014 00:00", 
+    "stop_date": "21-02-2014 00:00", 
+    "text": "P6"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 0, 
+    "id": "EEPP1", 
+    "open": false, 
+    "parent": "EEP", 
+    "start_date": "18-02-2014 00:00", 
+    "stop_date": "19-02-2014 00:00", 
+    "text": "P1"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 0, 
+    "id": "EEPP2", 
+    "open": false, 
+    "parent": "EEP", 
+    "start_date": "18-02-2014 00:00", 
+    "stop_date": "19-02-2014 00:00", 
+    "text": "P2"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 0, 
+    "id": "EEPP4", 
+    "open": false, 
+    "parent": "EEP", 
+    "start_date": "18-02-2014 00:00", 
+    "stop_date": "19-02-2014 00:00", 
+    "text": "P4"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 2, 
+    "entranceTime": 0, 
+    "id": "EEPP7", 
+    "open": false, 
+    "parent": "EEP", 
+    "start_date": "18-02-2014 00:00", 
+    "stop_date": "20-02-2014 00:00", 
+    "text": "P7"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 1, 
+    "id": "EEPP3", 
+    "open": false, 
+    "parent": "EEP", 
+    "start_date": "19-02-2014 00:00", 
+    "stop_date": "20-02-2014 00:00", 
+    "text": "P3"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 1, 
+    "id": "EEPP5", 
+    "open": false, 
+    "parent": "EEP", 
+    "start_date": "19-02-2014 00:00", 
+    "stop_date": "20-02-2014 00:00", 
+    "text": "P5"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 1, 
+    "id": "EEPP6", 
+    "open": false, 
+    "parent": "EEP", 
+    "start_date": "19-02-2014 00:00", 
+    "stop_date": "20-02-2014 00:00", 
+    "text": "P6"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 2, 
+    "entranceTime": 0, 
+    "id": "MCHP1", 
+    "open": false, 
+    "parent": "MCH", 
+    "start_date": "18-02-2014 00:00", 
+    "stop_date": "20-02-2014 00:00", 
+    "text": "P1"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 1, 
+    "id": "MCHP2", 
+    "open": false, 
+    "parent": "MCH", 
+    "start_date": "19-02-2014 00:00", 
+    "stop_date": "20-02-2014 00:00", 
+    "text": "P2"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 2, 
+    "entranceTime": 1, 
+    "id": "MCHP4", 
+    "open": false, 
+    "parent": "MCH", 
+    "start_date": "19-02-2014 00:00", 
+    "stop_date": "21-02-2014 00:00", 
+    "text": "P4"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 2, 
+    "entranceTime": 2, 
+    "id": "MCHP5", 
+    "open": false, 
+    "parent": "MCH", 
+    "start_date": "20-02-2014 00:00", 
+    "stop_date": "22-02-2014 00:00", 
+    "text": "P5"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 2, 
+    "id": "MCHP7", 
+    "open": false, 
+    "parent": "MCH", 
+    "start_date": "20-02-2014 00:00", 
+    "stop_date": "21-02-2014 00:00", 
+    "text": "P7"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 3, 
+    "id": "MCHP3", 
+    "open": false, 
+    "parent": "MCH", 
+    "start_date": "21-02-2014 00:00", 
+    "stop_date": "22-02-2014 00:00", 
+    "text": "P3"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 3, 
+    "id": "MCHP6", 
+    "open": false, 
+    "parent": "MCH", 
+    "start_date": "21-02-2014 00:00", 
+    "stop_date": "22-02-2014 00:00", 
+    "text": "P6"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 9, 
+    "id": "PAINTP1", 
+    "open": false, 
+    "parent": "PAINT", 
+    "start_date": "27-02-2014 00:00", 
+    "stop_date": "28-02-2014 00:00", 
+    "text": "P1"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 6, 
+    "entranceTime": 18, 
+    "id": "PAINTP2", 
+    "open": false, 
+    "parent": "PAINT", 
+    "start_date": "08-03-2014 00:00", 
+    "stop_date": "14-03-2014 00:00", 
+    "text": "P2"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 2, 
+    "entranceTime": 29, 
+    "id": "PAINTP4", 
+    "open": false, 
+    "parent": "PAINT", 
+    "start_date": "19-03-2014 00:00", 
+    "stop_date": "21-03-2014 00:00", 
+    "text": "P4"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 3, 
+    "entranceTime": 42, 
+    "id": "PAINTP7", 
+    "open": false, 
+    "parent": "PAINT", 
+    "start_date": "01-04-2014 00:00", 
+    "stop_date": "04-04-2014 00:00", 
+    "text": "P7"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 3, 
+    "entranceTime": 48, 
+    "id": "PAINTP5", 
+    "open": false, 
+    "parent": "PAINT", 
+    "start_date": "07-04-2014 00:00", 
+    "stop_date": "10-04-2014 00:00", 
+    "text": "P5"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 51, 
+    "id": "PAINTP6", 
+    "open": false, 
+    "parent": "PAINT", 
+    "start_date": "10-04-2014 00:00", 
+    "stop_date": "11-04-2014 00:00", 
+    "text": "P6"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 65, 
+    "id": "PAINTP3", 
+    "open": false, 
+    "parent": "PAINT", 
+    "start_date": "24-04-2014 00:00", 
+    "stop_date": "25-04-2014 00:00", 
+    "text": "P3"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 6, 
+    "entranceTime": 3, 
+    "id": "PPASBP1", 
+    "open": false, 
+    "parent": "PPASB", 
+    "start_date": "21-02-2014 00:00", 
+    "stop_date": "27-02-2014 00:00", 
+    "text": "P1"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 9, 
+    "entranceTime": 9, 
+    "id": "PPASBP2", 
+    "open": false, 
+    "parent": "PPASB", 
+    "start_date": "27-02-2014 00:00", 
+    "stop_date": "08-03-2014 00:00", 
+    "text": "P2"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 7, 
+    "entranceTime": 22, 
+    "id": "PPASBP4", 
+    "open": false, 
+    "parent": "PPASB", 
+    "start_date": "12-03-2014 00:00", 
+    "stop_date": "19-03-2014 00:00", 
+    "text": "P4"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 7, 
+    "entranceTime": 35, 
+    "id": "PPASBP7", 
+    "open": false, 
+    "parent": "PPASB", 
+    "start_date": "25-03-2014 00:00", 
+    "stop_date": "01-04-2014 00:00", 
+    "text": "P7"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 5, 
+    "entranceTime": 42, 
+    "id": "PPASBP5", 
+    "open": false, 
+    "parent": "PPASB", 
+    "start_date": "01-04-2014 00:00", 
+    "stop_date": "06-04-2014 00:00", 
+    "text": "P5"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 2, 
+    "entranceTime": 49, 
+    "id": "PPASBP6", 
+    "open": false, 
+    "parent": "PPASB", 
+    "start_date": "08-04-2014 00:00", 
+    "stop_date": "10-04-2014 00:00", 
+    "text": "P6"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 7, 
+    "entranceTime": 58, 
+    "id": "PPASBP3", 
+    "open": false, 
+    "parent": "PPASB", 
+    "start_date": "17-04-2014 00:00", 
+    "stop_date": "24-04-2014 00:00", 
+    "text": "P3"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 2, 
+    "entranceTime": 0, 
+    "id": "SMFP1", 
+    "open": false, 
+    "parent": "SMF", 
+    "start_date": "18-02-2014 00:00", 
+    "stop_date": "20-02-2014 00:00", 
+    "text": "P1"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 1, 
+    "id": "SMFP2", 
+    "open": false, 
+    "parent": "SMF", 
+    "start_date": "19-02-2014 00:00", 
+    "stop_date": "20-02-2014 00:00", 
+    "text": "P2"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 3, 
+    "entranceTime": 1, 
+    "id": "SMFP4", 
+    "open": false, 
+    "parent": "SMF", 
+    "start_date": "19-02-2014 00:00", 
+    "stop_date": "22-02-2014 00:00", 
+    "text": "P4"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 3, 
+    "id": "SMFP5", 
+    "open": false, 
+    "parent": "SMF", 
+    "start_date": "21-02-2014 00:00", 
+    "stop_date": "22-02-2014 00:00", 
+    "text": "P5"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 5, 
+    "entranceTime": 3, 
+    "id": "SMFP6", 
+    "open": false, 
+    "parent": "SMF", 
+    "start_date": "21-02-2014 00:00", 
+    "stop_date": "26-02-2014 00:00", 
+    "text": "P6"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 3, 
+    "id": "SMFP7", 
+    "open": false, 
+    "parent": "SMF", 
+    "start_date": "21-02-2014 00:00", 
+    "stop_date": "22-02-2014 00:00", 
+    "text": "P7"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 2, 
+    "entranceTime": 7, 
+    "id": "SMFP3", 
+    "open": false, 
+    "parent": "SMF", 
+    "start_date": "25-02-2014 00:00", 
+    "stop_date": "27-02-2014 00:00", 
+    "text": "P3"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 2, 
+    "entranceTime": 1, 
+    "id": "WELDP1", 
+    "open": false, 
+    "parent": "WELD", 
+    "start_date": "19-02-2014 00:00", 
+    "stop_date": "21-02-2014 00:00", 
+    "text": "P1"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 2, 
+    "entranceTime": 2, 
+    "id": "WELDP2", 
+    "open": false, 
+    "parent": "WELD", 
+    "start_date": "20-02-2014 00:00", 
+    "stop_date": "22-02-2014 00:00", 
+    "text": "P2"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 5, 
+    "entranceTime": 3, 
+    "id": "WELDP4", 
+    "open": false, 
+    "parent": "WELD", 
+    "start_date": "21-02-2014 00:00", 
+    "stop_date": "26-02-2014 00:00", 
+    "text": "P4"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 2, 
+    "entranceTime": 7, 
+    "id": "WELDP5", 
+    "open": false, 
+    "parent": "WELD", 
+    "start_date": "25-02-2014 00:00", 
+    "stop_date": "27-02-2014 00:00", 
+    "text": "P5"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 7, 
+    "id": "WELDP7", 
+    "open": false, 
+    "parent": "WELD", 
+    "start_date": "25-02-2014 00:00", 
+    "stop_date": "26-02-2014 00:00", 
+    "text": "P7"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 3, 
+    "entranceTime": 8, 
+    "id": "WELDP3", 
+    "open": false, 
+    "parent": "WELD", 
+    "start_date": "26-02-2014 00:00", 
+    "stop_date": "01-03-2014 00:00", 
+    "text": "P3"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 8, 
+    "id": "WELDP6", 
+    "open": false, 
+    "parent": "WELD", 
+    "start_date": "26-02-2014 00:00", 
+    "stop_date": "27-02-2014 00:00", 
+    "text": "P6"
+   }
+  ], 
+  "time_unit": "day"
+ }, 
+ "elementList": [
+  {
+   "_class": "Dream.CapacityStation", 
+   "family": "CapacityStation", 
+   "id": "ASBTST", 
+   "results": {
+    "capacityUsed": [
+     {
+      "period": 0.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 1.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 2.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 3.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 4.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 5.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 6.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 7.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 8.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 9.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 10.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 11.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 12.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 13.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 14.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 15.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 16.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 17.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "P1": 20.0, 
+      "period": 18.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "period": 19.0, 
+      "utilization": 0
+     }, 
+     {
+      "P1": 170.0, 
+      "period": 20.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P1": 110.0, 
+      "period": 21.0, 
+      "utilization": 0.4074074074074074
+     }, 
+     {
+      "period": 22.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 23.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 24.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 25.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 26.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 27.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 28.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "P2": 370.0, 
+      "period": 29.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P2": 10.0, 
+      "period": 30.0, 
+      "utilization": 0.5
+     }, 
+     {
+      "P4": 20.0, 
+      "period": 31.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P4": 50.0, 
+      "period": 32.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "period": 33.0, 
+      "utilization": 0
+     }, 
+     {
+      "P4": 160.0, 
+      "period": 34.0, 
+      "utilization": 0.9411764705882353
+     }, 
+     {
+      "period": 35.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 36.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 37.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 38.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 39.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 40.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 41.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 42.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 43.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 44.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 45.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 46.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 47.0, 
+      "utilization": 0
+     }, 
+     {
+      "P7": 130.0, 
+      "period": 48.0, 
+      "utilization": 0.7647058823529411
+     }, 
+     {
+      "period": 49.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 50.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "P5": 20.0, 
+      "period": 51.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P5": 20.0, 
+      "period": 52.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P5": 20.0, 
+      "period": 53.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "period": 54.0, 
+      "utilization": 0
+     }, 
+     {
+      "P5": 170.0, 
+      "period": 55.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P5": 70.0, 
+      "period": 56.0, 
+      "utilization": 0.25925925925925924
+     }, 
+     {
+      "P6": 130.0, 
+      "period": 57.0, 
+      "utilization": 0.35135135135135137
+     }, 
+     {
+      "period": 58.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 59.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 60.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 61.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 62.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 63.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 64.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 65.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "P3": 20.0, 
+      "period": 66.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P3": 20.0, 
+      "period": 67.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "period": 68.0, 
+      "utilization": 0
+     }, 
+     {
+      "P3": 90.0, 
+      "period": 69.0, 
+      "utilization": 0.5294117647058824
+     }
+    ], 
+    "detailedWorkPlan": [
+     {
+      "allocation": 20.0, 
+      "operation": "ASBTST", 
+      "project": "P1", 
+      "time": 18.0
+     }, 
+     {
+      "allocation": 170.0, 
+      "operation": "ASBTST", 
+      "project": "P1", 
+      "time": 20.0
+     }, 
+     {
+      "allocation": 110.0, 
+      "operation": "ASBTST", 
+      "project": "P1", 
+      "time": 21.0
+     }, 
+     {
+      "allocation": 370.0, 
+      "operation": "ASBTST", 
+      "project": "P2", 
+      "time": 29.0
+     }, 
+     {
+      "allocation": 10.0, 
+      "operation": "ASBTST", 
+      "project": "P2", 
+      "time": 30.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "ASBTST", 
+      "project": "P4", 
+      "time": 31.0
+     }, 
+     {
+      "allocation": 50.0, 
+      "operation": "ASBTST", 
+      "project": "P4", 
+      "time": 32.0
+     }, 
+     {
+      "allocation": 160.0, 
+      "operation": "ASBTST", 
+      "project": "P4", 
+      "time": 34.0
+     }, 
+     {
+      "allocation": 130.0, 
+      "operation": "ASBTST", 
+      "project": "P7", 
+      "time": 48.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "ASBTST", 
+      "project": "P5", 
+      "time": 51.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "ASBTST", 
+      "project": "P5", 
+      "time": 52.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "ASBTST", 
+      "project": "P5", 
+      "time": 53.0
+     }, 
+     {
+      "allocation": 170.0, 
+      "operation": "ASBTST", 
+      "project": "P5", 
+      "time": 55.0
+     }, 
+     {
+      "allocation": 70.0, 
+      "operation": "ASBTST", 
+      "project": "P5", 
+      "time": 56.0
+     }, 
+     {
+      "allocation": 130.0, 
+      "operation": "ASBTST", 
+      "project": "P6", 
+      "time": 57.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "ASBTST", 
+      "project": "P3", 
+      "time": 66.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "ASBTST", 
+      "project": "P3", 
+      "time": 67.0
+     }, 
+     {
+      "allocation": 90.0, 
+      "operation": "ASBTST", 
+      "project": "P3", 
+      "time": 69.0
+     }
+    ], 
+    "meanUtilization": 0.21076160193807256
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityStationBuffer", 
+   "family": "Buffer", 
+   "id": "ASBTST_B", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.CapacityStationExit", 
+   "family": "Exit", 
+   "id": "ASBTST_E", 
+   "results": {
+    "lifespan": [
+     44.833333333333336
+    ], 
+    "takt_time": [
+     3.888888888888889
+    ], 
+    "throughput": [
+     18
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityStation", 
+   "family": "CapacityStation", 
+   "id": "CNC", 
+   "results": {
+    "capacityUsed": [
+     {
+      "P1": 130.0, 
+      "P2": 45.0, 
+      "P4": 15.0, 
+      "period": 0.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P4": 130.0, 
+      "P5": 30.0, 
+      "P7": 130.0, 
+      "period": 1.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P3": 145.0, 
+      "P5": 100.0, 
+      "P6": 45.0, 
+      "period": 2.0, 
+      "utilization": 0.7435897435897436
+     }, 
+     {
+      "period": 3.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 4.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 5.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 6.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 7.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 8.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 9.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 10.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 11.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 12.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 13.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 14.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 15.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 16.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 17.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 18.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 19.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 20.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 21.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 22.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 23.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 24.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 25.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 26.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 27.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 28.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 29.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 30.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 31.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 32.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 33.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 34.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 35.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 36.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 37.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 38.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 39.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 40.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 41.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 42.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 43.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 44.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 45.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 46.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 47.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 48.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 49.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 50.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 51.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 52.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 53.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 54.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 55.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 56.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 57.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 58.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 59.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 60.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 61.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 62.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 63.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 64.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 65.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 66.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 67.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 68.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 69.0, 
+      "utilization": 0.0
+     }
+    ], 
+    "detailedWorkPlan": [
+     {
+      "allocation": 130.0, 
+      "operation": "CNC", 
+      "project": "P1", 
+      "time": 0.0
+     }, 
+     {
+      "allocation": 45.0, 
+      "operation": "CNC", 
+      "project": "P2", 
+      "time": 0.0
+     }, 
+     {
+      "allocation": 15.0, 
+      "operation": "CNC", 
+      "project": "P4", 
+      "time": 0.0
+     }, 
+     {
+      "allocation": 130.0, 
+      "operation": "CNC", 
+      "project": "P7", 
+      "time": 1.0
+     }, 
+     {
+      "allocation": 130.0, 
+      "operation": "CNC", 
+      "project": "P4", 
+      "time": 1.0
+     }, 
+     {
+      "allocation": 30.0, 
+      "operation": "CNC", 
+      "project": "P5", 
+      "time": 1.0
+     }, 
+     {
+      "allocation": 145.0, 
+      "operation": "CNC", 
+      "project": "P3", 
+      "time": 2.0
+     }, 
+     {
+      "allocation": 45.0, 
+      "operation": "CNC", 
+      "project": "P6", 
+      "time": 2.0
+     }, 
+     {
+      "allocation": 100.0, 
+      "operation": "CNC", 
+      "project": "P5", 
+      "time": 2.0
+     }
+    ], 
+    "meanUtilization": 0.039194139194139194
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityStationBuffer", 
+   "family": "Buffer", 
+   "id": "CNC_B", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.CapacityStation", 
+   "family": "CapacityStation", 
+   "id": "EEP", 
+   "results": {
+    "capacityUsed": [
+     {
+      "P1": 30.0, 
+      "P2": 50.0, 
+      "P4": 15.0, 
+      "P7": 5.0, 
+      "period": 0.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P3": 35.0, 
+      "P5": 30.0, 
+      "P6": 35.0, 
+      "P7": 30.0, 
+      "period": 1.0, 
+      "utilization": 0.65
+     }, 
+     {
+      "period": 2.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 3.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 4.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 5.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 6.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 7.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 8.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 9.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 10.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 11.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 12.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 13.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 14.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 15.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 16.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 17.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 18.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 19.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 20.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 21.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 22.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 23.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 24.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 25.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 26.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 27.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 28.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 29.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 30.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 31.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 32.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 33.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 34.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 35.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 36.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 37.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 38.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 39.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 40.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 41.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 42.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 43.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 44.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 45.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 46.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 47.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 48.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 49.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 50.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 51.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 52.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 53.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 54.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 55.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 56.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 57.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 58.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 59.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 60.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 61.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 62.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 63.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 64.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 65.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 66.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 67.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 68.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 69.0, 
+      "utilization": 0.0
+     }
+    ], 
+    "detailedWorkPlan": [
+     {
+      "allocation": 30.0, 
+      "operation": "EEP", 
+      "project": "P1", 
+      "time": 0.0
+     }, 
+     {
+      "allocation": 50.0, 
+      "operation": "EEP", 
+      "project": "P2", 
+      "time": 0.0
+     }, 
+     {
+      "allocation": 15.0, 
+      "operation": "EEP", 
+      "project": "P4", 
+      "time": 0.0
+     }, 
+     {
+      "allocation": 5.0, 
+      "operation": "EEP", 
+      "project": "P7", 
+      "time": 0.0
+     }, 
+     {
+      "allocation": 35.0, 
+      "operation": "EEP", 
+      "project": "P3", 
+      "time": 1.0
+     }, 
+     {
+      "allocation": 30.0, 
+      "operation": "EEP", 
+      "project": "P5", 
+      "time": 1.0
+     }, 
+     {
+      "allocation": 35.0, 
+      "operation": "EEP", 
+      "project": "P6", 
+      "time": 1.0
+     }, 
+     {
+      "allocation": 30.0, 
+      "operation": "EEP", 
+      "project": "P7", 
+      "time": 1.0
+     }
+    ], 
+    "meanUtilization": 0.02357142857142857
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityStationBuffer", 
+   "family": "Buffer", 
+   "id": "EEP_B", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.CapacityStation", 
+   "family": "CapacityStation", 
+   "id": "MCH", 
+   "results": {
+    "capacityUsed": [
+     {
+      "P1": 70.0, 
+      "period": 0.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P1": 55.0, 
+      "P2": 90.0, 
+      "P4": 25.0, 
+      "period": 1.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P4": 80.0, 
+      "P5": 65.0, 
+      "P7": 125.0, 
+      "period": 2.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P3": 90.0, 
+      "P5": 60.0, 
+      "P6": 90.0, 
+      "period": 3.0, 
+      "utilization": 0.6486486486486487
+     }, 
+     {
+      "period": 4.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 5.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 6.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 7.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 8.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 9.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 10.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 11.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 12.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 13.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 14.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 15.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 16.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 17.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 18.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 19.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 20.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 21.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 22.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 23.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 24.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 25.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 26.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 27.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 28.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 29.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 30.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 31.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 32.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 33.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 34.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 35.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 36.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 37.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 38.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 39.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 40.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 41.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 42.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 43.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 44.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 45.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 46.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 47.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 48.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 49.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 50.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 51.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 52.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 53.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 54.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 55.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 56.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 57.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 58.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 59.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 60.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 61.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 62.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 63.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 64.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 65.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 66.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 67.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 68.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 69.0, 
+      "utilization": 0.0
+     }
+    ], 
+    "detailedWorkPlan": [
+     {
+      "allocation": 70.0, 
+      "operation": "MCH", 
+      "project": "P1", 
+      "time": 0.0
+     }, 
+     {
+      "allocation": 90.0, 
+      "operation": "MCH", 
+      "project": "P2", 
+      "time": 1.0
+     }, 
+     {
+      "allocation": 55.0, 
+      "operation": "MCH", 
+      "project": "P1", 
+      "time": 1.0
+     }, 
+     {
+      "allocation": 25.0, 
+      "operation": "MCH", 
+      "project": "P4", 
+      "time": 1.0
+     }, 
+     {
+      "allocation": 125.0, 
+      "operation": "MCH", 
+      "project": "P7", 
+      "time": 2.0
+     }, 
+     {
+      "allocation": 80.0, 
+      "operation": "MCH", 
+      "project": "P4", 
+      "time": 2.0
+     }, 
+     {
+      "allocation": 65.0, 
+      "operation": "MCH", 
+      "project": "P5", 
+      "time": 2.0
+     }, 
+     {
+      "allocation": 90.0, 
+      "operation": "MCH", 
+      "project": "P3", 
+      "time": 3.0
+     }, 
+     {
+      "allocation": 90.0, 
+      "operation": "MCH", 
+      "project": "P6", 
+      "time": 3.0
+     }, 
+     {
+      "allocation": 60.0, 
+      "operation": "MCH", 
+      "project": "P5", 
+      "time": 3.0
+     }
+    ], 
+    "meanUtilization": 0.052123552123552123
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityStationBuffer", 
+   "family": "Buffer", 
+   "id": "MCH_B", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.CapacityProject", 
+   "family": "Job", 
+   "id": "P1", 
+   "results": {
+    "schedule": [
+     {
+      "entranceTime": 0.0, 
+      "exitTime": 1.0, 
+      "stationId": "EEP"
+     }, 
+     {
+      "entranceTime": 0.0, 
+      "exitTime": 2.0, 
+      "stationId": "SMF"
+     }, 
+     {
+      "entranceTime": 0.0, 
+      "exitTime": 1.0, 
+      "stationId": "CNC"
+     }, 
+     {
+      "entranceTime": 0.0, 
+      "exitTime": 2.0, 
+      "stationId": "MCH"
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "exitTime": 3.0, 
+      "stationId": "WELD"
+     }, 
+     {
+      "entranceTime": 3.0, 
+      "exitTime": 9.0, 
+      "stationId": "PPASB"
+     }, 
+     {
+      "entranceTime": 9.0, 
+      "exitTime": 10.0, 
+      "stationId": "PAINT"
+     }, 
+     {
+      "entranceTime": 18.0, 
+      "exitTime": 22.0, 
+      "stationId": "ASBTST"
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityProject", 
+   "family": "Job", 
+   "id": "P2", 
+   "results": {
+    "schedule": [
+     {
+      "entranceTime": 0.0, 
+      "exitTime": 1.0, 
+      "stationId": "EEP"
+     }, 
+     {
+      "entranceTime": 0.0, 
+      "exitTime": 1.0, 
+      "stationId": "CNC"
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "exitTime": 2.0, 
+      "stationId": "SMF"
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "exitTime": 2.0, 
+      "stationId": "MCH"
+     }, 
+     {
+      "entranceTime": 2.0, 
+      "exitTime": 4.0, 
+      "stationId": "WELD"
+     }, 
+     {
+      "entranceTime": 9.0, 
+      "exitTime": 18.0, 
+      "stationId": "PPASB"
+     }, 
+     {
+      "entranceTime": 18.0, 
+      "exitTime": 24.0, 
+      "stationId": "PAINT"
+     }, 
+     {
+      "entranceTime": 29.0, 
+      "exitTime": 31.0, 
+      "stationId": "ASBTST"
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityProject", 
+   "family": "Job", 
+   "id": "P3", 
+   "results": {
+    "schedule": [
+     {
+      "entranceTime": 1.0, 
+      "exitTime": 2.0, 
+      "stationId": "EEP"
+     }, 
+     {
+      "entranceTime": 2.0, 
+      "exitTime": 3.0, 
+      "stationId": "CNC"
+     }, 
+     {
+      "entranceTime": 3.0, 
+      "exitTime": 4.0, 
+      "stationId": "MCH"
+     }, 
+     {
+      "entranceTime": 7.0, 
+      "exitTime": 9.0, 
+      "stationId": "SMF"
+     }, 
+     {
+      "entranceTime": 8.0, 
+      "exitTime": 11.0, 
+      "stationId": "WELD"
+     }, 
+     {
+      "entranceTime": 58.0, 
+      "exitTime": 65.0, 
+      "stationId": "PPASB"
+     }, 
+     {
+      "entranceTime": 65.0, 
+      "exitTime": 66.0, 
+      "stationId": "PAINT"
+     }, 
+     {
+      "entranceTime": 66.0, 
+      "exitTime": 70.0, 
+      "stationId": "ASBTST"
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityProject", 
+   "family": "Job", 
+   "id": "P4", 
+   "results": {
+    "schedule": [
+     {
+      "entranceTime": 0.0, 
+      "exitTime": 1.0, 
+      "stationId": "EEP"
+     }, 
+     {
+      "entranceTime": 0.0, 
+      "exitTime": 2.0, 
+      "stationId": "CNC"
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "exitTime": 4.0, 
+      "stationId": "SMF"
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "exitTime": 3.0, 
+      "stationId": "MCH"
+     }, 
+     {
+      "entranceTime": 3.0, 
+      "exitTime": 8.0, 
+      "stationId": "WELD"
+     }, 
+     {
+      "entranceTime": 22.0, 
+      "exitTime": 29.0, 
+      "stationId": "PPASB"
+     }, 
+     {
+      "entranceTime": 29.0, 
+      "exitTime": 31.0, 
+      "stationId": "PAINT"
+     }, 
+     {
+      "entranceTime": 31.0, 
+      "exitTime": 35.0, 
+      "stationId": "ASBTST"
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityProject", 
+   "family": "Job", 
+   "id": "P5", 
+   "results": {
+    "schedule": [
+     {
+      "entranceTime": 1.0, 
+      "exitTime": 2.0, 
+      "stationId": "EEP"
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "exitTime": 3.0, 
+      "stationId": "CNC"
+     }, 
+     {
+      "entranceTime": 2.0, 
+      "exitTime": 4.0, 
+      "stationId": "MCH"
+     }, 
+     {
+      "entranceTime": 3.0, 
+      "exitTime": 4.0, 
+      "stationId": "SMF"
+     }, 
+     {
+      "entranceTime": 7.0, 
+      "exitTime": 9.0, 
+      "stationId": "WELD"
+     }, 
+     {
+      "entranceTime": 42.0, 
+      "exitTime": 47.0, 
+      "stationId": "PPASB"
+     }, 
+     {
+      "entranceTime": 48.0, 
+      "exitTime": 51.0, 
+      "stationId": "PAINT"
+     }, 
+     {
+      "entranceTime": 51.0, 
+      "exitTime": 57.0, 
+      "stationId": "ASBTST"
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityProject", 
+   "family": "Job", 
+   "id": "P6", 
+   "results": {
+    "schedule": [
+     {
+      "entranceTime": 1.0, 
+      "exitTime": 2.0, 
+      "stationId": "EEP"
+     }, 
+     {
+      "entranceTime": 2.0, 
+      "exitTime": 3.0, 
+      "stationId": "CNC"
+     }, 
+     {
+      "entranceTime": 3.0, 
+      "exitTime": 8.0, 
+      "stationId": "SMF"
+     }, 
+     {
+      "entranceTime": 3.0, 
+      "exitTime": 4.0, 
+      "stationId": "MCH"
+     }, 
+     {
+      "entranceTime": 8.0, 
+      "exitTime": 9.0, 
+      "stationId": "WELD"
+     }, 
+     {
+      "entranceTime": 49.0, 
+      "exitTime": 51.0, 
+      "stationId": "PPASB"
+     }, 
+     {
+      "entranceTime": 51.0, 
+      "exitTime": 52.0, 
+      "stationId": "PAINT"
+     }, 
+     {
+      "entranceTime": 57.0, 
+      "exitTime": 58.0, 
+      "stationId": "ASBTST"
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityProject", 
+   "family": "Job", 
+   "id": "P7", 
+   "results": {
+    "schedule": [
+     {
+      "entranceTime": 0.0, 
+      "exitTime": 2.0, 
+      "stationId": "EEP"
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "exitTime": 2.0, 
+      "stationId": "CNC"
+     }, 
+     {
+      "entranceTime": 2.0, 
+      "exitTime": 3.0, 
+      "stationId": "MCH"
+     }, 
+     {
+      "entranceTime": 3.0, 
+      "exitTime": 4.0, 
+      "stationId": "SMF"
+     }, 
+     {
+      "entranceTime": 7.0, 
+      "exitTime": 8.0, 
+      "stationId": "WELD"
+     }, 
+     {
+      "entranceTime": 35.0, 
+      "exitTime": 42.0, 
+      "stationId": "PPASB"
+     }, 
+     {
+      "entranceTime": 42.0, 
+      "exitTime": 45.0, 
+      "stationId": "PAINT"
+     }, 
+     {
+      "entranceTime": 48.0, 
+      "exitTime": 49.0, 
+      "stationId": "ASBTST"
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityStation", 
+   "family": "CapacityStation", 
+   "id": "PAINT", 
+   "results": {
+    "capacityUsed": [
+     {
+      "period": 0.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 1.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 2.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 3.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 4.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 5.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 6.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 7.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 8.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "P1": 50.0, 
+      "period": 9.0, 
+      "utilization": 0.15625
+     }, 
+     {
+      "period": 10.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 11.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 12.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 13.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 14.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 15.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 16.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 17.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "P2": 20.0, 
+      "period": 18.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "period": 19.0, 
+      "utilization": 0
+     }, 
+     {
+      "P2": 20.0, 
+      "period": 20.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P2": 20.0, 
+      "period": 21.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P2": 20.0, 
+      "period": 22.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P2": 170.0, 
+      "period": 23.0, 
+      "utilization": 0.53125
+     }, 
+     {
+      "period": 24.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 25.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 26.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 27.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 28.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "P4": 20.0, 
+      "period": 29.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P4": 30.0, 
+      "period": 30.0, 
+      "utilization": 0.09375
+     }, 
+     {
+      "period": 31.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 32.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 33.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 34.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 35.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 36.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 37.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 38.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 39.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 40.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 41.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "P7": 20.0, 
+      "period": 42.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P7": 20.0, 
+      "period": 43.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P7": 60.0, 
+      "period": 44.0, 
+      "utilization": 0.1875
+     }, 
+     {
+      "period": 45.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 46.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 47.0, 
+      "utilization": 0
+     }, 
+     {
+      "P5": 20.0, 
+      "period": 48.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P5": 20.0, 
+      "period": 49.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P5": 10.0, 
+      "period": 50.0, 
+      "utilization": 0.5
+     }, 
+     {
+      "P6": 100.0, 
+      "period": 51.0, 
+      "utilization": 0.3125
+     }, 
+     {
+      "period": 52.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 53.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 54.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 55.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 56.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 57.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 58.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 59.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 60.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 61.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 62.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 63.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 64.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "P3": 100.0, 
+      "period": 65.0, 
+      "utilization": 0.5882352941176471
+     }, 
+     {
+      "period": 66.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 67.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 68.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 69.0, 
+      "utilization": 0.0
+     }
+    ], 
+    "detailedWorkPlan": [
+     {
+      "allocation": 50.0, 
+      "operation": "PAINT", 
+      "project": "P1", 
+      "time": 9.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "PAINT", 
+      "project": "P2", 
+      "time": 18.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "PAINT", 
+      "project": "P2", 
+      "time": 20.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "PAINT", 
+      "project": "P2", 
+      "time": 21.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "PAINT", 
+      "project": "P2", 
+      "time": 22.0
+     }, 
+     {
+      "allocation": 170.0, 
+      "operation": "PAINT", 
+      "project": "P2", 
+      "time": 23.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "PAINT", 
+      "project": "P4", 
+      "time": 29.0
+     }, 
+     {
+      "allocation": 30.0, 
+      "operation": "PAINT", 
+      "project": "P4", 
+      "time": 30.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "PAINT", 
+      "project": "P7", 
+      "time": 42.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "PAINT", 
+      "project": "P7", 
+      "time": 43.0
+     }, 
+     {
+      "allocation": 60.0, 
+      "operation": "PAINT", 
+      "project": "P7", 
+      "time": 44.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "PAINT", 
+      "project": "P5", 
+      "time": 48.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "PAINT", 
+      "project": "P5", 
+      "time": 49.0
+     }, 
+     {
+      "allocation": 10.0, 
+      "operation": "PAINT", 
+      "project": "P5", 
+      "time": 50.0
+     }, 
+     {
+      "allocation": 100.0, 
+      "operation": "PAINT", 
+      "project": "P6", 
+      "time": 51.0
+     }, 
+     {
+      "allocation": 100.0, 
+      "operation": "PAINT", 
+      "project": "P3", 
+      "time": 65.0
+     }
+    ], 
+    "meanUtilization": 0.162421218487395
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityStationBuffer", 
+   "family": "Buffer", 
+   "id": "PAINT_B", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.CapacityStation", 
+   "family": "CapacityStation", 
+   "id": "PPASB", 
+   "results": {
+    "capacityUsed": [
+     {
+      "period": 0.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 1.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 2.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "P1": 20.0, 
+      "period": 3.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P1": 20.0, 
+      "period": 4.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "period": 5.0, 
+      "utilization": 0
+     }, 
+     {
+      "P1": 170.0, 
+      "period": 6.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P1": 270.0, 
+      "period": 7.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P1": 220.0, 
+      "period": 8.0, 
+      "utilization": 0.5945945945945946
+     }, 
+     {
+      "P2": 20.0, 
+      "period": 9.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P2": 20.0, 
+      "period": 10.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P2": 20.0, 
+      "period": 11.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "period": 12.0, 
+      "utilization": 0
+     }, 
+     {
+      "P2": 170.0, 
+      "period": 13.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P2": 270.0, 
+      "period": 14.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P2": 370.0, 
+      "period": 15.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P2": 20.0, 
+      "period": 16.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P2": 10.0, 
+      "period": 17.0, 
+      "utilization": 0.5
+     }, 
+     {
+      "period": 18.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 19.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 20.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 21.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "P4": 370.0, 
+      "period": 22.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P4": 20.0, 
+      "period": 23.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P4": 20.0, 
+      "period": 24.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P4": 20.0, 
+      "period": 25.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "period": 26.0, 
+      "utilization": 0
+     }, 
+     {
+      "P4": 170.0, 
+      "period": 27.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P4": 100.0, 
+      "period": 28.0, 
+      "utilization": 0.37037037037037035
+     }, 
+     {
+      "period": 29.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 30.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 31.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 32.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 33.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 34.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "P7": 80.0, 
+      "period": 35.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P7": 370.0, 
+      "period": 36.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P7": 20.0, 
+      "period": 37.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P7": 20.0, 
+      "period": 38.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P7": 20.0, 
+      "period": 39.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "period": 40.0, 
+      "utilization": 0
+     }, 
+     {
+      "P7": 90.0, 
+      "period": 41.0, 
+      "utilization": 0.5294117647058824
+     }, 
+     {
+      "P5": 270.0, 
+      "period": 42.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P5": 370.0, 
+      "period": 43.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P5": 20.0, 
+      "period": 44.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P5": 20.0, 
+      "period": 45.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P5": 20.0, 
+      "period": 46.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "period": 47.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 48.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "P6": 270.0, 
+      "period": 49.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P6": 330.0, 
+      "period": 50.0, 
+      "utilization": 0.8918918918918919
+     }, 
+     {
+      "period": 51.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 52.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 53.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 54.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 55.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 56.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 57.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "P3": 20.0, 
+      "period": 58.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P3": 20.0, 
+      "period": 59.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P3": 20.0, 
+      "period": 60.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "period": 61.0, 
+      "utilization": 0
+     }, 
+     {
+      "P3": 170.0, 
+      "period": 62.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P3": 270.0, 
+      "period": 63.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P3": 100.0, 
+      "period": 64.0, 
+      "utilization": 0.2702702702702703
+     }, 
+     {
+      "period": 65.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 66.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 67.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 68.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 69.0, 
+      "utilization": 0.0
+     }
+    ], 
+    "detailedWorkPlan": [
+     {
+      "allocation": 20.0, 
+      "operation": "PPASB", 
+      "project": "P1", 
+      "time": 3.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "PPASB", 
+      "project": "P1", 
+      "time": 4.0
+     }, 
+     {
+      "allocation": 170.0, 
+      "operation": "PPASB", 
+      "project": "P1", 
+      "time": 6.0
+     }, 
+     {
+      "allocation": 270.0, 
+      "operation": "PPASB", 
+      "project": "P1", 
+      "time": 7.0
+     }, 
+     {
+      "allocation": 220.0, 
+      "operation": "PPASB", 
+      "project": "P1", 
+      "time": 8.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "PPASB", 
+      "project": "P2", 
+      "time": 9.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "PPASB", 
+      "project": "P2", 
+      "time": 10.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "PPASB", 
+      "project": "P2", 
+      "time": 11.0
+     }, 
+     {
+      "allocation": 170.0, 
+      "operation": "PPASB", 
+      "project": "P2", 
+      "time": 13.0
+     }, 
+     {
+      "allocation": 270.0, 
+      "operation": "PPASB", 
+      "project": "P2", 
+      "time": 14.0
+     }, 
+     {
+      "allocation": 370.0, 
+      "operation": "PPASB", 
+      "project": "P2", 
+      "time": 15.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "PPASB", 
+      "project": "P2", 
+      "time": 16.0
+     }, 
+     {
+      "allocation": 10.0, 
+      "operation": "PPASB", 
+      "project": "P2", 
+      "time": 17.0
+     }, 
+     {
+      "allocation": 370.0, 
+      "operation": "PPASB", 
+      "project": "P4", 
+      "time": 22.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "PPASB", 
+      "project": "P4", 
+      "time": 23.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "PPASB", 
+      "project": "P4", 
+      "time": 24.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "PPASB", 
+      "project": "P4", 
+      "time": 25.0
+     }, 
+     {
+      "allocation": 170.0, 
+      "operation": "PPASB", 
+      "project": "P4", 
+      "time": 27.0
+     }, 
+     {
+      "allocation": 100.0, 
+      "operation": "PPASB", 
+      "project": "P4", 
+      "time": 28.0
+     }, 
+     {
+      "allocation": 80.0, 
+      "operation": "PPASB", 
+      "project": "P7", 
+      "time": 35.0
+     }, 
+     {
+      "allocation": 370.0, 
+      "operation": "PPASB", 
+      "project": "P7", 
+      "time": 36.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "PPASB", 
+      "project": "P7", 
+      "time": 37.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "PPASB", 
+      "project": "P7", 
+      "time": 38.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "PPASB", 
+      "project": "P7", 
+      "time": 39.0
+     }, 
+     {
+      "allocation": 90.0, 
+      "operation": "PPASB", 
+      "project": "P7", 
+      "time": 41.0
+     }, 
+     {
+      "allocation": 270.0, 
+      "operation": "PPASB", 
+      "project": "P5", 
+      "time": 42.0
+     }, 
+     {
+      "allocation": 370.0, 
+      "operation": "PPASB", 
+      "project": "P5", 
+      "time": 43.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "PPASB", 
+      "project": "P5", 
+      "time": 44.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "PPASB", 
+      "project": "P5", 
+      "time": 45.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "PPASB", 
+      "project": "P5", 
+      "time": 46.0
+     }, 
+     {
+      "allocation": 270.0, 
+      "operation": "PPASB", 
+      "project": "P6", 
+      "time": 49.0
+     }, 
+     {
+      "allocation": 330.0, 
+      "operation": "PPASB", 
+      "project": "P6", 
+      "time": 50.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "PPASB", 
+      "project": "P3", 
+      "time": 58.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "PPASB", 
+      "project": "P3", 
+      "time": 59.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "PPASB", 
+      "project": "P3", 
+      "time": 60.0
+     }, 
+     {
+      "allocation": 170.0, 
+      "operation": "PPASB", 
+      "project": "P3", 
+      "time": 62.0
+     }, 
+     {
+      "allocation": 270.0, 
+      "operation": "PPASB", 
+      "project": "P3", 
+      "time": 63.0
+     }, 
+     {
+      "allocation": 100.0, 
+      "operation": "PPASB", 
+      "project": "P3", 
+      "time": 64.0
+     }
+    ], 
+    "meanUtilization": 0.5022362698833288
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityStationBuffer", 
+   "family": "Buffer", 
+   "id": "PPASB_B", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.CapacityStation", 
+   "family": "CapacityStation", 
+   "id": "SMF", 
+   "results": {
+    "capacityUsed": [
+     {
+      "P1": 30.0, 
+      "period": 0.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P1": 50.0, 
+      "P2": 70.0, 
+      "P4": 10.0, 
+      "period": 1.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P4": 80.0, 
+      "period": 2.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P4": 10.0, 
+      "P5": 80.0, 
+      "P6": 10.0, 
+      "P7": 80.0, 
+      "period": 3.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P6": 20.0, 
+      "period": 4.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "period": 5.0, 
+      "utilization": 0
+     }, 
+     {
+      "P6": 20.0, 
+      "period": 6.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P3": 10.0, 
+      "P6": 20.0, 
+      "period": 7.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P3": 120.0, 
+      "period": 8.0, 
+      "utilization": 0.9230769230769231
+     }, 
+     {
+      "period": 9.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 10.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 11.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 12.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 13.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 14.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 15.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 16.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 17.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 18.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 19.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 20.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 21.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 22.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 23.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 24.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 25.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 26.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 27.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 28.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 29.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 30.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 31.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 32.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 33.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 34.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 35.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 36.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 37.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 38.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 39.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 40.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 41.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 42.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 43.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 44.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 45.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 46.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 47.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 48.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 49.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 50.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 51.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 52.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 53.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 54.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 55.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 56.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 57.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 58.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 59.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 60.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 61.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 62.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 63.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 64.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 65.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 66.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 67.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 68.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 69.0, 
+      "utilization": 0.0
+     }
+    ], 
+    "detailedWorkPlan": [
+     {
+      "allocation": 30.0, 
+      "operation": "SMF", 
+      "project": "P1", 
+      "time": 0.0
+     }, 
+     {
+      "allocation": 70.0, 
+      "operation": "SMF", 
+      "project": "P2", 
+      "time": 1.0
+     }, 
+     {
+      "allocation": 50.0, 
+      "operation": "SMF", 
+      "project": "P1", 
+      "time": 1.0
+     }, 
+     {
+      "allocation": 10.0, 
+      "operation": "SMF", 
+      "project": "P4", 
+      "time": 1.0
+     }, 
+     {
+      "allocation": 80.0, 
+      "operation": "SMF", 
+      "project": "P4", 
+      "time": 2.0
+     }, 
+     {
+      "allocation": 80.0, 
+      "operation": "SMF", 
+      "project": "P5", 
+      "time": 3.0
+     }, 
+     {
+      "allocation": 80.0, 
+      "operation": "SMF", 
+      "project": "P7", 
+      "time": 3.0
+     }, 
+     {
+      "allocation": 10.0, 
+      "operation": "SMF", 
+      "project": "P4", 
+      "time": 3.0
+     }, 
+     {
+      "allocation": 10.0, 
+      "operation": "SMF", 
+      "project": "P6", 
+      "time": 3.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "SMF", 
+      "project": "P6", 
+      "time": 4.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "SMF", 
+      "project": "P6", 
+      "time": 6.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "SMF", 
+      "project": "P6", 
+      "time": 7.0
+     }, 
+     {
+      "allocation": 10.0, 
+      "operation": "SMF", 
+      "project": "P3", 
+      "time": 7.0
+     }, 
+     {
+      "allocation": 120.0, 
+      "operation": "SMF", 
+      "project": "P3", 
+      "time": 8.0
+     }
+    ], 
+    "meanUtilization": 0.11318681318681319
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityStationBuffer", 
+   "family": "Buffer", 
+   "id": "SMF_B", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.CapacityStation", 
+   "family": "CapacityStation", 
+   "id": "WELD", 
+   "results": {
+    "capacityUsed": [
+     {
+      "period": 0.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "P1": 33.75, 
+      "period": 1.0, 
+      "utilization": 0.125
+     }, 
+     {
+      "P1": 56.25, 
+      "P2": 23.75, 
+      "period": 2.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P2": 156.25, 
+      "P4": 23.75, 
+      "period": 3.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P4": 20.0, 
+      "period": 4.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "period": 5.0, 
+      "utilization": 0
+     }, 
+     {
+      "P4": 70.0, 
+      "period": 6.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P4": 1.25, 
+      "P5": 78.75, 
+      "P7": 90.0, 
+      "period": 7.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P3": 8.846153846153847, 
+      "P5": 11.25, 
+      "P6": 180.0, 
+      "period": 8.0, 
+      "utilization": 0.7410968660968661
+     }, 
+     {
+      "P3": 80.0, 
+      "period": 9.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P3": 26.153846153846146, 
+      "period": 10.0, 
+      "utilization": 0.14529914529914525
+     }, 
+     {
+      "period": 11.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 12.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 13.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 14.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 15.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 16.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 17.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 18.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 19.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 20.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 21.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 22.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 23.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 24.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 25.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 26.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 27.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 28.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 29.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 30.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 31.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 32.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 33.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 34.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 35.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 36.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 37.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 38.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 39.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 40.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 41.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 42.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 43.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 44.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 45.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 46.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 47.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 48.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 49.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 50.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 51.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 52.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 53.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 54.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 55.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 56.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 57.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 58.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 59.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 60.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 61.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 62.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 63.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 64.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 65.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 66.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 67.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 68.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 69.0, 
+      "utilization": 0.0
+     }
+    ], 
+    "detailedWorkPlan": [
+     {
+      "allocation": 33.75, 
+      "operation": "WELD", 
+      "project": "P1", 
+      "time": 1.0
+     }, 
+     {
+      "allocation": 56.25, 
+      "operation": "WELD", 
+      "project": "P1", 
+      "time": 2.0
+     }, 
+     {
+      "allocation": 23.75, 
+      "operation": "WELD", 
+      "project": "P2", 
+      "time": 2.0
+     }, 
+     {
+      "allocation": 156.25, 
+      "operation": "WELD", 
+      "project": "P2", 
+      "time": 3.0
+     }, 
+     {
+      "allocation": 23.75, 
+      "operation": "WELD", 
+      "project": "P4", 
+      "time": 3.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "WELD", 
+      "project": "P4", 
+      "time": 4.0
+     }, 
+     {
+      "allocation": 70.0, 
+      "operation": "WELD", 
+      "project": "P4", 
+      "time": 6.0
+     }, 
+     {
+      "allocation": 90.0, 
+      "operation": "WELD", 
+      "project": "P7", 
+      "time": 7.0
+     }, 
+     {
+      "allocation": 1.25, 
+      "operation": "WELD", 
+      "project": "P4", 
+      "time": 7.0
+     }, 
+     {
+      "allocation": 78.75, 
+      "operation": "WELD", 
+      "project": "P5", 
+      "time": 7.0
+     }, 
+     {
+      "allocation": 180.0, 
+      "operation": "WELD", 
+      "project": "P6", 
+      "time": 8.0
+     }, 
+     {
+      "allocation": 11.25, 
+      "operation": "WELD", 
+      "project": "P5", 
+      "time": 8.0
+     }, 
+     {
+      "allocation": 8.846153846153847, 
+      "operation": "WELD", 
+      "project": "P3", 
+      "time": 8.0
+     }, 
+     {
+      "allocation": 80.0, 
+      "operation": "WELD", 
+      "project": "P3", 
+      "time": 9.0
+     }, 
+     {
+      "allocation": 26.153846153846146, 
+      "operation": "WELD", 
+      "project": "P3", 
+      "time": 10.0
+     }
+    ], 
+    "meanUtilization": 0.10016280016280016
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityStationBuffer", 
+   "family": "Buffer", 
+   "id": "WELD_B", 
+   "results": {}
+  }
+ ], 
+ "general": {
+  "_class": "Dream.Configuration"
+ }, 
+ "key": "0", 
+ "order_lateness": {
+  "P1": {
+   "completionDate": "2014/03/12", 
+   "delay": -14.0, 
+   "dueDate": "2014/03/26"
+  }, 
+  "P2": {
+   "completionDate": "2014/03/21", 
+   "delay": -14.0, 
+   "dueDate": "2014/04/04"
+  }, 
+  "P3": {
+   "completionDate": "2014/04/29", 
+   "delay": -50.0, 
+   "dueDate": "2014/06/18"
+  }, 
+  "P4": {
+   "completionDate": "2014/03/25", 
+   "delay": -12.0, 
+   "dueDate": "2014/04/06"
+  }, 
+  "P5": {
+   "completionDate": "2014/04/16", 
+   "delay": 0.0, 
+   "dueDate": "2014/04/16"
+  }, 
+  "P6": {
+   "completionDate": "2014/04/17", 
+   "delay": -4.0, 
+   "dueDate": "2014/04/21"
+  }, 
+  "P7": {
+   "completionDate": "2014/04/08", 
+   "delay": -2.0, 
+   "dueDate": "2014/04/10"
+  }
+ }, 
+ "score": 0.0, 
+ "station_utilization": {
+  "options": {
+   "series": {
+    "bars": {
+     "align": "center", 
+     "barWidth": 0.8, 
+     "show": true
+    }, 
+    "stack": true
+   }, 
+   "xaxis": {
+    "minTickSize": 1, 
+    "ticks": [
+     [
+      0, 
+      "Electrical and electronic parts"
+     ], 
+     [
+      1, 
+      "Pre-painting assembly"
+     ], 
+     [
+      2, 
+      "Sheet Metal Forming"
+     ], 
+     [
+      3, 
+      "Welding"
+     ], 
+     [
+      4, 
+      "Assembly before testing"
+     ], 
+     [
+      5, 
+      "Painting"
+     ], 
+     [
+      6, 
+      "CNC"
+     ], 
+     [
+      7, 
+      "Machining"
+     ]
+    ]
+   }, 
+   "yaxis": {
+    "max": 100
+   }
+  }, 
+  "series": [
+   {
+    "data": [
+     [
+      0, 
+      2.3571428571428568
+     ], 
+     [
+      1, 
+      50.22362698833288
+     ], 
+     [
+      2, 
+      11.31868131868132
+     ], 
+     [
+      3, 
+      10.016280016280016
+     ], 
+     [
+      4, 
+      21.076160193807254
+     ], 
+     [
+      5, 
+      16.2421218487395
+     ], 
+     [
+      6, 
+      3.9194139194139193
+     ], 
+     [
+      7, 
+      5.212355212355212
+     ]
+    ], 
+    "label": "Utilized"
+   }, 
+   {
+    "data": [
+     [
+      0, 
+      97.64285714285714
+     ], 
+     [
+      1, 
+      49.77637301166712
+     ], 
+     [
+      2, 
+      88.68131868131867
+     ], 
+     [
+      3, 
+      89.98371998372
+     ], 
+     [
+      4, 
+      78.92383980619275
+     ], 
+     [
+      5, 
+      83.7578781512605
+     ], 
+     [
+      6, 
+      96.08058608058609
+     ], 
+     [
+      7, 
+      94.78764478764478
+     ]
+    ], 
+    "label": "Idle"
+   }
+  ]
+ }
+}
