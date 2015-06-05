@@ -37,7 +37,7 @@ class CapacityStationsEnumeration(Enumeration):
         return totalDelay
         
     # creates the collated scenarios, i.e. the list 
-    # of options collated into a dictionary for ease of referencing in ManPy
+    # of options collated into a list for ease of referencing in ManPy
     def createScenarioList(self,data):
         scenarioList=[]
         step=data['general'].get('thresholdStep',7)
@@ -60,7 +60,18 @@ class CapacityStationsEnumeration(Enumeration):
         scenarioData['graph']['node']['CSC']['dueDateThreshold']=scenario['threshold']     
         return scenarioData   
     
-    # checks if the algorithm should terminate. Default is set to False so that the algorithm 
-    # terminates only when all scenarios are considered
+    # checks if the algorithm should terminate.
+    # in this case terminate if the total delat is increased
     def checkIfShouldTerminate(self,data,scenarioList): 
+        if len(scenarioList)<2:
+            return False
+        index=0
+        for i in range(len(scenarioList)):
+            if scenarioList[i].get('score',None)==None:
+                index=i-1
+                break
+        if index:
+            if scenarioList[index]['score']>scenarioList[index-1]['score']:
+                scenarioList = scenarioList[:index+1]
+                return True
         return False

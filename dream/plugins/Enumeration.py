@@ -35,7 +35,6 @@ class Enumeration(plugin.ExecutionPlugin):
     def checkIfShouldTerminate(self,data,scenarioList): 
         return False
 
-
     def run(self, data):
     #     distributor_url = data['general'].get('distributorURL',None)
     #     distributor = None
@@ -45,18 +44,21 @@ class Enumeration(plugin.ExecutionPlugin):
     
       start = time.time()         # start counting execution time
     
-      numberOfSolutions = int(data['general'].get('numberOfSolutions',3))
+      numberOfSolutions = int(data['general'].get('numberOfSolutions',15))
       assert numberOfSolutions >= 1
       scenarioList=self.createScenarioList(data)
       
+      i=0
       for scenario in scenarioList: 
           scenario['input']=self.createScenarioData(data, scenario)
           scenario['result'] = self.runOneScenario(scenario['input'])['result']
           scenario['score'] = self.calculateScenarioScore(scenario)
           if self.checkIfShouldTerminate(data, scenarioList):
+              scenarioList = scenarioList[:i+1]
               break
+          i+=1
     
-      # rand the scenarios based on their score and take only the numberOfSolutions best
+      # rank the scenarios based on their score and take only the numberOfSolutions best
       scenariosToReturn = sorted(scenarioList,key=operator.itemgetter('score'))[:numberOfSolutions]
     
       # return the number of scenarios that need to be returned
