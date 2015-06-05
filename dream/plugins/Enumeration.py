@@ -57,9 +57,21 @@ class Enumeration(plugin.ExecutionPlugin):
               scenarioList = scenarioList[:i+1]
               break
           i+=1
-    
+   
+        
+      # remove ants that outputs the same schedules
+      # XXX we in fact remove ants that produce the same output json      
+      scenarioListWithoutDuplicates = []
+      resultList=[]
+      for scenario in scenarioList:
+        scenarioResult = copy(scenario['result']['result_list'][0]['elementList'])
+        #scenarioResult['general'].pop('totalExecutionTime', None)
+        if scenarioResult not in resultList:
+            resultList.append(scenarioResult)
+            scenarioListWithoutDuplicates.append(scenario)
+     
       # rank the scenarios based on their score and take only the numberOfSolutions best
-      scenariosToReturn = sorted(scenarioList,key=operator.itemgetter('score'))[:numberOfSolutions]
+      scenariosToReturn = sorted(scenarioListWithoutDuplicates,key=operator.itemgetter('score'))[:numberOfSolutions]
     
       # return the number of scenarios that need to be returned
       data['result']['result_list'] = result_list = []
