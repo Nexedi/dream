@@ -30,7 +30,7 @@ class CapacityProjectSpreadsheet(plugin.InputPreparationPlugin):
                         dueDate=(dueDate-now).days 
                     # if no due date is given set it to 180 (about 6 months)
                     else:
-                        dueDate=180
+                        dueDate=120
                     assemblySpaceRequirement=float(projectData[row][3])
                     capacityRequirementDict={}
                     earliestStartDict={}
