@@ -113,10 +113,6 @@
               "type": "string"
             }, 
             {
-              "name": "Fill sub-line", 
-              "type": "string"
-            }, 
-            {
               "name": "Machines with furthest last assignment time", 
               "type": "string"
             }, 
@@ -2104,12 +2100,10 @@
         "Assignment to machines with higher WIPB", 
         "Uniform assignment across stations", 
         "Min assignment variations", 
-        "Fill sub-line", 
         "Machines with furthest last assignment time", 
         "Max number of assigned PB"
       ], 
       [
-        null, 
         null, 
         null, 
         null, 

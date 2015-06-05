@@ -144,12 +144,24 @@ class SkilledRouter(Router):
                 # # stations of the line and their corresponding WIP
                 # TODO: the WIP of the stations must be normalised to the max WIP possible on that station
                 #===================================================================
+                
+                # identify the last time that there was an assignment
+                maxLastAssignment=0
+                for record in self.solutionList:
+                    if record:
+                        maxLastAssignment=record["time"]
+
                 self.availableStationsDict={}
                 for station in self.availableStations:
                     lastAssignmentTime=0
                     for record in self.solutionList:
                         if station.id in record["allocation"].values():
                             lastAssignmentTime=record["time"]
+                    
+                    # normalise the lastAssignmentTime based on the maxLastAssignment. 
+                    if maxLastAssignment:
+                        lastAssignmentTime=1.0-float(lastAssignmentTime/float(maxLastAssignment))
+                    
                     # it there is definition of 'technology' to group machines add this
                     if station.technology:
                         self.availableStationsDict[str(station.id)]={'stationID':station.technology,'machineID':station.id, 

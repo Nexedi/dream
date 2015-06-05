@@ -35,19 +35,27 @@ class BatchesACO(ACO):
   # of options collated into a dictionary for ease of referencing in ManPy
   def createCollatedScenarios(self,data):
     collated = dict()
+    # fill sub-line deactivated (default to zero)
+    collated["4"]=[0.0]
     weightData=data['input'].get('ACO_weights_spreadsheet', None)
-    for i in range(1,7):
+    for i in range(1,6):
+        # to deactivate fill sub-line the index of 4 is surpassed
+        if i<4:
+            index=str(i)
+        else:
+            index=str(i+1)
+        
         minValue=weightData[1][i]
         maxValue=weightData[2][i]
         stepValue=weightData[3][i]
         staticValue=weightData[4][i]
         if staticValue:
-            collated[str(i)]=[float(staticValue)]
+            collated[index]=[float(staticValue)]
         else:
-            collated[str(i)]=[]
+            collated[index]=[]
             value=float(minValue)
             while 1:
-                collated[str(i)].append(round(float(value),2))
+                collated[index].append(round(float(value),2))
                 value+=float(stepValue)
                 if value>float(maxValue):
                     break
