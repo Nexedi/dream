@@ -54,24 +54,26 @@ class CapacityStationsEnumeration(Enumeration):
             scenarioList.append({'key':str(threshold),'threshold':threshold})
         return scenarioList
     
-    # creates the ant scenario based on what ACO randomly selected
+    # creates the scenario. Here just set the dueDateThreshold
     def createScenarioData(self,data,scenario): 
         scenarioData=deepcopy(data)
         scenarioData['graph']['node']['CSC']['dueDateThreshold']=scenario['threshold']     
         return scenarioData   
     
     # checks if the algorithm should terminate.
-    # in this case terminate if the total delat is increased
+    # in this case terminate if the total delay is increased
     def checkIfShouldTerminate(self,data,scenarioList): 
+        # in the first scenario no need to terminate
         if len(scenarioList)<2:
             return False
+        # find the last scenario that is scored
         index=0
         for i in range(len(scenarioList)):
             if scenarioList[i].get('score',None)==None:
                 index=i-1
                 break
+        # if the delay of the last scenario is bigger than the previous return true
         if index:
             if scenarioList[index]['score']>scenarioList[index-1]['score']:
-                scenarioList = scenarioList[:index+1]
                 return True
         return False

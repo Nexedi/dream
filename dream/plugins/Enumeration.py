@@ -26,7 +26,7 @@ class Enumeration(plugin.ExecutionPlugin):
     def createScenarioList(self,data):
         raise NotImplementedError("Subclass must define 'createScenarioList' method")
     
-    # creates the ant scenario based on what ACO randomly selected
+    # create the scenario
     def createScenarioData(self,data,scenario): 
         raise NotImplementedError("Subclass must define 'createScenarioData' method")
     
@@ -48,11 +48,13 @@ class Enumeration(plugin.ExecutionPlugin):
       assert numberOfSolutions >= 1
       scenarioList=self.createScenarioList(data)
       
+      # run the scenario. Only synchronous for now
       i=0
       for scenario in scenarioList: 
           scenario['input']=self.createScenarioData(data, scenario)
           scenario['result'] = self.runOneScenario(scenario['input'])['result']
           scenario['score'] = self.calculateScenarioScore(scenario)
+          # it we should terminate remove the scenarios that are not scored yet
           if self.checkIfShouldTerminate(data, scenarioList):
               scenarioList = scenarioList[:i+1]
               break
