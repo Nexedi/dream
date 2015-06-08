@@ -1,7 +1,7 @@
 from copy import copy
 
 from dream.plugins import plugin
-from dream.plugins import SplitRoute
+from dream.plugins.JobShop import SplitRoute
 import datetime
 # XXX HARDCODED
 MACHINE_TYPE_SET = set(["Dream.MachineJobShop", "Dream.MouldAssembly"]) 

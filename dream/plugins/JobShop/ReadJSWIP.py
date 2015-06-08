@@ -7,7 +7,7 @@ import datetime
 import copy
 
 from dream.plugins import plugin
-from dream.plugins import ReadJSWorkPlan
+from dream.plugins.JobShop import ReadJSWorkPlan
 from dream.plugins.TimeSupport import TimeSupportMixin
 
 class ReadJSWIP(ReadJSWorkPlan.ReadJSWorkPlan, TimeSupportMixin):

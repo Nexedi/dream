@@ -8,7 +8,7 @@ import copy
 from datetime import datetime
 
 from dream.plugins import plugin
-from dream.plugins import UpdateStationList
+from dream.plugins.JobShop import UpdateStationList
 
 class ReadJSSkillsToStations(UpdateStationList.UpdateStationList):
   """ Input preparation 
