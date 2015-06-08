@@ -363,24 +363,24 @@
           "output_id": "order_lateness"
         }, 
         {
-          "_class": "dream.plugins.JSStationUtilization.JSStationUtilization", 
+          "_class": "dream.plugins.JobShop.JSStationUtilization.JSStationUtilization", 
           "family": "Server", 
           "output_id": "station_utilization"
         }, 
         {
-          "_class": "dream.plugins.JSOperatorUtilization.JSOperatorUtilization", 
+          "_class": "dream.plugins.JobShop.JSOperatorUtilization.JSOperatorUtilization", 
           "output_id": "operator_utilization"
         }, 
         {
-          "_class": "dream.plugins.JSOperatorGantt.JSOperatorGantt", 
+          "_class": "dream.plugins.JobShop.JSOperatorGantt.JSOperatorGantt", 
           "output_id": "operator_gantt"
         }, 
         {
-          "_class": "dream.plugins.JSComponentGantt.JSComponentGantt", 
+          "_class": "dream.plugins.JobShop.JSComponentGantt.JSComponentGantt", 
           "output_id": "component_gantt"
         }, 
         {
-          "_class": "dream.plugins.JSComponentTabSchedule.JSComponentTabSchedule", 
+          "_class": "dream.plugins.JobShop.JSComponentTabSchedule.JSComponentTabSchedule", 
           "output_id": "component_schedule"
         }
       ]
@@ -393,39 +393,39 @@
           "input_id": "JobShopKE"
         },
         {
-          "_class": "dream.plugins.ReadJSSkills.ReadJSSkills", 
+          "_class": "dream.plugins.JobShop.ReadJSSkills.ReadJSSkills", 
           "input_id": "operator_skill_spreadsheet"
         }, 
         {
-          "_class": "dream.plugins.ReadJSSkillsToStations.ReadJSSkillsToStations", 
+          "_class": "dream.plugins.JobShop.ReadJSSkillsToStations.ReadJSSkillsToStations", 
           "input_id": ""
         }, 
         {
-          "_class": "dream.plugins.MergeSteps.MergeSteps", 
+          "_class": "dream.plugins.JobShop.MergeSteps.MergeSteps", 
           "input_id": ""
         }, 
         {
-          "_class": "dream.plugins.SplitRoute.SplitRoute", 
+          "_class": "dream.plugins.JobShop.SplitRoute.SplitRoute", 
           "input_id": ""
         }, 
         {
-          "_class": "dream.plugins.UpdateStationList.UpdateStationList", 
+          "_class": "dream.plugins.JobShop.UpdateStationList.UpdateStationList", 
           "input_id": ""
         }, 
         {
-          "_class": "dream.plugins.InsertQueues.InsertQueues", 
+          "_class": "dream.plugins.JobShop.InsertQueues.InsertQueues", 
           "input_id": ""
         }, 
         {
-          "_class": "dream.plugins.UpdateWIP.UpdateWIP", 
+          "_class": "dream.plugins.JobShop.UpdateWIP.UpdateWIP", 
           "input_id": ""
         }, 
         {
-          "_class": "dream.plugins.InsertWIP.InsertWIP", 
+          "_class": "dream.plugins.JobShop.InsertWIP.InsertWIP", 
           "input_id": ""
         }, 
         {
-          "_class": "dream.plugins.ReadJSShifts.ReadJSShifts", 
+          "_class": "dream.plugins.JobShop.ReadJSShifts.ReadJSShifts", 
           "input_id": ""
         }
       ]
