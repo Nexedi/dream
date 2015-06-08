@@ -20,39 +20,22 @@ def runAntInSubProcess(ant):
 
 class ACO(plugin.ExecutionPlugin):
   def _calculateAntScore(self, ant):
-    """Calculate the score of this ant.
+    """Calculate the score of this ant. Implemented in the Subclass, raises NotImplementedError
     """
-    totalDelay=0    #set the total delay to 0
-    result, = ant['result']['result_list']  #read the result as JSON
-    #loop through the elements
-    for element in result['elementList']:
-        element_family = element.get('family', None)
-        #id the class is Job
-        if element_family == 'Job':
-            results=element['results']
-            delay = float(results.get('delay', "0"))
-            # A negative delay would mean we are ahead of schedule. This
-            # should not be considered better than being on time.
-            totalDelay += max(delay, 0)
-    return totalDelay
+    raise NotImplementedError("ACO subclass must define '_calculateAntScore' method")
 
-  # creates the collated scenarios, i.e. the list 
-  # of options collated into a dictionary for ease of referencing in ManPy
   def createCollatedScenarios(self,data):
-    collated = dict()
-    for node_id, node in data['graph']['node'].items():
-      node_class = getClassFromName(node['_class'])
-      if issubclass(node_class, Queue) or issubclass(node_class, Operator):
-        collated[node_id] = list(node_class.getSupportedSchedulingRules())
-    return collated    
+    """creates the collated scenarios, i.e. the list of options collated into a dictionary for ease of referencing in ManPy
+    to be implemented in the subclass
+    """
+    raise NotImplementedError("ACO subclass must define 'createCollatedScenarios' method")
 
   # creates the ant scenario based on what ACO randomly selected
   def createAntData(self,data,ant): 
-    # set scheduling rule on queues based on ant data
-    ant_data = copy(data)
-    for k, v in ant.items():
-        ant_data["graph"]["node"][k]['schedulingRule'] = v
-    return ant_data
+    """creates the ant scenario based on what ACO randomly selected.
+    raises NotImplementedError
+    """
+    raise NotImplementedError("ACO subclass must define 'createAntData' method")
 
 
   def run(self, data):
