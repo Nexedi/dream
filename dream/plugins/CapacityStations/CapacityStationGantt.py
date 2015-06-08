@@ -53,11 +53,6 @@ class CapacityStationGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
                   color='cyan',
                   entranceTime=entranceTime
               )
-              
-      import json
-      outputJSONString=json.dumps(task_dict, indent=5)
-      outputJSONFile=open('taskDict.json', mode='w')
-      outputJSONFile.write(outputJSONString)
           
       # return the result to the gadget
       result[self.configuration_dict['output_id']] = dict(
