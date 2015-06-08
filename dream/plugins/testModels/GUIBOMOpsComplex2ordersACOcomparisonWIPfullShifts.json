@@ -432,7 +432,7 @@
       ]
     }, 
     "processing_plugin": {
-      "_class": "dream.plugins.ACO.ACO", 
+      "_class": "dream.plugins.JobShop.JobShopACO.JobShopACO", 
       "description": "", 
       "input_id": "Simulation"
     }
