@@ -224,5 +224,24 @@ class BatchesWIPSpreadsheet(plugin.InputPreparationPlugin):
                       "unitsToProcess": unitsToProcess, 
                       "parentBatchName":'Batch_'+parentBatchId+"_WIP"                    
                     })
-                                 
+            # if it is a standard BatchScrapMachine
+            elif nodes[stationId]['_class'] == 'Dream.BatchScrapMachine':
+                if _class=='Dream.Batch':
+                    nodes[stationId]['wip'].append({
+                      "_class": _class,
+                      "id": partId, 
+                      "name":'Batch'+parentBatchId+'_SubBatch_'+partId+'_wip',
+                      "numberOfUnits":numberOfUnits,  
+                      "parentBatchId":parentBatchId,
+                      "unitsToProcess": unitsToProcess, 
+                      "parentBatchName":'Batch_'+parentBatchId+"_WIP"                    
+                    })    
+                elif _class=='Dream.SubBatch':            
+                    nodes[stationId]['wip'].append({
+                      "_class": _class,
+                      "id": partId, 
+                      "name":'Batch_'+partId+'_wip',
+                      "numberOfUnits":numberOfUnits,  
+                      "unitsToProcess": unitsToProcess, 
+                    })                
     return data
