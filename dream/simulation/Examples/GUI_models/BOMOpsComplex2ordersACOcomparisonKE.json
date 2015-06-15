@@ -388,7 +388,11 @@
     "pre_processing": {
       "description": "", 
       "plugin_list": [
-		{
+        {
+          "_class": "dream.plugins.JobShop.JSExitCancelCond.JSExitCancelCond", 
+          "input_id": ""
+        }, 
+        {
           "_class": "dream.plugins.JobShopKE.JobShopKE", 
           "input_id": "JobShopKE"
         },
@@ -1041,7 +1045,7 @@
     "processTimeout": 10, 
     "seed": 10, 
     "timeUnit": "hour", 
-    "trace": "Yes"
+    "trace": "No"
   }, 
   "graph": {
     "edge": {

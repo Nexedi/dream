@@ -378,6 +378,10 @@
       "description": "", 
       "plugin_list": [
         {
+          "_class": "dream.plugins.JobShop.JSExitCancelCond.JSExitCancelCond", 
+          "input_id": ""
+        }, 
+        {
           "_class": "dream.plugins.JobShop.ReadJSSkills.ReadJSSkills", 
           "input_id": "operator_skill_spreadsheet"
         }, 
@@ -1042,7 +1046,7 @@
     "processTimeout": 10, 
     "seed": 15, 
     "timeUnit": "hour", 
-    "trace": "Yes"
+    "trace": "No"
   }, 
   "graph": {
     "edge": {
