@@ -797,10 +797,11 @@ class Machine(CoreObject):
                         break
                     self.expectedSignals['interruptionStart']=1
                     self.expectedSignals['canDispose']=1
+                    self.expectedSignals['entityRemoved']=1 
                     self.timeLastBlockageStarted=self.env.now       # blockage is starting
                     # wait the event canDispose, this means that the station can deliver the item to successor
                     self.printTrace(self.id, waitEvent='(canDispose or interruption start)')
-                    receivedEvent=yield self.env.any_of([self.canDispose , self.interruptionStart])
+                    receivedEvent=yield self.env.any_of([self.canDispose , self.interruptionStart,self.entityRemoved])
                     # if there was interruption
                     # TODO not good implementation
                     if self.interruptionStart in receivedEvent:
@@ -854,19 +855,7 @@ class Machine(CoreObject):
                         # try to signal a receiver, if successful then proceed to get an other entity
                         if self.signalReceiver():
                             break
-                    # TODO: router most probably should signal givers and not receivers in order to avoid this hold,self,0
-                    #       As the receiver (e.g.) a machine that follows the machine receives an loadOperatorAvailable event,
-                    #       signals the preceding station (e.g. self.machine) and immediately after that gets the entity.
-                    #       the preceding machine gets the canDispose signal which is actually useless, is emptied by the following station
-                    #       and then cannot exit an infinite loop.
-                    # notify that the station waits the entity to be removed
-                    activeObjectQueue=self.getActiveObjectQueue()
-                    if len(activeObjectQueue): 
-                        self.waitEntityRemoval=True
-                        self.printTrace(self.id, waitEvent='(entityRemoved)')
-                        
-                        self.expectedSignals['entityRemoved']=1
-                        yield self.entityRemoved
+                    if self.entityRemoved in receivedEvent:
                         transmitter, eventTime=self.entityRemoved.value
                         self.printTrace(self.id, entityRemoved=eventTime)
                         assert eventTime==self.env.now,'entityRemoved event activated earlier than received'
@@ -874,8 +863,8 @@ class Machine(CoreObject):
                         self.entityRemoved=self.env.event()
                         # if while waiting (for a canDispose event) became free as the machines that follows emptied it, then proceed
                         if not self.haveToDispose():
-                            break
-    
+                            break                        
+
     #===========================================================================
     # actions to be performed after an operation (setup or processing)
     #===========================================================================
