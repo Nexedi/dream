@@ -184,9 +184,15 @@ class ManPyObject(object):
         # cancel all the scheduled events
         from Globals import G
         from copy import copy
+        G.env._queue.sort(key=lambda item: item[0])
         scheduledEvents=copy(G.env._queue)
-        for scheduledEvent in scheduledEvents:
-            G.env._queue.remove(scheduledEvent)
+        for index, scheduledEvent in enumerate(scheduledEvents):
+            if not index==len(scheduledEvents)-1:
+                G.env._queue.remove(scheduledEvent)
+            else:
+                edited = [[i for i in event] for event in G.env._queue]
+                edited[-1][0]=G.env.now
+                G.env._queue = [tuple(i for i in event) for event in edited]
         G.maxSimTime=G.env.now
         
     # =======================================================================
