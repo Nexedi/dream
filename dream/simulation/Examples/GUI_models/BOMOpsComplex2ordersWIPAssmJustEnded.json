@@ -15,7 +15,7 @@
           "type": "string"
         }, 
         "maxSimTime": {
-          "default": 100, 
+          "default": -1, 
           "description": "Length of the simulationrun", 
           "title": "Length of Experiment", 
           "type": "number"

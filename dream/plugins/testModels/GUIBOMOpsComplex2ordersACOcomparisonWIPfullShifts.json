@@ -1038,7 +1038,7 @@
   "general": {
     "confidenceLevel": 0.95, 
     "currentDate": "2015/02/23 14:00", 
-    "maxSimTime": 100, 
+    "maxSimTime": -1, 
     "numberOfAntsPerGenerations": "2", 
     "numberOfGenerations": "2", 
     "numberOfReplications": "1", 
