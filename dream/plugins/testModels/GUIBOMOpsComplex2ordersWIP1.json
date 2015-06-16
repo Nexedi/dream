@@ -1,0 +1,2780 @@
+{
+  "application_configuration": {
+    "general": {
+      "properties": {
+        "confidenceLevel": {
+          "default": 0.95, 
+          "description": "Confidence level for statistical analysis of stochastic experiments", 
+          "title": "Confidence level", 
+          "type": "number"
+        }, 
+        "currentDate": {
+          "default": "2014/10/01", 
+          "description": "The day the experiment starts, in YYYY/MM/DD format", 
+          "title": "Simulation Start Time", 
+          "type": "string"
+        }, 
+        "maxSimTime": {
+          "default": 100, 
+          "description": "Length of the simulationrun", 
+          "title": "Length of Experiment", 
+          "type": "number"
+        }, 
+        "numberOfAntsPerGenerations": {
+          "default": 20, 
+          "description": "Number of ants per generation", 
+          "title": "Number of ants per generation", 
+          "type": "integer"
+        }, 
+        "numberOfGenerations": {
+          "default": 10, 
+          "description": "The number of Generations", 
+          "title": "Number of generations", 
+          "type": "integer"
+        }, 
+        "numberOfReplications": {
+          "default": 10, 
+          "description": "Number of replications to run", 
+          "title": "Number of replications", 
+          "type": "integer"
+        }, 
+        "numberOfSolutions": {
+          "default": 4, 
+          "description": "Number of solutions", 
+          "name": "Number of solutions", 
+          "type": "integer"
+        }, 
+        "processTimeout": {
+          "default": 10, 
+          "description": "Number of seconds before the calculation process is interrupted", 
+          "title": "Process Timeout", 
+          "type": "number"
+        }, 
+        "seed": {
+          "default": "", 
+          "description": "When using the same seed, the random number generator produce the same sequence of numbers", 
+          "title": "Seed for random number generator", 
+          "type": "string"
+        }, 
+        "timeUnit": {
+          "default": "hour", 
+          "description": "Used for input and reporting widgets.", 
+          "enum": [
+            "minute", 
+            "hour", 
+            "day", 
+            "week", 
+            "month", 
+            "year"
+          ], 
+          "name": "Time unit", 
+          "type": "string"
+        }, 
+        "trace": {
+          "default": "No", 
+          "description": "Create an excel trace file (Yes or No)", 
+          "enum": [
+            "No", 
+            "Yes"
+          ], 
+          "title": "OutputTrace", 
+          "type": "string"
+        }
+      }
+    }, 
+    "input": {
+      "debug": {
+        "gadget": "Input_viewDebugJson", 
+        "title": "Debug JSON", 
+        "type": "object_view"
+      }, 
+      "view": {
+        "gadget": "Input_viewProductionLine", 
+        "title": "Production Line", 
+        "type": "object_view"
+      }, 
+      "view_management": {
+        "gadget": "Input_viewDocumentManagement", 
+        "title": "Manage document", 
+        "type": "object_view"
+      }, 
+      "view_operator_skills_spreadsheet": {
+        "configuration": {
+          "columns": [
+            {
+              "name": "Operator ID", 
+              "type": "string"
+            }, 
+            {
+              "items": {
+                "type": "string"
+              }, 
+              "name": "Skill-set", 
+              "type": "array"
+            }
+          ]
+        }, 
+        "gadget": "Input_viewSpreadsheet", 
+        "title": "Operator Skills", 
+        "type": "object_view"
+      }, 
+      "view_production_orders_spreadsheet": {
+        "configuration": {
+          "columns": [
+            {
+              "name": "Order ID", 
+              "type": "string"
+            }, 
+            {
+              "name": "Customer", 
+              "type": "string"
+            }, 
+            {
+              "name": "Project", 
+              "type": "string"
+            }, 
+            {
+              "name": "Order Date", 
+              "type": "string"
+            }, 
+            {
+              "name": "Due Date", 
+              "type": "string"
+            }, 
+            {
+              "default": 1, 
+              "name": "Priority", 
+              "type": "number"
+            }, 
+            {
+              "name": "Project Manager", 
+              "type": "string"
+            }
+          ]
+        }, 
+        "gadget": "Input_viewSpreadsheet", 
+        "title": "Production Orders Spreadsheet", 
+        "type": "object_view"
+      }, 
+      "view_result": {
+        "gadget": "Input_viewResultList", 
+        "title": "Results", 
+        "type": "object_view"
+      }, 
+      "view_run_simulation": {
+        "gadget": "Input_viewSimulation", 
+        "title": "Run Simulation", 
+        "type": "object_view"
+      }, 
+      "view_shift_spreadsheet": {
+        "configuration": {
+          "columns": [
+            {
+              "name": "Operator/Machine", 
+              "type": "string"
+            }, 
+            {
+              "format": "date-time", 
+              "name": "Date", 
+              "type": "string"
+            }, 
+            {
+              "name": "Shift Start", 
+              "type": "string"
+            }, 
+            {
+              "name": "Shift Stop", 
+              "type": "string"
+            }, 
+            {
+              "name": "Of-shift periods", 
+              "type": "string"
+            }
+          ]
+        }, 
+        "gadget": "Input_viewSpreadsheet", 
+        "title": "Operators and Machine Shift Spreadsheet", 
+        "type": "object_view"
+      }, 
+      "view_wip_spreadsheet": {
+        "configuration": {
+          "columns": [
+            {
+              "name": "Part ID", 
+              "type": "string"
+            }, 
+            {
+              "name": "Sequence", 
+              "type": "string"
+            }, 
+            {
+              "name": "task ID", 
+              "type": "string"
+            }, 
+            {
+              "name": "Station ID", 
+              "type": "string"
+            }, 
+            {
+              "name": "Personnel ID", 
+              "type": "string"
+            }, 
+            {
+              "format": "date-time", 
+              "name": "Start time", 
+              "type": "string"
+            }
+          ]
+        }, 
+        "gadget": "Input_viewSpreadsheet", 
+        "title": "WIP Spreadsheet", 
+        "type": "object_view"
+      }, 
+      "view_workplan_spreadsheet": {
+        "configuration": {
+          "columns": [
+            {
+              "name": "Part ID", 
+              "type": "string"
+            }, 
+            {
+              "name": "Order ID", 
+              "type": "string"
+            }, 
+            {
+              "enum": [
+                "Mould Base", 
+                "Mould Insert", 
+                "Slider", 
+                "Misc", 
+                "Z-standards", 
+                "K-standards", 
+                "Mold", 
+                "Injection Molding Part"
+              ], 
+              "name": "Part Type", 
+              "type": "string"
+            }, 
+            {
+              "name": "Operation", 
+              "type": "string"
+            }, 
+            {
+              "name": "Sequence Number", 
+              "type": "string"
+            }, 
+            {
+              "name": "Responsible personnel", 
+              "type": "string"
+            }, 
+            {
+              "_default": 1, 
+              "name": "Quantity", 
+              "type": "Number"
+            }, 
+            {
+              "_default": 0, 
+              "name": "Processing Time", 
+              "type": "number"
+            }, 
+            {
+              "name": "Precedent Operations", 
+              "type": "string"
+            }, 
+            {
+              "format": "time", 
+              "name": "Latest finish time", 
+              "type": "string"
+            }, 
+            {
+              "name": "WP_ID", 
+              "type": "string"
+            }, 
+            {
+              "enum": [
+                "Yes", 
+                "No"
+              ], 
+              "name": "Completed", 
+              "type": "string"
+            }
+          ]
+        }, 
+        "gadget": "Input_viewSpreadsheet", 
+        "title": "Workplan Spreadsheet", 
+        "type": "object_view"
+      }
+    }, 
+    "output": {
+      "view_component_gantt": {
+        "configuration": {
+          "output_id": "component_gantt"
+        }, 
+        "gadget": "Output_viewGantt", 
+        "title": "Orders Gantt", 
+        "type": "object_view"
+      }, 
+      "view_component_schedule_spreadsheet": {
+        "configuration": {
+          "handsontable_options": {}, 
+          "output_id": "component_schedule"
+        }, 
+        "gadget": "Output_viewSpreadsheet", 
+        "title": "Component Schedule", 
+        "type": "object_view"
+      }, 
+      "view_operator_gantt": {
+        "configuration": {
+          "output_id": "operator_gantt"
+        }, 
+        "gadget": "Output_viewGantt", 
+        "title": "Operator Gantt", 
+        "type": "object_view"
+      }, 
+      "view_operator_utilization": {
+        "configuration": {
+          "output_id": "operator_utilization"
+        }, 
+        "gadget": "Output_viewGraph", 
+        "title": "Operator Utilization", 
+        "type": "object_view"
+      }, 
+      "view_station_utilization": {
+        "configuration": {
+          "output_id": "station_utilization"
+        }, 
+        "gadget": "Output_viewGraph", 
+        "title": "Station Utilization", 
+        "type": "object_view"
+      }
+    }, 
+    "post_processing": {
+      "description": "", 
+      "plugin_list": [
+        {
+          "_class": "dream.plugins.JobShop.JSStationUtilization.JSStationUtilization", 
+          "family": "Server", 
+          "output_id": "station_utilization"
+        }, 
+        {
+          "_class": "dream.plugins.JobShop.JSOperatorUtilization.JSOperatorUtilization", 
+          "output_id": "operator_utilization"
+        }, 
+        {
+          "_class": "dream.plugins.JobShop.JSOperatorGantt.JSOperatorGantt", 
+          "output_id": "operator_gantt"
+        }, 
+        {
+          "_class": "dream.plugins.JobShop.JSComponentGantt.JSComponentGantt", 
+          "output_id": "component_gantt"
+        }, 
+        {
+          "_class": "dream.plugins.JobShop.JSComponentTabSchedule.JSComponentTabSchedule", 
+          "output_id": "component_schedule"
+        }
+      ]
+    }, 
+    "pre_processing": {
+      "description": "", 
+      "plugin_list": [
+        {
+          "_class": "dream.plugins.JobShop.JSExitCancelCond.JSExitCancelCond", 
+          "input_id": ""
+        }, 
+        {
+          "_class": "dream.plugins.JobShop.ReadJSSkills.ReadJSSkills", 
+          "input_id": "operator_skill_spreadsheet"
+        }, 
+        {
+          "_class": "dream.plugins.JobShop.ReadJSSkillsToStations.ReadJSSkillsToStations", 
+          "input_id": ""
+        }, 
+        {
+          "_class": "dream.plugins.JobShop.ReadJSOrders.ReadJSOrders", 
+          "input_id": "production_orders_spreadsheet"
+        }, 
+        {
+          "_class": "dream.plugins.JobShop.ReadJSWorkPlan.ReadJSWorkPlan", 
+          "input_id": "workplan_spreadsheet"
+        }, 
+        {
+          "_class": "dream.plugins.JobShop.ReadJSWIP.ReadJSWIP", 
+          "input_id": "wip_spreadsheet"
+        }, 
+        {
+          "_class": "dream.plugins.JobShop.MergeSteps.MergeSteps", 
+          "input_id": ""
+        }, 
+        {
+          "_class": "dream.plugins.JobShop.SplitRoute.SplitRoute", 
+          "input_id": ""
+        }, 
+        {
+          "_class": "dream.plugins.JobShop.ReadJSCompleted.ReadJSCompleted", 
+          "input_id": ""
+        },
+        {
+          "_class": "dream.plugins.JobShop.UpdateStationList.UpdateStationList", 
+          "input_id": ""
+        }, 
+        {
+          "_class": "dream.plugins.JobShop.InsertQueues.InsertQueues", 
+          "input_id": ""
+        }, 
+        {
+          "_class": "dream.plugins.JobShop.UpdateWIP.UpdateWIP", 
+          "input_id": ""
+        }, 
+        {
+          "_class": "dream.plugins.JobShop.InsertWIP.InsertWIP", 
+          "input_id": ""
+        }, 
+        {
+          "_class": "dream.plugins.JobShop.ReadJSShifts.ReadJSShifts", 
+          "input_id": ""
+        }
+      ]
+    }, 
+    "processing_plugin": {
+      "_class": "dream.plugins.plugin.DefaultExecutionPlugin", 
+      "description": "", 
+      "input_id": "Simulation"
+    }
+  }, 
+  "class_definition": {
+    "Dream.ConditionalBuffer": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "capacity": {
+              "$ref": "#/definitions/_capacity", 
+              "required": true
+            }, 
+            "id": {
+              "default": "Q", 
+              "type": "string"
+            }, 
+            "name": {
+              "default": "Queue", 
+              "type": "string"
+            }, 
+            "schedulingRule": {
+              "$ref": "#/definitions/_schedulingRule", 
+              "required": true
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#eff", 
+        "backgroundImage": "linear-gradient(to bottom, #eff 0%, #dee 100%)", 
+        "border": "1px solid #bcc"
+      }, 
+      "description": "A buffer where entities can be hold until the next station is ready to process them and a certain condition is met", 
+      "name": "Queue"
+    }, 
+    "Dream.Edge": {
+      "_class": "edge", 
+      "allOf": [
+        {
+          "$ref": "#/edge"
+        }
+      ], 
+      "description": "Connect stations together"
+    }, 
+    "Dream.ExitJobShop": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "id": {
+              "default": "E", 
+              "required": true
+            }, 
+            "name": {
+              "default": "Exit", 
+              "type": "string"
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#eef", 
+        "backgroundImage": "linear-gradient(to bottom, #eef 0%, #dde 100%)", 
+        "border": "1px solid #ccb"
+      }, 
+      "description": "A station where entities exits from the system", 
+      "name": "Exit"
+    }, 
+    "Dream.MachineJobShop": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "id": {
+              "default": "M", 
+              "required": true, 
+              "type": "string"
+            }, 
+            "name": {
+              "default": "Machine", 
+              "type": "string"
+            }, 
+            "operationType": {
+              "$ref": "#/definitions/_operationType", 
+              "required": true
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#fef", 
+        "backgroundImage": "linear-gradient(to bottom, #fef 0%, #ede 100%)", 
+        "border": "1px solid #cbc"
+      }, 
+      "description": "A station processing items for some time given by a distribution provided by the entities that are processed", 
+      "name": "Machine"
+    }, 
+    "Dream.MouldAssembly": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/Dream.MachineJobShop"
+        }, 
+        {
+          "id": {
+            "default": "MA", 
+            "type": "string"
+          }, 
+          "name": {
+            "default": "Assembly", 
+            "type": "string"
+          }
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#fef", 
+        "backgroundImage": "linear-gradient(to bottom, #fef 0%, #ede 100%)", 
+        "border": "1px solid #cbc"
+      }, 
+      "description": "A station that assembles different components of the same production order into a single entity", 
+      "name": "Assembly"
+    }, 
+    "Dream.MouldAssemblyBuffer": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/Dream.ConditionalBuffer"
+        }, 
+        {
+          "properties": {
+            "id": {
+              "default": "AB", 
+              "type": "string"
+            }, 
+            "name": {
+              "default": "Assembly Queue", 
+              "type": "string"
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#eff", 
+        "backgroundImage": "linear-gradient(to bottom, #eff 0%, #dee 100%)", 
+        "border": "1px solid #bcc"
+      }, 
+      "description": "A buffer where entities can be hold until the next assembly is ready to process all the entities from the same production-order", 
+      "name": "Assembly Queue"
+    }, 
+    "Dream.Operator": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "id": {
+              "default": "PM", 
+              "required": true, 
+              "type": "string"
+            }, 
+            "name": {
+              "default": "Operator", 
+              "type": "string"
+            }, 
+            "schedulingRule": {
+              "$ref": "#/definitions/_schedulingRule", 
+              "default": "WT", 
+              "required": true
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#fdd", 
+        "backgroundImage": "linear-gradient(to bottom, #fdd 0%, #dcc 100%)", 
+        "border": "1px solid #cbb"
+      }, 
+      "description": "A resource that operates stations", 
+      "name": "Operator"
+    }, 
+    "Dream.OrderDecomposition": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "id": {
+            "default": "D", 
+            "type": "string"
+          }, 
+          "name": {
+            "default": "Decomposition", 
+            "type": "string"
+          }
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#eff", 
+        "backgroundImage": "linear-gradient(to bottom, #eff 0%, #dee 100%)", 
+        "border": "1px solid #bcc"
+      }, 
+      "description": "A station where production-orders are decomposed into components ", 
+      "name": "Decomposition"
+    }, 
+    "definitions": {
+      "_capacity": {
+        "default": 1, 
+        "description": "capacity of the queue. -1 means infinite", 
+        "name": "Capacity", 
+        "oneOf": [
+          {
+            "enum": [
+              -1
+            ]
+          }, 
+          {
+            "multipleOf": 1
+          }
+        ], 
+        "type": "number"
+      }, 
+      "_dist": {
+        "allOf": [
+          {
+            "properties": {
+              "distribution": {
+                "default": "Fixed", 
+                "enum": [
+                  "Fixed", 
+                  "Exp", 
+                  "Normal", 
+                  "Lognormal", 
+                  "Binomial", 
+                  "Poisson", 
+                  "Logistic", 
+                  "Cauchy", 
+                  "Geometric", 
+                  "Gama", 
+                  "Weibull"
+                ], 
+                "type": "string"
+              }
+            }, 
+            "type": "object"
+          }, 
+          {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/distributionTypes/_fixed"
+              }, 
+              {
+                "$ref": "#/definitions/distributionTypes/_exp"
+              }, 
+              {
+                "$ref": "#/definitions/distributionTypes/_normal"
+              }, 
+              {
+                "$ref": "#/definitions/distributionTypes/_lognormal"
+              }, 
+              {
+                "$ref": "#/definitions/distributionTypes/_binomial"
+              }, 
+              {
+                "$ref": "#/definitions/distributionTypes/_poisson"
+              }, 
+              {
+                "$ref": "#/definitions/distributionTypes/_logistic"
+              }, 
+              {
+                "$ref": "#/definitions/distributionTypes/_cauchy"
+              }, 
+              {
+                "$ref": "#/definitions/distributionTypes/_geometric"
+              }, 
+              {
+                "$ref": "#/definitions/distributionTypes/_gama"
+              }, 
+              {
+                "$ref": "#/definitions/distributionTypes/_weibull"
+              }
+            ]
+          }
+        ]
+      }, 
+      "_failureDist": {
+        "allOf": [
+          {
+            "properties": {
+              "failureDistribution": {
+                "default": "No", 
+                "enum": [
+                  "No", 
+                  "Yes"
+                ], 
+                "type": "string"
+              }
+            }, 
+            "type": "object"
+          }, 
+          {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/distributionTypes/_failure"
+              }, 
+              {
+                "$ref": "#/definitions/distributionTypes/_no"
+              }, 
+              {
+                "$ref": "#/definitions/distributionTypes/_availability"
+              }
+            ]
+          }
+        ]
+      }, 
+      "_operationType": {
+        "description": "the type of operations that are performed manually in the machine", 
+        "enum": [
+          "MT-Load", 
+          "MT-Load-Setup", 
+          "MT-Load-Setup-Processing"
+        ], 
+        "name": "Operation type", 
+        "type": "string"
+      }, 
+      "_schedulingRule": {
+        "default": "FIFO", 
+        "description": "Scheduling Rule, one of FIFO Priority EDD EOD NumStages RPC LPT SPT MS WINQ", 
+        "enum": [
+          "FIFO", 
+          "Priority", 
+          "EDD", 
+          "EOD", 
+          "NumStages", 
+          "RPC", 
+          "LPT", 
+          "SPT", 
+          "MS", 
+          "WINQ", 
+          "WT"
+        ], 
+        "name": "Scheduling Rule", 
+        "type": "string"
+      }, 
+      "distributionTypes": {
+        "_binomial": {
+          "description": "Binomial", 
+          "properties": {
+            "mean": {
+              "default": 0, 
+              "type": "number"
+            }, 
+            "size": {
+              "default": 0, 
+              "type": "number"
+            }
+          }, 
+          "title": "Binomial", 
+          "type": "object"
+        }, 
+        "_cauchy": {
+          "description": "Cauchy", 
+          "properties": {
+            "location": {
+              "default": 0, 
+              "type": "number"
+            }, 
+            "scale": {
+              "default": 0, 
+              "type": "number"
+            }
+          }, 
+          "title": "Cauchy", 
+          "type": "object"
+        }, 
+        "_exp": {
+          "description": "Exponential", 
+          "properties": {
+            "mean": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }
+          }, 
+          "title": "Exp", 
+          "type": "object"
+        }, 
+        "_failure": {
+          "properties": {
+            "TTF": {
+              "$ref": "#/definitions/_dist", 
+              "name": "Time to Failure"
+            }, 
+            "TTR": {
+              "$ref": "#/definitions/_dist", 
+              "name": "Time to Repair"
+            }, 
+            "repairman": {
+              "description": "Repairman", 
+              "required": true, 
+              "type": "string"
+            }
+          }, 
+          "title": "Yes", 
+          "type": "object"
+        }, 
+        "_fixed": {
+          "properties": {
+            "mean": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }
+          }, 
+          "title": "Fixed", 
+          "type": "object"
+        }, 
+        "_gama": {
+          "description": "Gama", 
+          "properties": {
+            "rate": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }, 
+            "shape": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }
+          }, 
+          "title": "Gama", 
+          "type": "object"
+        }, 
+        "_geometric": {
+          "description": "Geometric", 
+          "properties": {
+            "probability": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }
+          }, 
+          "title": "Geometric", 
+          "type": "object"
+        }, 
+        "_logistic": {
+          "description": "Logistic", 
+          "properties": {
+            "location": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }, 
+            "scale": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }
+          }, 
+          "title": "Logistic", 
+          "type": "object"
+        }, 
+        "_lognormal": {
+          "description": "Lognormal", 
+          "properties": {
+            "mean": {
+              "default": 0, 
+              "name": "Mean", 
+              "type": "number"
+            }, 
+            "stdev": {
+              "default": 0, 
+              "name": "Standard Deviation", 
+              "type": "number"
+            }
+          }, 
+          "title": "Lognormal", 
+          "type": "object"
+        }, 
+        "_no": {
+          "description": "None", 
+          "title": "No", 
+          "type": "string"
+        }, 
+        "_normal": {
+          "description": "Normal", 
+          "properties": {
+            "mean": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }, 
+            "stdev": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }
+          }, 
+          "title": "Normal", 
+          "type": "object"
+        }, 
+        "_poisson": {
+          "description": "Poisson", 
+          "properties": {
+            "lambda": {
+              "default": 0, 
+              "type": "number"
+            }
+          }, 
+          "title": "Poisson", 
+          "type": "object"
+        }, 
+        "_weibull": {
+          "description": "Weibull", 
+          "properties": {
+            "scale": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }, 
+            "shape": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }
+          }, 
+          "title": "Weibull", 
+          "type": "object"
+        }
+      }
+    }, 
+    "edge": {
+      "description": "Base definition for edge", 
+      "properties": {
+        "_class": {
+          "type": "string"
+        }, 
+        "destination": {
+          "type": "string"
+        }, 
+        "name": {
+          "type": "string"
+        }, 
+        "source": {
+          "type": "string"
+        }
+      }, 
+      "required": [
+        "_class", 
+        "source", 
+        "destination"
+      ], 
+      "type": "object"
+    }, 
+    "node": {
+      "description": "Base definition for node", 
+      "properties": {
+        "_class": {
+          "type": "string"
+        }, 
+        "coordinate": {
+          "properties": {
+            "left": "number", 
+            "top": "number"
+          }, 
+          "type": "object"
+        }, 
+        "name": {
+          "type": "string"
+        }
+      }, 
+      "required": [
+        "name", 
+        "_class"
+      ], 
+      "type": "object"
+    }
+  }, 
+  "constraints": {}, 
+  "general": {
+    "confidenceLevel": 0.95, 
+    "currentDate": "2015/02/23 14:00", 
+    "maxSimTime": 100, 
+    "numberOfAntsPerGenerations": "1", 
+    "numberOfGenerations": "1", 
+    "numberOfReplications": "1", 
+    "numberOfSolutions": "1", 
+    "processTimeout": 10, 
+    "seed": "", 
+    "timeUnit": "hour", 
+    "trace": "Yes"
+  }, 
+  "graph": {
+    "edge": {
+      "con_103": {
+        "_class": "Dream.Edge", 
+        "destination": "CAM2", 
+        "source": "QCAM"
+      }, 
+      "con_126": {
+        "_class": "Dream.Edge", 
+        "destination": "ASSM2", 
+        "source": "ASSMB1"
+      }, 
+      "con_136": {
+        "_class": "Dream.Edge", 
+        "destination": "QIM", 
+        "source": "ASSM2"
+      }, 
+      "con_153": {
+        "_class": "Dream.Edge", 
+        "destination": "ASSM1", 
+        "source": "ASSMB1"
+      }, 
+      "con_171": {
+        "_class": "Dream.Edge", 
+        "destination": "QIM", 
+        "source": "ASSM1"
+      }, 
+      "con_180": {
+        "_class": "Dream.Edge", 
+        "destination": "ASSM3", 
+        "source": "ASSMB1"
+      }, 
+      "con_187": {
+        "_class": "Dream.Edge", 
+        "destination": "INJM2", 
+        "source": "QIM"
+      }, 
+      "con_203": {
+        "_class": "Dream.Edge", 
+        "destination": "INJM1", 
+        "source": "QIM"
+      }, 
+      "con_216": {
+        "_class": "Dream.Edge", 
+        "destination": "ASSM4", 
+        "source": "ASSMB1"
+      }, 
+      "con_228": {
+        "_class": "Dream.Edge", 
+        "destination": "QIM", 
+        "source": "ASSM3"
+      }, 
+      "con_238": {
+        "_class": "Dream.Edge", 
+        "destination": "QIM", 
+        "source": "ASSM4"
+      }, 
+      "con_264": {
+        "_class": "Dream.Edge", 
+        "destination": "MILL1", 
+        "source": "QMILL"
+      }, 
+      "con_278": {
+        "_class": "Dream.Edge", 
+        "destination": "MILL2", 
+        "source": "QMILL"
+      }, 
+      "con_322": {
+        "_class": "Dream.Edge", 
+        "destination": "CAD2", 
+        "source": "QCAD"
+      }, 
+      "con_332": {
+        "_class": "Dream.Edge", 
+        "destination": "OD1", 
+        "source": "CAD2"
+      }, 
+      "con_346": {
+        "_class": "Dream.Edge", 
+        "destination": "EDM1", 
+        "source": "QEDM"
+      }, 
+      "con_394": {
+        "_class": "Dream.Edge", 
+        "destination": "WORK1", 
+        "source": "QWORK"
+      }, 
+      "con_41": {
+        "_class": "Dream.Edge", 
+        "destination": "CAD1", 
+        "source": "QCAD"
+      }, 
+      "con_412": {
+        "_class": "Dream.Edge", 
+        "destination": "WORK2", 
+        "source": "QWORK"
+      }, 
+      "con_430": {
+        "_class": "Dream.Edge", 
+        "destination": "WORK3", 
+        "source": "QWORK"
+      }, 
+      "con_448": {
+        "_class": "Dream.Edge", 
+        "destination": "WORK4", 
+        "source": "QWORK"
+      }, 
+      "con_468": {
+        "_class": "Dream.Edge", 
+        "destination": "TURN1", 
+        "source": "QTURN"
+      }, 
+      "con_59": {
+        "_class": "Dream.Edge", 
+        "destination": "OD1", 
+        "source": "CAD1"
+      }, 
+      "con_75": {
+        "_class": "Dream.Edge", 
+        "destination": "QCAM", 
+        "source": "OD1"
+      }, 
+      "con_89": {
+        "_class": "Dream.Edge", 
+        "destination": "CAM1", 
+        "source": "QCAM"
+      }
+    }, 
+    "node": {
+      "ASSM1": {
+        "_class": "Dream.MouldAssembly", 
+        "coordinate": {
+          "left": 0.6521474534288473, 
+          "top": 0.4442629728124187
+        }, 
+        "name": "Workbench 1", 
+        "operationType": "MT-Load"
+      }, 
+      "ASSM2": {
+        "_class": "Dream.MouldAssembly", 
+        "coordinate": {
+          "left": 0.6752195712231517, 
+          "top": 0.6186004789990629
+        }, 
+        "name": "Workbench 2", 
+        "operationType": "MT-Load"
+      }, 
+      "ASSM3": {
+        "_class": "Dream.MouldAssembly", 
+        "coordinate": {
+          "left": 0.6878666403947473, 
+          "top": 0.7872792229905354
+        }, 
+        "id": "ASSM3", 
+        "name": "Workbench 3", 
+        "operationType": "MT-Load"
+      }, 
+      "ASSM4": {
+        "_class": "Dream.MouldAssembly", 
+        "coordinate": {
+          "left": 0.7119334582271035, 
+          "top": 0.9679335058055166
+        }, 
+        "name": "Workbench 4", 
+        "operationType": "MT-Load"
+      }, 
+      "ASSMB1": {
+        "_class": "Dream.MouldAssemblyBuffer", 
+        "capacity": -1, 
+        "coordinate": {
+          "left": 0.5452484000928567, 
+          "top": 0.8182381717004428
+        }, 
+        "id": "ASSMB1", 
+        "name": "Assembly Buffer", 
+        "schedulingRule": "FIFO"
+      }, 
+      "CAD1": {
+        "_class": "Dream.MachineJobShop", 
+        "coordinate": {
+          "left": 0.10879026413795084, 
+          "top": 0.013666724978291588
+        }, 
+        "id": "CAD1", 
+        "name": "Design 1", 
+        "operationType": "MT-Load"
+      }, 
+      "CAD2": {
+        "_class": "Dream.MachineJobShop", 
+        "coordinate": {
+          "left": 0.12682425485157006, 
+          "top": 0.1922154541386078
+        }, 
+        "name": "Desing 2", 
+        "operationType": "MT-Load"
+      }, 
+      "CAM1": {
+        "_class": "Dream.MachineJobShop", 
+        "coordinate": {
+          "left": 0.44628124163613325, 
+          "top": 0.014719501805624449
+        }, 
+        "id": "CAM1", 
+        "name": "CAM1", 
+        "operationType": "MT-Load"
+      }, 
+      "CAM2": {
+        "_class": "Dream.MachineJobShop", 
+        "coordinate": {
+          "left": 0.4629845905629357, 
+          "top": 0.18609598641713887
+        }, 
+        "name": "CAM2", 
+        "operationType": "MT-Load"
+      }, 
+      "E1": {
+        "_class": "Dream.ExitJobShop", 
+        "coordinate": {
+          "left": 0.9416856415572489, 
+          "top": 0.4463685842992545
+        }, 
+        "name": "Exit"
+      }, 
+      "EDM1": {
+        "_class": "Dream.MachineJobShop", 
+        "coordinate": {
+          "left": 0.6995060205678821, 
+          "top": 0.017219933518795378
+        }, 
+        "name": "EDM Station 1", 
+        "operationType": "MT-Load"
+      }, 
+      "INJM1": {
+        "_class": "Dream.MachineJobShop", 
+        "coordinate": {
+          "left": 0.9218430516465056, 
+          "top": 0.7255586489356356
+        }, 
+        "name": "Injection Mouding 1", 
+        "operationType": "MT-Load"
+      }, 
+      "INJM2": {
+        "_class": "Dream.MachineJobShop", 
+        "coordinate": {
+          "left": 0.9292066113839507, 
+          "top": 0.9698417360952712
+        }, 
+        "id": "INJM2", 
+        "name": "Injection Molding 2", 
+        "operationType": "MT-Load"
+      }, 
+      "MILL1": {
+        "_class": "Dream.MachineJobShop", 
+        "coordinate": {
+          "left": 0.9352393930867402, 
+          "top": 0.022516839824675623
+        }, 
+        "name": "Milling 1", 
+        "operationType": "MT-Load"
+      }, 
+      "MILL2": {
+        "_class": "Dream.MachineJobShop", 
+        "coordinate": {
+          "left": 0.9514389883462049, 
+          "top": 0.18882672029031017
+        }, 
+        "name": "Milling 2", 
+        "operationType": "MT-Load"
+      }, 
+      "OD1": {
+        "_class": "Dream.OrderDecomposition", 
+        "coordinate": {
+          "left": 0.22933108668358815, 
+          "top": 0.09516016864672949
+        }, 
+        "id": "OD1", 
+        "name": "Decomposition"
+      }, 
+      "QCAD": {
+        "_class": "Dream.ConditionalBuffer", 
+        "capacity": -1, 
+        "coordinate": {
+          "left": 0.004203609082365703, 
+          "top": 0.10354971531821917
+        }, 
+        "id": "QCAD", 
+        "name": "CAD Buffer", 
+        "schedulingRule": "FIFO"
+      }, 
+      "QCAM": {
+        "_class": "Dream.ConditionalBuffer", 
+        "capacity": -1, 
+        "coordinate": {
+          "left": 0.3340082103025833, 
+          "top": 0.09071867242914226
+        }, 
+        "id": "QCAM", 
+        "name": "CAM Buffer", 
+        "schedulingRule": "FIFO"
+      }, 
+      "QEDM": {
+        "_class": "Dream.ConditionalBuffer", 
+        "capacity": -1, 
+        "coordinate": {
+          "left": 0.5879692725425638, 
+          "top": 0.026892537490554588
+        }, 
+        "id": "QEDM", 
+        "name": "EDM Buffer", 
+        "schedulingRule": "FIFO"
+      }, 
+      "QIM": {
+        "_class": "Dream.ConditionalBuffer", 
+        "capacity": -1, 
+        "coordinate": {
+          "left": 0.8173468651543282, 
+          "top": 0.8194883875570278
+        }, 
+        "id": "QIM", 
+        "name": "Queue IM", 
+        "schedulingRule": "FIFO"
+      }, 
+      "QMILL": {
+        "_class": "Dream.ConditionalBuffer", 
+        "capacity": -1, 
+        "coordinate": {
+          "left": 0.810797340823792, 
+          "top": 0.0883827660113273
+        }, 
+        "id": "QMILL", 
+        "name": "Milling Buffer", 
+        "schedulingRule": "FIFO"
+      }, 
+      "QTURN": {
+        "_class": "Dream.ConditionalBuffer", 
+        "capacity": -1, 
+        "coordinate": {
+          "left": 0.5887314429397227, 
+          "top": 0.2278132947212261
+        }, 
+        "name": "Turn Buffer", 
+        "schedulingRule": "FIFO"
+      }, 
+      "QWORK": {
+        "_class": "Dream.ConditionalBuffer", 
+        "capacity": -1, 
+        "coordinate": {
+          "left": 0.11326001066086948, 
+          "top": 0.8001102152764649
+        }, 
+        "name": "Workbench Buffer", 
+        "schedulingRule": "FIFO"
+      }, 
+      "TURN1": {
+        "_class": "Dream.MachineJobShop", 
+        "coordinate": {
+          "left": 0.6981108427225281, 
+          "top": 0.2278132947212261
+        }, 
+        "name": "Turn 1", 
+        "operationType": "MT-Load"
+      }, 
+      "WORK1": {
+        "_class": "Dream.MachineJobShop", 
+        "coordinate": {
+          "left": 0.23000283393328333, 
+          "top": 0.40764511732691683
+        }, 
+        "name": "Workbench 1", 
+        "operationType": "MT-Load"
+      }, 
+      "WORK2": {
+        "_class": "Dream.MachineJobShop", 
+        "coordinate": {
+          "left": 0.2583585065776842, 
+          "top": 0.585963587701359
+        }, 
+        "name": "Workbench 2", 
+        "operationType": "MT-Load"
+      }, 
+      "WORK3": {
+        "_class": "Dream.MachineJobShop", 
+        "coordinate": {
+          "left": 0.2844793513765707, 
+          "top": 0.7718819859816857
+        }, 
+        "name": "Workbench 3", 
+        "operationType": "MT-Load"
+      }, 
+      "WORK4": {
+        "_class": "Dream.MachineJobShop", 
+        "coordinate": {
+          "left": 0.3053165959094169, 
+          "top": 0.9613864993073932
+        }, 
+        "name": "Workbench 4", 
+        "operationType": "MT-Load"
+      }
+    }
+  }, 
+  "input": {
+    "operator_skills_spreadsheet": [
+      [
+        "Operator ID", 
+        "Skill-set"
+      ], 
+      [
+        "W1-MB", 
+        "ENG; CAD; CAM; MILL; MILL-SET; TURN; DRILL; EDM-SET; ASSM; MAN; INJM-MAN; INJM-SET; QUAL"
+      ], 
+      [
+        "W2-FS", 
+        "CAD; CAM; MILL; MILL-SET; TURN; DRILL; EDM-SET; ASSM; MAN; INJM-MAN; INJM-SET; QUAL"
+      ], 
+      [
+        "W3-CV", 
+        "CAM; MILL; MILL-SET; TURN; DRILL; EDM-SET; ASSM; MAN; INJM-MAN; INJM-SET; QUAL"
+      ], 
+      [
+        "W4-TD", 
+        "MILL; TURN; DRILL; ASSM; MAN; INJM-MAN; QUAL"
+      ], 
+      [
+        "W5-MG", 
+        "TURN; DRILL; MAN; INJM-MAN"
+      ], 
+      [
+        "W6-AA", 
+        "INJM-MAN"
+      ], 
+      [
+        "W7-WK", 
+        "INJM-MAN"
+      ], 
+      [
+        null, 
+        null
+      ]
+    ], 
+    "production_orders_spreadsheet": [
+      [
+        "Order ID", 
+        "Customer", 
+        "Project", 
+        "Order Date", 
+        "Due Date", 
+        "Priority", 
+        "Project Manager"
+      ], 
+      [
+        "W134188", 
+        "Customer 1", 
+        "Gelenkstangen 50/0\u00b0/180\u00b0", 
+        "2015/02/22", 
+        "2015/03/15", 
+        "0", 
+        "PM3 - CV"
+      ], 
+      [
+        "W134239", 
+        "Customer 2", 
+        "Spalttopf C80", 
+        "2015/02/20", 
+        "2015/04/02", 
+        "0", 
+        "PM2 - FS"
+      ], 
+      [
+        null, 
+        null, 
+        null, 
+        null, 
+        null, 
+        null, 
+        null
+      ]
+    ], 
+    "shift_spreadsheet": [
+      [
+        "Operator/Machine", 
+        "Date", 
+        "Shift Start", 
+        "Shift Stop", 
+        "Of-shift periods"
+      ], 
+      [
+        "W1-MB", 
+        "2015/02/23", 
+        "09:00", 
+        "17:00", 
+        "12:00-14:00"
+      ], 
+      [
+        null, 
+        "2015/02/24", 
+        "09:00", 
+        "17:00", 
+        ""
+      ], 
+      [
+        "", 
+        "", 
+        "", 
+        "", 
+        ""
+      ]
+    ], 
+    "wip_spreadsheet": [
+      [
+        "Part ID", 
+        "Sequence", 
+        "task ID", 
+        "Station ID", 
+        "Personnel ID", 
+        "Start time"
+      ], 
+      [
+        "3.122.052.01.00", 
+        "2", 
+        "ID-00022", 
+        "CAD2", 
+        "W1 - MB", 
+        "12:00"
+      ], 
+      [
+        null, 
+        null, 
+        null, 
+        null, 
+        null, 
+        ""
+      ]
+    ], 
+    "workplan_spreadsheet": [
+      [
+        "Part ID", 
+        "Order ID", 
+        "Part Type", 
+        "Operation", 
+        "Sequence Number", 
+        "Responsible personnel", 
+        "Quantity", 
+        "Processing Time", 
+        "Precedent Operations", 
+        "Latest finish time", 
+        "WP_ID", 
+        "Completed"
+      ], 
+      [
+        "PE001068A", 
+        "W134188", 
+        "Injection Molding Part", 
+        "ENG", 
+        "1", 
+        "W1 - MB", 
+        "1", 
+        "2.00", 
+        "", 
+        "", 
+        "ID-00001", 
+        "X"
+      ], 
+      [
+        "PE001068A", 
+        "W134188", 
+        "Mold", 
+        "CAD", 
+        "2", 
+        "W1 - MB", 
+        "1", 
+        "4.00", 
+        null, 
+        null, 
+        "ID-00002", 
+        "X"
+      ], 
+      [
+        "PE001068A-01", 
+        "W134188", 
+        "Mold Base", 
+        "CAM", 
+        "3", 
+        "W3 - CV", 
+        "1", 
+        "1.50", 
+        null, 
+        null, 
+        "ID-00003", 
+        ""
+      ], 
+      [
+        "PE001068A-02", 
+        "W134188", 
+        "Mold Base", 
+        "CAM", 
+        "3", 
+        "W3 - CV", 
+        "1", 
+        "1.50", 
+        "", 
+        null, 
+        "ID-00004", 
+        "X"
+      ], 
+      [
+        "PE001068A-03", 
+        "W134188", 
+        "Mold Insert", 
+        "CAM", 
+        "3", 
+        "W3 - CV", 
+        "1", 
+        "1.00", 
+        null, 
+        null, 
+        "ID-00005", 
+        ""
+      ], 
+      [
+        "PE001068A-01", 
+        "W134188", 
+        "Mold Base", 
+        "MILL-SET", 
+        "4", 
+        "W3 - CV", 
+        "1", 
+        "1.00", 
+        "", 
+        "", 
+        "ID-00006", 
+        ""
+      ], 
+      [
+        "PE001068A-01", 
+        "W134188", 
+        "Mold Base", 
+        "MILL", 
+        "5", 
+        "Automatic", 
+        "1", 
+        "4.00", 
+        null, 
+        null, 
+        "ID-00007", 
+        ""
+      ], 
+      [
+        "PE001068A-02", 
+        "W134188", 
+        "Mold Base", 
+        "MILL-SET", 
+        "4", 
+        "W3 - CV", 
+        "1", 
+        "1.00", 
+        null, 
+        null, 
+        "ID-00008", 
+        ""
+      ], 
+      [
+        "PE001068A-02", 
+        "W134188", 
+        "Mold Base", 
+        "MILL", 
+        "5", 
+        "Automatic", 
+        "1", 
+        "4.00", 
+        null, 
+        null, 
+        "ID-00009", 
+        ""
+      ], 
+      [
+        "PE001068A-03", 
+        "W134188", 
+        "Mold Insert", 
+        "MILL-SET", 
+        "6", 
+        "W3 - CV", 
+        "4", 
+        "0.25", 
+        "PE001068A-01; PE001068A-02", 
+        null, 
+        "ID-00010", 
+        ""
+      ], 
+      [
+        "PE001068A-03", 
+        "W134188", 
+        "Mold Insert", 
+        "MILL", 
+        "7", 
+        "Automatic", 
+        "4", 
+        "1.00", 
+        "", 
+        null, 
+        "ID-00011", 
+        ""
+      ], 
+      [
+        "PE001068A-01", 
+        "W134188", 
+        "Mold Base", 
+        "MAN", 
+        "8", 
+        "W3 - CV", 
+        "1", 
+        "1.50", 
+        "", 
+        null, 
+        "ID-00012", 
+        ""
+      ], 
+      [
+        "PE001068A-02", 
+        "W134188", 
+        "Mold Base", 
+        "MAN", 
+        "8", 
+        "W3 - CV", 
+        "1", 
+        "1.50", 
+        "", 
+        null, 
+        "ID-00013", 
+        ""
+      ], 
+      [
+        "PE001068A-03", 
+        "W134188", 
+        "Mold Insert", 
+        "MAN", 
+        "8", 
+        "W3 - CV", 
+        "4", 
+        "0.25", 
+        "", 
+        null, 
+        "ID-00014", 
+        ""
+      ], 
+      [
+        "PE001068A-01", 
+        "W134188", 
+        "Mold Base", 
+        "QUAL", 
+        "9", 
+        "W2 - FS", 
+        "1", 
+        "0.25", 
+        "", 
+        null, 
+        "ID-00015", 
+        ""
+      ], 
+      [
+        "PE001068A-02", 
+        "W134188", 
+        "Mold Base", 
+        "QUAL", 
+        "9", 
+        "W2 - FS", 
+        "1", 
+        "0.25", 
+        "", 
+        null, 
+        "ID-00016", 
+        ""
+      ], 
+      [
+        "PE001068A-03", 
+        "W134188", 
+        "Mold Insert", 
+        "QUAL", 
+        "9", 
+        "W2 - FS", 
+        "4", 
+        "0.10", 
+        "", 
+        null, 
+        "ID-00017", 
+        ""
+      ], 
+      [
+        "PE001068A", 
+        "W134188", 
+        "Mold", 
+        "ASSM", 
+        "10", 
+        "W3 - CV", 
+        "1", 
+        "3.00", 
+        "all", 
+        null, 
+        "ID-00018", 
+        ""
+      ], 
+      [
+        "PE001068A", 
+        "W134188", 
+        "Mold", 
+        "INJM-SET", 
+        "11", 
+        "W3 - CV", 
+        "1", 
+        "1.00", 
+        null, 
+        null, 
+        "ID-00019", 
+        ""
+      ], 
+      [
+        "PE001068A", 
+        "W134188", 
+        "Injection Molding Part", 
+        "INJM-MAN", 
+        "12", 
+        "W3 - CV", 
+        "500", 
+        "0.02", 
+        null, 
+        null, 
+        "ID-00020", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00", 
+        "W134239", 
+        "Injection Molding Part", 
+        "ENG", 
+        "1", 
+        "W1 - MB", 
+        "1", 
+        "4.00", 
+        "", 
+        "", 
+        "ID-00021", 
+        "X"
+      ], 
+      [
+        "3.122.052.01.00", 
+        "W134239", 
+        "Mold", 
+        "CAD", 
+        "2", 
+        "W1 - MB", 
+        "1", 
+        "12.00", 
+        "", 
+        "", 
+        "ID-00022", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-01", 
+        "W134239", 
+        "Mold Base", 
+        "CAM", 
+        "3", 
+        "W2 - FS", 
+        "1", 
+        "2.00", 
+        "", 
+        "", 
+        "ID-00023", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-02", 
+        "W134239", 
+        "Mold Base", 
+        "CAM", 
+        "3", 
+        "W2 - FS", 
+        "1", 
+        "2.00", 
+        "", 
+        "", 
+        "ID-00024", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-03", 
+        "W134239", 
+        "Mold Insert", 
+        "CAM", 
+        "3", 
+        "W2 - FS", 
+        "1", 
+        "2.00", 
+        "", 
+        "", 
+        "ID-00025", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-04", 
+        "W134239", 
+        "Mold Insert", 
+        "CAM", 
+        "3", 
+        "W2 - FS", 
+        "1", 
+        "2.00", 
+        "", 
+        "", 
+        "ID-00026", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-05", 
+        "W134239", 
+        "Slider", 
+        "CAM", 
+        "3", 
+        "W2 - FS", 
+        "1", 
+        "1.50", 
+        "", 
+        "", 
+        "ID-00027", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-06", 
+        "W134239", 
+        "Slider", 
+        "CAM", 
+        "3", 
+        "W2 - FS", 
+        "1", 
+        "1.50", 
+        "", 
+        "", 
+        "ID-00028", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-07", 
+        "W134239", 
+        "Slider", 
+        "CAM", 
+        "3", 
+        "W2 - FS", 
+        "1", 
+        "1.50", 
+        "", 
+        "", 
+        "ID-00029", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-08", 
+        "W134239", 
+        "Misc", 
+        "CAM", 
+        "3", 
+        "W2 - FS", 
+        "1", 
+        "0.50", 
+        "", 
+        "", 
+        "ID-00030", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-E01", 
+        "W134239", 
+        "Electrode", 
+        "CAM", 
+        "4", 
+        "W2 - FS", 
+        "1", 
+        "1.00", 
+        "", 
+        "", 
+        "ID-00031", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-E02", 
+        "W134239", 
+        "Electrode", 
+        "CAM", 
+        "4", 
+        "W2 - FS", 
+        "1", 
+        "1.00", 
+        "", 
+        "", 
+        "ID-00032", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-01", 
+        "W134239", 
+        "Mold Base", 
+        "MILL-SET", 
+        "5", 
+        "W2 - FS", 
+        "1", 
+        "1.50", 
+        "", 
+        "", 
+        "ID-00033", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-01", 
+        "W134239", 
+        "Mold Base", 
+        "MILL", 
+        "6", 
+        "W2 - FS", 
+        "1", 
+        "5.00", 
+        "", 
+        "", 
+        "ID-00034", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-02", 
+        "W134239", 
+        "Mold Base", 
+        "MILL-SET", 
+        "5", 
+        "W2 - FS", 
+        "1", 
+        "1.50", 
+        "", 
+        "", 
+        "ID-00035", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-02", 
+        "W134239", 
+        "Mold Base", 
+        "MILL", 
+        "6", 
+        "W2 - FS", 
+        "1", 
+        "5.00", 
+        "", 
+        "", 
+        "ID-00036", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-03", 
+        "W134239", 
+        "Mold Insert", 
+        "MILL-SET", 
+        "7", 
+        "W2 - FS", 
+        "1", 
+        "1.50", 
+        "3.122.052.01.00-01", 
+        "", 
+        "ID-00037", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-03", 
+        "W134239", 
+        "Mold Insert", 
+        "MILL", 
+        "8", 
+        "W2 - FS", 
+        "1", 
+        "6.00", 
+        "", 
+        "", 
+        "ID-00038", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-04", 
+        "W134239", 
+        "Mold Insert", 
+        "MILL-SET", 
+        "7", 
+        "W2 - FS", 
+        "1", 
+        "1.00", 
+        "3.122.052.01.00-02", 
+        "", 
+        "ID-00039", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-04", 
+        "W134239", 
+        "Mold Insert", 
+        "MILL", 
+        "8", 
+        "W2 - FS", 
+        "1", 
+        "4.00", 
+        "", 
+        "", 
+        "ID-00040", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-05", 
+        "W134239", 
+        "Slider", 
+        "MILL-SET", 
+        "7", 
+        "W2 - FS", 
+        "1", 
+        "1.00", 
+        "3.122.052.01.00-01", 
+        "", 
+        "ID-00041", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-05", 
+        "W134239", 
+        "Slider", 
+        "MILL", 
+        "8", 
+        "W2 - FS", 
+        "1", 
+        "3.00", 
+        "", 
+        "", 
+        "ID-00042", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-06", 
+        "W134239", 
+        "Slider", 
+        "MILL-SET", 
+        "7", 
+        "W2 - FS", 
+        "1", 
+        "1.00", 
+        "3.122.052.01.00-01", 
+        "", 
+        "ID-00043", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-06", 
+        "W134239", 
+        "Slider", 
+        "MILL", 
+        "8", 
+        "W2 - FS", 
+        "1", 
+        "3.00", 
+        "", 
+        "", 
+        "ID-00044", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-07", 
+        "W134239", 
+        "Slider", 
+        "MILL-SET", 
+        "7", 
+        "W2 - FS", 
+        "1", 
+        "1.00", 
+        "3.122.052.01.00-01", 
+        "", 
+        "ID-00045", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-07", 
+        "W134239", 
+        "Slider", 
+        "MILL", 
+        "8", 
+        "W2 - FS", 
+        "1", 
+        "3.00", 
+        "", 
+        "", 
+        "ID-00046", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-08", 
+        "W134239", 
+        "Misc", 
+        "MILL-SET", 
+        "9", 
+        "W2 - FS", 
+        "6", 
+        "0.25", 
+        "", 
+        "", 
+        "ID-00047", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-08", 
+        "W134239", 
+        "Misc", 
+        "MILL", 
+        "10", 
+        "W2 - FS", 
+        "6", 
+        "0.25", 
+        "", 
+        "", 
+        "ID-00048", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-E01", 
+        "W134239", 
+        "Electrode", 
+        "MILL-SET", 
+        "11", 
+        "W3 - CV", 
+        "1", 
+        "0.50", 
+        "", 
+        "", 
+        "ID-00049", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-E01", 
+        "W134239", 
+        "Electrode", 
+        "MILL", 
+        "12", 
+        "W3 - CV", 
+        "1", 
+        "3.00", 
+        "", 
+        "", 
+        "ID-00050", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-E02", 
+        "W134239", 
+        "Electrode", 
+        "MILL-SET", 
+        "11", 
+        "W3 - CV", 
+        "1", 
+        "0.50", 
+        "", 
+        "", 
+        "ID-00051", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-E02", 
+        "W134239", 
+        "Electrode", 
+        "MILL", 
+        "12", 
+        "W3 - CV", 
+        "1", 
+        "0.50", 
+        "", 
+        "", 
+        "ID-00052", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-01", 
+        "W134239", 
+        "Mold Base", 
+        "QUAL", 
+        "13", 
+        "W2 - FS", 
+        "1", 
+        "0.25", 
+        "", 
+        "", 
+        "ID-00053", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-02", 
+        "W134239", 
+        "Mold Base", 
+        "QUAL", 
+        "13", 
+        "W2 - FS", 
+        "1", 
+        "0.25", 
+        "", 
+        "", 
+        "ID-00054", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-03", 
+        "W134239", 
+        "Mold Insert", 
+        "QUAL", 
+        "13", 
+        "W2 - FS", 
+        "1", 
+        "0.25", 
+        "", 
+        "", 
+        "ID-00055", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-04", 
+        "W134239", 
+        "Mold Insert", 
+        "QUAL", 
+        "13", 
+        "W2 - FS", 
+        "1", 
+        "0.25", 
+        "", 
+        "", 
+        "ID-00056", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-05", 
+        "W134239", 
+        "Slider", 
+        "QUAL", 
+        "13", 
+        "W2 - FS", 
+        "1", 
+        "0.25", 
+        "", 
+        "", 
+        "ID-00057", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-06", 
+        "W134239", 
+        "Slider", 
+        "QUAL", 
+        "13", 
+        "W2 - FS", 
+        "1", 
+        "0.25", 
+        "", 
+        "", 
+        "ID-00058", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-07", 
+        "W134239", 
+        "Slider", 
+        "QUAL", 
+        "13", 
+        "W2 - FS", 
+        "1", 
+        "0.25", 
+        "", 
+        "", 
+        "ID-00059", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-03", 
+        "W134239", 
+        "Mold Insert", 
+        "EDM-SET", 
+        "14", 
+        "W3 - CV", 
+        "1", 
+        "0.50", 
+        "3.122.052.01.00-E01", 
+        "", 
+        "ID-00060", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-03", 
+        "W134239", 
+        "Mold Insert", 
+        "EDM", 
+        "15", 
+        "W3 - CV", 
+        "1", 
+        "2.50", 
+        "", 
+        "", 
+        "ID-00061", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-03", 
+        "W134239", 
+        "Mold Insert", 
+        "QUAL", 
+        "16", 
+        "W2 - FS", 
+        "1", 
+        "0.25", 
+        "", 
+        "", 
+        "ID-00062", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-02", 
+        "W134239", 
+        "Mold Base", 
+        "EDM-SET", 
+        "14", 
+        "W3 - CV", 
+        "1", 
+        "0.50", 
+        "3.122.052.01.00-E02", 
+        "", 
+        "ID-00063", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-02", 
+        "W134239", 
+        "Mold Base", 
+        "EDM", 
+        "15", 
+        "W3 - CV", 
+        "1", 
+        "0.50", 
+        "", 
+        "", 
+        "ID-00064", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-02", 
+        "W134239", 
+        "Mold Base", 
+        "QUAL", 
+        "16", 
+        "W2 - FS", 
+        "1", 
+        "0.25", 
+        "", 
+        "", 
+        "ID-00065", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-09", 
+        "W134239", 
+        "K-Standards", 
+        "MILL-SET", 
+        "17", 
+        "W2 - FS", 
+        "1", 
+        "0.50", 
+        "", 
+        "", 
+        "ID-00066", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-09", 
+        "W134239", 
+        "K-Standards", 
+        "MILL", 
+        "18", 
+        "W2 - FS", 
+        "1", 
+        "1.50", 
+        "", 
+        "", 
+        "ID-00067", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-10", 
+        "W134239", 
+        "K-Standards", 
+        "MILL-SET", 
+        "17", 
+        "W2 - FS", 
+        "1", 
+        "0.50", 
+        "", 
+        "", 
+        "ID-00068", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-10", 
+        "W134239", 
+        "K-Standards", 
+        "MILL", 
+        "18", 
+        "W2 - FS", 
+        "1", 
+        "1.50", 
+        "", 
+        "", 
+        "ID-00069", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-11", 
+        "W134239", 
+        "Z-Standards", 
+        "TURN", 
+        "19", 
+        "W2 - FS", 
+        "3", 
+        "0.50", 
+        "", 
+        "", 
+        "ID-00070", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-12", 
+        "W134239", 
+        "Misc", 
+        "TURN", 
+        "19", 
+        "W2 - FS", 
+        "6", 
+        "0.25", 
+        "", 
+        "", 
+        "ID-00071", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-01", 
+        "W134239", 
+        "Mold Base", 
+        "MAN", 
+        "20", 
+        "W2 - FS", 
+        "1", 
+        "1.00", 
+        "", 
+        "", 
+        "ID-00072", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-02", 
+        "W134239", 
+        "Mold Base", 
+        "MAN", 
+        "20", 
+        "W2 - FS", 
+        "1", 
+        "1.00", 
+        "", 
+        "", 
+        "ID-00073", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-03", 
+        "W134239", 
+        "Mold Insert", 
+        "MAN", 
+        "20", 
+        "W2 - FS", 
+        "1", 
+        "0.50", 
+        "3.122.052.01.00-01", 
+        "", 
+        "ID-00074", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-04", 
+        "W134239", 
+        "Mold Insert", 
+        "MAN", 
+        "20", 
+        "W2 - FS", 
+        "1", 
+        "0.50", 
+        "3.122.052.01.00-02", 
+        "", 
+        "ID-00075", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-05", 
+        "W134239", 
+        "Slider", 
+        "MAN", 
+        "20", 
+        "W2 - FS", 
+        "1", 
+        "0.50", 
+        "3.122.052.01.00-01", 
+        "", 
+        "ID-00076", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-06", 
+        "W134239", 
+        "Slider", 
+        "MAN", 
+        "20", 
+        "W2 - FS", 
+        "1", 
+        "0.50", 
+        "3.122.052.01.00-01", 
+        "", 
+        "ID-00077", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-07", 
+        "W134239", 
+        "Slider", 
+        "MAN", 
+        "20", 
+        "W2 - FS", 
+        "1", 
+        "0.50", 
+        "3.122.052.01.00-01", 
+        "", 
+        "ID-00078", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-08", 
+        "W134239", 
+        "Misc", 
+        "MAN", 
+        "20", 
+        "W2 - FS", 
+        "6", 
+        "0.10", 
+        "", 
+        "", 
+        "ID-00079", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00-13", 
+        "W134239", 
+        "Z-Standards", 
+        "TURN", 
+        "21", 
+        "W3 - CV", 
+        "20", 
+        "0.10", 
+        "", 
+        "", 
+        "ID-00080", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00", 
+        "W134239", 
+        "Mold", 
+        "ASSM", 
+        "22", 
+        "W2 - FS", 
+        "1", 
+        "2.00", 
+        "all", 
+        "", 
+        "ID-00081", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00", 
+        "W134239", 
+        "Mold", 
+        "INJM-SET", 
+        "23", 
+        "W3 - CV", 
+        "1", 
+        "1.00", 
+        "", 
+        "", 
+        "ID-00082", 
+        ""
+      ], 
+      [
+        "3.122.052.01.00", 
+        "W134239", 
+        "Injection Molding Part", 
+        "INJM", 
+        "24", 
+        "Automatic", 
+        "250", 
+        "0.01", 
+        "", 
+        "", 
+        "ID-00083", 
+        ""
+      ], 
+      [
+        null, 
+        null, 
+        null, 
+        null, 
+        null, 
+        null, 
+        null, 
+        null, 
+        null, 
+        null, 
+        null, 
+        ""
+      ]
+    ]
+  }, 
+  "result": {
+    "result_list": []
+  }
+}
