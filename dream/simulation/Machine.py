@@ -330,9 +330,10 @@ class Machine(CoreObject):
     #===========================================================================
     def shouldYield(self, operationTypes={}, methods={}):
         '''
-            "methods":{'isInterrupted':'0'},
-            "operationTypes"={"Processing":1,                % must
-                               "Setup":0                   % must NOT
+            Method that controls if the machine should yield for releasing the operator
+            "methods":{'isInterrupted':'0'},                                % the method isInterrupted should return False (0) or True (1)
+            "operationTypes"={"Processing":1,                               % processing must be in multiOperationTypeList
+                               "Setup":0                                    % setup must not be in multiOperationTypeList
                              }
         '''
         operationsRequired=[]
@@ -346,6 +347,7 @@ class Machine(CoreObject):
                 else:
                     operationsNotRequired.append(tup)
             required = False
+            # operations that should be in the multOperationTypeList
             if operationsRequired:
                 for opTup in operationsRequired:
                     operation, func = opTup
@@ -353,6 +355,7 @@ class Machine(CoreObject):
             else:
                 required=True
             notRequired = False
+            # operations that should NOT be in the multOperationTypeList
             if operationsNotRequired:
                 for opTup in operationsNotRequired:
                     operation, func = opTup
@@ -369,6 +372,7 @@ class Machine(CoreObject):
                     methodsRequired.append(tup)
                 else:
                     methodsNotRequired.append(tup)
+            # methods that should return TRUE
             required = True
             from Globals import getMethodFromName
             if methodsRequired:
@@ -376,6 +380,7 @@ class Machine(CoreObject):
                     method, func = methodTup
                     objMethod=getMethodFromName('Dream.Machine.'+method)
                     required = required and (objMethod(self))
+            # methods that should return FALSE
             notRequired = True
             if methodsNotRequired:
                 for methodTup in methodsNotRequired:
@@ -496,8 +501,8 @@ class Machine(CoreObject):
                 #===========================================================
                 # # release the operator if there is interruption 
                 #===========================================================
-                if self.shouldYield(operationTypes={str(self.currentlyPerforming):1},methods={'isOperated':1}):
-                    yield self.env.process(self.release())  
+                if self.shouldYield(operationTypes={str(type):1},methods={'isOperated':1}):
+                    yield self.env.process(self.release())
                 # loop until we reach at a state that there is no interruption
                 while 1:
                     self.expectedSignals['interruptionEnd']=1
@@ -505,17 +510,25 @@ class Machine(CoreObject):
                     transmitter, eventTime=self.interruptionEnd.value
                     assert eventTime==self.env.now, 'the interruptionEnd was received later than anticipated'
                     self.interruptionEnd=self.env.event()
+                    
+                    # check if the machine is active and break
                     if self.checkIfActive():
+                        if self.shouldYield(operationTypes={str(type):1}, methods={"isInterrupted":0}):
+                            self.timeWaitForOperatorStarted = self.env.now
+                            yield self.env.process(self.request())
+                            self.timeWaitForOperatorEnded = self.env.now
+                            self.operatorWaitTimeCurrentEntity += self.timeWaitForOperatorEnded-self.timeWaitForOperatorStarted
                         break
                     self.postInterruptionActions()                      # execute interruption actions
                     #===========================================================
                     # # request a resource after the repair
                     #===========================================================
-                    if self.shouldYield(operationTypes={str(self.currentlyPerforming):1}, methods={"isInterrupted":0}):
+                    if self.shouldYield(operationTypes={str(type):1}, methods={"isInterrupted":0}):
                         self.timeWaitForOperatorStarted = self.env.now
                         yield self.env.process(self.request())
                         self.timeWaitForOperatorEnded = self.env.now
                         self.operatorWaitTimeCurrentEntity += self.timeWaitForOperatorEnded-self.timeWaitForOperatorStarted
+
             # if the processing operator left
             elif self.processOperatorUnavailable in receivedEvent:
                 transmitter, eventTime=self.processOperatorUnavailable.value
