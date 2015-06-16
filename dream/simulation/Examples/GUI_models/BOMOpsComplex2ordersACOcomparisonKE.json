@@ -431,6 +431,10 @@
         {
           "_class": "dream.plugins.JobShop.ReadJSShifts.ReadJSShifts", 
           "input_id": ""
+        },
+        {
+          "_class": "dream.plugins.JobShop.ReadJSMachineShifts.ReadJSMachineShifts", 
+          "input_id": ""
         }
       ]
     }, 
