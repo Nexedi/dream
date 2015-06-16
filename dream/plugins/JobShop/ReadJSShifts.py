@@ -98,6 +98,9 @@ class ReadJSShifts(plugin.InputPreparationPlugin, TimeSupportMixin):
               breakStart, breakEnd = timePair
               timeStartList.append(breakEnd)
               timeEndList.insert(0, breakStart)
+        # sort the list before proceeding
+        timeEndList.sort()
+        timeStartList.sort()
         #if it is the current row is an extended row for the information belonging to a resource, and no resource name is entered
         if line[0]:
           entityID = line[0].split("-")[0]
@@ -142,7 +145,7 @@ class ReadJSShifts(plugin.InputPreparationPlugin, TimeSupportMixin):
       #create default pattern for all operators (10 days long)
       timeStartList = []
       timeEndList = []
-      for dayNumber in range(0,10):
+      for dayNumber in range(0,20):
         startTime = "08:00"
         endTime = "18:00"
         upDate = now.date()+datetime.timedelta(days=dayNumber)
@@ -167,43 +170,44 @@ class ReadJSShifts(plugin.InputPreparationPlugin, TimeSupportMixin):
       # ================================================================
       
       for node, node_data in nodes.items():
-        modifiedDefaultDays = [] # the days of the defaultShiftPattern that have been modified according to the exceptionShiftPattern
-        if node in exceptionShiftPattern:
-          for index1, exception in enumerate(exceptionShiftPattern[node]):
-            # XXX think of the case where the exception starts one day and finishes the next
-            # calculate the time difference in hours from the end of the first day to the end of the exception
-            # check if we are still in the first day
-            if hoursToEndFirstDay.total_seconds()/3600 > exception[-1]:
-              exceptionDay = 0
-            # calculate the number of days till the end of the exception
-            else:
-              exceptionDay = math.floor((exception[-1] - hoursToEndFirstDay.total_seconds()/3600)/24) + 1
-            for index2, default in enumerate(defaultShiftPattern[node]):
-              # check if we still are in the first day
-              if hoursToEndFirstDay.total_seconds()/3600 > default[-1]:
-                defaultDay = 0
-              # calculate the number of days till the end of the default shift
+        if node_data.get('_class', None) == 'Dream.Operator':
+          modifiedDefaultDays = [] # the days of the defaultShiftPattern that have been modified according to the exceptionShiftPattern
+          if node in exceptionShiftPattern:
+            for index1, exception in enumerate(exceptionShiftPattern[node]):
+              # XXX think of the case where the exception starts one day and finishes the next
+              # calculate the time difference in hours from the end of the first day to the end of the exception
+              # check if we are still in the first day
+              if hoursToEndFirstDay.total_seconds()/3600 > exception[-1]:
+                exceptionDay = 0
+              # calculate the number of days till the end of the exception
               else:
-                defaultDay = math.floor((default[-1] - hoursToEndFirstDay.total_seconds()/3600)/24) + 1
-              if exceptionDay == defaultDay:
-                # update the defaultShiftPattern of the node (operator or machine)
-                # if the exception day has not been modified then delete the previous entry and use the first exception that occurs
-                if not exceptionDay in modifiedDefaultDays:
-                  defaultShiftPattern[node][index2] = exception
-                # otherwise append it at the end 
+                exceptionDay = math.floor((exception[-1] - hoursToEndFirstDay.total_seconds()/3600)/24) + 1
+              for index2, default in enumerate(defaultShiftPattern[node]):
+                # check if we still are in the first day
+                if hoursToEndFirstDay.total_seconds()/3600 > default[-1]:
+                  defaultDay = 0
+                # calculate the number of days till the end of the default shift
                 else:
-                  defaultShiftPattern[node].append(exception)
-                modifiedDefaultDays.append(exceptionDay) # the day has been modified, add to the modified days
-                break
-        # update the interruptions of the nodes that have a defaultShiftPattern
-        if node in defaultShiftPattern:
-          # sort the shift pattern of every node
-          defaultShiftPattern[node].sort(key=itemgetter(0))
-          # get the interruptions of the object
-          interruptions = node_data.get("interruptions", {})
-          if not interruptions:
-            node_data["interruptions"] = {}
-          node_data["interruptions"]["shift"] = {"shiftPattern": defaultShiftPattern.pop(node),
-                                                 "endUnfinished": 0}
+                  defaultDay = math.floor((default[-1] - hoursToEndFirstDay.total_seconds()/3600)/24) + 1
+                if exceptionDay == defaultDay:
+                  # update the defaultShiftPattern of the node (operator or machine)
+                  # if the exception day has not been modified then delete the previous entry and use the first exception that occurs
+                  if not exceptionDay in modifiedDefaultDays:
+                    defaultShiftPattern[node][index2] = exception
+                  # otherwise append it at the end 
+                  else:
+                    defaultShiftPattern[node].append(exception)
+                  modifiedDefaultDays.append(exceptionDay) # the day has been modified, add to the modified days
+                  break
+          # update the interruptions of the nodes that have a defaultShiftPattern
+          if node in defaultShiftPattern:
+            # sort the shift pattern of every node
+            defaultShiftPattern[node].sort(key=itemgetter(0))
+            # get the interruptions of the object
+            interruptions = node_data.get("interruptions", {})
+            if not interruptions:
+              node_data["interruptions"] = {}
+            node_data["interruptions"]["shift"] = {"shiftPattern": defaultShiftPattern.pop(node),
+                                                   "endUnfinished": 0}
 	
     return data
