@@ -1041,10 +1041,10 @@
   "constraints": {}, 
   "general": {
     "confidenceLevel": 0.95, 
-    "currentDate": "2015/02/23 14:00", 
+    "currentDate": "2015/02/23 11:00", 
     "maxSimTime": -1, 
-    "numberOfAntsPerGenerations": 2, 
-    "numberOfGenerations": 2, 
+    "numberOfAntsPerGenerations": 1, 
+    "numberOfGenerations": 1, 
     "numberOfReplications": 1, 
     "numberOfSolutions": 2, 
     "processTimeout": 10, 
@@ -1542,7 +1542,7 @@
         "2015/02/23", 
         "09:00", 
         "17:00", 
-        "12:00-14:00"
+        "12:00-14:00; 15:00-15:30"
       ], 
       [
         null, 
@@ -1552,235 +1552,18 @@
         ""
       ], 
       [
-        "", 
-        "2015/02/25", 
-        "", 
-        "", 
-        ""
-      ], 
-      [
-        "", 
-        "2015/02/26", 
-        null, 
-        null, 
-        null
-      ], 
-      [
-        "", 
-        "2015/02/27", 
-        null, 
-        null, 
-        null
-      ], 
-      [
-        "W2-FS", 
-        "2015/02/23", 
-        null, 
-        null, 
-        null
-      ], 
-      [
-        "", 
+        "MILL2", 
         "2015/02/24", 
-        null, 
-        null, 
-        null
-      ], 
-      [
         "", 
-        "2015/02/25", 
-        null, 
-        null, 
-        null
-      ], 
-      [
         "", 
-        "2015/02/26", 
-        null, 
-        null, 
-        null
-      ], 
-      [
-        "", 
-        "2015/02/27", 
-        null, 
-        null, 
-        null
-      ], 
-      [
-        "W3-CV", 
-        "2015/02/23", 
-        null, 
-        null, 
-        null
-      ], 
-      [
-        "", 
-        "2015/02/24", 
-        null, 
-        null, 
-        null
-      ], 
-      [
-        "", 
-        "2015/02/25", 
-        null, 
-        null, 
-        null
-      ], 
-      [
-        "", 
-        "2015/02/26", 
-        null, 
-        null, 
-        null
-      ], 
-      [
-        "", 
-        "2015/02/27", 
-        null, 
-        null, 
-        null
-      ], 
-      [
-        "W4-TD", 
-        "2015/02/23", 
-        null, 
-        null, 
-        null
-      ], 
-      [
-        "", 
-        "2015/02/24", 
-        null, 
-        null, 
-        null
-      ], 
-      [
-        "", 
-        "2015/02/25", 
-        null, 
-        null, 
-        null
-      ], 
-      [
-        "", 
-        "2015/02/26", 
-        null, 
-        null, 
-        null
-      ], 
-      [
-        "", 
-        "2015/02/27", 
-        null, 
-        null, 
-        null
-      ], 
-      [
-        "W5-MG", 
-        "2015/02/23", 
-        null, 
-        null, 
-        null
-      ], 
-      [
-        "", 
-        "2015/02/24", 
-        null, 
-        null, 
-        null
-      ], 
-      [
-        "", 
-        "2015/02/25", 
-        null, 
-        null, 
-        null
-      ], 
-      [
-        "", 
-        "2015/02/26", 
-        null, 
-        null, 
-        null
-      ], 
-      [
-        "", 
-        "2015/02/27", 
-        null, 
-        null, 
-        null
-      ], 
-      [
-        "W6-AA", 
-        "2015/02/23", 
-        null, 
-        null, 
-        null
-      ], 
-      [
-        "", 
-        "2015/02/24", 
-        null, 
-        null, 
-        null
-      ], 
-      [
-        "", 
-        "2015/02/25", 
-        null, 
-        null, 
-        null
-      ], 
-      [
-        "", 
-        "2015/02/26", 
-        null, 
-        null, 
-        null
-      ], 
-      [
-        "", 
-        "2015/02/27", 
-        null, 
-        null, 
-        null
-      ], 
-      [
-        "W7-WK", 
-        "2015/02/23", 
-        null, 
-        null, 
-        null
-      ], 
-      [
-        null, 
-        "2015/02/24", 
-        null, 
-        null, 
-        null
+        "09:00-22:00"
       ], 
       [
         null, 
         "2015/02/25", 
         null, 
         null, 
-        null
-      ], 
-      [
-        null, 
-        "2015/02/26", 
-        null, 
-        null, 
-        null
-      ], 
-      [
-        null, 
-        "2015/02/27", 
-        null, 
-        null, 
-        null
+        "01:00-12:00; 18:00-23:00"
       ], 
       [
         null, 

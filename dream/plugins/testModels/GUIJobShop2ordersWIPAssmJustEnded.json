@@ -414,7 +414,7 @@
           "input_id": ""
         }, 
         {
-        "_class": "dream.plugins.JobShop.UpdateStationList.UpdateStationList", 
+          "_class": "dream.plugins.JobShop.UpdateStationList.UpdateStationList", 
           "input_id": ""
         }, 
         {
@@ -432,7 +432,7 @@
         {
           "_class": "dream.plugins.JobShop.ReadJSShifts.ReadJSShifts", 
           "input_id": ""
-        },
+        }, 
         {
           "_class": "dream.plugins.JobShop.ReadJSMachineShifts.ReadJSMachineShifts", 
           "input_id": ""
@@ -1043,10 +1043,10 @@
     "confidenceLevel": 0.95, 
     "currentDate": "2015/02/23 14:00", 
     "maxSimTime": -1, 
-    "numberOfAntsPerGenerations": "1", 
-    "numberOfGenerations": "1", 
-    "numberOfReplications": "1", 
-    "numberOfSolutions": "1", 
+    "numberOfAntsPerGenerations": 1, 
+    "numberOfGenerations": 1, 
+    "numberOfReplications": 1, 
+    "numberOfSolutions": 1, 
     "processTimeout": 10, 
     "seed": "", 
     "timeUnit": "hour", 

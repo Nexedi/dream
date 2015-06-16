@@ -1,0 +1,3331 @@
+{
+ "_class": "Dream.Simulation", 
+ "component_gantt": {
+  "task_list": [
+   {
+    "id": "W134188", 
+    "open": false, 
+    "text": "Gelenkstangen 50/0\u00b0/180\u00b0", 
+    "type": "project"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 3.0, 
+    "entranceTime": 48.4, 
+    "id": "PE001068AASSM12", 
+    "open": false, 
+    "parent": "PE001068A", 
+    "start_date": "25-02-2015 14:24", 
+    "stop_date": "25-02-2015 17:24", 
+    "text": "ID-00018; ASSM1"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 15.000000000000007, 
+    "entranceTime": 51.4, 
+    "id": "PE001068AINJM24", 
+    "open": false, 
+    "parent": "PE001068A", 
+    "start_date": "25-02-2015 17:24", 
+    "stop_date": "26-02-2015 08:24", 
+    "text": "ID-00020; INJM2"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 24.0, 
+    "entranceTime": 66.4, 
+    "id": "PE001068AINJM25", 
+    "open": false, 
+    "parent": "PE001068A", 
+    "start_date": "26-02-2015 08:24", 
+    "stop_date": "27-02-2015 08:24", 
+    "text": "ID-00020; INJM2"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1.5, 
+    "entranceTime": 23.0, 
+    "id": "PE001068A-01CAM24", 
+    "open": false, 
+    "parent": "PE001068A-01", 
+    "start_date": "24-02-2015 13:00", 
+    "stop_date": "24-02-2015 14:30", 
+    "text": "ID-00003; CAM2"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1.0, 
+    "entranceTime": 24.5, 
+    "id": "PE001068A-01MILL26", 
+    "open": false, 
+    "parent": "PE001068A-01", 
+    "start_date": "24-02-2015 14:30", 
+    "stop_date": "24-02-2015 15:30", 
+    "text": "ID-00007; MILL2"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 4.0, 
+    "entranceTime": 25.5, 
+    "id": "PE001068A-01MILL27", 
+    "open": false, 
+    "parent": "PE001068A-01", 
+    "start_date": "24-02-2015 15:30", 
+    "stop_date": "24-02-2015 19:30", 
+    "text": "ID-00007; MILL2"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1.5, 
+    "entranceTime": 42.0, 
+    "id": "PE001068A-01WORK19", 
+    "open": false, 
+    "parent": "PE001068A-01", 
+    "start_date": "25-02-2015 08:00", 
+    "stop_date": "25-02-2015 09:30", 
+    "text": "ID-00012; WORK1"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 0.25, 
+    "entranceTime": 43.5, 
+    "id": "PE001068A-01WORK311", 
+    "open": false, 
+    "parent": "PE001068A-01", 
+    "start_date": "25-02-2015 09:30", 
+    "stop_date": "25-02-2015 09:45", 
+    "text": "ID-00015; WORK3"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 0.0, 
+    "entranceTime": 48.4, 
+    "id": "PE001068A-01ASSM113", 
+    "open": false, 
+    "parent": "PE001068A-01", 
+    "start_date": "25-02-2015 14:24", 
+    "stop_date": "25-02-2015 14:24", 
+    "text": "ID-00018; ASSM1"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1.5, 
+    "entranceTime": 23.0, 
+    "id": "PE001068A-02CAM14", 
+    "open": false, 
+    "parent": "PE001068A-02", 
+    "start_date": "24-02-2015 13:00", 
+    "stop_date": "24-02-2015 14:30", 
+    "text": "ID-00004; CAM1"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1.0, 
+    "entranceTime": 24.5, 
+    "id": "PE001068A-02MILL16", 
+    "open": false, 
+    "parent": "PE001068A-02", 
+    "start_date": "24-02-2015 14:30", 
+    "stop_date": "24-02-2015 15:30", 
+    "text": "ID-00009; MILL1"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 4.0, 
+    "entranceTime": 25.5, 
+    "id": "PE001068A-02MILL17", 
+    "open": false, 
+    "parent": "PE001068A-02", 
+    "start_date": "24-02-2015 15:30", 
+    "stop_date": "24-02-2015 19:30", 
+    "text": "ID-00009; MILL1"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1.5, 
+    "entranceTime": 42.0, 
+    "id": "PE001068A-02WORK29", 
+    "open": false, 
+    "parent": "PE001068A-02", 
+    "start_date": "25-02-2015 08:00", 
+    "stop_date": "25-02-2015 09:30", 
+    "text": "ID-00013; WORK2"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 0.25, 
+    "entranceTime": 43.5, 
+    "id": "PE001068A-02WORK411", 
+    "open": false, 
+    "parent": "PE001068A-02", 
+    "start_date": "25-02-2015 09:30", 
+    "stop_date": "25-02-2015 09:45", 
+    "text": "ID-00016; WORK4"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 0.0, 
+    "entranceTime": 48.4, 
+    "id": "PE001068A-02ASSM113", 
+    "open": false, 
+    "parent": "PE001068A-02", 
+    "start_date": "25-02-2015 14:24", 
+    "stop_date": "25-02-2015 14:24", 
+    "text": "ID-00018; ASSM1"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1.0, 
+    "entranceTime": 24.5, 
+    "id": "PE001068A-03CAM24", 
+    "open": false, 
+    "parent": "PE001068A-03", 
+    "start_date": "24-02-2015 14:30", 
+    "stop_date": "24-02-2015 15:30", 
+    "text": "ID-00005; CAM2"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1.0, 
+    "entranceTime": 42.0, 
+    "id": "PE001068A-03MILL26", 
+    "open": false, 
+    "parent": "PE001068A-03", 
+    "start_date": "25-02-2015 08:00", 
+    "stop_date": "25-02-2015 09:00", 
+    "text": "ID-00011; MILL2"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 4.0, 
+    "entranceTime": 43.0, 
+    "id": "PE001068A-03MILL27", 
+    "open": false, 
+    "parent": "PE001068A-03", 
+    "start_date": "25-02-2015 09:00", 
+    "stop_date": "25-02-2015 13:00", 
+    "text": "ID-00011; MILL2"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1.0, 
+    "entranceTime": 47.0, 
+    "id": "PE001068A-03WORK19", 
+    "open": false, 
+    "parent": "PE001068A-03", 
+    "start_date": "25-02-2015 13:00", 
+    "stop_date": "25-02-2015 14:00", 
+    "text": "ID-00014; WORK1"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 0.3999999999999986, 
+    "entranceTime": 48.0, 
+    "id": "PE001068A-03WORK211", 
+    "open": false, 
+    "parent": "PE001068A-03", 
+    "start_date": "25-02-2015 14:00", 
+    "stop_date": "25-02-2015 14:24", 
+    "text": "ID-00017; WORK2"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 0.0, 
+    "entranceTime": 48.4, 
+    "id": "PE001068A-03ASSM113", 
+    "open": false, 
+    "parent": "PE001068A-03", 
+    "start_date": "25-02-2015 14:24", 
+    "stop_date": "25-02-2015 14:24", 
+    "text": "ID-00018; ASSM1"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 18.0, 
+    "entranceTime": 1.0, 
+    "id": "PE001068A_DCAD13", 
+    "open": false, 
+    "parent": "PE001068A_D", 
+    "start_date": "23-02-2015 15:00", 
+    "stop_date": "24-02-2015 09:00", 
+    "text": "ID-00001; CAD1"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 4.0, 
+    "entranceTime": 19.0, 
+    "id": "PE001068A_DCAD25", 
+    "open": false, 
+    "parent": "PE001068A_D", 
+    "start_date": "24-02-2015 09:00", 
+    "stop_date": "24-02-2015 13:00", 
+    "text": "ID-00002; CAD2"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "id": "PE001068A", 
+    "open": false, 
+    "parent": "W134188", 
+    "text": "PE001068A", 
+    "type": "project"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "id": "PE001068A-01", 
+    "open": false, 
+    "parent": "W134188", 
+    "text": "PE001068A-01", 
+    "type": "project"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "id": "PE001068A-02", 
+    "open": false, 
+    "parent": "W134188", 
+    "text": "PE001068A-02", 
+    "type": "project"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "id": "PE001068A-03", 
+    "open": false, 
+    "parent": "W134188", 
+    "text": "PE001068A-03", 
+    "type": "project"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "id": "PE001068A_D", 
+    "open": false, 
+    "parent": "W134188", 
+    "text": "PE001068A_D", 
+    "type": "project"
+   }
+  ], 
+  "time_unit": "hour"
+ }, 
+ "component_schedule": [
+  [
+   "Job ID", 
+   "Order", 
+   "Due Date", 
+   "Task ID", 
+   "Station ID", 
+   "Entrance Time", 
+   "Processing Time", 
+   "Operator"
+  ], 
+  [
+   "PE001068A_D", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00001", 
+   "QCAD", 
+   "2015/02/23 14:00", 
+   1.0, 
+   ""
+  ], 
+  [
+   "PE001068A_D", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00001", 
+   "CAD1", 
+   "2015/02/23 15:00", 
+   18.0, 
+   "W1"
+  ], 
+  [
+   "PE001068A_D", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00002", 
+   "QCAD", 
+   "2015/02/24 09:00", 
+   0.0, 
+   ""
+  ], 
+  [
+   "PE001068A_D", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00002", 
+   "CAD2", 
+   "2015/02/24 09:00", 
+   4.0, 
+   "W2"
+  ], 
+  [
+   "PE001068A-01", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00003", 
+   "QCAM", 
+   "2015/02/24 13:00", 
+   0.0, 
+   ""
+  ], 
+  [
+   "PE001068A-01", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00003", 
+   "CAM2", 
+   "2015/02/24 13:00", 
+   1.5, 
+   "W3"
+  ], 
+  [
+   "PE001068A-01", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00007", 
+   "QMILL", 
+   "2015/02/24 14:30", 
+   0.0, 
+   ""
+  ], 
+  [
+   "PE001068A-01", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00007", 
+   "MILL2", 
+   "2015/02/24 14:30", 
+   1.0, 
+   "W3"
+  ], 
+  [
+   "PE001068A-01", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00007", 
+   "MILL2", 
+   "2015/02/24 15:30", 
+   4.0, 
+   "W3"
+  ], 
+  [
+   "PE001068A-01", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00012", 
+   "QWORK", 
+   "2015/02/24 19:30", 
+   12.5, 
+   ""
+  ], 
+  [
+   "PE001068A-01", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00012", 
+   "WORK1", 
+   "2015/02/25 08:00", 
+   1.5, 
+   "W4"
+  ], 
+  [
+   "PE001068A-01", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00015", 
+   "QWORK", 
+   "2015/02/25 09:30", 
+   0.0, 
+   ""
+  ], 
+  [
+   "PE001068A-01", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00015", 
+   "WORK3", 
+   "2015/02/25 09:30", 
+   0.25, 
+   "W2"
+  ], 
+  [
+   "PE001068A-01", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00018", 
+   "ASSMB1", 
+   "2015/02/25 09:45", 
+   4.65, 
+   ""
+  ], 
+  [
+   "PE001068A-01", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00018", 
+   "ASSM1", 
+   "2015/02/25 14:24", 
+   0.0, 
+   "W2"
+  ], 
+  [
+   "PE001068A-02", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00004", 
+   "QCAM", 
+   "2015/02/24 13:00", 
+   0.0, 
+   ""
+  ], 
+  [
+   "PE001068A-02", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00004", 
+   "CAM1", 
+   "2015/02/24 13:00", 
+   1.5, 
+   "W1"
+  ], 
+  [
+   "PE001068A-02", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00009", 
+   "QMILL", 
+   "2015/02/24 14:30", 
+   0.0, 
+   ""
+  ], 
+  [
+   "PE001068A-02", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00009", 
+   "MILL1", 
+   "2015/02/24 14:30", 
+   1.0, 
+   "W1"
+  ], 
+  [
+   "PE001068A-02", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00009", 
+   "MILL1", 
+   "2015/02/24 15:30", 
+   4.0, 
+   "W1"
+  ], 
+  [
+   "PE001068A-02", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00013", 
+   "QWORK", 
+   "2015/02/24 19:30", 
+   12.5, 
+   ""
+  ], 
+  [
+   "PE001068A-02", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00013", 
+   "WORK2", 
+   "2015/02/25 08:00", 
+   1.5, 
+   "W5"
+  ], 
+  [
+   "PE001068A-02", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00016", 
+   "QWORK", 
+   "2015/02/25 09:30", 
+   0.0, 
+   ""
+  ], 
+  [
+   "PE001068A-02", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00016", 
+   "WORK4", 
+   "2015/02/25 09:30", 
+   0.25, 
+   "W1"
+  ], 
+  [
+   "PE001068A-02", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00018", 
+   "ASSMB1", 
+   "2015/02/25 09:45", 
+   4.65, 
+   ""
+  ], 
+  [
+   "PE001068A-02", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00018", 
+   "ASSM1", 
+   "2015/02/25 14:24", 
+   0.0, 
+   "W2"
+  ], 
+  [
+   "PE001068A-03", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00005", 
+   "QCAM", 
+   "2015/02/24 13:00", 
+   1.5, 
+   ""
+  ], 
+  [
+   "PE001068A-03", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00005", 
+   "CAM2", 
+   "2015/02/24 14:30", 
+   1.0, 
+   "W2"
+  ], 
+  [
+   "PE001068A-03", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00011", 
+   "QMILL", 
+   "2015/02/24 15:30", 
+   16.5, 
+   ""
+  ], 
+  [
+   "PE001068A-03", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00011", 
+   "MILL2", 
+   "2015/02/25 08:00", 
+   1.0, 
+   "W3"
+  ], 
+  [
+   "PE001068A-03", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00011", 
+   "MILL2", 
+   "2015/02/25 09:00", 
+   4.0, 
+   "W3"
+  ], 
+  [
+   "PE001068A-03", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00014", 
+   "QWORK", 
+   "2015/02/25 13:00", 
+   0.0, 
+   ""
+  ], 
+  [
+   "PE001068A-03", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00014", 
+   "WORK1", 
+   "2015/02/25 13:00", 
+   1.0, 
+   "W3"
+  ], 
+  [
+   "PE001068A-03", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00017", 
+   "QWORK", 
+   "2015/02/25 14:00", 
+   0.0, 
+   ""
+  ], 
+  [
+   "PE001068A-03", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00017", 
+   "WORK2", 
+   "2015/02/25 14:00", 
+   0.4, 
+   "W4"
+  ], 
+  [
+   "PE001068A-03", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00018", 
+   "ASSMB1", 
+   "2015/02/25 14:24", 
+   0.0, 
+   ""
+  ], 
+  [
+   "PE001068A-03", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00018", 
+   "ASSM1", 
+   "2015/02/25 14:24", 
+   0.0, 
+   "W2"
+  ], 
+  [
+   "PE001068A", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00018", 
+   "ASSM1", 
+   "2015/02/25 14:24", 
+   3.0, 
+   "W2"
+  ], 
+  [
+   "PE001068A", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00020", 
+   "QIM", 
+   "2015/02/25 17:24", 
+   0.0, 
+   ""
+  ], 
+  [
+   "PE001068A", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00020", 
+   "INJM2", 
+   "2015/02/25 17:24", 
+   15.0, 
+   "W3"
+  ], 
+  [
+   "PE001068A", 
+   "Gelenkstangen 50/0\u00b0/180\u00b0", 
+   "2015/03/15 00:00", 
+   "ID-00020", 
+   "INJM2", 
+   "2015/02/26 08:24", 
+   24.0, 
+   "W3"
+  ]
+ ], 
+ "elementList": [
+  {
+   "_class": "Dream.MouldAssembly", 
+   "family": "Server", 
+   "id": "ASSM1", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     96.68141592920354
+    ], 
+    "working_ratio": [
+     3.31858407079646
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.MouldAssembly", 
+   "family": "Server", 
+   "id": "ASSM2", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     100.0
+    ], 
+    "working_ratio": [
+     0.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.MouldAssembly", 
+   "family": "Server", 
+   "id": "ASSM3", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     100.0
+    ], 
+    "working_ratio": [
+     0.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.MouldAssembly", 
+   "family": "Server", 
+   "id": "ASSM4", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     100.0
+    ], 
+    "working_ratio": [
+     0.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.MouldAssemblyBuffer", 
+   "family": "Buffer", 
+   "id": "ASSMB1", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.MachineJobShop", 
+   "family": "Server", 
+   "id": "CAD1", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     97.78761061946902
+    ], 
+    "working_ratio": [
+     2.2123893805309733
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.MachineJobShop", 
+   "family": "Server", 
+   "id": "CAD2", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     95.57522123893804
+    ], 
+    "working_ratio": [
+     4.424778761061947
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.MachineJobShop", 
+   "family": "Server", 
+   "id": "CAM1", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     98.34070796460176
+    ], 
+    "working_ratio": [
+     1.65929203539823
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.MachineJobShop", 
+   "family": "Server", 
+   "id": "CAM2", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     97.23451327433628
+    ], 
+    "working_ratio": [
+     2.765486725663717
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.ExitJobShop", 
+   "family": "Exit", 
+   "id": "E1", 
+   "results": {
+    "lifespan": [
+     90.4
+    ], 
+    "takt_time": [
+     90.4
+    ], 
+    "throughput": [
+     1
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.MachineJobShop", 
+   "family": "Server", 
+   "id": "EDM1", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     100.0
+    ], 
+    "working_ratio": [
+     0.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.MachineJobShop", 
+   "family": "Server", 
+   "id": "INJM1", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     100.0
+    ], 
+    "working_ratio": [
+     0.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.MachineJobShop", 
+   "family": "Server", 
+   "id": "INJM2", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     1.1061946902654944
+    ], 
+    "waiting_ratio": [
+     87.83185840707965
+    ], 
+    "working_ratio": [
+     11.061946902654867
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.MachineJobShop", 
+   "family": "Server", 
+   "id": "MILL1", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     1.1061946902654867
+    ], 
+    "waiting_ratio": [
+     94.46902654867256
+    ], 
+    "working_ratio": [
+     4.424778761061947
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.MachineJobShop", 
+   "family": "Server", 
+   "id": "MILL2", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     2.2123893805309733
+    ], 
+    "waiting_ratio": [
+     88.93805309734513
+    ], 
+    "working_ratio": [
+     8.849557522123893
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Mould", 
+   "family": "Job", 
+   "id": "PE001068A", 
+   "results": {
+    "completionTime": 90.4, 
+    "delay": -375.6, 
+    "schedule": [
+     {
+      "entranceTime": 48.4, 
+      "exitTime": 51.4, 
+      "stationId": "ASSM1", 
+      "task_id": "ID-00018"
+     }, 
+     {
+      "entranceTime": 51.4, 
+      "exitTime": 51.4, 
+      "stationId": "QIM", 
+      "task_id": "ID-00020"
+     }, 
+     {
+      "entranceTime": 51.4, 
+      "exitTime": 66.4, 
+      "stationId": "INJM2", 
+      "task_id": "ID-00020"
+     }, 
+     {
+      "entranceTime": 66.4, 
+      "exitTime": 90.4, 
+      "stationId": "INJM2", 
+      "task_id": "ID-00020"
+     }, 
+     {
+      "entranceTime": 90.4, 
+      "stationId": "E1"
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.OrderComponent", 
+   "family": "Job", 
+   "id": "PE001068A-01", 
+   "results": {
+    "completionTime": 48.4, 
+    "delay": -417.6, 
+    "schedule": [
+     {
+      "entranceTime": 23.0, 
+      "exitTime": 23.0, 
+      "stationId": "OD1"
+     }, 
+     {
+      "entranceTime": 23.0, 
+      "exitTime": 23.0, 
+      "stationId": "QCAM", 
+      "task_id": "ID-00003"
+     }, 
+     {
+      "entranceTime": 23.0, 
+      "exitTime": 24.5, 
+      "stationId": "CAM2", 
+      "task_id": "ID-00003"
+     }, 
+     {
+      "entranceTime": 24.5, 
+      "exitTime": 24.5, 
+      "stationId": "QMILL", 
+      "task_id": "ID-00007"
+     }, 
+     {
+      "entranceTime": 24.5, 
+      "exitTime": 25.5, 
+      "stationId": "MILL2", 
+      "task_id": "ID-00007"
+     }, 
+     {
+      "entranceTime": 25.5, 
+      "exitTime": 29.5, 
+      "stationId": "MILL2", 
+      "task_id": "ID-00007"
+     }, 
+     {
+      "entranceTime": 29.5, 
+      "exitTime": 42.0, 
+      "stationId": "QWORK", 
+      "task_id": "ID-00012"
+     }, 
+     {
+      "entranceTime": 42.0, 
+      "exitTime": 43.5, 
+      "stationId": "WORK1", 
+      "task_id": "ID-00012"
+     }, 
+     {
+      "entranceTime": 43.5, 
+      "exitTime": 43.5, 
+      "stationId": "QWORK", 
+      "task_id": "ID-00015"
+     }, 
+     {
+      "entranceTime": 43.5, 
+      "exitTime": 43.75, 
+      "stationId": "WORK3", 
+      "task_id": "ID-00015"
+     }, 
+     {
+      "entranceTime": 43.75, 
+      "exitTime": 48.4, 
+      "stationId": "ASSMB1", 
+      "task_id": "ID-00018"
+     }, 
+     {
+      "entranceTime": 48.4, 
+      "exitTime": 48.4, 
+      "stationId": "ASSM1", 
+      "task_id": "ID-00018"
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.OrderComponent", 
+   "family": "Job", 
+   "id": "PE001068A-02", 
+   "results": {
+    "completionTime": 48.4, 
+    "delay": -417.6, 
+    "schedule": [
+     {
+      "entranceTime": 23.0, 
+      "exitTime": 23.0, 
+      "stationId": "OD1"
+     }, 
+     {
+      "entranceTime": 23.0, 
+      "exitTime": 23.0, 
+      "stationId": "QCAM", 
+      "task_id": "ID-00004"
+     }, 
+     {
+      "entranceTime": 23.0, 
+      "exitTime": 24.5, 
+      "stationId": "CAM1", 
+      "task_id": "ID-00004"
+     }, 
+     {
+      "entranceTime": 24.5, 
+      "exitTime": 24.5, 
+      "stationId": "QMILL", 
+      "task_id": "ID-00009"
+     }, 
+     {
+      "entranceTime": 24.5, 
+      "exitTime": 25.5, 
+      "stationId": "MILL1", 
+      "task_id": "ID-00009"
+     }, 
+     {
+      "entranceTime": 25.5, 
+      "exitTime": 29.5, 
+      "stationId": "MILL1", 
+      "task_id": "ID-00009"
+     }, 
+     {
+      "entranceTime": 29.5, 
+      "exitTime": 42.0, 
+      "stationId": "QWORK", 
+      "task_id": "ID-00013"
+     }, 
+     {
+      "entranceTime": 42.0, 
+      "exitTime": 43.5, 
+      "stationId": "WORK2", 
+      "task_id": "ID-00013"
+     }, 
+     {
+      "entranceTime": 43.5, 
+      "exitTime": 43.5, 
+      "stationId": "QWORK", 
+      "task_id": "ID-00016"
+     }, 
+     {
+      "entranceTime": 43.5, 
+      "exitTime": 43.75, 
+      "stationId": "WORK4", 
+      "task_id": "ID-00016"
+     }, 
+     {
+      "entranceTime": 43.75, 
+      "exitTime": 48.4, 
+      "stationId": "ASSMB1", 
+      "task_id": "ID-00018"
+     }, 
+     {
+      "entranceTime": 48.4, 
+      "exitTime": 48.4, 
+      "stationId": "ASSM1", 
+      "task_id": "ID-00018"
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.OrderComponent", 
+   "family": "Job", 
+   "id": "PE001068A-03", 
+   "results": {
+    "completionTime": 48.4, 
+    "delay": -417.6, 
+    "schedule": [
+     {
+      "entranceTime": 23.0, 
+      "exitTime": 23.0, 
+      "stationId": "OD1"
+     }, 
+     {
+      "entranceTime": 23.0, 
+      "exitTime": 24.5, 
+      "stationId": "QCAM", 
+      "task_id": "ID-00005"
+     }, 
+     {
+      "entranceTime": 24.5, 
+      "exitTime": 25.5, 
+      "stationId": "CAM2", 
+      "task_id": "ID-00005"
+     }, 
+     {
+      "entranceTime": 25.5, 
+      "exitTime": 42.0, 
+      "stationId": "QMILL", 
+      "task_id": "ID-00011"
+     }, 
+     {
+      "entranceTime": 42.0, 
+      "exitTime": 43.0, 
+      "stationId": "MILL2", 
+      "task_id": "ID-00011"
+     }, 
+     {
+      "entranceTime": 43.0, 
+      "exitTime": 47.0, 
+      "stationId": "MILL2", 
+      "task_id": "ID-00011"
+     }, 
+     {
+      "entranceTime": 47.0, 
+      "exitTime": 47.0, 
+      "stationId": "QWORK", 
+      "task_id": "ID-00014"
+     }, 
+     {
+      "entranceTime": 47.0, 
+      "exitTime": 48.0, 
+      "stationId": "WORK1", 
+      "task_id": "ID-00014"
+     }, 
+     {
+      "entranceTime": 48.0, 
+      "exitTime": 48.0, 
+      "stationId": "QWORK", 
+      "task_id": "ID-00017"
+     }, 
+     {
+      "entranceTime": 48.0, 
+      "exitTime": 48.4, 
+      "stationId": "WORK2", 
+      "task_id": "ID-00017"
+     }, 
+     {
+      "entranceTime": 48.4, 
+      "exitTime": 48.4, 
+      "stationId": "ASSMB1", 
+      "task_id": "ID-00018"
+     }, 
+     {
+      "entranceTime": 48.4, 
+      "exitTime": 48.4, 
+      "stationId": "ASSM1", 
+      "task_id": "ID-00018"
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.OrderDesign", 
+   "family": "Job", 
+   "id": "PE001068A_D", 
+   "results": {
+    "completionTime": 23.0, 
+    "schedule": [
+     {
+      "entranceTime": 0, 
+      "exitTime": 1.0, 
+      "stationId": "QCAD", 
+      "task_id": "ID-00001"
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "exitTime": 19.0, 
+      "stationId": "CAD1", 
+      "task_id": "ID-00001"
+     }, 
+     {
+      "entranceTime": 19.0, 
+      "exitTime": 19.0, 
+      "stationId": "QCAD", 
+      "task_id": "ID-00002"
+     }, 
+     {
+      "entranceTime": 19.0, 
+      "exitTime": 23.0, 
+      "stationId": "CAD2", 
+      "task_id": "ID-00002"
+     }, 
+     {
+      "entranceTime": 23.0, 
+      "stationId": "OD1"
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.ConditionalBuffer", 
+   "family": "Buffer", 
+   "id": "QCAD", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.ConditionalBuffer", 
+   "family": "Buffer", 
+   "id": "QCAM", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.ConditionalBuffer", 
+   "family": "Buffer", 
+   "id": "QEDM", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.ConditionalBuffer", 
+   "family": "Buffer", 
+   "id": "QIM", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.ConditionalBuffer", 
+   "family": "Buffer", 
+   "id": "QMILL", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.ConditionalBuffer", 
+   "family": "Buffer", 
+   "id": "QTURN", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.ConditionalBuffer", 
+   "family": "Buffer", 
+   "id": "QWORK", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.MachineJobShop", 
+   "family": "Server", 
+   "id": "TURN1", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     100.0
+    ], 
+    "working_ratio": [
+     0.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Simulation", 
+   "id": "TraceFile", 
+   "results": {
+    "trace": "0M8R4KGxGuEAAAAAAAAAAAAAAAAAAAAAPgADAP7/CQAGAAAAAAAAAAAAAAABAAAAMQAAAAAAAAAA\nEAAA/v///wAAAAD+////AAAAADAAAAD/////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n//////////////////////////////////////////////////////////////////////////8J\nCBAAAAYFALsNzAcAAAAABgAAAOEAAgCwBMEAAgAAAOIAAABcAHAATm9uZSAgICAgICAgICAgICAg\nICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg\nICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIEIAAgCwBGEBAgAAAD0BBAABAAIA\nnAACAA4AGQACAAAAEgACAAAAYwACAAAAEwACAAAArwECAAAAvAECAAAAQAACAAAAjQACAAAAPQAS\nAOABWgDPP04qOAAAAAAAAQBYAiIAAgAAAA4AAgABALcBAgAAANoAAgAAADEAFQDIAAAA/3+QAQAA\nAAABAAUAQXJpYWwxABUAyAAAAP9/kAEAAAAAAQAFAEFyaWFsMQAVAMgAAAD/f5ABAAAAAAEABQBB\ncmlhbDEAFQDIAAAA/3+QAQAAAAABAAUAQXJpYWwxABUAyAAAAP9/kAEAAAAAAQAFAEFyaWFsMQAV\nAMgAAAD/f5ABAAAAAAEABQBBcmlhbDEAFQDIAAAA/3+QAQAAAAABAAUAQXJpYWweBAwApAAHAABH\nZW5lcmFs4AAUAAYApAD1/yAAAPQAAAAAAAAAAMAg4AAUAAYApAD1/yAAAPQAAAAAAAAAAMAg4AAU\nAAYApAD1/yAAAPQAAAAAAAAAAMAg4AAUAAYApAD1/yAAAPQAAAAAAAAAAMAg4AAUAAYApAD1/yAA\nAPQAAAAAAAAAAMAg4AAUAAYApAD1/yAAAPQAAAAAAAAAAMAg4AAUAAYApAD1/yAAAPQAAAAAAAAA\nAMAg4AAUAAYApAD1/yAAAPQAAAAAAAAAAMAg4AAUAAYApAD1/yAAAPQAAAAAAAAAAMAg4AAUAAYA\npAD1/yAAAPQAAAAAAAAAAMAg4AAUAAYApAD1/yAAAPQAAAAAAAAAAMAg4AAUAAYApAD1/yAAAPQA\nAAAAAAAAAMAg4AAUAAYApAD1/yAAAPQAAAAAAAAAAMAg4AAUAAYApAD1/yAAAPQAAAAAAAAAAMAg\n4AAUAAYApAD1/yAAAPQAAAAAAAAAAMAg4AAUAAYApAD1/yAAAPQAAAAAAAAAAMAg4AAUAAYApAAB\nACAAAPgAAAAAAAAAAMAg4AAUAAcApAABACAAAPgAAAAAAAAAAMAgkwIEAACAAP9gAQIAAQCFAA8A\nhA8AAAAABwBzaGVldCAxhQAVAJRDAAAAAA0Ac2hlZXQgMiByb3V0ZfwAwwscAwAAqwAAAAEAADAF\nAABXMS1NQgwAAGlzIG9mZiBzaGlmdAMAADEuMAsAAGlzIG9uIHNoaWZ0GAAAc3RhcnRlZCB3b3Jr\nIGluIERlc2lnbiAxEAAAUEUwMDEwNjhBX0Rlc2lnbhMAAHJlbGVhc2VkIENBRCBCdWZmZXIRAABn\nb3QgaW50byBEZXNpZ24gMQMAADIuMBcAAEludGVycnVwdGVkIGF0IERlc2lnbiAxFgAAcmVsZWFz\nZWQgZnJvbSBEZXNpZ24gMQMAADQuMAUAAFc2LUFBBQAAVzctV0sFAABXNS1NRwUAAFc0LVREBQAA\nVzMtQ1YFAABXMi1GUwQAADE4LjAfAABwYXNzaXZhdGVkIGluIERlc2lnbiAxIGZvciAxNi4wBAAA\nMTkuMBsAAGVuZGVkIGEgcHJvY2VzcyBpbiBEZXNpZ24gMRwAAGVuZGVkIHByb2Nlc3NpbmcgaW4g\nRGVzaWduIDERAAByZWxlYXNlZCBEZXNpZ24gMRMAAGdvdCBpbnRvIENBRCBCdWZmZXIYAABzdGFy\ndGVkIHdvcmsgaW4gRGVzaW5nIDIRAABnb3QgaW50byBEZXNpbmcgMgQAADIzLjAbAABlbmRlZCBh\nIHByb2Nlc3MgaW4gRGVzaW5nIDIcAABlbmRlZCBwcm9jZXNzaW5nIGluIERlc2luZyAyFgAAcmVs\nZWFzZWQgZnJvbSBEZXNpbmcgMhEAAHJlbGVhc2VkIERlc2luZyAyFgAAZ290IGludG8gRGVjb21w\nb3NpdGlvbgwAAFBFMDAxMDY4QS0wMRYAAHJlbGVhc2VkIERlY29tcG9zaXRpb24TAABnb3QgaW50\nbyBDQU0gQnVmZmVyDAAAUEUwMDEwNjhBLTAyDAAAUEUwMDEwNjhBLTAzFAAAc3RhcnRlZCB3b3Jr\nIGluIENBTTITAAByZWxlYXNlZCBDQU0gQnVmZmVyDQAAZ290IGludG8gQ0FNMhQAAHN0YXJ0ZWQg\nd29yayBpbiBDQU0xDQAAZ290IGludG8gQ0FNMQQAADI0LjUXAABlbmRlZCBhIHByb2Nlc3MgaW4g\nQ0FNMhgAAGVuZGVkIHByb2Nlc3NpbmcgaW4gQ0FNMhIAAHJlbGVhc2VkIGZyb20gQ0FNMhcAAGVu\nZGVkIGEgcHJvY2VzcyBpbiBDQU0xGAAAZW5kZWQgcHJvY2Vzc2luZyBpbiBDQU0xEgAAcmVsZWFz\nZWQgZnJvbSBDQU0xDQAAcmVsZWFzZWQgQ0FNMhcAAGdvdCBpbnRvIE1pbGxpbmcgQnVmZmVyDQAA\ncmVsZWFzZWQgQ0FNMRkAAHN0YXJ0ZWQgd29yayBpbiBNaWxsaW5nIDIXAAByZWxlYXNlZCBNaWxs\naW5nIEJ1ZmZlchIAAGdvdCBpbnRvIE1pbGxpbmcgMhkAAHN0YXJ0ZWQgd29yayBpbiBNaWxsaW5n\nIDESAABnb3QgaW50byBNaWxsaW5nIDEEAAAyNS41HAAAZW5kZWQgYSBwcm9jZXNzIGluIE1pbGxp\nbmcgMhcAAHJlbGVhc2VkIGZyb20gTWlsbGluZyAyHAAAZW5kZWQgYSBwcm9jZXNzIGluIE1pbGxp\nbmcgMRcAAHJlbGVhc2VkIGZyb20gTWlsbGluZyAxBAAAMjguMAQAADI5LjUdAABlbmRlZCBwcm9j\nZXNzaW5nIGluIE1pbGxpbmcgMh0AAGVuZGVkIHByb2Nlc3NpbmcgaW4gTWlsbGluZyAxEgAAcmVs\nZWFzZWQgTWlsbGluZyAyGQAAZ290IGludG8gV29ya2JlbmNoIEJ1ZmZlchIAAHJlbGVhc2VkIE1p\nbGxpbmcgMQQAADQyLjAbAABzdGFydGVkIHdvcmsgaW4gV29ya2JlbmNoIDEZAAByZWxlYXNlZCBX\nb3JrYmVuY2ggQnVmZmVyFAAAZ290IGludG8gV29ya2JlbmNoIDEbAABzdGFydGVkIHdvcmsgaW4g\nV29ya2JlbmNoIDIUAABnb3QgaW50byBXb3JrYmVuY2ggMgQAADQzLjAEAAA0My41HgAAZW5kZWQg\nYSBwcm9jZXNzIGluIFdvcmtiZW5jaCAxHwAAZW5kZWQgcHJvY2Vzc2luZyBpbiBXb3JrYmVuY2gg\nMRkAAHJlbGVhc2VkIGZyb20gV29ya2JlbmNoIDEeAABlbmRlZCBhIHByb2Nlc3MgaW4gV29ya2Jl\nbmNoIDIfAABlbmRlZCBwcm9jZXNzaW5nIGluIFdvcmtiZW5jaCAyGQAAcmVsZWFzZWQgZnJvbSBX\nb3JrYmVuY2ggMhQAAHJlbGVhc2VkIFdvcmtiZW5jaCAxFAAAcmVsZWFzZWQgV29ya2JlbmNoIDIb\nAABzdGFydGVkIHdvcmsgaW4gV29ya2JlbmNoIDMUAABnb3QgaW50byBXb3JrYmVuY2ggMxsAAHN0\nYXJ0ZWQgd29yayBpbiBXb3JrYmVuY2ggNBQAAGdvdCBpbnRvIFdvcmtiZW5jaCA0BQAANDMuNzUe\nAABlbmRlZCBhIHByb2Nlc3MgaW4gV29ya2JlbmNoIDMfAABlbmRlZCBwcm9jZXNzaW5nIGluIFdv\ncmtiZW5jaCAzGQAAcmVsZWFzZWQgZnJvbSBXb3JrYmVuY2ggMx4AAGVuZGVkIGEgcHJvY2VzcyBp\nbiBXb3JrYmVuY2ggNB8AAGVuZGVkIHByb2Nlc3NpbmcgaW4gV29ya2JlbmNoIDQZAAByZWxlYXNl\nZCBmcm9tIFdvcmtiZW5jaCA0FAAAcmVsZWFzZWQgV29ya2JlbmNoIDMYAABnb3QgaW50byBBc3Nl\nbWJseSBCdWZmZXIUAAByZWxlYXNlZCBXb3JrYmVuY2ggNAQAADQ3LjAEAAA0OC4wBAAANDguNBgA\nAHJlbGVhc2VkIEFzc2VtYmx5IEJ1ZmZlcgQAADUxLjQJAABQRTAwMTA2OEERAABnb3QgaW50byBR\ndWV1ZSBJTSMAAHN0YXJ0ZWQgd29yayBpbiBJbmplY3Rpb24gTW9sZGluZyAyEQAAcmVsZWFzZWQg\nUXVldWUgSU0cAABnb3QgaW50byBJbmplY3Rpb24gTW9sZGluZyAyBAAANTIuMCIAAEludGVycnVw\ndGVkIGF0IEluamVjdGlvbiBNb2xkaW5nIDIhAAByZWxlYXNlZCBmcm9tIEluamVjdGlvbiBNb2xk\naW5nIDIEAAA2Ni4wKgAAcGFzc2l2YXRlZCBpbiBJbmplY3Rpb24gTW9sZGluZyAyIGZvciAxNC4w\nBAAANjYuNCYAAGVuZGVkIGEgcHJvY2VzcyBpbiBJbmplY3Rpb24gTW9sZGluZyAyBAAANzYuMAQA\nADkwLjAEAAA5MC40JwAAZW5kZWQgcHJvY2Vzc2luZyBpbiBJbmplY3Rpb24gTW9sZGluZyAyHAAA\ncmVsZWFzZWQgSW5qZWN0aW9uIE1vbGRpbmcgMg0AAGdvdCBpbnRvIEV4aXQEAABDQU0yDQAAVGlt\nZS9NYWNoaW5lcwUAAFRVUk4xBQAAV09SSzEFAABXT1JLMgUAAFdPUkszBQAAV09SSzQEAABDQUQx\nBAAAQ0FEMgQAAENBTTEFAABNSUxMMgUAAE1JTEwxBAAARURNMQUAAEFTU00xBQAAQVNTTTMFAABB\nU1NNMgUAAEFTU000BQAASU5KTTIFAABJTkpNMQQAAE8wQzcAAAAOAABPMEM3LE8wQzcsTzBDNwQA\nAE8wQzEAAAAAAAAOAABPMEMxLE8wQzEsTzBDMQAAAAQAAE8wQzMAAAAAAAAOAABPMEMzLE8wQzMs\nTzBDMwAAAAAAAAQAAE8wQzUAAAAOAABPMEMxLE8wQzUsTzBDNQAAAA4AAE8wQzUsTzBDNSxPMEM1\nIgAATzBDNyxPMEMxLE8wQzEsTzBDMyxPMEMzLE8wQzUsTzBDNQQAAE8wQzACAABXNQIAAFc0AgAA\nVzMCAABXMgUAAFczLFcyAgAAVzELAABQRTAwMTA2OEFfRAoAAAAJCBAAAAYQALsNzAcAAAAABgAA\nAA0AAgABAAwAAgBkAA8AAgABABEAAgAAABAACAD8qfHSTWJQP18AAgAAAIAACAAAAAAAAQAAACUC\nBAAAAP8AgQACAAEMAAIOAAAAAADSAAAAAAADAAAAKgACAAAAKwACAAAAggACAAEAGwACAAAAGgAC\nAAAAFAAFAAIAACZQFQAFAAIAACZGgwACAAEAhAACAAAAJgAIADMzMzMzM9M/JwAIADMzMzMzM9M/\nKAAIAIXrUbgeheM/KQAIAK5H4XoUrtc/oQAiAAkAZAABAAEAAQCDACwBLAGamZmZmZm5P5qZmZmZ\nmbk/AQASAAIAAADdAAIAAAAZAAIAAABjAAIAAAATAAIAAAAIAhAAAAAAAAMA/wAAAAAAAAEPAP0A\nCgAAAAAAEQAAAAAA/QAKAAAAAQARAAEAAAD9AAoAAAACABEAAgAAAAgCEAABAAAAAwD/AAAAAAAA\nAQ8A/QAKAAEAAAARAAMAAAD9AAoAAQABABEAAQAAAP0ACgABAAIAEQAEAAAACAIQAAIAAAADAP8A\nAAAAAAABDwD9AAoAAgAAABEAAwAAAP0ACgACAAEAEQABAAAA/QAKAAIAAgARAAUAAAAIAhAAAwAA\nAAMA/wAAAAAAAAEPAP0ACgADAAAAEQADAAAA/QAKAAMAAQARAAYAAAD9AAoAAwACABEABwAAAAgC\nEAAEAAAAAwD/AAAAAAAAAQ8A/QAKAAQAAAARAAMAAAD9AAoABAABABEABgAAAP0ACgAEAAIAEQAI\nAAAACAIQAAUAAAADAP8AAAAAAAABDwD9AAoABQAAABEACQAAAP0ACgAFAAEAEQABAAAA/QAKAAUA\nAgARAAIAAAAIAhAABgAAAAMA/wAAAAAAAAEPAP0ACgAGAAAAEQAJAAAA/QAKAAYAAQARAAYAAAD9\nAAoABgACABEACgAAAAgCEAAHAAAAAwD/AAAAAAAAAQ8A/QAKAAcAAAARAAkAAAD9AAoABwABABEA\nAQAAAP0ACgAHAAIAEQALAAAACAIQAAgAAAADAP8AAAAAAAABDwD9AAoACAAAABEADAAAAP0ACgAI\nAAEAEQANAAAA/QAKAAgAAgARAAIAAAAIAhAACQAAAAMA/wAAAAAAAAEPAP0ACgAJAAAAEQAMAAAA\n/QAKAAkAAQARAA4AAAD9AAoACQACABEAAgAAAAgCEAAKAAAAAwD/AAAAAAAAAQ8A/QAKAAoAAAAR\nAAwAAAD9AAoACgABABEADwAAAP0ACgAKAAIAEQACAAAACAIQAAsAAAADAP8AAAAAAAABDwD9AAoA\nCwAAABEADAAAAP0ACgALAAEAEQAQAAAA/QAKAAsAAgARAAIAAAAIAhAADAAAAAMA/wAAAAAAAAEP\nAP0ACgAMAAAAEQAMAAAA/QAKAAwAAQARABEAAAD9AAoADAACABEAAgAAAAgCEAANAAAAAwD/AAAA\nAAAAAQ8A/QAKAA0AAAARAAwAAAD9AAoADQABABEAEgAAAP0ACgANAAIAEQACAAAACAIQAA4AAAAD\nAP8AAAAAAAABDwD9AAoADgAAABEAEwAAAP0ACgAOAAEAEQABAAAA/QAKAA4AAgARAAQAAAAIAhAA\nDwAAAAMA/wAAAAAAAAEPAP0ACgAPAAAAEQATAAAA/QAKAA8AAQARAA0AAAD9AAoADwACABEABAAA\nAAgCEAAQAAAAAwD/AAAAAAAAAQ8A/QAKABAAAAARABMAAAD9AAoAEAABABEADgAAAP0ACgAQAAIA\nEQAEAAAACAIQABEAAAADAP8AAAAAAAABDwD9AAoAEQAAABEAEwAAAP0ACgARAAEAEQAPAAAA/QAK\nABEAAgARAAQAAAAIAhAAEgAAAAMA/wAAAAAAAAEPAP0ACgASAAAAEQATAAAA/QAKABIAAQARABAA\nAAD9AAoAEgACABEABAAAAAgCEAATAAAAAwD/AAAAAAAAAQ8A/QAKABMAAAARABMAAAD9AAoAEwAB\nABEAEQAAAP0ACgATAAIAEQAEAAAACAIQABQAAAADAP8AAAAAAAABDwD9AAoAFAAAABEAEwAAAP0A\nCgAUAAEAEQASAAAA/QAKABQAAgARAAQAAAAIAhAAFQAAAAMA/wAAAAAAAAEPAP0ACgAVAAAAEQAT\nAAAA/QAKABUAAQARAAEAAAD9AAoAFQACABEABQAAAAgCEAAWAAAAAwD/AAAAAAAAAQ8A/QAKABYA\nAAARABMAAAD9AAoAFgABABEABgAAAP0ACgAWAAIAEQAUAAAACAIQABcAAAADAP8AAAAAAAABDwD9\nAAoAFwAAABEAFQAAAP0ACgAXAAEAEQABAAAA/QAKABcAAgARABYAAAAIAhAAGAAAAAMA/wAAAAAA\nAAEPAP0ACgAYAAAAEQAVAAAA/QAKABgAAQARAAYAAAD9AAoAGAACABEAFwAAAAgCEAAZAAAAAwD/\nAAAAAAAAAQ8A/QAKABkAAAARABUAAAD9AAoAGQABABEAAQAAAP0ACgAZAAIAEQALAAAACAIQABoA\n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\nAAAAAQ8A/QAKAEYAAAARADsAAAD9AAoARgABABEAEQAAAP0ACgBGAAIAEQA8AAAACAIQAEcAAAAD\nAP8AAAAAAAABDwD9AAoARwAAABEAOwAAAP0ACgBHAAEAEQARAAAA/QAKAEcAAgARAD0AAAAIAhAA\nSAAAAAMA/wAAAAAAAAEPAP0ACgBIAAAAEQA7AAAA/QAKAEgAAQARAAEAAAD9AAoASAACABEAPgAA\nAAgCEABJAAAAAwD/AAAAAAAAAQ8A/QAKAEkAAAARADsAAAD9AAoASQABABEAAQAAAP0ACgBJAAIA\nEQA/AAAACAIQAEoAAAADAP8AAAAAAAABDwD9AAoASgAAABEAOwAAAP0ACgBKAAEAEQAmAAAA/QAK\nAEoAAgARADMAAAAIAhAASwAAAAMA/wAAAAAAAAEPAP0ACgBLAAAAEQA7AAAA/QAKAEsAAQARACYA\nAAD9AAoASwACABEANAAAAAgCEABMAAAAAwD/AAAAAAAAAQ8A/QAKAEwAAAARAEAAAAD9AAoATAAB\nABEAAQAAAP0ACgBMAAIAEQACAAAACAIQAE0AAAADAP8AAAAAAAABDwD9AAoATQAAABEAQAAAAP0A\nCgBNAAEAEQANAAAA/QAKAE0AAgARAAIAAAAIAhAATgAAAAMA/wAAAAAAAAEPAP0ACgBOAAAAEQBA\nAAAA/QAKAE4AAQARAA4AAAD9AAoATgACABEAAgAAAAgCEABPAAAAAwD/AAAAAAAAAQ8A/QAKAE8A\nAAARAEAAAAD9AAoATwABABEADwAAAP0ACgBPAAIAEQACAAAACAIQAFAAAAADAP8AAAAAAAABDwD9\nAAoAUAAAABEAQAAAAP0ACgBQAAEAEQAQAAAA/QAKAFAAAgARAAIAAAAIAhAAUQAAAAMA/wAAAAAA\nAAEPAP0ACgBRAAAAEQBAAAAA/QAKAFEAAQARABEAAAD9AAoAUQACABEAAgAAAAgCEABSAAAAAwD/\nAAAAAAAAAQ8A/QAKAFIAAAARAEAAAAD9AAoAUgABABEAEgAAAP0ACgBSAAIAEQACAAAACAIQAFMA\nAAADAP8AAAAAAAABDwD9AAoAUwAAABEAQQAAAP0ACgBTAAEAEQAiAAAA/QAKAFMAAgARAEIAAAAI\nAhAAVAAAAAMA/wAAAAAAAAEPAP0ACgBUAAAAEQBBAAAA/QAKAFQAAQARACUAAAD9AAoAVAACABEA\n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\nEQACAAAACAIQALwAAAADAP8AAAAAAAABDwD9AAoAvAAAABEAdgAAAP0ACgC8AAEAEQAOAAAA/QAK\nALwAAgARAAIAAAAIAhAAvQAAAAMA/wAAAAAAAAEPAP0ACgC9AAAAEQB2AAAA/QAKAL0AAQARAA8A\nAAD9AAoAvQACABEAAgAAAAgCEAC+AAAAAwD/AAAAAAAAAQ8A/QAKAL4AAAARAHYAAAD9AAoAvgAB\nABEAEAAAAP0ACgC+AAIAEQACAAAACAIQAL8AAAADAP8AAAAAAAABDwD9AAoAvwAAABEAdgAAAP0A\nCgC/AAEAEQARAAAA/QAKAL8AAgARAAIAAAAIAhAAwAAAAAMA/wAAAAAAAAEPAP0ACgDAAAAAEQB2\nAAAA/QAKAMAAAQARABIAAAD9AAoAwAACABEAAgAAAAgCEADBAAAAAwD/AAAAAAAAAQ8A/QAKAMEA\nAAARAHYAAAD9AAoAwQABABEAagAAAP0ACgDBAAIAEQBwAAAACAIQAMIAAAADAP8AAAAAAAABDwD9\nAAoAwgAAABEAdgAAAP0ACgDCAAEAEQARAAAA/QAKAMIAAgARAHEAAAAIAhAAwwAAAAMA/wAAAAAA\nAAEPAP0ACgDDAAAAEQB3AAAA/QAKAMMAAQARAAEAAAD9AAoAwwACABEABAAAAAgCEADEAAAAAwD/\nAAAAAAAAAQ8A/QAKAMQAAAARAHcAAAD9AAoAxAABABEADQAAAP0ACgDEAAIAEQAEAAAACAIQAMUA\nAAADAP8AAAAAAAABDwD9AAoAxQAAABEAdwAAAP0ACgDFAAEAEQAOAAAA/QAKAMUAAgARAAQAAAAI\nAhAAxgAAAAMA/wAAAAAAAAEPAP0ACgDGAAAAEQB3AAAA/QAKAMYAAQARAA8AAAD9AAoAxgACABEA\nBAAAAAgCEADHAAAAAwD/AAAAAAAAAQ8A/QAKAMcAAAARAHcAAAD9AAoAxwABABEAEAAAAP0ACgDH\nAAIAEQAEAAAACAIQAMgAAAADAP8AAAAAAAABDwD9AAoAyAAAABEAdwAAAP0ACgDIAAEAEQARAAAA\n/QAKAMgAAgARAAQAAAAIAhAAyQAAAAMA/wAAAAAAAAEPAP0ACgDJAAAAEQB3AAAA/QAKAMkAAQAR\nABIAAAD9AAoAyQACABEABAAAAAgCEADKAAAAAwD/AAAAAAAAAQ8A/QAKAMoAAAARAHcAAAD9AAoA\nygABABEAEQAAAP0ACgDKAAIAEQBsAAAACAIQAMsAAAADAP8AAAAAAAABDwD9AAoAywAAABEAdwAA\nAP0ACgDLAAEAEQBqAAAA/QAKAMsAAgARAHMAAAAIAhAAzAAAAAMA/wAAAAAAAAEPAP0ACgDMAAAA\nEQB4AAAA/QAKAMwAAQARABEAAAD9AAoAzAACABEAdQAAAAgCEADNAAAAAwD/AAAAAAAAAQ8A/QAK\nAM0AAAARAHgAAAD9AAoAzQABABEAagAAAP0ACgDNAAIAEQB5AAAACAIQAM4AAAADAP8AAAAAAAAB\nDwD9AAoAzgAAABEAeAAAAP0ACgDOAAEAEQARAAAA/QAKAM4AAgARAHEAAAAIAhAAzwAAAAMA/wAA\nAAAAAAEPAP0ACgDPAAAAEQB4AAAA/QAKAM8AAQARAGoAAAD9AAoAzwACABEAegAAAAgCEADQAAAA\nAwD/AAAAAAAAAQ8A/QAKANAAAAARAHgAAAD9AAoA0AABABEAagAAAP0ACgDQAAIAEQB7AAAACAIQ\nANEAAAADAP8AAAAAAAABDwD9AAoA0QAAABEAeAAAAP0ACgDRAAEAEQB8AAAA/QAKANEAAgARAAIA\nAAA+AhIAtgIAAAAAQAAAAAAAAAAAAAAACgAAAAkIEAAABhAAuw3MBwAAAAAGAAAADQACAAEADAAC\nAGQADwACAAEAEQACAAAAEAAIAPyp8dJNYlA/XwACAAAAgAAIAAAAAAABAAAAJQIEAAAA/wCBAAIA\nAQwAAg4AAAAAACUAAAAAADcAAAAqAAIAAAArAAIAAACCAAIAAQAbAAIAAAAaAAIAAAAUAAUAAgAA\nJlAVAAUAAgAAJkaDAAIAAQCEAAIAAAAmAAgAMzMzMzMz0z8nAAgAMzMzMzMz0z8oAAgAhetRuB6F\n4z8pAAgArkfhehSu1z+hACIACQBkAAEAAQABAIMALAEsAZqZmZmZmbk/mpmZmZmZuT8BABIAAgAA\nAN0AAgAAABkAAgAAAGMAAgAAABMAAgAAAAgCEAAAAAAANwD/AAAAAAAAAQ8A/QAKAAAAAAARAH0A\nAAD9AAoAAAABABEAfgAAAL4ACgAAAAIAEQARAAMA/QAKAAAABAARAH8AAAC+AAoAAAAFABEAEQAG\nAP0ACgAAAAcAEQCAAAAAvgAKAAAACAARABEACQD9AAoAAAAKABEAgQAAAL4ACgAAAAsAEQARAAwA\n/QAKAAAADQARAIIAAAC+AAoAAAAOABEAEQAPAP0ACgAAABAAEQCDAAAAvgAKAAAAEQARABEAEgD9\nAAoAAAATABEAhAAAAL4ACgAAABQAEQARABUA/QAKAAAAFgARAHwAAAC+AAoAAAAXABEAEQAYAP0A\nCgAAABkAEQCFAAAAvgAKAAAAGgARABEAGwD9AAoAAAAcABEAhgAAAL4ACgAAAB0AEQARAB4A/QAK\nAAAAHwARAIcAAAC+AAoAAAAgABEAEQAhAP0ACgAAACIAEQCIAAAAvgAKAAAAIwARABEAJAD9AAoA\nAAAlABEAiQAAAL4ACgAAACYAEQARACcA/QAKAAAAKAARAIoAAAC+AAoAAAApABEAEQAqAP0ACgAA\nACsAEQCLAAAAvgAKAAAALAARABEALQD9AAoAAAAuABEAjAAAAL4ACgAAAC8AEQARADAA/QAKAAAA\nMQARAI0AAAC+AAoAAAAyABEAEQAzAP0ACgAAADQAEQCOAAAAvgAKAAAANQARABEANgAIAhAAAQAA\nAAEA/wAAAAAAAAEPAH4CCgABAAAAEQACAAAACAIQAAIAAAATAP8AAAAAAAABDwB+AgoAAgAAABEA\nBgAAAP0ACgACABAAEQCjAAAA/QAKAAIAEgARAKkAAAAIAhAAAwAAABMA/wAAAAAAAAEPAH4CCgAD\nAAAAEQAKAAAA/QAKAAMAEAARAKMAAAD9AAoAAwASABEAqQAAAAgCEAAEAAAAEQD/AAAAAAAAAQ8A\nfgIKAAQAAAARABIAAAD9AAoABAAQABEAowAAAAgCEAAFAAAAEwD/AAAAAAAAAQ8AfgIKAAUAAAAR\nAEoAAAD9AAoABQAQABEAowAAAP0ACgAFABIAEQCpAAAACAIQAAYAAAAWAP8AAAAAAAABDwB+AgoA\nBgAAABEATgAAAP0ACgAGABAAEQCjAAAA/QAKAAYAEgARAKkAAAD9AAoABgATABEAowAAAP0ACgAG\nABUAEQCnAAAACAIQAAcAAAAcAP8AAAAAAAABDwB+AgoABwAAABEAXgAAAP0ACgAHABMAEQCjAAAA\n/QAKAAcAFQARAKcAAAD9AAoABwAWABEAkgAAAP0ACgAHABcAEQCSAAAA/QAKAAcAGAARAKYAAAD9\nAAoABwAZABEAlwAAAP0ACgAHABoAEQCXAAAA/QAKAAcAGwARAKkAAAAIAhAACAAAACIA/wAAAAAA\nAAEPAH4CCgAIAAAAEQBLJgAA/QAKAAgAFgARAJ8AAAD9AAoACAAXABEAkgAAAP0ACgAIABgAEQCo\nAAAA/QAKAAgAGQARAJcAAAD9AAoACAAaABEAlwAAAP0ACgAIABsAEQCpAAAA/QAKAAgAHAARAJIA\nAAD9AAoACAAdABEAkgAAAP0ACgAIAB4AEQCmAAAA/QAKAAgAHwARAJcAAAD9AAoACAAgABEAlwAA\nAP0ACgAIACEAEQCpAAAACAIQAAkAAAAiAP8AAAAAAAABDwB+AgoACQAAABEA2ycAAP0ACgAJABYA\nEQCdAAAA/QAKAAkAFwARAJ0AAAD9AAoACQAYABEApwAAAP0ACgAJABwAEQCVAAAA/QAKAAkAHQAR\nAJIAAAD9AAoACQAeABEApgAAAP0ACgAJAB8AEQCaAAAA/QAKAAkAIAARAJcAAAD9AAoACQAhABEA\nqQAAAAgCEAAKAAAAIQD/AAAAAAAAAQ8AfgIKAAoAAAARAHIAAAD9AAoACgAcABEAkgAAAP0ACgAK\nAB0AEQCSAAAA/QAKAAoAHwARAJcAAAD9AAoACgAgABEAlwAAAAgCEAALAAAAIQD/AAAAAAAAAQ8A\nfgIKAAsAAAARABsuAAD9AAoACwAcABEAkgAAAP0ACgALAB0AEQCSAAAA/QAKAAsAHwARAJcAAAD9\nAAoACwAgABEAlwAAAAgCEAAMAAAAHwD/AAAAAAAAAQ8AfgIKAAwAAAARAKoAAAD9AAoADAAEABEA\nkgAAAP0ACgAMAAUAEQCSAAAA/QAKAAwABgARAKUAAAD9AAoADAAHABEAlwAAAP0ACgAMAAgAEQCX\nAAAA/QAKAAwACQARAKQAAAD9AAoADAAcABEAnQAAAP0ACgAMAB0AEQCdAAAA/QAKAAwAHgARAKYA\nAAAIAhAADQAAAB8A/wAAAAAAAAEPAH4CCgANAAAAEQCuAAAA/QAKAA0ABAARAJIAAAD9AAoADQAF\nABEAkgAAAP0ACgANAAYAEQClAAAA/QAKAA0ABwARAJcAAAD9AAoADQAIABEAlwAAAP0ACgANAAkA\nEQCkAAAA/QAKAA0AHAARAKEAAAD9AAoADQAdABEAnQAAAP0ACgANAB4AEQCmAAAACAIQAA4AAAAe\nAP8AAAAAAAABDwB+AgoADgAAABEA+0MAAP0ACgAOAAQAEQCSAAAA/QAKAA4ABQARAJIAAAD9AAoA\nDgAGABEApQAAAP0ACgAOAAcAEQCXAAAA/QAKAA4ACAARAJcAAAD9AAoADgAJABEApAAAAP0ACgAO\nAAoAEQCSAAAA/QAKAA4ACwARAJIAAAD9AAoADgAMABEApwAAAP0ACgAOAA0AEQCXAAAA/QAKAA4A\nDgARAJcAAAD9AAoADgAPABEAqQAAAP0ACgAOABwAEQCdAAAA/QAKAA4AHQARAJ0AAAAIAhAADwAA\nAB4A/wAAAAAAAAEPAH4CCgAPAAAAEQBfRAAA/QAKAA8ACgARAJIAAAD9AAoADwALABEAkgAAAP0A\nCgAPAAwAEQCnAAAA/QAKAA8ADQARAJcAAAD9AAoADwAOABEAlwAAAP0ACgAPAA8AEQCpAAAA/QAK\nAA8AHAARAJ0AAAD9AAoADwAdABEAnQAAAAgCEAAQAAAAHgD/AAAAAAAAAQ8AfgIKABAAAAARAL4A\nAAD9AAoAEAAEABEAnQAAAP0ACgAQAAUAEQCdAAAA/QAKABAABgARAKYAAAD9AAoAEAAcABEAnQAA\nAP0ACgAQAB0AEQCdAAAACAIQABEAAAAKAP8AAAAAAAABDwB+AgoAEQAAABEAwgAAAP0ACgARAAQA\nEQCdAAAA/QAKABEABQARAJ0AAAD9AAoAEQAGABEApgAAAP0ACgARAAcAEQCdAAAA/QAKABEACAAR\nAJ0AAAD9AAoAEQAJABEApQAAAAgCEAASAAAAKAD/AAAAAAAAAQ8AfgIKABIAAAARAKNLAAD9AAoA\nEgAHABEAnQAAAP0ACgASAAgAEQCdAAAA/QAKABIACQARAKUAAAD9AAoAEgAlABEAogAAAP0ACgAS\nACYAEQCPAAAA/QAKABIAJwARAKcAAAAIAhAAEwAAADQA/wAAAAAAAAEPAH4CCgATAAAAEQBTUAAA\n/QAKABMAJQARAI8AAAD9AAoAEwAmABEAjwAAAP0ACgATACcAEQCnAAAA/QAKABMAMQARAI8AAAD9\nAAoAEwAyABEAjwAAAP0ACgATADMAEQCpAAAACAIQABQAAAA0AP8AAAAAAAABDwB+AgoAFAAAABEA\n0gAAAP0ACgAUADEAEQCPAAAA/QAKABQAMgARAI8AAAD9AAoAFAAzABEAqQAAAAgCEAAVAAAANAD/\nAAAAAAAAAQ8AfgIKABUAAAARAAoBAAD9AAoAFQAxABEAjwAAAP0ACgAVADIAEQCPAAAA/QAKABUA\nMwARAKYAAAAIAhAAFgAAADQA/wAAAAAAAAEPAH4CCgAWAAAAEQDDZwAA/QAKABYAMQARAJEAAAD9\nAAoAFgAyABEAjwAAAP0ACgAWADMAEQCmAAAACAIQABcAAAA0AP8AAAAAAAABDwB+AgoAFwAAABEA\nMgEAAP0ACgAXADEAEQCPAAAA/QAKABcAMgARAI8AAAD9AAoAFwAzABEApgAAAAgCEAAYAAAANAD/\nAAAAAAAAAQ8AfgIKABgAAAARAGoBAAD9AAoAGAAxABEAjwAAAP0ACgAYADIAEQCPAAAA/QAKABgA\nMwARAKYAAAAIAhAAGQAAADQA/wAAAAAAAAEPAH4CCgAZAAAAEQBDjQAA/QAKABkAMQARAI8AAAD9\nAAoAGQAyABEAjwAAAP0ACgAZADMAEQCmAAAACAIQABwAAAACAP8AAAAAAAABDwD9AAoAHAAAABEA\nagAAAP0ACgAcAAEAEQCPAAAACAIQAB0AAAACAP8AAAAAAAABDwD9AAoAHQAAABEAagAAAP0ACgAd\nAAEAEQCPAAAACAIQAB4AAAACAP8AAAAAAAABDwD9AAoAHgAAABEAIgAAAP0ACgAeAAEAEQCSAAAA\nCAIQAB8AAAACAP8AAAAAAAABDwD9AAoAHwAAABEAIgAAAP0ACgAfAAEAEQCSAAAACAIQACAAAAAC\nAP8AAAAAAAABDwD9AAoAIAAAABEAJQAAAP0ACgAgAAEAEQCXAAAACAIQACEAAAACAP8AAAAAAAAB\nDwD9AAoAIQAAABEAJQAAAP0ACgAhAAEAEQCXAAAACAIQACIAAAACAP8AAAAAAAABDwD9AAoAIgAA\nABEAJgAAAP0ACgAiAAEAEQCdAAAACAIQACMAAAACAP8AAAAAAAABDwD9AAoAIwAAABEAJgAAAP0A\nCgAjAAEAEQCdAAAACAIQACQAAAACAP8AAAAAAAABDwD9AAoAJAAAABEAqgAAAP0ACgAkAAEAEQCj\nAAAA5QCSABIAAAAAADQANgAAAAAAMQAzAAAAAAAuADAAAAAAACsALQAAAAAAKAAqAAAAAAAlACcA\nAAAAACIAJAAAAAAAHwAhAAAAAAAcAB4AAAAAABkAGwAAAAAAFgAYAAAAAAATABUAAAAAABAAEgAA\nAAAADQAPAAAAAAAKAAwAAAAAAAcACQAAAAAABAAGAAAAAAABAAMAPgISALYAAAAAAEAAAAAAAAAA\nAAAAAAoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAABAAAAAgAAAAMAAAAEAAAABQAAAAYAAAAHAAAACAAAAAkAAAAKAAAACwAAAAwAAAAN\nAAAADgAAAA8AAAAQAAAAEQAAABIAAAATAAAAFAAAABUAAAAWAAAAFwAAABgAAAAZAAAAGgAAABsA\nAAAcAAAAHQAAAB4AAAAfAAAAIAAAACEAAAAiAAAAIwAAACQAAAAlAAAAJgAAACcAAAAoAAAAKQAA\nACoAAAArAAAALAAAAC0AAAAuAAAALwAAAP7////9/////v//////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n/////////1IAbwBvAHQAIABFAG4AdAByAHkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAWAAUB//////////8BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAA/v///wAAAAAAAAAAVwBvAHIAawBiAG8AbwBrAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABIAAgH///////////////8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAf//////////////\n/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP7///8AAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAB////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/v///wAA\nAAAAAAAA\n"
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "family": "Operator", 
+   "id": "W1", 
+   "results": {
+    "off_shift_ratio": [
+     65.2654867256637
+    ], 
+    "on_break_ratio": [
+     0.0
+    ], 
+    "schedule": [
+     {
+      "entranceTime": 0, 
+      "exitTime": 1.0, 
+      "stationId": "off-shift"
+     }, 
+     {
+      "entityId": "PE001068A_D", 
+      "entranceTime": 1.0, 
+      "exitTime": 2.0, 
+      "stationId": "CAD1", 
+      "task_id": "ID-00001"
+     }, 
+     {
+      "entranceTime": 2.0, 
+      "exitTime": 18.0, 
+      "stationId": "off-shift"
+     }, 
+     {
+      "entityId": "PE001068A_D", 
+      "entranceTime": 18.0, 
+      "exitTime": 19.0, 
+      "stationId": "CAD1", 
+      "task_id": "ID-00001"
+     }, 
+     {
+      "entityId": "PE001068A-02", 
+      "entranceTime": 23.0, 
+      "exitTime": 24.5, 
+      "stationId": "CAM1", 
+      "task_id": "ID-00004"
+     }, 
+     {
+      "entityId": "PE001068A-02", 
+      "entranceTime": 24.5, 
+      "exitTime": 25.5, 
+      "stationId": "MILL1", 
+      "task_id": "ID-00009"
+     }, 
+     {
+      "entranceTime": 28.0, 
+      "exitTime": 42.0, 
+      "stationId": "off-shift"
+     }, 
+     {
+      "entityId": "PE001068A-02", 
+      "entranceTime": 43.5, 
+      "exitTime": 43.75, 
+      "stationId": "WORK4", 
+      "task_id": "ID-00016"
+     }, 
+     {
+      "entityId": "PE001068A", 
+      "entranceTime": 51.4, 
+      "exitTime": 52.0, 
+      "stationId": "INJM2", 
+      "task_id": "ID-00020"
+     }, 
+     {
+      "entranceTime": 52.0, 
+      "exitTime": 66.0, 
+      "stationId": "off-shift"
+     }, 
+     {
+      "entranceTime": 76.0, 
+      "exitTime": 90.0, 
+      "stationId": "off-shift"
+     }
+    ], 
+    "waiting_ratio": [
+     28.816371681415937
+    ], 
+    "working_ratio": [
+     5.918141592920355
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "family": "Operator", 
+   "id": "W2", 
+   "results": {
+    "off_shift_ratio": [
+     61.94690265486725
+    ], 
+    "on_break_ratio": [
+     0.0
+    ], 
+    "schedule": [
+     {
+      "entranceTime": 4.0, 
+      "exitTime": 18.0, 
+      "stationId": "off-shift"
+     }, 
+     {
+      "entityId": "PE001068A_D", 
+      "entranceTime": 19.0, 
+      "exitTime": 23.0, 
+      "stationId": "CAD2", 
+      "task_id": "ID-00002"
+     }, 
+     {
+      "entityId": "PE001068A-03", 
+      "entranceTime": 24.5, 
+      "exitTime": 25.5, 
+      "stationId": "CAM2", 
+      "task_id": "ID-00005"
+     }, 
+     {
+      "entranceTime": 28.0, 
+      "exitTime": 42.0, 
+      "stationId": "off-shift"
+     }, 
+     {
+      "entityId": "PE001068A-01", 
+      "entranceTime": 43.5, 
+      "exitTime": 43.75, 
+      "stationId": "WORK3", 
+      "task_id": "ID-00015"
+     }, 
+     {
+      "entityId": "PE001068A-03", 
+      "entranceTime": 48.4, 
+      "exitTime": 51.4, 
+      "stationId": "ASSM1", 
+      "task_id": "ID-00018"
+     }, 
+     {
+      "entranceTime": 52.0, 
+      "exitTime": 66.0, 
+      "stationId": "off-shift"
+     }, 
+     {
+      "entranceTime": 76.0, 
+      "exitTime": 90.0, 
+      "stationId": "off-shift"
+     }
+    ], 
+    "waiting_ratio": [
+     28.926991150442483
+    ], 
+    "working_ratio": [
+     9.126106194690266
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "family": "Operator", 
+   "id": "W3", 
+   "results": {
+    "off_shift_ratio": [
+     61.94690265486725
+    ], 
+    "on_break_ratio": [
+     0.0
+    ], 
+    "schedule": [
+     {
+      "entranceTime": 4.0, 
+      "exitTime": 18.0, 
+      "stationId": "off-shift"
+     }, 
+     {
+      "entityId": "PE001068A-01", 
+      "entranceTime": 23.0, 
+      "exitTime": 24.5, 
+      "stationId": "CAM2", 
+      "task_id": "ID-00003"
+     }, 
+     {
+      "entityId": "PE001068A-01", 
+      "entranceTime": 24.5, 
+      "exitTime": 25.5, 
+      "stationId": "MILL2", 
+      "task_id": "ID-00007"
+     }, 
+     {
+      "entranceTime": 28.0, 
+      "exitTime": 42.0, 
+      "stationId": "off-shift"
+     }, 
+     {
+      "entityId": "PE001068A-03", 
+      "entranceTime": 42.0, 
+      "exitTime": 43.0, 
+      "stationId": "MILL2", 
+      "task_id": "ID-00011"
+     }, 
+     {
+      "entityId": "PE001068A-03", 
+      "entranceTime": 47.0, 
+      "exitTime": 48.0, 
+      "stationId": "WORK1", 
+      "task_id": "ID-00014"
+     }, 
+     {
+      "entranceTime": 52.0, 
+      "exitTime": 66.0, 
+      "stationId": "off-shift"
+     }, 
+     {
+      "entityId": "PE001068A", 
+      "entranceTime": 66.0, 
+      "exitTime": 76.0, 
+      "stationId": "INJM2", 
+      "task_id": "ID-00020"
+     }, 
+     {
+      "entranceTime": 76.0, 
+      "exitTime": 90.0, 
+      "stationId": "off-shift"
+     }, 
+     {
+      "entityId": "PE001068A", 
+      "entranceTime": 90.0, 
+      "exitTime": 90.4, 
+      "stationId": "INJM2", 
+      "task_id": "ID-00020"
+     }
+    ], 
+    "waiting_ratio": [
+     21.57079646017699
+    ], 
+    "working_ratio": [
+     16.482300884955755
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "family": "Operator", 
+   "id": "W4", 
+   "results": {
+    "off_shift_ratio": [
+     61.94690265486725
+    ], 
+    "on_break_ratio": [
+     0.0
+    ], 
+    "schedule": [
+     {
+      "entranceTime": 4.0, 
+      "exitTime": 18.0, 
+      "stationId": "off-shift"
+     }, 
+     {
+      "entranceTime": 28.0, 
+      "exitTime": 42.0, 
+      "stationId": "off-shift"
+     }, 
+     {
+      "entityId": "PE001068A-01", 
+      "entranceTime": 42.0, 
+      "exitTime": 43.5, 
+      "stationId": "WORK1", 
+      "task_id": "ID-00012"
+     }, 
+     {
+      "entityId": "PE001068A-03", 
+      "entranceTime": 48.0, 
+      "exitTime": 48.4, 
+      "stationId": "WORK2", 
+      "task_id": "ID-00017"
+     }, 
+     {
+      "entranceTime": 52.0, 
+      "exitTime": 66.0, 
+      "stationId": "off-shift"
+     }, 
+     {
+      "entranceTime": 76.0, 
+      "exitTime": 90.0, 
+      "stationId": "off-shift"
+     }
+    ], 
+    "waiting_ratio": [
+     35.951327433628315
+    ], 
+    "working_ratio": [
+     2.101769911504423
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "family": "Operator", 
+   "id": "W5", 
+   "results": {
+    "off_shift_ratio": [
+     61.94690265486725
+    ], 
+    "on_break_ratio": [
+     0.0
+    ], 
+    "schedule": [
+     {
+      "entranceTime": 4.0, 
+      "exitTime": 18.0, 
+      "stationId": "off-shift"
+     }, 
+     {
+      "entranceTime": 28.0, 
+      "exitTime": 42.0, 
+      "stationId": "off-shift"
+     }, 
+     {
+      "entityId": "PE001068A-02", 
+      "entranceTime": 42.0, 
+      "exitTime": 43.5, 
+      "stationId": "WORK2", 
+      "task_id": "ID-00013"
+     }, 
+     {
+      "entranceTime": 52.0, 
+      "exitTime": 66.0, 
+      "stationId": "off-shift"
+     }, 
+     {
+      "entranceTime": 76.0, 
+      "exitTime": 90.0, 
+      "stationId": "off-shift"
+     }
+    ], 
+    "waiting_ratio": [
+     36.39380530973452
+    ], 
+    "working_ratio": [
+     1.65929203539823
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "family": "Operator", 
+   "id": "W6", 
+   "results": {
+    "off_shift_ratio": [
+     61.94690265486725
+    ], 
+    "on_break_ratio": [
+     0.0
+    ], 
+    "schedule": [
+     {
+      "entranceTime": 4.0, 
+      "exitTime": 18.0, 
+      "stationId": "off-shift"
+     }, 
+     {
+      "entranceTime": 28.0, 
+      "exitTime": 42.0, 
+      "stationId": "off-shift"
+     }, 
+     {
+      "entranceTime": 52.0, 
+      "exitTime": 66.0, 
+      "stationId": "off-shift"
+     }, 
+     {
+      "entranceTime": 76.0, 
+      "exitTime": 90.0, 
+      "stationId": "off-shift"
+     }
+    ], 
+    "waiting_ratio": [
+     38.05309734513275
+    ], 
+    "working_ratio": [
+     0.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "family": "Operator", 
+   "id": "W7", 
+   "results": {
+    "off_shift_ratio": [
+     61.94690265486725
+    ], 
+    "on_break_ratio": [
+     0.0
+    ], 
+    "schedule": [
+     {
+      "entranceTime": 4.0, 
+      "exitTime": 18.0, 
+      "stationId": "off-shift"
+     }, 
+     {
+      "entranceTime": 28.0, 
+      "exitTime": 42.0, 
+      "stationId": "off-shift"
+     }, 
+     {
+      "entranceTime": 52.0, 
+      "exitTime": 66.0, 
+      "stationId": "off-shift"
+     }, 
+     {
+      "entranceTime": 76.0, 
+      "exitTime": 90.0, 
+      "stationId": "off-shift"
+     }
+    ], 
+    "waiting_ratio": [
+     38.05309734513275
+    ], 
+    "working_ratio": [
+     0.0
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.MachineJobShop", 
+   "family": "Server", 
+   "id": "WORK1", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     97.23451327433628
+    ], 
+    "working_ratio": [
+     2.765486725663717
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.MachineJobShop", 
+   "family": "Server", 
+   "id": "WORK2", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     97.89823008849557
+    ], 
+    "working_ratio": [
+     2.101769911504423
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.MachineJobShop", 
+   "family": "Server", 
+   "id": "WORK3", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     99.72345132743362
+    ], 
+    "working_ratio": [
+     0.27654867256637167
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.MachineJobShop", 
+   "family": "Server", 
+   "id": "WORK4", 
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ], 
+    "break_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     99.72345132743362
+    ], 
+    "working_ratio": [
+     0.27654867256637167
+    ]
+   }
+  }
+ ], 
+ "general": {
+  "_class": "Dream.Configuration"
+ }, 
+ "key": "default", 
+ "operator_gantt": {
+  "task_list": [
+   {
+    "color": "DodgerBlue", 
+    "id": "W1", 
+    "open": false, 
+    "text": "W1", 
+    "type": "operator"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "id": "W2", 
+    "open": false, 
+    "text": "W2", 
+    "type": "operator"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "id": "W3", 
+    "open": false, 
+    "text": "W3", 
+    "type": "operator"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "id": "W4", 
+    "open": false, 
+    "text": "W4", 
+    "type": "operator"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "id": "W5", 
+    "open": false, 
+    "text": "W5", 
+    "type": "operator"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "id": "W6", 
+    "open": false, 
+    "text": "W6", 
+    "type": "operator"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "id": "W7", 
+    "open": false, 
+    "text": "W7", 
+    "type": "operator"
+   }, 
+   {
+    "color": "grey", 
+    "duration": 1.0, 
+    "entranceTime": 0, 
+    "id": "W1off-shift2", 
+    "open": false, 
+    "parent": "W1", 
+    "start_date": "23-02-2015 14:00", 
+    "stop_date": "23-02-2015 15:00", 
+    "text": "off-shift"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1.0, 
+    "entranceTime": 1.0, 
+    "id": "W1ID-000013", 
+    "open": false, 
+    "parent": "W1", 
+    "start_date": "23-02-2015 15:00", 
+    "stop_date": "23-02-2015 16:00", 
+    "text": "ID-00001 CAD1 PE001068A_D"
+   }, 
+   {
+    "color": "grey", 
+    "duration": 16.0, 
+    "entranceTime": 2.0, 
+    "id": "W1off-shift4", 
+    "open": false, 
+    "parent": "W1", 
+    "start_date": "23-02-2015 16:00", 
+    "stop_date": "24-02-2015 08:00", 
+    "text": "off-shift"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1.0, 
+    "entranceTime": 18.0, 
+    "id": "W1ID-000015", 
+    "open": false, 
+    "parent": "W1", 
+    "start_date": "24-02-2015 08:00", 
+    "stop_date": "24-02-2015 09:00", 
+    "text": "ID-00001 CAD1 PE001068A_D"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1.5, 
+    "entranceTime": 23.0, 
+    "id": "W1ID-000046", 
+    "open": false, 
+    "parent": "W1", 
+    "start_date": "24-02-2015 13:00", 
+    "stop_date": "24-02-2015 14:30", 
+    "text": "ID-00004 CAM1 PE001068A-02"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1.0, 
+    "entranceTime": 24.5, 
+    "id": "W1ID-000097", 
+    "open": false, 
+    "parent": "W1", 
+    "start_date": "24-02-2015 14:30", 
+    "stop_date": "24-02-2015 15:30", 
+    "text": "ID-00009 MILL1 PE001068A-02"
+   }, 
+   {
+    "color": "grey", 
+    "duration": 14.0, 
+    "entranceTime": 28.0, 
+    "id": "W1off-shift8", 
+    "open": false, 
+    "parent": "W1", 
+    "start_date": "24-02-2015 18:00", 
+    "stop_date": "25-02-2015 08:00", 
+    "text": "off-shift"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 0.25, 
+    "entranceTime": 43.5, 
+    "id": "W1ID-000169", 
+    "open": false, 
+    "parent": "W1", 
+    "start_date": "25-02-2015 09:30", 
+    "stop_date": "25-02-2015 09:45", 
+    "text": "ID-00016 WORK4 PE001068A-02"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 0.6000000000000014, 
+    "entranceTime": 51.4, 
+    "id": "W1ID-0002010", 
+    "open": false, 
+    "parent": "W1", 
+    "start_date": "25-02-2015 17:24", 
+    "stop_date": "25-02-2015 18:00", 
+    "text": "ID-00020 INJM2 PE001068A"
+   }, 
+   {
+    "color": "grey", 
+    "duration": 14.0, 
+    "entranceTime": 52.0, 
+    "id": "W1off-shift11", 
+    "open": false, 
+    "parent": "W1", 
+    "start_date": "25-02-2015 18:00", 
+    "stop_date": "26-02-2015 08:00", 
+    "text": "off-shift"
+   }, 
+   {
+    "color": "grey", 
+    "duration": 14.0, 
+    "entranceTime": 76.0, 
+    "id": "W1off-shift12", 
+    "open": false, 
+    "parent": "W1", 
+    "start_date": "26-02-2015 18:00", 
+    "stop_date": "27-02-2015 08:00", 
+    "text": "off-shift"
+   }, 
+   {
+    "color": "grey", 
+    "duration": 14.0, 
+    "entranceTime": 4.0, 
+    "id": "W2off-shift2", 
+    "open": false, 
+    "parent": "W2", 
+    "start_date": "23-02-2015 18:00", 
+    "stop_date": "24-02-2015 08:00", 
+    "text": "off-shift"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 4.0, 
+    "entranceTime": 19.0, 
+    "id": "W2ID-000023", 
+    "open": false, 
+    "parent": "W2", 
+    "start_date": "24-02-2015 09:00", 
+    "stop_date": "24-02-2015 13:00", 
+    "text": "ID-00002 CAD2 PE001068A_D"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1.0, 
+    "entranceTime": 24.5, 
+    "id": "W2ID-000054", 
+    "open": false, 
+    "parent": "W2", 
+    "start_date": "24-02-2015 14:30", 
+    "stop_date": "24-02-2015 15:30", 
+    "text": "ID-00005 CAM2 PE001068A-03"
+   }, 
+   {
+    "color": "grey", 
+    "duration": 14.0, 
+    "entranceTime": 28.0, 
+    "id": "W2off-shift5", 
+    "open": false, 
+    "parent": "W2", 
+    "start_date": "24-02-2015 18:00", 
+    "stop_date": "25-02-2015 08:00", 
+    "text": "off-shift"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 0.25, 
+    "entranceTime": 43.5, 
+    "id": "W2ID-000156", 
+    "open": false, 
+    "parent": "W2", 
+    "start_date": "25-02-2015 09:30", 
+    "stop_date": "25-02-2015 09:45", 
+    "text": "ID-00015 WORK3 PE001068A-01"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 3.0, 
+    "entranceTime": 48.4, 
+    "id": "W2ID-000187", 
+    "open": false, 
+    "parent": "W2", 
+    "start_date": "25-02-2015 14:24", 
+    "stop_date": "25-02-2015 17:24", 
+    "text": "ID-00018 ASSM1 PE001068A-03"
+   }, 
+   {
+    "color": "grey", 
+    "duration": 14.0, 
+    "entranceTime": 52.0, 
+    "id": "W2off-shift8", 
+    "open": false, 
+    "parent": "W2", 
+    "start_date": "25-02-2015 18:00", 
+    "stop_date": "26-02-2015 08:00", 
+    "text": "off-shift"
+   }, 
+   {
+    "color": "grey", 
+    "duration": 14.0, 
+    "entranceTime": 76.0, 
+    "id": "W2off-shift9", 
+    "open": false, 
+    "parent": "W2", 
+    "start_date": "26-02-2015 18:00", 
+    "stop_date": "27-02-2015 08:00", 
+    "text": "off-shift"
+   }, 
+   {
+    "color": "grey", 
+    "duration": 14.0, 
+    "entranceTime": 4.0, 
+    "id": "W3off-shift2", 
+    "open": false, 
+    "parent": "W3", 
+    "start_date": "23-02-2015 18:00", 
+    "stop_date": "24-02-2015 08:00", 
+    "text": "off-shift"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1.5, 
+    "entranceTime": 23.0, 
+    "id": "W3ID-000033", 
+    "open": false, 
+    "parent": "W3", 
+    "start_date": "24-02-2015 13:00", 
+    "stop_date": "24-02-2015 14:30", 
+    "text": "ID-00003 CAM2 PE001068A-01"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1.0, 
+    "entranceTime": 24.5, 
+    "id": "W3ID-000074", 
+    "open": false, 
+    "parent": "W3", 
+    "start_date": "24-02-2015 14:30", 
+    "stop_date": "24-02-2015 15:30", 
+    "text": "ID-00007 MILL2 PE001068A-01"
+   }, 
+   {
+    "color": "grey", 
+    "duration": 14.0, 
+    "entranceTime": 28.0, 
+    "id": "W3off-shift5", 
+    "open": false, 
+    "parent": "W3", 
+    "start_date": "24-02-2015 18:00", 
+    "stop_date": "25-02-2015 08:00", 
+    "text": "off-shift"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1.0, 
+    "entranceTime": 42.0, 
+    "id": "W3ID-000116", 
+    "open": false, 
+    "parent": "W3", 
+    "start_date": "25-02-2015 08:00", 
+    "stop_date": "25-02-2015 09:00", 
+    "text": "ID-00011 MILL2 PE001068A-03"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1.0, 
+    "entranceTime": 47.0, 
+    "id": "W3ID-000147", 
+    "open": false, 
+    "parent": "W3", 
+    "start_date": "25-02-2015 13:00", 
+    "stop_date": "25-02-2015 14:00", 
+    "text": "ID-00014 WORK1 PE001068A-03"
+   }, 
+   {
+    "color": "grey", 
+    "duration": 14.0, 
+    "entranceTime": 52.0, 
+    "id": "W3off-shift8", 
+    "open": false, 
+    "parent": "W3", 
+    "start_date": "25-02-2015 18:00", 
+    "stop_date": "26-02-2015 08:00", 
+    "text": "off-shift"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 10.0, 
+    "entranceTime": 66.0, 
+    "id": "W3ID-000209", 
+    "open": false, 
+    "parent": "W3", 
+    "start_date": "26-02-2015 08:00", 
+    "stop_date": "26-02-2015 18:00", 
+    "text": "ID-00020 INJM2 PE001068A"
+   }, 
+   {
+    "color": "grey", 
+    "duration": 14.0, 
+    "entranceTime": 76.0, 
+    "id": "W3off-shift10", 
+    "open": false, 
+    "parent": "W3", 
+    "start_date": "26-02-2015 18:00", 
+    "stop_date": "27-02-2015 08:00", 
+    "text": "off-shift"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 0.4000000000000057, 
+    "entranceTime": 90.0, 
+    "id": "W3ID-0002011", 
+    "open": false, 
+    "parent": "W3", 
+    "start_date": "27-02-2015 08:00", 
+    "stop_date": "27-02-2015 08:24", 
+    "text": "ID-00020 INJM2 PE001068A"
+   }, 
+   {
+    "color": "grey", 
+    "duration": 14.0, 
+    "entranceTime": 4.0, 
+    "id": "W4off-shift2", 
+    "open": false, 
+    "parent": "W4", 
+    "start_date": "23-02-2015 18:00", 
+    "stop_date": "24-02-2015 08:00", 
+    "text": "off-shift"
+   }, 
+   {
+    "color": "grey", 
+    "duration": 14.0, 
+    "entranceTime": 28.0, 
+    "id": "W4off-shift3", 
+    "open": false, 
+    "parent": "W4", 
+    "start_date": "24-02-2015 18:00", 
+    "stop_date": "25-02-2015 08:00", 
+    "text": "off-shift"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1.5, 
+    "entranceTime": 42.0, 
+    "id": "W4ID-000124", 
+    "open": false, 
+    "parent": "W4", 
+    "start_date": "25-02-2015 08:00", 
+    "stop_date": "25-02-2015 09:30", 
+    "text": "ID-00012 WORK1 PE001068A-01"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 0.3999999999999986, 
+    "entranceTime": 48.0, 
+    "id": "W4ID-000175", 
+    "open": false, 
+    "parent": "W4", 
+    "start_date": "25-02-2015 14:00", 
+    "stop_date": "25-02-2015 14:24", 
+    "text": "ID-00017 WORK2 PE001068A-03"
+   }, 
+   {
+    "color": "grey", 
+    "duration": 14.0, 
+    "entranceTime": 52.0, 
+    "id": "W4off-shift6", 
+    "open": false, 
+    "parent": "W4", 
+    "start_date": "25-02-2015 18:00", 
+    "stop_date": "26-02-2015 08:00", 
+    "text": "off-shift"
+   }, 
+   {
+    "color": "grey", 
+    "duration": 14.0, 
+    "entranceTime": 76.0, 
+    "id": "W4off-shift7", 
+    "open": false, 
+    "parent": "W4", 
+    "start_date": "26-02-2015 18:00", 
+    "stop_date": "27-02-2015 08:00", 
+    "text": "off-shift"
+   }, 
+   {
+    "color": "grey", 
+    "duration": 14.0, 
+    "entranceTime": 4.0, 
+    "id": "W5off-shift2", 
+    "open": false, 
+    "parent": "W5", 
+    "start_date": "23-02-2015 18:00", 
+    "stop_date": "24-02-2015 08:00", 
+    "text": "off-shift"
+   }, 
+   {
+    "color": "grey", 
+    "duration": 14.0, 
+    "entranceTime": 28.0, 
+    "id": "W5off-shift3", 
+    "open": false, 
+    "parent": "W5", 
+    "start_date": "24-02-2015 18:00", 
+    "stop_date": "25-02-2015 08:00", 
+    "text": "off-shift"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1.5, 
+    "entranceTime": 42.0, 
+    "id": "W5ID-000134", 
+    "open": false, 
+    "parent": "W5", 
+    "start_date": "25-02-2015 08:00", 
+    "stop_date": "25-02-2015 09:30", 
+    "text": "ID-00013 WORK2 PE001068A-02"
+   }, 
+   {
+    "color": "grey", 
+    "duration": 14.0, 
+    "entranceTime": 52.0, 
+    "id": "W5off-shift5", 
+    "open": false, 
+    "parent": "W5", 
+    "start_date": "25-02-2015 18:00", 
+    "stop_date": "26-02-2015 08:00", 
+    "text": "off-shift"
+   }, 
+   {
+    "color": "grey", 
+    "duration": 14.0, 
+    "entranceTime": 76.0, 
+    "id": "W5off-shift6", 
+    "open": false, 
+    "parent": "W5", 
+    "start_date": "26-02-2015 18:00", 
+    "stop_date": "27-02-2015 08:00", 
+    "text": "off-shift"
+   }, 
+   {
+    "color": "grey", 
+    "duration": 14.0, 
+    "entranceTime": 4.0, 
+    "id": "W6off-shift2", 
+    "open": false, 
+    "parent": "W6", 
+    "start_date": "23-02-2015 18:00", 
+    "stop_date": "24-02-2015 08:00", 
+    "text": "off-shift"
+   }, 
+   {
+    "color": "grey", 
+    "duration": 14.0, 
+    "entranceTime": 28.0, 
+    "id": "W6off-shift3", 
+    "open": false, 
+    "parent": "W6", 
+    "start_date": "24-02-2015 18:00", 
+    "stop_date": "25-02-2015 08:00", 
+    "text": "off-shift"
+   }, 
+   {
+    "color": "grey", 
+    "duration": 14.0, 
+    "entranceTime": 52.0, 
+    "id": "W6off-shift4", 
+    "open": false, 
+    "parent": "W6", 
+    "start_date": "25-02-2015 18:00", 
+    "stop_date": "26-02-2015 08:00", 
+    "text": "off-shift"
+   }, 
+   {
+    "color": "grey", 
+    "duration": 14.0, 
+    "entranceTime": 76.0, 
+    "id": "W6off-shift5", 
+    "open": false, 
+    "parent": "W6", 
+    "start_date": "26-02-2015 18:00", 
+    "stop_date": "27-02-2015 08:00", 
+    "text": "off-shift"
+   }, 
+   {
+    "color": "grey", 
+    "duration": 14.0, 
+    "entranceTime": 4.0, 
+    "id": "W7off-shift2", 
+    "open": false, 
+    "parent": "W7", 
+    "start_date": "23-02-2015 18:00", 
+    "stop_date": "24-02-2015 08:00", 
+    "text": "off-shift"
+   }, 
+   {
+    "color": "grey", 
+    "duration": 14.0, 
+    "entranceTime": 28.0, 
+    "id": "W7off-shift3", 
+    "open": false, 
+    "parent": "W7", 
+    "start_date": "24-02-2015 18:00", 
+    "stop_date": "25-02-2015 08:00", 
+    "text": "off-shift"
+   }, 
+   {
+    "color": "grey", 
+    "duration": 14.0, 
+    "entranceTime": 52.0, 
+    "id": "W7off-shift4", 
+    "open": false, 
+    "parent": "W7", 
+    "start_date": "25-02-2015 18:00", 
+    "stop_date": "26-02-2015 08:00", 
+    "text": "off-shift"
+   }, 
+   {
+    "color": "grey", 
+    "duration": 14.0, 
+    "entranceTime": 76.0, 
+    "id": "W7off-shift5", 
+    "open": false, 
+    "parent": "W7", 
+    "start_date": "26-02-2015 18:00", 
+    "stop_date": "27-02-2015 08:00", 
+    "text": "off-shift"
+   }
+  ], 
+  "time_unit": "hour"
+ }, 
+ "operator_utilization": {
+  "options": {
+   "series": {
+    "bars": {
+     "align": "center", 
+     "barWidth": 0.8, 
+     "show": true
+    }, 
+    "stack": true
+   }, 
+   "xaxis": {
+    "minTickSize": 1, 
+    "ticks": [
+     [
+      0, 
+      "W6-AA"
+     ], 
+     [
+      1, 
+      "W7-WK"
+     ], 
+     [
+      2, 
+      "W5-MG"
+     ], 
+     [
+      3, 
+      "W4-TD"
+     ], 
+     [
+      4, 
+      "W3-CV"
+     ], 
+     [
+      5, 
+      "W2-FS"
+     ], 
+     [
+      6, 
+      "W1-MB"
+     ]
+    ]
+   }, 
+   "yaxis": {
+    "max": 100
+   }
+  }, 
+  "series": [
+   {
+    "data": [
+     [
+      0, 
+      0.0
+     ], 
+     [
+      1, 
+      0.0
+     ], 
+     [
+      2, 
+      1.65929203539823
+     ], 
+     [
+      3, 
+      2.101769911504423
+     ], 
+     [
+      4, 
+      16.482300884955755
+     ], 
+     [
+      5, 
+      9.126106194690266
+     ], 
+     [
+      6, 
+      5.918141592920355
+     ]
+    ], 
+    "label": "Working"
+   }, 
+   {
+    "data": [
+     [
+      0, 
+      38.05309734513275
+     ], 
+     [
+      1, 
+      38.05309734513275
+     ], 
+     [
+      2, 
+      36.39380530973452
+     ], 
+     [
+      3, 
+      35.951327433628315
+     ], 
+     [
+      4, 
+      21.57079646017699
+     ], 
+     [
+      5, 
+      28.926991150442483
+     ], 
+     [
+      6, 
+      28.816371681415937
+     ]
+    ], 
+    "label": "Waiting"
+   }, 
+   {
+    "data": [
+     [
+      0, 
+      61.94690265486725
+     ], 
+     [
+      1, 
+      61.94690265486725
+     ], 
+     [
+      2, 
+      61.94690265486725
+     ], 
+     [
+      3, 
+      61.94690265486725
+     ], 
+     [
+      4, 
+      61.94690265486725
+     ], 
+     [
+      5, 
+      61.94690265486725
+     ], 
+     [
+      6, 
+      65.2654867256637
+     ]
+    ], 
+    "label": "off_shift"
+   }
+  ]
+ }, 
+ "order_lateness": {
+  "W134188": {
+   "completionDate": "2015/02/27 08:24", 
+   "delay": -375.6, 
+   "dueDate": "2015/03/15 00:00", 
+   "manpy_delay": -375.6
+  }
+ }, 
+ "score": 0, 
+ "station_utilization": {
+  "options": {
+   "series": {
+    "bars": {
+     "align": "center", 
+     "barWidth": 0.8, 
+     "show": true
+    }, 
+    "stack": true
+   }, 
+   "xaxis": {
+    "minTickSize": 1, 
+    "ticks": [
+     [
+      0, 
+      "Workbench 1"
+     ], 
+     [
+      1, 
+      "Workbench 3"
+     ], 
+     [
+      2, 
+      "Workbench 2"
+     ], 
+     [
+      3, 
+      "Workbench 4"
+     ], 
+     [
+      4, 
+      "Milling 2"
+     ], 
+     [
+      5, 
+      "Milling 1"
+     ], 
+     [
+      6, 
+      "Injection Molding 2"
+     ], 
+     [
+      7, 
+      "Injection Mouding 1"
+     ], 
+     [
+      8, 
+      "CAM2"
+     ], 
+     [
+      9, 
+      "CAM1"
+     ], 
+     [
+      10, 
+      "Design 1"
+     ], 
+     [
+      11, 
+      "Desing 2"
+     ], 
+     [
+      12, 
+      "Turn 1"
+     ], 
+     [
+      13, 
+      "EDM Station 1"
+     ], 
+     [
+      14, 
+      "Workbench 1"
+     ], 
+     [
+      15, 
+      "Workbench 2"
+     ], 
+     [
+      16, 
+      "Workbench 3"
+     ], 
+     [
+      17, 
+      "Workbench 4"
+     ]
+    ]
+   }, 
+   "yaxis": {
+    "max": 100
+   }
+  }, 
+  "series": [
+   {
+    "data": [
+     [
+      0, 
+      3.31858407079646
+     ], 
+     [
+      1, 
+      0.0
+     ], 
+     [
+      2, 
+      0.0
+     ], 
+     [
+      3, 
+      0.0
+     ], 
+     [
+      4, 
+      8.849557522123893
+     ], 
+     [
+      5, 
+      4.424778761061947
+     ], 
+     [
+      6, 
+      11.061946902654867
+     ], 
+     [
+      7, 
+      0.0
+     ], 
+     [
+      8, 
+      2.765486725663717
+     ], 
+     [
+      9, 
+      1.65929203539823
+     ], 
+     [
+      10, 
+      2.2123893805309733
+     ], 
+     [
+      11, 
+      4.424778761061947
+     ], 
+     [
+      12, 
+      0.0
+     ], 
+     [
+      13, 
+      0.0
+     ], 
+     [
+      14, 
+      2.765486725663717
+     ], 
+     [
+      15, 
+      2.101769911504423
+     ], 
+     [
+      16, 
+      0.27654867256637167
+     ], 
+     [
+      17, 
+      0.27654867256637167
+     ]
+    ], 
+    "label": "Working"
+   }, 
+   {
+    "data": [
+     [
+      0, 
+      96.68141592920354
+     ], 
+     [
+      1, 
+      100.0
+     ], 
+     [
+      2, 
+      100.0
+     ], 
+     [
+      3, 
+      100.0
+     ], 
+     [
+      4, 
+      88.93805309734513
+     ], 
+     [
+      5, 
+      94.46902654867256
+     ], 
+     [
+      6, 
+      87.83185840707965
+     ], 
+     [
+      7, 
+      100.0
+     ], 
+     [
+      8, 
+      97.23451327433628
+     ], 
+     [
+      9, 
+      98.34070796460176
+     ], 
+     [
+      10, 
+      97.78761061946902
+     ], 
+     [
+      11, 
+      95.57522123893804
+     ], 
+     [
+      12, 
+      100.0
+     ], 
+     [
+      13, 
+      100.0
+     ], 
+     [
+      14, 
+      97.23451327433628
+     ], 
+     [
+      15, 
+      97.89823008849557
+     ], 
+     [
+      16, 
+      99.72345132743362
+     ], 
+     [
+      17, 
+      99.72345132743362
+     ]
+    ], 
+    "label": "Waiting"
+   }, 
+   {
+    "data": [
+     [
+      0, 
+      0.0
+     ], 
+     [
+      1, 
+      0.0
+     ], 
+     [
+      2, 
+      0.0
+     ], 
+     [
+      3, 
+      0.0
+     ], 
+     [
+      4, 
+      0.0
+     ], 
+     [
+      5, 
+      0.0
+     ], 
+     [
+      6, 
+      0.0
+     ], 
+     [
+      7, 
+      0.0
+     ], 
+     [
+      8, 
+      0.0
+     ], 
+     [
+      9, 
+      0.0
+     ], 
+     [
+      10, 
+      0.0
+     ], 
+     [
+      11, 
+      0.0
+     ], 
+     [
+      12, 
+      0.0
+     ], 
+     [
+      13, 
+      0.0
+     ], 
+     [
+      14, 
+      0.0
+     ], 
+     [
+      15, 
+      0.0
+     ], 
+     [
+      16, 
+      0.0
+     ], 
+     [
+      17, 
+      0.0
+     ]
+    ], 
+    "label": "Failures"
+   }, 
+   {
+    "data": [
+     [
+      0, 
+      0.0
+     ], 
+     [
+      1, 
+      0.0
+     ], 
+     [
+      2, 
+      0.0
+     ], 
+     [
+      3, 
+      0.0
+     ], 
+     [
+      4, 
+      0.0
+     ], 
+     [
+      5, 
+      0.0
+     ], 
+     [
+      6, 
+      0.0
+     ], 
+     [
+      7, 
+      0.0
+     ], 
+     [
+      8, 
+      0.0
+     ], 
+     [
+      9, 
+      0.0
+     ], 
+     [
+      10, 
+      0.0
+     ], 
+     [
+      11, 
+      0.0
+     ], 
+     [
+      12, 
+      0.0
+     ], 
+     [
+      13, 
+      0.0
+     ], 
+     [
+      14, 
+      0.0
+     ], 
+     [
+      15, 
+      0.0
+     ], 
+     [
+      16, 
+      0.0
+     ], 
+     [
+      17, 
+      0.0
+     ]
+    ], 
+    "label": "Blockage"
+   }, 
+   {
+    "data": [
+     [
+      0, 
+      0.0
+     ], 
+     [
+      1, 
+      0.0
+     ], 
+     [
+      2, 
+      0.0
+     ], 
+     [
+      3, 
+      0.0
+     ], 
+     [
+      4, 
+      0.0
+     ], 
+     [
+      5, 
+      0.0
+     ], 
+     [
+      6, 
+      0.0
+     ], 
+     [
+      7, 
+      0.0
+     ], 
+     [
+      8, 
+      0.0
+     ], 
+     [
+      9, 
+      0.0
+     ], 
+     [
+      10, 
+      0.0
+     ], 
+     [
+      11, 
+      0.0
+     ], 
+     [
+      12, 
+      0.0
+     ], 
+     [
+      13, 
+      0.0
+     ], 
+     [
+      14, 
+      0.0
+     ], 
+     [
+      15, 
+      0.0
+     ], 
+     [
+      16, 
+      0.0
+     ], 
+     [
+      17, 
+      0.0
+     ]
+    ], 
+    "label": "off_shift"
+   }
+  ]
+ }
+}
