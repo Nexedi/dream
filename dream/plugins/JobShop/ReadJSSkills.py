@@ -47,7 +47,7 @@ class ReadJSSkills(plugin.InputPreparationPlugin):
           continue
         skills=PBitem[1].replace(" ","").split(';')
         if len(skills)==1:
-          PBitem[1].replace(" ","").split(',')
+          skills = PBitem[1].replace(" ","").split(',')
         skillDict = {
           "load": [],
           "process": [],
@@ -57,6 +57,9 @@ class ReadJSSkills(plugin.InputPreparationPlugin):
           for operation, availableSkills in SKILLS_DICT.iteritems():
             if skill in availableSkills:
               skillDict[operation].append(skill)
+        # if EDM-SET in in skillDict['setup'] then add EDM to skillDict['process']
+        if 'EDM-SET' in skillDict['setup']:
+          skillDict['process'].append('EDM')
         
         node[PBId]={
           "_class": "Dream.Operator",
