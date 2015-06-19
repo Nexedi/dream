@@ -1,4 +1,4 @@
-/*global console, jQuery, rJS, RSVP, alert, Handlebars, initGadgetMixin */
+/*global console, jQuery, rJS, RSVP, alert, Handlebars, initGadgetMixin, confirm */
 /*jslint nomen: true */
 (function (window, $, rJS, RSVP, Handlebars, initGadgetMixin) {
   "use strict";
@@ -10,6 +10,25 @@
   $.mobile.linkBindingEnabled = false;
   $.mobile.hashListeningEnabled = false;
   $.mobile.pushStateEnabled = false;
+
+
+  // Prompt user to reload after manifest update.
+  // from http://www.html5rocks.com/en/tutorials/appcache/beginner/#toc-updating-cache
+  window.addEventListener('load', function() {
+    if (window.applicationCache) {
+      window.applicationCache.addEventListener('updateready', function() {
+          if (window.applicationCache.status === window.applicationCache.UPDATEREADY) {
+            // Browser downloaded a new app cache.
+            // Swap it in and reload the page to get the new hotness.
+            window.applicationCache.swapCache();
+            if (confirm('A new version of this site is available. Load it?')) {
+              window.location.reload();
+            }
+          }
+      }, false);
+    }
+  }, false);
+
 
   /////////////////////////////////////////////////////////////////
   // Minimalistic ERP5's like portal type configuration
