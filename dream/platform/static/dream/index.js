@@ -1,4 +1,4 @@
-/*global console, jQuery, rJS, RSVP, alert, Handlebars, initGadgetMixin */
+/*global console, jQuery, rJS, RSVP, alert, Handlebars, initGadgetMixin, confirm */
 /*jslint nomen: true */
 (function(window, $, rJS, RSVP, Handlebars, initGadgetMixin) {
     "use strict";
@@ -9,10 +9,25 @@
     $.mobile.linkBindingEnabled = false;
     $.mobile.hashListeningEnabled = false;
     $.mobile.pushStateEnabled = false;
+    // Prompt user to reload after manifest update.
+    // from http://www.html5rocks.com/en/tutorials/appcache/beginner/#toc-updating-cache
+    window.addEventListener("load", function() {
+        if (window.applicationCache) {
+            window.applicationCache.addEventListener("updateready", function() {
+                if (window.applicationCache.status === window.applicationCache.UPDATEREADY) {
+                    // Browser downloaded a new app cache.
+                    // Swap it in and reload the page to get the new hotness.
+                    window.applicationCache.swapCache();
+                    if (confirm("A new version of this site is available. Load it?")) {
+                        window.location.reload();
+                    }
+                }
+            }, false);
+        }
+    }, false);
     /////////////////////////////////////////////////////////////////
     // Minimalistic ERP5's like portal type configuration
     /////////////////////////////////////////////////////////////////
-    // XXX we should use lists instead to keep ordering
     var portal_types = {
         "Input Module": {
             view: {
@@ -109,16 +124,36 @@
         var nav_html, action;
         if (portal_types[portal_type][options.action].type === "object_view") {
             return new RSVP.Queue().push(function() {
-                var url_list = [], key2;
+                var url_list = [], action_item_list = [], i, key2;
                 for (key2 in portal_types[portal_type]) {
                     if (portal_types[portal_type].hasOwnProperty(key2)) {
                         action = portal_types[portal_type][key2];
                         if (action.type === "object_view") {
                             if (action.condition === undefined || action.condition(gadget)) {
-                                url_list.push(calculateTabHTML(gadget, options, key2, action.title, key2 === options.action));
+                                action_item_list.push([ key2, action ]);
                             }
                         }
                     }
+                }
+                /*
+          * Sort actions so that higher priorities are displayed first.
+          * If no priority is defined, sort by action id to have stable order.
+          */
+                action_item_list.sort(function(a, b) {
+                    var key_a = a[0], value_a = a[1], key_b = b[0], value_b = b[1];
+                    if (!isNaN(value_a.priority)) {
+                        if (!isNaN(value_b.priority)) {
+                            return value_b.priority - value_a.priority;
+                        }
+                        return -1;
+                    }
+                    if (!isNaN(value_b.priority)) {
+                        return 1;
+                    }
+                    return key_a < key_b ? -1 : key_a > key_b ? 1 : 0;
+                });
+                for (i = 0; i < action_item_list.length; i += 1) {
+                    url_list.push(calculateTabHTML(gadget, options, action_item_list[i][0], action_item_list[i][1].title, action_item_list[i][0] === options.action));
                 }
                 return RSVP.all(url_list);
             }).push(function(entry_list) {

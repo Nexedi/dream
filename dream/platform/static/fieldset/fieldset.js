@@ -64,6 +64,7 @@
             });
         }
         queue = new RSVP.Queue().push(function() {
+            var property_item_list = [], i, property_name, property_definition, value;
             //gadget.props.fieldset_element = document.createElement("fieldset");
             //gadget.props.element.appendChild(gadget.props.fieldset_element);
             gadget.props.fieldset_element = gadget.props.element;
@@ -77,13 +78,35 @@
                 }, node_id);
             }
             Object.keys(options.property_definition.properties).forEach(function(property_name) {
-                var property_definition = options.property_definition.properties[property_name], value = (options.value || {})[property_name] === undefined ? property_definition.default : options.value[property_name];
+                property_item_list.push([ property_name, options.property_definition.properties[property_name] ]);
+            });
+            /*
+          * Sort properties so that higher priorities are displayed first.
+          * If no priority is defined, sort by property id to have stable order.
+          */
+            property_item_list.sort(function(a, b) {
+                var key_a = a[0], value_a = a[1], key_b = b[0], value_b = b[1];
+                if (!isNaN(value_a.priority)) {
+                    if (!isNaN(value_b.priority)) {
+                        return value_b.priority - value_a.priority;
+                    }
+                    return -1;
+                }
+                if (!isNaN(value_b.priority)) {
+                    return 1;
+                }
+                return key_a < key_b ? -1 : key_a > key_b ? 1 : 0;
+            });
+            for (i = 0; i < property_item_list.length; i += 1) {
+                property_name = property_item_list[i][0];
+                property_definition = property_item_list[i][1];
+                value = (options.value || {})[property_name] === undefined ? property_definition.default : options.value[property_name];
                 // XXX some properties are not editable
                 // XXX should not be defined here
                 if (property_name !== "coordinate" && property_name !== "_class" && property_name !== "id") {
                     addField(property_name, property_definition, value);
                 }
-            });
+            }
         });
         return queue;
     }).declareMethod("startService", function() {
