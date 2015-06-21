@@ -56,7 +56,7 @@ class ReadSkilledOperators(plugin.InputPreparationPlugin):
             node['EV123454321']={   #(random id)
                       "name": "Allocator", 
                       "argumentDict": "{}", 
-                      "interval": 40, 
+                      "interval": data['general'].get('allocationInterval',40), 
                       "stop": -1, 
                       "id": "EV123454321", 
                       "start": 0, 
