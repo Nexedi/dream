@@ -97,7 +97,6 @@ class ScheduledBreak(ObjectInterruption):
                     from dream.simulation.SkilledOperatorRouter import SkilledRouter
                     if G.RouterList[0].__class__ is SkilledRouter:
                         if station.id in G.RouterList[0].expectedFinishSignalsDict.keys():
-                            print 'I must send for',station.id
                             self.sendSignal(receiver=G.RouterList[0], signal=G.RouterList[0].expectedFinishSignalsDict[station.id], 
                                             sender=station)
                 if self.victim.schedule:
