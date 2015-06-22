@@ -231,11 +231,6 @@ class CapacityStationController(EventGenerator):
         # loop through the capacity station buffers
         for buffer in G.CapacityStationBufferList:
             pr = False
-            if self.env.now==21.0:
-                if buffer.id=='ASBTST_B':
-                    pass
-                    print 'FOUND'
-                    pr=True
             # if the buffer was considered before (due to shared resources) continue
             if buffer in alreadyConsideredBuffers:
                 continue
@@ -302,9 +297,6 @@ class CapacityStationController(EventGenerator):
                     # get buffer where the entity is and the station it requests to get in
                     entityBuffer=entity.currentStation
                     entityStation=entity.currentStation.next[0]           
-                    if pr:
-                        print '----->checking', entity.capacityProject.id
-                        print self.checkIfThereIsEnoughSpace(entity, entityBuffer, consideredSpace)
                                     
                     if self.checkIfProjectCanStartInStation(entity.capacityProject, entityStation) and\
                                 (not self.checkIfProjectNeedsToBeAssembled(entity.capacityProject, entityBuffer))\
@@ -312,8 +304,7 @@ class CapacityStationController(EventGenerator):
                         if not self.checkIfProjectConsumesAssemblySpace(entity, entityBuffer):
                             consideredSpace-=entity.capacityProject.assemblySpaceRequirement
                         totalRequestedCapacity+=entity.requiredCapacity
-                if pr:
-                    print totalRequestedCapacity                
+            
                 # if there is enough capacity for all the entities set them that they all should move
                 if totalRequestedCapacity<=totalAvailableCapacity:
                     availableCapacity=float(totalAvailableCapacity)
@@ -399,12 +390,6 @@ class CapacityStationController(EventGenerator):
                                 totalRequestedCapacity-=entity.requiredCapacity
                             # else break the entity according to rule    
                             else:
-                                if pr:
-                                    print 'breaking entity',entity.capacityProject.id
-                                    print totalAvailableCapacity
-                                    print totalRequestedCapacity
-                                    print entity.requiredCapacity
-                                    print totalAvailableCapacity*(entity.requiredCapacity)/float(totalRequestedCapacity)
                                 if self.breakEntity(entity, entityBuffer, entityStation, 
                                                  totalAvailableCapacity, totalRequestedCapacity):
                                     # reduce the available space if there is need to
