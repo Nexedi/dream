@@ -226,7 +226,7 @@ class BatchesWIPSpreadsheet(plugin.InputPreparationPlugin):
                     })
             # if it is a standard BatchScrapMachine
             elif nodes[stationId]['_class'] == 'Dream.BatchScrapMachine':
-                if _class=='Dream.Batch':
+                if _class=='Dream.SubBatch':
                     nodes[stationId]['wip'].append({
                       "_class": _class,
                       "id": partId, 
@@ -236,7 +236,7 @@ class BatchesWIPSpreadsheet(plugin.InputPreparationPlugin):
                       "unitsToProcess": unitsToProcess, 
                       "parentBatchName":'Batch_'+parentBatchId+"_WIP"                    
                     })    
-                elif _class=='Dream.SubBatch':            
+                elif _class=='Dream.Batch':            
                     nodes[stationId]['wip'].append({
                       "_class": _class,
                       "id": partId, 
