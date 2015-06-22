@@ -89,8 +89,9 @@
       }, 
       "view": {
         "gadget": "Input_viewProductionLine", 
-        "title": "ProductionLine", 
-        "type": "object_view"
+        "title": "Production Line", 
+        "type": "object_view",
+        "priority": 10
       }, 
       "view_available_capacity_spreadsheet": {
         "configuration": {
@@ -631,29 +632,37 @@
             "id": {
               "default": "M", 
               "required": true, 
-              "type": "string"
+              "type": "string",
+              "priority": 5
             }, 
             "name": {
               "default": "Machine", 
-              "type": "string"
+              "type": "string",
+              "priority": 4
             }, 
             "pool": {
               "_default": "", 
+              "name": "Worker Pool",
               "description": "The pool of workers that is used for this station. If this station does not share resources leave empty", 
               "required": false, 
-              "type": "string"
+              "type": "string",
+              "priority": 3
             }, 
             "priority": {
               "_default": "", 
+              "name": "Priority",
               "description": "The priority against other stations. If this station does not share resources leave empty", 
               "required": false, 
-              "type": "number"
+              "type": "number",
+              "priority": 2
             }, 
             "requireFullProject": {
               "_default": 0, 
+              "name": "Is Assembly ?",
               "description": "Is this station an assembly? Yes: 1, No: 0", 
               "required": true, 
-              "type": "number"
+              "type": "number",
+              "priority": 1
             }
           }, 
           "type": "object"
