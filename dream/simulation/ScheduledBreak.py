@@ -89,8 +89,17 @@ class ScheduledBreak(ObjectInterruption):
                 # signal to the station that the operator has to leave
                 station=self.victim.workingStation
                 if station:
+                    # signal the station that operator left
                     if not self.endUnfinished and station.expectedSignals['processOperatorUnavailable']:
                         self.sendSignal(receiver=station, signal=station.processOperatorUnavailable)
+                    # if SkilledRouter waits for the station to finish, send this signal to this router
+                    from Globals import G
+                    from dream.simulation.SkilledOperatorRouter import SkilledRouter
+                    if G.RouterList[0].__class__ is SkilledRouter:
+                        if station.id in G.RouterList[0].expectedFinishSignalsDict.keys():
+                            print 'I must send for',station.id
+                            self.sendSignal(receiver=G.RouterList[0], signal=G.RouterList[0].expectedFinishSignalsDict[station.id], 
+                                            sender=station)
                 if self.victim.schedule:
                     if not self.victim.schedule[-1].get("exitTime", None):
                         self.victim.schedule[-1]["exitTime"] = self.env.now
