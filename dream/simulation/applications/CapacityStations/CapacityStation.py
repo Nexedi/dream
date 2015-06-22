@@ -100,9 +100,7 @@ class CapacityStation(Queue):
             meanUtilization=0
             for entry in self.utilisationDict:
                 meanUtilization+=entry['utilization']/float(len(self.utilisationDict))
-                if entry['utilization']>1.0:
-                    print '*************'
-                    print self.id, entry['period'],entry['utilization']
+                assert (entry['utilization'])<1.00001, 'utilization greater than 1'
             json['results']['meanUtilization']=meanUtilization
             json['results']['detailedWorkPlan']=self.detailedWorkPlan
         G.outputJSON['elementList'].append(json)
