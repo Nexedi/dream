@@ -313,18 +313,19 @@ class Router(ObjectInterruption):
         for station in candidateMachines+self.pendingMachines:
             # find candidateOperators for each object 
             candidateOperators=station.operatorPool.availableOperators()
-            if candidateOperators:	# if there was an operator found append the Machine on his candidateStations
+            if candidateOperators:  # if there was an operator found append the Machine on his candidateStations
                 for candidateOperator in candidateOperators:
                     # XXX not generic enough - find an other way to initiate skilledRouter and incorporate also setup and load
                     if candidateOperator.skillDict:
-                        if (station.id in candidateOperator.skillDict["process"].get("stationIdList",[]) and station in self.pendingMachines) or\
+                        if ((station.id in candidateOperator.skillDict["process"].get("stationIdList",[]) and station in self.pendingMachines) or\
                            (station.id in candidateOperator.skillDict["setup"].get("stationIdList",[]) and station in candidateMachines) or\
                            ((station.id in candidateOperator.skillDict["process"].get("stationIdList",[]) and station in candidateMachines) and \
-                            not station.getActiveObjectQueue()):
+                            not station.getActiveObjectQueue())) and \
+                           station.checkIfActive():
                             if not station in candidateOperator.candidateStations:
                                 candidateOperator.candidateStations.append(station)
                     else: 
-                        if not station in candidateOperator.candidateStations:
+                        if not station in candidateOperator.candidateStations and station.checkIfActive():
                             candidateOperator.candidateStations.append(station)
                     if not candidateOperator in self.candidateOperators:
                         self.candidateOperators.append(candidateOperator)
