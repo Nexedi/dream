@@ -94,16 +94,19 @@
     }, 
     "input": {
       "debug": {
+		"priority":1,
         "gadget": "Input_viewDebugJson", 
         "title": "Edit Configuration", 
         "type": "object_view"
       }, 
       "view": {
+		"priority":10,
         "gadget": "Input_viewProductionLine", 
         "title": "Production Line", 
         "type": "object_view"
       }, 
       "view_ACO_weights_spreadsheet": {
+		"priority":2,
         "configuration": {
           "columns": [
             {
@@ -141,6 +144,7 @@
         "type": "object_view"
       }, 
       "view_machine_shift_spreadsheet": {
+		"priority":5,
         "configuration": {
           "columns": [
             {
@@ -167,12 +171,14 @@
         "type": "object_view"
       }, 
       "view_management": {
+		"priority":0,
         "gadget": "Input_viewDocumentManagement", 
         "title": "Manage Document", 
         "type": "object_view"
       }, 
       "view_operator_shift_spreadsheet": {
-        "configuration": {
+		"priority":8,	
+		"configuration": {
           "columns": [
             {
               "format": "date-time", 
@@ -221,6 +227,7 @@
         "type": "object_view"
       }, 
       "view_operator_skill_spreadsheet": {
+	    "priority":9,
         "configuration": {
           "columns": [
             {
@@ -238,16 +245,19 @@
         "type": "object_view"
       }, 
       "view_result": {
+		"priority": -4,
         "gadget": "Input_viewResultList", 
         "title": "Results", 
         "type": "object_view"
       }, 
       "view_run_simulation": {
+		"priority": -2,
         "gadget": "Input_viewSimulation", 
         "title": "Run Simulation", 
         "type": "object_view"
       }, 
       "view_wip_spreadsheet": {
+		"priority": 4,
         "configuration": {
           "columns": [
             {
@@ -283,6 +293,7 @@
     }, 
     "output": {
       "view_buffer_state": {
+		"priority":5,
         "configuration": {
           "handsontable_options": {}, 
           "output_id": "buffer_output"
@@ -292,6 +303,7 @@
         "type": "object_view"
       }, 
       "view_download_spreadsheet": {
+		"priority":0,
         "configuration": {
           "output_id": "operator_spreadsheet"
         }, 
@@ -300,6 +312,7 @@
         "type": "object_view"
       }, 
       "view_exit_results": {
+	    "priority":10,
         "configuration": {
           "handsontable_options": {}, 
           "output_id": "exit_output"
@@ -309,6 +322,7 @@
         "type": "object_view"
       }, 
       "view_operator_gantt": {
+		"priority":8,
         "configuration": {
           "output_id": "operator_gantt"
         }, 
@@ -317,6 +331,7 @@
         "type": "object_view"
       }, 
       "view_operator_utilization": {
+		"priority":7,
         "configuration": {
           "output_id": "operator_utilization"
         }, 
@@ -325,6 +340,7 @@
         "type": "object_view"
       }, 
       "view_queue_stats": {
+		"priority":5,
         "configuration": {
           "output_id": "queue_statistics"
         }, 
@@ -333,6 +349,7 @@
         "type": "object_view"
       }, 
       "view_station_utilization": {
+		"priority":6,
         "configuration": {
           "output_id": "station_utilization"
         }, 
