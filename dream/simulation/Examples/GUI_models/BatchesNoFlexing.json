@@ -513,12 +513,14 @@
         {
           "properties": {
             "id": {
+			  "priority":10,
               "default": "M", 
               "name": "Unique Station Name", 
               "required": true, 
               "type": "string"
             }, 
             "processingTime": {
+			  "priority":5,
               "$ref": "#/definitions/_dist", 
               "default": 0.1, 
               "description": "The time that this station needs in order to process a unit", 
@@ -526,12 +528,14 @@
               "required": true
             }, 
             "technology": {
+			  "priority":9,
               "default": "M", 
               "name": "Operation", 
               "required": true, 
               "type": "string"
             }, 
             "workingBatchSize": {
+			  "priority":0,
               "default": 10, 
               "name": "Working batch size in this station", 
               "type": "number"
