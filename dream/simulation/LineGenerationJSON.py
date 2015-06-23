@@ -687,9 +687,9 @@ def main(argv=[], input_data=None):
             endList=[]
             for exit in G.ExitList:
                 endList.append(exit.timeLastEntityLeft)
-  
+
             # identify the time of the last event
-            if float(max(endList))!=0 and G.env.now==float('inf'):    #do not let G.maxSimTime=0 so that there will be no crash
+            if float(max(endList))!=0 and (G.env.now==float('inf') or G.env.now == max(endList)):    #do not let G.maxSimTime=0 so that there will be no crash
                 G.maxSimTime=float(max(endList))
             else:
                 print "simulation ran for 0 time, something may have gone wrong"
