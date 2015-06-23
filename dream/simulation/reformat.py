@@ -124,8 +124,22 @@ def migrate_to_new_format(graph):
 with open(sys.argv[1]) as infile:
   m = json.load(infile)
 
-m = migrate_to_new_format(m)
+#m = migrate_to_new_format(m)
 #m.update(preferences=positionGraph(m))
+
+m['application_configuration']['input']['view_production_orders_spreadsheet']['priority'] = 10
+m['application_configuration']['input']['view']['priority'] = 9
+m['application_configuration']['input']['view_workplan_spreadsheet']['priority'] = 8
+m['application_configuration']['input']['view_operator_skills_spreadsheet']['priority'] = 7
+m['application_configuration']['input']['view_shift_spreadsheet']['priority'] = 6
+m['application_configuration']['input']['view_wip_spreadsheet']['priority'] = 5
+m['application_configuration']['input']['view_run_simulation']['priority'] = 4
+m['application_configuration']['input']['view_management']['priority'] = 3
+m['application_configuration']['input']['view_result']['priority'] = 2
+if 'debug' in m['application_configuration']['input']:
+  m['application_configuration']['input']['debug']['priority'] = 1
+  m['application_configuration']['input']['debug']['name'] = "Edit Configuration"
+
 
 with open(sys.argv[1], "w") as outfile:
   json.dump(m, outfile, sort_keys=True,
