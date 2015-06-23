@@ -24,10 +24,14 @@ class PostProcessOrderLateness(plugin.OutputPreparationPlugin, TimeSupportMixin)
                 order_lateness_dict[order['id']] = {
                   'dueDate': self.convertToFormattedRealWorldTime(dueDate),
                   # XXX do we want to format to another time unit ? days ?
-                  'delay': (obj["results"]["completionTime"] - dueDate) if completed else None, # XXX manpy outputs delay, but it is sometimes wrong
+                  'delayText': ("%d %s" % (obj["results"]["completionTime"] - dueDate, data['general']['timeUnit'])) if completed else None, # XXX manpy outputs delay, but it is sometimes wrong
+                  'delay': obj["results"]["completionTime"] - dueDate if completed else None,
                   'manpy_delay': obj['results'].get('delay'),
                   'completionDate': self.convertToFormattedRealWorldTime(obj["results"]["completionTime"]) if completed else obj["results"]["completionTime"],
                 }
+                # XXX format delay as number of days.
+                if data['general']['timeUnit'] == 'hour' and completed:
+                  order_lateness_dict[order['id']]['delayText'] = "%d Days" % ((obj["results"]["completionTime"] - dueDate) / 24.)
               else:
                 # if order is not processed at all, it has no schedule.
                 order_lateness_dict[order['id']] = {
@@ -43,6 +47,7 @@ class PostProcessOrderLateness(plugin.OutputPreparationPlugin, TimeSupportMixin)
             order_lateness_dict[obj["id"]] = {
               "dueDate": self.convertToFormattedRealWorldTime(dueDate),
               "delay": completionTime - dueDate,
+              "delayText": "%d %s" % (completionTime - dueDate, data['general']['timeUnit']),
               "completionDate": self.convertToFormattedRealWorldTime(completionTime)
             }
           else:

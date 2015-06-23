@@ -93,7 +93,7 @@
               }
               $(td).text("").css({"background-color": color});
               a = $("<a>").attr("href", value.link)
-                .text(value.completionDate + "\n" + (value.delay || 0).toFixed(0))
+                .text(value.completionDate + "\n" + (value.delayText || (value.delay || 0).toFixed(0)))
                 .css({color: "black", "text-shadow": "none"});
               a.appendTo(td);
             }
