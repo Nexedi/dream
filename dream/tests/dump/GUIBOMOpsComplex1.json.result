@@ -2844,6 +2844,7 @@
   "W134188": {
    "completionDate": "2015/02/27 08:24", 
    "delay": -375.6, 
+   "delayText": "-15 Days", 
    "dueDate": "2015/03/15 00:00", 
    "manpy_delay": -375.6
   }

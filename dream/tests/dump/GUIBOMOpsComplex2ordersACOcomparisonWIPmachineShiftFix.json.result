@@ -5079,12 +5079,14 @@
   "W134188": {
    "completionDate": "2015/02/24 17:30", 
    "delay": -438.5, 
+   "delayText": "-18 Days", 
    "dueDate": "2015/03/15 00:00", 
    "manpy_delay": null
   }, 
   "W134239": {
    "completionDate": "2015/02/26 17:30", 
    "delay": -822.5, 
+   "delayText": "-34 Days", 
    "dueDate": "2015/04/02 00:00", 
    "manpy_delay": -822.5
   }

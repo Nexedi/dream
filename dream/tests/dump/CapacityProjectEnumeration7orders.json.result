@@ -4996,36 +4996,43 @@
   "P1": {
    "completionDate": "2014/03/12", 
    "delay": -14.0, 
+   "delayText": "-14 day", 
    "dueDate": "2014/03/26"
   }, 
   "P2": {
    "completionDate": "2014/03/21", 
    "delay": -14.0, 
+   "delayText": "-14 day", 
    "dueDate": "2014/04/04"
   }, 
   "P3": {
    "completionDate": "2014/04/29", 
    "delay": -50.0, 
+   "delayText": "-50 day", 
    "dueDate": "2014/06/18"
   }, 
   "P4": {
    "completionDate": "2014/03/25", 
    "delay": -12.0, 
+   "delayText": "-12 day", 
    "dueDate": "2014/04/06"
   }, 
   "P5": {
    "completionDate": "2014/04/16", 
    "delay": 0.0, 
+   "delayText": "0 day", 
    "dueDate": "2014/04/16"
   }, 
   "P6": {
    "completionDate": "2014/04/17", 
    "delay": -4.0, 
+   "delayText": "-4 day", 
    "dueDate": "2014/04/21"
   }, 
   "P7": {
    "completionDate": "2014/04/08", 
    "delay": -2.0, 
+   "delayText": "-2 day", 
    "dueDate": "2014/04/10"
   }
  }, 
