@@ -263,14 +263,16 @@
    }, 
    {
     "color": "DodgerBlue", 
-    "id": "PE001068A", 
+    "entranceTime": 1.0, 
+    "id": "PE001068A_D", 
     "open": false, 
     "parent": "W134188", 
-    "text": "PE001068A", 
+    "text": "PE001068A_D", 
     "type": "project"
    }, 
    {
     "color": "DodgerBlue", 
+    "entranceTime": 23.0, 
     "id": "PE001068A-01", 
     "open": false, 
     "parent": "W134188", 
@@ -279,6 +281,7 @@
    }, 
    {
     "color": "DodgerBlue", 
+    "entranceTime": 23.0, 
     "id": "PE001068A-02", 
     "open": false, 
     "parent": "W134188", 
@@ -287,6 +290,7 @@
    }, 
    {
     "color": "DodgerBlue", 
+    "entranceTime": 24.5, 
     "id": "PE001068A-03", 
     "open": false, 
     "parent": "W134188", 
@@ -295,10 +299,11 @@
    }, 
    {
     "color": "DodgerBlue", 
-    "id": "PE001068A_D", 
+    "entranceTime": 48.4, 
+    "id": "PE001068A", 
     "open": false, 
     "parent": "W134188", 
-    "text": "PE001068A_D", 
+    "text": "PE001068A", 
     "type": "project"
    }
   ], 

@@ -9,6 +9,7 @@
     "type": "project"
    }, 
    {
+    "entranceTime": 73.0, 
     "id": "W134239", 
     "open": false, 
     "text": "Spalttopf C80", 
@@ -753,6 +754,7 @@
    }, 
    {
     "color": "DodgerBlue", 
+    "entranceTime": 0, 
     "id": "PE001068A", 
     "open": false, 
     "parent": "W134188", 
@@ -761,14 +763,7 @@
    }, 
    {
     "color": "DodgerBlue", 
-    "id": "3.122.052.01.00", 
-    "open": false, 
-    "parent": "W134239", 
-    "text": "3.122.052.01.00", 
-    "type": "project"
-   }, 
-   {
-    "color": "DodgerBlue", 
+    "entranceTime": 0, 
     "id": "3.122.052.01.00-01", 
     "open": false, 
     "parent": "W134239", 
@@ -777,54 +772,7 @@
    }, 
    {
     "color": "DodgerBlue", 
-    "id": "3.122.052.01.00-02", 
-    "open": false, 
-    "parent": "W134239", 
-    "text": "3.122.052.01.00-02", 
-    "type": "project"
-   }, 
-   {
-    "color": "DodgerBlue", 
-    "id": "3.122.052.01.00-03", 
-    "open": false, 
-    "parent": "W134239", 
-    "text": "3.122.052.01.00-03", 
-    "type": "project"
-   }, 
-   {
-    "color": "DodgerBlue", 
-    "id": "3.122.052.01.00-04", 
-    "open": false, 
-    "parent": "W134239", 
-    "text": "3.122.052.01.00-04", 
-    "type": "project"
-   }, 
-   {
-    "color": "DodgerBlue", 
-    "id": "3.122.052.01.00-05", 
-    "open": false, 
-    "parent": "W134239", 
-    "text": "3.122.052.01.00-05", 
-    "type": "project"
-   }, 
-   {
-    "color": "DodgerBlue", 
-    "id": "3.122.052.01.00-06", 
-    "open": false, 
-    "parent": "W134239", 
-    "text": "3.122.052.01.00-06", 
-    "type": "project"
-   }, 
-   {
-    "color": "DodgerBlue", 
-    "id": "3.122.052.01.00-07", 
-    "open": false, 
-    "parent": "W134239", 
-    "text": "3.122.052.01.00-07", 
-    "type": "project"
-   }, 
-   {
-    "color": "DodgerBlue", 
+    "entranceTime": 0.0, 
     "id": "3.122.052.01.00-08", 
     "open": false, 
     "parent": "W134239", 
@@ -833,22 +781,7 @@
    }, 
    {
     "color": "DodgerBlue", 
-    "id": "3.122.052.01.00-09", 
-    "open": false, 
-    "parent": "W134239", 
-    "text": "3.122.052.01.00-09", 
-    "type": "project"
-   }, 
-   {
-    "color": "DodgerBlue", 
-    "id": "3.122.052.01.00-10", 
-    "open": false, 
-    "parent": "W134239", 
-    "text": "3.122.052.01.00-10", 
-    "type": "project"
-   }, 
-   {
-    "color": "DodgerBlue", 
+    "entranceTime": 0.0, 
     "id": "3.122.052.01.00-11", 
     "open": false, 
     "parent": "W134239", 
@@ -857,6 +790,7 @@
    }, 
    {
     "color": "DodgerBlue", 
+    "entranceTime": 1.5, 
     "id": "3.122.052.01.00-12", 
     "open": false, 
     "parent": "W134239", 
@@ -865,6 +799,16 @@
    }, 
    {
     "color": "DodgerBlue", 
+    "entranceTime": 3.0, 
+    "id": "3.122.052.01.00-02", 
+    "open": false, 
+    "parent": "W134239", 
+    "text": "3.122.052.01.00-02", 
+    "type": "project"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "entranceTime": 3.0, 
     "id": "3.122.052.01.00-13", 
     "open": false, 
     "parent": "W134239", 
@@ -873,6 +817,16 @@
    }, 
    {
     "color": "DodgerBlue", 
+    "entranceTime": 5.0, 
+    "id": "3.122.052.01.00-10", 
+    "open": false, 
+    "parent": "W134239", 
+    "text": "3.122.052.01.00-10", 
+    "type": "project"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "entranceTime": 22.0, 
     "id": "3.122.052.01.00-E01", 
     "open": false, 
     "parent": "W134239", 
@@ -881,10 +835,74 @@
    }, 
    {
     "color": "DodgerBlue", 
+    "entranceTime": 25.5, 
     "id": "3.122.052.01.00-E02", 
     "open": false, 
     "parent": "W134239", 
     "text": "3.122.052.01.00-E02", 
+    "type": "project"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "entranceTime": 26.5, 
+    "id": "3.122.052.01.00-09", 
+    "open": false, 
+    "parent": "W134239", 
+    "text": "3.122.052.01.00-09", 
+    "type": "project"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "entranceTime": 28.5, 
+    "id": "3.122.052.01.00-03", 
+    "open": false, 
+    "parent": "W134239", 
+    "text": "3.122.052.01.00-03", 
+    "type": "project"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "entranceTime": 45.0, 
+    "id": "3.122.052.01.00-07", 
+    "open": false, 
+    "parent": "W134239", 
+    "text": "3.122.052.01.00-07", 
+    "type": "project"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "entranceTime": 49.0, 
+    "id": "3.122.052.01.00-06", 
+    "open": false, 
+    "parent": "W134239", 
+    "text": "3.122.052.01.00-06", 
+    "type": "project"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "entranceTime": 52.0, 
+    "id": "3.122.052.01.00-05", 
+    "open": false, 
+    "parent": "W134239", 
+    "text": "3.122.052.01.00-05", 
+    "type": "project"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "entranceTime": 53.25, 
+    "id": "3.122.052.01.00-04", 
+    "open": false, 
+    "parent": "W134239", 
+    "text": "3.122.052.01.00-04", 
+    "type": "project"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "entranceTime": 73.0, 
+    "id": "3.122.052.01.00", 
+    "open": false, 
+    "parent": "W134239", 
+    "text": "3.122.052.01.00", 
     "type": "project"
    }
   ], 
