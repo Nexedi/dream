@@ -38,12 +38,14 @@
           "type": "integer"
         }, 
         "processTimeout": {
+		  "priority":-1,
           "default": 10, 
           "description": "Number of seconds before the calculation process is interrupted", 
           "title": "Process Timeout", 
           "type": "number"
         }, 
         "timeUnit": {
+		  "priority":-1,
           "default": "hour", 
           "description": "Used for input and reporting widgets.", 
           "enum": [
@@ -58,6 +60,7 @@
           "type": "string"
         }, 
         "trace": {
+		  "priority":-1,
           "default": "No", 
           "description": "Create an excel trace file (Yes or No)", 
           "enum": [
@@ -71,16 +74,19 @@
     }, 
     "input": {
       "view": {
+		"priority":10,
         "gadget": "Input_viewProductionLine", 
         "title": "Production Line", 
         "type": "object_view"
       }, 
       "view_management": {
+		"priority":2,
         "gadget": "Input_viewDocumentManagement", 
         "title": "Manage document", 
         "type": "object_view"
       }, 
       "view_operator_skills_spreadsheet": {
+		"priority":3,
         "configuration": {
           "columns": [
             {
@@ -101,6 +107,7 @@
         "type": "object_view"
       }, 
       "view_production_orders_spreadsheet": {
+		"priority":8,
         "configuration": {
           "columns": [
             {
@@ -139,17 +146,20 @@
         "type": "object_view"
       }, 
       "view_result": {
+		"priority":1,
         "gadget": "Input_viewResultComparison", 
         "output_id": "order_lateness", 
         "title": "Results", 
         "type": "object_view"
       }, 
       "view_run_simulation": {
+		"priority":0,
         "gadget": "Input_viewSimulation", 
         "title": "Run Simulation", 
         "type": "object_view"
       }, 
       "view_shift_spreadsheet": {
+		"priority":9,
         "configuration": {
           "columns": [
             {
@@ -180,6 +190,7 @@
         "type": "object_view"
       }, 
       "view_wip_spreadsheet": {
+		"priority":4,
         "configuration": {
           "columns": [
             {
@@ -214,6 +225,7 @@
         "type": "object_view"
       }, 
       "view_workplan_spreadsheet": {
+		"priority":7,
         "configuration": {
           "columns": [
             {
@@ -290,6 +302,7 @@
     }, 
     "output": {
       "view_component_gantt": {
+		"priority":10,
         "configuration": {
           "output_id": "component_gantt"
         }, 
@@ -298,6 +311,7 @@
         "type": "object_view"
       }, 
       "view_component_schedule_spreadsheet": {
+		"priority":6,
         "configuration": {
           "handsontable_options": {}, 
           "output_id": "component_schedule"
@@ -307,6 +321,7 @@
         "type": "object_view"
       }, 
       "view_operator_gantt": {
+		"priority":8,
         "configuration": {
           "output_id": "operator_gantt"
         }, 
@@ -315,6 +330,7 @@
         "type": "object_view"
       }, 
       "view_operator_utilization": {
+		"priority":4,
         "configuration": {
           "output_id": "operator_utilization"
         }, 
@@ -323,6 +339,7 @@
         "type": "object_view"
       }, 
       "view_station_utilization": {
+		"priority":2,
         "configuration": {
           "output_id": "station_utilization"
         }, 
