@@ -99,6 +99,16 @@ class JSComponentGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
                   duration=exitTime-entranceTime,
                 )           
            
+      # sort the tasks for an order according to the entrance time of the first component
+      for task_id, task in task_dict.iteritems():
+          if not task.get('entranceTime',None):
+              childrenTimes=[]
+              for t_id, t in task_dict.iteritems():
+                  if t.get('parent',None)==task_id and not (t.get('entranceTime',None)==None):
+                      childrenTimes.append(t['entranceTime'])
+              if childrenTimes:
+                  task['entranceTime']=min(childrenTimes)              
+              
       # return the result to the gadget
       result[self.configuration_dict['output_id']] = dict(
         time_unit=self.getTimeUnitText(),
