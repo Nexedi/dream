@@ -51,7 +51,7 @@ class JSComponentTabSchedule(plugin.OutputPreparationPlugin, TimeSupportMixin):
     """Post process the job schedules and formats to be presented in tabular format
     """
     self.data = data
-    numberOfReplications = int(data['general']['numberOfReplications'])
+    numberOfReplications = int(data['general'].get('numberOfReplications',1))
     '''Time definition'''
     strptime = datetime.datetime.strptime
     # read the current date and define dateFormat from it
