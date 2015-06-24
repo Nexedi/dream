@@ -186,7 +186,7 @@
           ]
         }, 
         "gadget": "Input_viewSpreadsheet", 
-        "title": "Operators and Machine Shift Spreadsheet", 
+        "title": "Exceptions in Operator and Machine Shifts", 
         "type": "object_view"
       }, 
       "view_wip_spreadsheet": {
