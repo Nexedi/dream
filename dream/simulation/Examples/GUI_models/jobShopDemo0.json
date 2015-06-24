@@ -82,7 +82,7 @@
       "view_management": {
 		"priority":2,
         "gadget": "Input_viewDocumentManagement", 
-        "title": "Manage document", 
+        "title": "Manage document (Super User Tab)", 
         "type": "object_view"
       }, 
       "view_operator_skills_spreadsheet": {
