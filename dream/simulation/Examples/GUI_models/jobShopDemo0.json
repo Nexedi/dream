@@ -2,43 +2,36 @@
   "application_configuration": {
     "general": {
       "properties": {
-        "confidenceLevel": {
-          "default": 0.95, 
-          "description": "Confidence level for statistical analysis of stochastic experiments", 
-          "title": "Confidence level", 
-          "type": "number"
-        }, 
         "currentDate": {
+		  "priority":10,
           "default": "2014/10/01", 
           "description": "The day the experiment starts, in YYYY/MM/DD format", 
           "title": "Simulation Start Time", 
           "type": "string"
         }, 
         "maxSimTime": {
+		  "priority":9,
           "default": 100, 
           "description": "Length of the simulation run", 
           "title": "Length of Experiment", 
           "type": "number"
         }, 
         "numberOfAntsPerGenerations": {
+		  "priority":7,
           "default": 20, 
           "description": "Number of ants per generation", 
           "title": "Number of ants per generation", 
           "type": "integer"
         }, 
         "numberOfGenerations": {
+		  "priority":8,
           "default": 10, 
           "description": "The number of Generations", 
           "title": "Number of generations", 
           "type": "integer"
         }, 
-        "numberOfReplications": {
-          "default": 10, 
-          "description": "Number of replications to run", 
-          "title": "Number of replications", 
-          "type": "integer"
-        }, 
         "numberOfSolutions": {
+		  "priority":5,
           "default": 4, 
           "description": "Number of solutions", 
           "name": "Number of solutions", 
@@ -48,12 +41,6 @@
           "default": 10, 
           "description": "Number of seconds before the calculation process is interrupted", 
           "title": "Process Timeout", 
-          "type": "number"
-        }, 
-        "seed": {
-          "default": 10, 
-          "description": "When using the same seed, the random number generator produce the same sequence of numbers", 
-          "title": "Seed for random number generator", 
           "type": "number"
         }, 
         "timeUnit": {
@@ -463,6 +450,7 @@
               "type": "string"
             }, 
             "name": {
+			  "priority":10,
               "default": "Queue", 
               "type": "string"
             }, 
@@ -590,6 +578,7 @@
               "type": "string"
             }, 
             "name": {
+			  "priority":7,
               "default": "Assembly Queue", 
               "type": "string"
             }
