@@ -482,7 +482,8 @@
       "css": {
         "backgroundColor": "#eff", 
         "backgroundImage": "linear-gradient(to bottom, #eff 0%, #dee 100%)", 
-        "border": "1px solid #bcc"
+        "border": "1px solid #bcc",
+		"border-radius": "50px"
       }, 
       "description": "A buffer where entities can be hold until the next station is ready to process them and a certain condition is met", 
       "name": "Queue"
@@ -575,8 +576,8 @@
         }
       ], 
       "css": {
-        "backgroundColor": "#fef", 
-        "backgroundImage": "linear-gradient(to bottom, #fef 0%, #ede 100%)", 
+        "backgroundColor": "#fdd", 
+        "backgroundImage": "linear-gradient(to bottom, #fdd 0%, #dcc 100%)", 
         "border": "1px solid #cbc"
       }, 
       "description": "A station that assembles different components of the same production order into a single entity", 
@@ -604,46 +605,13 @@
         }
       ], 
       "css": {
-        "backgroundColor": "#eff", 
-        "backgroundImage": "linear-gradient(to bottom, #eff 0%, #dee 100%)", 
-        "border": "1px solid #bcc"
+        "backgroundColor": "#8FD8D8", 
+        "backgroundImage": "linear-gradient(to bottom, #8FD8D8 0%, #8DEEEE 100%)", 
+        "border": "1px solid #bcc",
+		"border-radius": "50px"
       }, 
       "description": "A buffer where entities can be hold until the next assembly is ready to process all the entities from the same production-order", 
       "name": "Assembly Queue"
-    }, 
-    "Dream.Operator": {
-      "_class": "node", 
-      "allOf": [
-        {
-          "$ref": "#/node"
-        }, 
-        {
-          "properties": {
-            "id": {
-              "default": "PM", 
-              "required": true, 
-              "type": "string"
-            }, 
-            "name": {
-              "default": "Operator", 
-              "type": "string"
-            }, 
-            "schedulingRule": {
-              "$ref": "#/definitions/_schedulingRule", 
-              "default": "WT", 
-              "required": true
-            }
-          }, 
-          "type": "object"
-        }
-      ], 
-      "css": {
-        "backgroundColor": "#fdd", 
-        "backgroundImage": "linear-gradient(to bottom, #fdd 0%, #dcc 100%)", 
-        "border": "1px solid #cbb"
-      }, 
-      "description": "A resource that operates stations", 
-      "name": "Operator"
     }, 
     "Dream.OrderDecomposition": {
       "_class": "node", 
@@ -663,9 +631,10 @@
         }
       ], 
       "css": {
-        "backgroundColor": "#eff", 
-        "backgroundImage": "linear-gradient(to bottom, #eff 0%, #dee 100%)", 
-        "border": "1px solid #bcc"
+        "backgroundColor": "#FEF1B5", 
+        "backgroundImage": "linear-gradient(to bottom, #FEF1B5 0%, #FFF8DC  100%)", 
+        "border": "1px solid #bcc",
+		"border-radius": "50px"
       }, 
       "description": "A station where production-orders are decomposed into components ", 
       "name": "Decomposition"
