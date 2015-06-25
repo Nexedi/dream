@@ -20,9 +20,11 @@ class CapacityProjectSpreadsheet(plugin.InputPreparationPlugin):
         node=data['graph']['node']
         now = strptime(data['general']['currentDate'], '%Y/%m/%d')
         if projectData:
+            alreadyConsideredProjects=[]
             for row in range(1, len(projectData)):
-                if projectData[row][0]:
+                if projectData[row][0] and not (projectData[row][0] in alreadyConsideredProjects):
                     projectId=projectData[row][0]
+                    alreadyConsideredProjects.append(projectData[row][0])
                     orderDate=strptime(projectData[row][1], '%Y/%m/%d')
                     orderDate=(orderDate-now).days 
                     if projectData[row][2]:
@@ -37,7 +39,8 @@ class CapacityProjectSpreadsheet(plugin.InputPreparationPlugin):
                     # get the number of operations of the project
                     numberOfOperations=1
                     i=1
-                    while not projectData[row+i][0]:
+                    # if the id changes or is empty it means there is no more data on the project
+                    while (not projectData[row+i][0]) or (projectData[row+i][0]==projectId):
                         # if a completely empty line is found break
                         if all(v in [None, ''] for v in projectData[row+i]):
                             break
