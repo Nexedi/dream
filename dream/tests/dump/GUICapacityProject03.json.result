@@ -294,13 +294,7 @@
   "task_list": [
    {
     "color": "DodgerBlue", 
-    "id": "ASBTST", 
-    "open": false, 
-    "text": "Station ASBTST", 
-    "type": "station"
-   }, 
-   {
-    "color": "DodgerBlue", 
+    "entranceTime": 0, 
     "id": "CNC", 
     "open": false, 
     "text": "Station CNC", 
@@ -308,6 +302,7 @@
    }, 
    {
     "color": "DodgerBlue", 
+    "entranceTime": 0, 
     "id": "EEP", 
     "open": false, 
     "text": "Station EEP", 
@@ -315,6 +310,7 @@
    }, 
    {
     "color": "DodgerBlue", 
+    "entranceTime": 0, 
     "id": "MCH", 
     "open": false, 
     "text": "Station MCH", 
@@ -322,20 +318,7 @@
    }, 
    {
     "color": "DodgerBlue", 
-    "id": "PAINT", 
-    "open": false, 
-    "text": "Station PAINT", 
-    "type": "station"
-   }, 
-   {
-    "color": "DodgerBlue", 
-    "id": "PPASB", 
-    "open": false, 
-    "text": "Station PPASB", 
-    "type": "station"
-   }, 
-   {
-    "color": "DodgerBlue", 
+    "entranceTime": 0, 
     "id": "SMF", 
     "open": false, 
     "text": "Station SMF", 
@@ -343,9 +326,34 @@
    }, 
    {
     "color": "DodgerBlue", 
+    "entranceTime": 1, 
     "id": "WELD", 
     "open": false, 
     "text": "Station WELD", 
+    "type": "station"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "entranceTime": 2, 
+    "id": "PPASB", 
+    "open": false, 
+    "text": "Station PPASB", 
+    "type": "station"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "entranceTime": 7, 
+    "id": "PAINT", 
+    "open": false, 
+    "text": "Station PAINT", 
+    "type": "station"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "entranceTime": 16, 
+    "id": "ASBTST", 
+    "open": false, 
+    "text": "Station ASBTST", 
     "type": "station"
    }, 
    {
