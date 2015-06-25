@@ -82,7 +82,7 @@
       "view_management": {
 		"priority":2,
         "gadget": "Input_viewDocumentManagement", 
-        "title": "Manage document (Super User Tab)", 
+        "title": "Manage document", 
         "type": "object_view"
       }, 
       "view_operator_skills_spreadsheet": {
@@ -1018,11 +1018,11 @@
     "confidenceLevel": 0.95, 
     "currentDate": "2015/02/23 14:00", 
     "maxSimTime": -1, 
-    "numberOfAntsPerGenerations": 2, 
-    "numberOfGenerations": 2, 
+    "numberOfAntsPerGenerations": 4, 
+    "numberOfGenerations": 4, 
     "numberOfReplications": 1, 
-    "numberOfSolutions": 2, 
-    "processTimeout": 10, 
+    "numberOfSolutions": 1, 
+    "processTimeout": 60, 
     "seed": 15, 
     "timeUnit": "hour", 
     "trace": "No"
