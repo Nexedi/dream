@@ -19,6 +19,15 @@ class CapacityProjectSpreadsheet(plugin.InputPreparationPlugin):
         data['input']['BOM']['productionOrders']=[] 
         node=data['graph']['node']
         now = strptime(data['general']['currentDate'], '%Y/%m/%d')
+        
+        # find the column where the earliest start is given
+        i=0
+        for element in projectData[0]:
+            if element=='Earliest Start Date':
+                earliestStartColumn=i
+                break
+            i+=1
+
         if projectData:
             alreadyConsideredProjects=[]
             for row in range(1, len(projectData)):
@@ -46,11 +55,12 @@ class CapacityProjectSpreadsheet(plugin.InputPreparationPlugin):
                             break
                         numberOfOperations+=1
                         i+=1
+                                    
                     # for every operation get capacityRequirementDict and earliestStartDict
                     for stationRecord in range(numberOfOperations):
                         stationId=projectData[row+stationRecord][4]
                         requiredCapacity=projectData[row+stationRecord][5]
-                        earliestStart=projectData[row+stationRecord][6]
+                        earliestStart=projectData[row+stationRecord][earliestStartColumn]
                         capacityRequirementDict[stationId]=float(requiredCapacity)
                         if earliestStart:
                             earliestStart=strptime(earliestStart, '%Y/%m/%d')
