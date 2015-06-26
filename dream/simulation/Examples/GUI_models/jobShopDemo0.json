@@ -450,81 +450,6 @@
     }
   }, 
   "class_definition": {
-    "Dream.ConditionalBuffer": {
-      "_class": "node", 
-      "allOf": [
-        {
-          "$ref": "#/node"
-        }, 
-        {
-          "properties": {
-            "capacity": {
-              "$ref": "#/definitions/_capacity", 
-              "required": true
-            }, 
-            "id": {
-              "default": "Q", 
-              "type": "string"
-            }, 
-            "name": {
-			  "priority":10,
-              "default": "Queue", 
-              "type": "string"
-            }, 
-            "schedulingRule": {
-              "$ref": "#/definitions/_schedulingRule", 
-              "required": true
-            }
-          }, 
-          "type": "object"
-        }
-      ], 
-      "css": {
-        "backgroundColor": "#eff", 
-        "backgroundImage": "linear-gradient(to bottom, #eff 0%, #dee 100%)", 
-        "border": "1px solid #bcc",
-		"border-radius": "50px"
-      }, 
-      "description": "A buffer where entities can be hold until the next station is ready to process them and a certain condition is met", 
-      "name": "Queue"
-    }, 
-    "Dream.Edge": {
-      "_class": "edge", 
-      "allOf": [
-        {
-          "$ref": "#/edge"
-        }
-      ], 
-      "description": "Connect stations together"
-    }, 
-    "Dream.ExitJobShop": {
-      "_class": "node", 
-      "allOf": [
-        {
-          "$ref": "#/node"
-        }, 
-        {
-          "properties": {
-            "id": {
-              "default": "E", 
-              "required": true
-            }, 
-            "name": {
-              "default": "Exit", 
-              "type": "string"
-            }
-          }, 
-          "type": "object"
-        }
-      ], 
-      "css": {
-        "backgroundColor": "#eef", 
-        "backgroundImage": "linear-gradient(to bottom, #eef 0%, #dde 100%)", 
-        "border": "1px solid #ccb"
-      }, 
-      "description": "A station where entities exits from the system", 
-      "name": "Exit"
-    }, 
     "Dream.MachineJobShop": {
       "_class": "node", 
       "allOf": [
@@ -583,6 +508,53 @@
       "description": "A station that assembles different components of the same production order into a single entity", 
       "name": "Assembly"
     }, 
+    "Dream.ConditionalBuffer": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "capacity": {
+              "$ref": "#/definitions/_capacity", 
+              "required": true
+            }, 
+            "id": {
+              "default": "Q", 
+              "type": "string"
+            }, 
+            "name": {
+			  "priority":10,
+              "default": "Queue", 
+              "type": "string"
+            }, 
+            "schedulingRule": {
+              "$ref": "#/definitions/_schedulingRule", 
+              "required": true
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#eff", 
+        "backgroundImage": "linear-gradient(to bottom, #eff 0%, #dee 100%)", 
+        "border": "1px solid #bcc",
+		"border-radius": "50px"
+      }, 
+      "description": "A buffer where entities can be hold until the next station is ready to process them and a certain condition is met", 
+      "name": "Queue"
+    }, 
+    "Dream.Edge": {
+      "_class": "edge", 
+      "allOf": [
+        {
+          "$ref": "#/edge"
+        }
+      ], 
+      "description": "Connect stations together"
+    }, 
     "Dream.MouldAssemblyBuffer": {
       "_class": "node", 
       "allOf": [
@@ -638,6 +610,34 @@
       }, 
       "description": "A station where production-orders are decomposed into components ", 
       "name": "Decomposition"
+    },
+ "Dream.ExitJobShop": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "id": {
+              "default": "E", 
+              "required": true
+            }, 
+            "name": {
+              "default": "Exit", 
+              "type": "string"
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#eef", 
+        "backgroundImage": "linear-gradient(to bottom, #eef 0%, #dde 100%)", 
+        "border": "1px solid #ccb"
+      }, 
+      "description": "A station where entities exits from the system", 
+      "name": "Exit"
     }, 
     "definitions": {
       "_capacity": {
