@@ -229,7 +229,8 @@ class CoreObject(ManPyObject):
                                 "preemptQueue":0,
                                 "entityRemoved":0,
                                 "entityCreated":0,
-                                "moveEnd":0
+                                "moveEnd":0,
+                                "processOperatorUnavailable":0
                               }
         # lists that keep the start/endShiftTimes of the victim
         self.endShiftTimes=[]
