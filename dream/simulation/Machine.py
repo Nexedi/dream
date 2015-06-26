@@ -643,6 +643,10 @@ class Machine(CoreObject):
                     assert eventTime==self.env.now, 'initialWIP was not received on time'
                     self.initialWIP=self.env.event()
                     self.isProcessingInitialWIP=True
+                    if not self.checkIfActive():
+                        continue
+                    break
+                if self.isProcessingInitialWIP:
                     break
                     
             # TODO: maybe here have to assigneExit of the giver and add self to operator activeCallers list
@@ -658,7 +662,7 @@ class Machine(CoreObject):
             #===================================================================
             # #  request a resource if there is a need for load operation
             #===================================================================
-            if self.shouldYield(operationTypes={"Load":1}):
+            if self.shouldYield(operationTypes={"Load":1}) and not self.isProcessingInitialWIP:
                 self.timeWaitForLoadOperatorStarted = self.env.now
                 yield self.env.process(self.request())
                 self.timeWaitForLoadOperatorEnded = self.env.now
@@ -1230,6 +1234,7 @@ class Machine(CoreObject):
                 if G.RouterList[0].expectedFinishSignals:
                     if self.id in G.RouterList[0].expectedFinishSignalsDict:
                         signal=G.RouterList[0].expectedFinishSignalsDict[self.id]
+                        print "(((())))"*4, self.env.now, 'signaling router on release operator'
                         self.sendSignal(receiver=G.RouterList[0], signal=signal)
         self.broker.invokeType='release'
         self.broker.invoke()
