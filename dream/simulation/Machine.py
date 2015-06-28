@@ -1234,7 +1234,6 @@ class Machine(CoreObject):
                 if G.RouterList[0].expectedFinishSignals:
                     if self.id in G.RouterList[0].expectedFinishSignalsDict:
                         signal=G.RouterList[0].expectedFinishSignalsDict[self.id]
-                        print "(((())))"*4, self.env.now, 'signaling router on release operator'
                         self.sendSignal(receiver=G.RouterList[0], signal=signal)
         self.broker.invokeType='release'
         self.broker.invoke()
