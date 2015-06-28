@@ -57,6 +57,11 @@ class RoutingQueue(Queue):
         if not isInRouting:
             for entity in activeObjectQueue:
                 if not entity.receiver:
+                    # check additionally the next objects if they alreay hold a sub-batch of this batch
+                    for o in self.next:
+                        if o.getActiveObjectQueue():
+                            if o.getActiveObjectQueue()[0].parentBatch==entity.parentBatch and not (o is callerObject):
+                                return False
                     isInRouting=True
                     break
         return len(activeObjectQueue)>0 and thecaller.isInRouteOf(self) and isInRouting
