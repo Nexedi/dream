@@ -265,7 +265,7 @@ class SkilledRouter(Router):
                     station.operatorToGet=operator
                     # remove the operator id from availableOperatorList
                     self.availableOperatorList.remove(operatorID)
-
+                    
                 #===================================================================
                 # # XXX signal the stations that the assignment is complete
                 #===================================================================             
@@ -276,7 +276,8 @@ class SkilledRouter(Router):
                     # check if the operator that the station waits for is free
                     operator=station.operatorToGet
                     if operator.workingStation:
-                        if operator.workingStation.isProcessing:
+                        # if the operator is in a station that is processing or just starts processing then he/she is not free
+                        if operator.workingStation.isProcessing or (not (operator.workingStation.timeLastEntityEntered==self.env.now)):
                             stationsProcessingLast.append(operator.workingStation)
                             continue
                     # signal the station so that it gets the operator
@@ -297,10 +298,20 @@ class SkilledRouter(Router):
                             assert eventTime==self.env.now, 'the station finished signal must be received on the time of request'
                             self.expectedFinishSignals.remove(signal)                   
                             del self.expectedFinishSignalsDict[transmitter.id]
+                            # signal also the other stations that should be signalled
                             for id in solution.keys():
                                 operator=findObjectById(id)
                                 station=findObjectById(solution[id])
-                                if station in self.toBeSignalled:
+                                signal=True                                       
+                                # signal only the stations in the original list
+                                if station not in self.toBeSignalled:
+                                    signal=False
+                                # signal only if the operator is free 
+                                if operator.workingStation:
+                                    if operator.workingStation.isProcessing\
+                                             or (not (operator.workingStation.timeLastEntityEntered==self.env.now)):
+                                        signal=False
+                                if signal:
                                     # signal the station so that it gets the operator
                                     self.signalStation(station, operator)
           
