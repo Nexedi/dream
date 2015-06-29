@@ -199,9 +199,6 @@ class SkilledRouter(Router):
                 LPFlag=True
                 if self.checkCondition:
                     LPFlag=self.checkIfAllocationShouldBeCalled() 
-                    # in case there are not available stations or operators there is no need to call the LP
-                    if (not self.availableStationsDict) or (not self.availableOperatorList):
-                        LPFlag=False
                         
                 #===================================================================
                 # # XXX run the LP assignment algorithm
@@ -213,13 +210,11 @@ class SkilledRouter(Router):
                 import time
                 startLP=time.time()
                 if LPFlag:
-#                     print self.env.now, 'LP called'
                     solution=opAss_LP(self.availableStationsDict, self.availableOperatorList, 
                                       self.operators, previousAssignment=self.previousSolution,
                                       weightFactors=self.weightFactors,Tool=self.tool)
                 else:
-#                     print self.env.now, 'no need to call LP'
-                    solution={}
+                    solution=self.previousSolution
 #                 print '-------'
 #                 print self.env.now, solution
 #                 print 'time needed',time.time()-startLP
