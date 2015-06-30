@@ -25,19 +25,19 @@ Created on 28 Jan 2015
 
 from Globals import G
 from Allocation_3 import Allocation2
-from UtilisationCalculation import utilisationCalc2, utilisationCalc1
+from UtilisationCalculation import utilisationCalc2, utilisationCalc1, utilisationCalc3
 from copy import deepcopy
 
 # allocates orders of a give week/priority level implementing the ant choice for MAs
 def AllocationRoutine_ACO(initialWeek, itemList, itemType, ant):
-        
-    ACOexcess = 0
+           
     ACOcapacityDict = deepcopy(G.CurrentCapacityDict)
     ACOincompleteBatches = deepcopy(G.incompleteBatches)
     ACOearliness = 0
     ACOlateness = 0
     ACOtargetUtil = 0
     ACOminUtil = 0
+    ACOexcess = 0
     
     # repeat allocation procedure for all items in the list
     for item in itemList:
@@ -97,8 +97,8 @@ def AllocationRoutine_ACO(initialWeek, itemList, itemType, ant):
             if chosenMA != None:
                 ACOcapacityDict = Results[chosenMA]['remainingCap']
                 ACOincompleteBatches = Results[chosenMA]['remUnits']
-                ACOearliness += Results[chosenMA]['earliness']/item['Qty'] 
-                ACOlateness += Results[chosenMA]['lateness']/item['Qty'] 
+                ACOearliness += float(Results[chosenMA]['earliness'])/item['Qty'] 
+                ACOlateness += float(Results[chosenMA]['lateness'])/item['Qty'] 
                 break
 
             step += 1
@@ -109,7 +109,7 @@ def AllocationRoutine_ACO(initialWeek, itemList, itemType, ant):
     if G.minDeltaUt:
         ACOtargetUtil, ACOminUtil = utilisationCalc1(ACOcapacityDict, initialWeek, ind)
     else:
-        ACOtargetUtil, ACOminUtil = utilisationCalc2(ACOcapacityDict, initialWeek, ind)
+        ACOtargetUtil, ACOminUtil = utilisationCalc3(ACOcapacityDict, initialWeek, ind)
         
     return {'ant':ant, 'excess':ACOexcess, 'earliness':ACOearliness, 'lateness':ACOlateness, 'targetUtil':ACOtargetUtil, 'minUtil':ACOminUtil}
 

@@ -100,18 +100,24 @@ def Allocation_GA(initialWeek, itemList, itemType,GAresults):
         # cross-over: order2 cross-over is applied
         for item in range(G.popSizeGA):
             
+            #print 'item', item
             # apply X-over based on X-over probability
             xOver = random.random()
+            #print 'xOver', xOver
+            
             if  item < G.popSizeGA-1 and xOver <= G.probXover:
                 
+                #print 'in for crossOver'
                 chromosomes[item]['chromo']['seq'], chromosomes[item+1]['chromo']['seq'] = order2x(chromosomes[item]['chromo']['seq'], chromosomes[item+1]['chromo']['seq'])
                 changeC[item] = 1   # both chromosomes have changes and they should be reassessed
                 changeC[item+1] = 1
                 
             mutation = random.random()
+            #print 'mut', mutation
             # apply mutation based on mutation probability
             if mutation <= G.probMutation:
                 
+                #print 'in for mutation'
                 chromosomes[item]['chromo']['seq'] = displacement(chromosomes[item]['chromo']['seq'])
                 changeC[item] = 1
                 

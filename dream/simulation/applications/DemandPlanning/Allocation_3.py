@@ -93,8 +93,10 @@ def Allocation2(currentMA, qty, weekList, capIn, inBatches, earliness, lateness,
                 currentCapacity[bottleneck][currentWeek]=remainingCapacity[bottleneck]
                 utilisation[bottleneck][currentWeek] = float(G.Capacity[bottleneck][currentWeek]['OriginalCapacity'] - currentCapacity[bottleneck][currentWeek])/G.Capacity[bottleneck][currentWeek]['OriginalCapacity']
             Allocation.append({'ma':currentMA, 'units':correctedQty, 'week':currentWeek})   
-            lateness += max([0, currentWeek - demandWeek])*correctedQty
-            earliness += max([0, demandWeek - currentWeek])*correctedQty
+            if currentWeek > demandWeek:
+                lateness += (step+1)*correctedQty
+            elif currentWeek<demandWeek:
+                earliness += (step+1)*correctedQty
             
             # if there is a surplus...update remUnits
             if surplus:
@@ -102,7 +104,7 @@ def Allocation2(currentMA, qty, weekList, capIn, inBatches, earliness, lateness,
                 if roundDown:
                     remUnits[currentMA] -= surplus
                 else:
-                    remUnits[currentMA] = G.BatchSize[currentMA][currentWeek] - surplus
+                    remUnits[currentMA] += G.BatchSize[currentMA][currentWeek] - surplus
                 
                 surplus = 0
                 
@@ -131,8 +133,10 @@ def Allocation2(currentMA, qty, weekList, capIn, inBatches, earliness, lateness,
                 currentCapacity[bottleneck][currentWeek]-=allocableQty*G.RouteDict[currentMA][bottleneck][currentWeek]
             
             Allocation.append({'ma':currentMA,'units':allocableQty, 'week':currentWeek})
-            lateness += max([0, currentWeek - demandWeek])*allocableQty
-            earliness += max([0, demandWeek - currentWeek])*allocableQty
+            if currentWeek > demandWeek:
+                lateness += (step+1)*allocableQty
+            elif currentWeek < demandWeek:
+                earliness += (step+1)*allocableQty
             
         if remainingUnits == 0:
             sufficient = True

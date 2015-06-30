@@ -27,10 +27,11 @@ from Globals import G
 from pulp import *
 from os import remove 
 from glob import glob
+from time import time
 
 def Allocation_IP(item, week, previousAss, capacity, weightFactor):
     
-    
+    startLP = time()
     MAlist = item['MAlist']
     
     # calculate number of units to be allocated
@@ -55,7 +56,8 @@ def Allocation_IP(item, week, previousAss, capacity, weightFactor):
     # first objective: max SP units allocated to a week
     
     BS = [float(G.BatchSize[ma][week]) for ma in MAlist]
-    h1=[MA_var[ma]*(weightFactor[0]/min(BS)) for ma in MAlist]
+    if weightFactor[0]:
+        h1=[MA_var[ma]*(weightFactor[0]*min(BS)/allQty) for ma in MAlist]
 #    print 'h1', h1, allQty
 
     #_________________________________________________
@@ -81,44 +83,48 @@ def Allocation_IP(item, week, previousAss, capacity, weightFactor):
 
         utilisation[bottleneck] = 1.0/float(G.Capacity[bottleneck][week]['OriginalCapacity']) *capDict_obj[bottleneck] 
         Util[bottleneck] = utilisation[bottleneck]*-1
-
-         
+        
         # delta target utilisation calculation (through definition of constraints)
         prob += lpSum([(utilisation[bottleneck] - G.Capacity[bottleneck][week]['targetUtilisation'])/float(G.Capacity[bottleneck][week]['targetUtilisation'])]) >= Delta_targetUt[bottleneck]
         prob += lpSum([(G.Capacity[bottleneck][week]['targetUtilisation'] - utilisation[bottleneck])/float(G.Capacity[bottleneck][week]['targetUtilisation'])]) >= Delta_targetUt[bottleneck]
     
-    h1.append(Util[bottleneck]*weightFactor[1] for bottleneck in G.Bottlenecks)
-    h1.append(Delta_targetUt[bottleneck]*weightFactor[2] for bottleneck in G.Bottlenecks)
+    if weightFactor[1]:
+        h1+=[Util[bottleneck]*weightFactor[1] for bottleneck in G.Bottlenecks]
+    if weightFactor[2]:
+        h1+=[Delta_targetUt[bottleneck]*weightFactor[2] for bottleneck in G.Bottlenecks]
     
-    # third set of variables (Delta_Ut represents the delta between target utilisation
-    Delta_Ut = LpVariable.dicts("DeltaTarget",[(b1,b2) for i1, b1 in enumerate(G.Bottlenecks) for b2 in G.Bottlenecks[i1+1:]])   
-    
-    for i1, b1 in enumerate(G.Bottlenecks):
-        for b2 in G.Bottlenecks[i1+1:]:
-            prob += lpSum([Util[b1],-1*Util[b2]]) >= Delta_Ut[(b1,b2)]
-            prob += lpSum([Util[b2],-1*Util[b1]]) >= Delta_Ut[(b1,b2)]
-            #prob += lpSum([Delta_targetUt[b1],-1*Delta_targetUt[b2]]) >= Delta_Ut[(b1,b2)]
-            #prob += lpSum([Delta_targetUt[b2], -1*Delta_targetUt[b1]]) >= Delta_Ut[(b1,b2)]
-            
     # aggregate objective
-    h1.append(Delta_Ut[(b1,b2)]*weightFactor[3] for i1, b1 in enumerate(G.Bottlenecks) for b2 in G.Bottlenecks[i1+1:])
+    if weightFactor[3]:
+        # third set of variables (Delta_Ut represents the delta between target utilisation
+        Delta_Ut = LpVariable.dicts("DeltaTarget",[(b1,b2) for i1, b1 in enumerate(G.Bottlenecks) for b2 in G.Bottlenecks[i1+1:]])   
+        
+        for i1, b1 in enumerate(G.Bottlenecks):
+            for b2 in G.Bottlenecks[i1+1:]:
+                prob += lpSum([Util[b1],-1*Util[b2]]) >= Delta_Ut[(b1,b2)]
+                prob += lpSum([Util[b2],-1*Util[b1]]) >= Delta_Ut[(b1,b2)]
+                #prob += lpSum([Delta_targetUt[b1],-1*Delta_targetUt[b2]]) >= Delta_Ut[(b1,b2)]
+                #prob += lpSum([Delta_targetUt[b2], -1*Delta_targetUt[b1]]) >= Delta_Ut[(b1,b2)]
+            
+        h1+=[Delta_Ut[(b1,b2)]*weightFactor[3] for i1, b1 in enumerate(G.Bottlenecks) for b2 in G.Bottlenecks[i1+1:]]
 
 
     #___________________________________________________________________________________
     # third objective: support proportional disaggregation of SP into corresponding MAs            
     
-    # create set of variables reporting the delta assignment across the MAs belonging to a SP
-    Delta_MA = LpVariable.dicts("SPdistribution",MAlist)
-    
-    # calculate the delta assignment of MAs corresponding to SPs (through constraints)
-    for ma in MAlist:
-        if ma in item['suggestedMA']:
-            prob += lpSum((previousAss[ma] + MA_var[ma] * G.BatchSize[ma][week] - item['suggestedMA'][ma])/ item['Qty']) >= Delta_MA[ma]
-            prob += lpSum((item['suggestedMA'][ma] - previousAss[ma] - MA_var[ma] * G.BatchSize[ma][week])/ item['Qty']) >= Delta_MA[ma]
+    if weightFactor[4]:
+        # create set of variables reporting the delta assignment across the MAs belonging to a SP
+        Delta_MA = LpVariable.dicts("SPdistribution",MAlist)
+        
+        # calculate the delta assignment of MAs corresponding to SPs (through constraints)
+        for ma in MAlist:
+            if ma in item['suggestedMA']:
+                prob += lpSum((previousAss[ma] + MA_var[ma] * G.BatchSize[ma][week] - item['suggestedMA'][ma])/ item['Qty']) >= Delta_MA[ma]
+                prob += lpSum((item['suggestedMA'][ma] - previousAss[ma] - MA_var[ma] * G.BatchSize[ma][week])/ item['Qty']) >= Delta_MA[ma]
+        
+        h1+=[Delta_MA[ma]*weightFactor[4] for ma in MAlist]                
         
     #_____________________________
-    # aggregate and set objectives           
-    h1.append(Delta_MA[ma]*0.5 for ma in MAlist)                
+    # aggregate and set objectives      
     prob += lpSum(h1)
     
     
@@ -141,10 +147,15 @@ def Allocation_IP(item, week, previousAss, capacity, weightFactor):
     prob.writeLP("IPifx.lp") 
     prob.solve()
     
+    print 'lp results', item['sp'], allQty, LpStatus[prob.status], sum(MA_var[ma].varValue* G.BatchSize[ma][week] for ma in MAlist)
     allocation = {}
     for ma in MAlist:
         allocation[ma] = MA_var[ma].varValue * G.BatchSize[ma][week]
+#        print ma, MA_var[ma].varValue
         
+        
+    if LpStatus[prob.status] != 'Optimal':
+        print 'WARNING: LP solution ', LpStatus[prob.status]
         
     # remove lp files
     files = glob('*.mps')
@@ -155,4 +166,5 @@ def Allocation_IP(item, week, previousAss, capacity, weightFactor):
     for f in files:
         remove(f)
     
-    return allocation
+    G.LPtime += startLP
+    return allocation, LpStatus[prob.status]

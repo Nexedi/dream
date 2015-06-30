@@ -23,6 +23,7 @@ Created on 5 Sep 2013
 @author: Anna
 '''
 import tablib
+from copy import deepcopy
 
 class G:
     Capacity = {}
@@ -32,13 +33,16 @@ class G:
     planningHorizon =0      # for future demand purposes
 #    demandFile = None
     CurrentCapacityDict = {}
+    CurrentCapacityDictOrig = {}
     Bottlenecks = []
     SPlist = {}
     SPs = []
     BatchSize = {}
     orders = {}
     sortedOrders = {}
-    forecast = {}
+    ordersOrig = {}
+    sortedOrdersOrig = {}
+    #forecast = {}
     incompleteBatches = {}
     items ={}
     WeekList=[]
@@ -46,8 +50,10 @@ class G:
     Earliness = {}
     Lateness = {}
     Excess = {}
+    LateMeasures = {'noLateOrders':0, 'lateness':[], 'noEarlyOrders':0, 'earliness':[], 'noExcess':0, 'exUnits':0}
+    Summary = {}
+    
     weightFactor = [10.0,1.0,0,2,0.5]
-    Utilisation={}
     
     # ACO parameters
     ACO = 1
@@ -67,19 +73,88 @@ class G:
     
     # utilisation calculation
     minDeltaUt = 0
-    
+    acoRange = []
+    minRange = {}
+
     
     # output variables
     reportResults = tablib.Databook()
     OrderResults = tablib.Dataset(title='OrderSummary')
-    OrderResults.headers = ('PPOS', 'SP_NUMBER', 'MA_LIST', 'REQUEST_DATE', 'DFSELLER', 'ORDERQTY', 'PRIORITY', 'CHOSEN_MA', 'LATENESS', 'EARLINESS', 'ALLOCATION')
+    OrderResults.headers = ('OrderID', 'SP_NUMBER', 'MA_LIST', 'REQUEST_DATE', 'DFSELLER', 'ORDERQTY', 'PRIORITY', 'CHOSEN_MA','ORDERED_MA_LIST', 'LATENESS', 'EARLINESS', 'ALLOCATION')
     forecastResults = tablib.Dataset(title='ForecastSummary')
     forecastResults.headers = ('PPOS', 'SP_NUMBER', 'MA_LIST', 'REQUEST_DATE', 'ORDERQTY', 'PRIORITY', 'CHOSEN_MA', 'LATENESS', 'EARLINESS', 'ALLOCATION')
     globalMAAllocation = {}
+    globalMAAllocationIW = {}
     spForecastOrder = []
+    CapacityResults = None
     CapacityResults = tablib.Dataset(title = 'BN_Capa')
     allocationResults = tablib.Dataset(title = 'Demand_coverage')
-    
+    Utilisation = {}
+    Butilisation = {}
+    LPtime = 0
+    capRep = None
     
 #    filterItem = 0
 #    filterWeek = 0
+def initialiseVar():
+
+    G.CurrentCapacityDict = deepcopy(G.CurrentCapacityDictOrig)
+    G.orders = deepcopy(G.ordersOrig)
+    G.sortedOrders = deepcopy(G.sortedOrdersOrig)
+    #G.forecast = {}
+#    G.items ={}
+
+    # set lateness and earliness results
+    for week in G.WeekList:
+        G.Lateness[week] = {}
+        G.Earliness[week] = {}
+        for sp in G.SPlist.keys():
+            for ma in G.SPlist[sp]:
+                G.Lateness[week][ma] = {'qty':[], 'lateness':[]}
+                G.Earliness[week][ma] = {'qty':[], 'earliness':[]}
+
+    # set excess results
+    for sp in G.SPlist.keys():
+        G.Excess[sp] = {}
+        for week in G.WeekList:
+            G.Excess[sp][week] = 0
+        for ma in G.SPlist[sp]:
+            G.incompleteBatches[ma] = 0
+
+    # set 
+    for sp in G.SPlist.keys():
+        G.globalMAAllocationIW[sp] = {}
+        for week in G.WeekList:
+            G.globalMAAllocationIW[sp][week] = {'order':{}, 'forecast':{}}
+            for priority in G.priorityList['order']:
+                G.globalMAAllocationIW[sp][week]['order'][priority] = 0
+            for priority in G.priorityList['forecast']:
+                G.globalMAAllocationIW[sp][week]['forecast'][priority] = 0
+        for ma in G.SPlist[sp]:
+            G.globalMAAllocation[ma] = {}
+            G.globalMAAllocationIW[ma] = {}
+            for week in G.WeekList:
+                G.globalMAAllocation[ma][week] = {'order':{}}
+                G.globalMAAllocationIW[ma][week] = {'order':{}}
+                for priority in G.priorityList['order']:
+                    G.globalMAAllocation[ma][week]['order'][priority] = 0 
+                    G.globalMAAllocationIW[ma][week]['order'][priority] = 0
+                G.globalMAAllocation[ma][week]['forecast'] = {}
+                G.globalMAAllocationIW[ma][week]['forecast'] = {}
+                for priority in G.priorityList['forecast']:
+                    G.globalMAAllocation[ma][week]['forecast'][priority] = 0 
+                    G.globalMAAllocationIW[ma][week]['forecast'][priority] = 0
+
+    G.LateMeasures = {'noLateOrders':0, 'lateness':[], 'noEarlyOrders':0, 'earliness':[], 'noExcess':0, 'exUnits':0}
+    
+    # output variables
+    G.reportResults = tablib.Databook()
+    G.OrderResults = tablib.Dataset(title='OrderSummary')
+    G.OrderResults.headers = ('OrderID', 'SP_NUMBER', 'MA_LIST', 'REQUEST_DATE', 'DFSELLER', 'ORDERQTY', 'PRIORITY', 'CHOSEN_MA','ORDERED_MA_LIST', 'LATENESS', 'EARLINESS', 'ALLOCATION')
+    G.forecastResults = tablib.Dataset(title='ForecastSummary')
+    G.forecastResults.headers = ('PPOS', 'SP_NUMBER', 'MA_LIST', 'REQUEST_DATE', 'ORDERQTY', 'PRIORITY', 'CHOSEN_MA', 'LATENESS', 'EARLINESS', 'ALLOCATION')
+    G.CapacityResults = None
+    G.CapacityResults = tablib.Dataset(title = 'BN_Capa')
+    G.allocationResults = tablib.Dataset(title = 'Demand_coverage')
+    G.Utilisation = {}
+    G.Butilisation = {}

@@ -31,11 +31,9 @@ from Globals import G
 from AllocationForecast_IP import Allocation_IP
 from Allocation_3 import Allocation2
 from UtilisationCalculation import utilisationCalc1, utilisationCalc2
+from math import ceil
 
 def AllocationRoutine_ForecastGA(initialWeek, itemList, itemType, chromo):
-
-    EarlinessMA = {}
-    LatenessMA = {}
 
     GAexcess = 0
     GAcapacityDict = deepcopy(G.CurrentCapacityDict)
@@ -50,7 +48,7 @@ def AllocationRoutine_ForecastGA(initialWeek, itemList, itemType, chromo):
         
         item=itemList[order]
         
-#        print 'item', item['orderID']
+        print 'item', item['orderID']
         
         #================================================
         # Allocation step 1...allocation at current Week
@@ -90,28 +88,37 @@ def AllocationRoutine_ForecastGA(initialWeek, itemList, itemType, chromo):
             for week in weekList:
                 
                 # optimise MA allocation at current week        
-                spAllocation = Allocation_IP(item, week, previousAss, capacity, G.weightFactor)
-
+                spAllocation, probStatus = Allocation_IP(item, week, previousAss, capacity, G.weightFactor)
+                                       
+                    
                 # implement optimal MA solution to update temporary variables
                 for ma in spAllocation.keys():
+                    
+                    if probStatus == 'Optimal':
+                        allocatedQty = spAllocation[ma]
+                    else:
+                        allocatedQty = ceil(spAllocation[ma])
+                    
                     if spAllocation[ma]:
-                        Results = Allocation2(ma, spAllocation[ma], [week], capacity, inBatches, earliness, lateness, Allocation, initialWeek)
-                        assert (Results['remainingUnits'] == 0)
+                        
+                        #print 'spAllocation', ma, spAllocation[ma], inBatches[ma]
+                        Results = Allocation2(ma, allocatedQty, [week], capacity, inBatches, earliness, lateness, Allocation, initialWeek)
+                        #print 'rem units', Results['remainingUnits']
+                        
+                        if probStatus == 'Optimal':
+                            assert (Results['remainingUnits'] == 0)
+                        else:
+                            allocatedQty -= Results['remainingUnits']
                         
                         # update order variables
                         capacity = deepcopy(Results['remainingCap'])
                         inBatches = deepcopy(Results['remUnits'])
-                        qty -= spAllocation[ma]
+                        qty -= allocatedQty
                         Allocation = deepcopy(Results['Allocation'])
                         earliness = deepcopy(Results['earliness'])
                         lateness = deepcopy(Results['lateness'])
-                        if ma not in EarlinessMA:
-                            EarlinessMA[ma] = 0
-                            LatenessMA[ma] = 0
-                        EarlinessMA[ma] += max([0, initialWeek - week])*spAllocation[ma]
-                        LatenessMA[ma] += max([0, week - initialWeek])*spAllocation[ma]
                             
-                        previousAss[ma] += spAllocation[ma]
+                        previousAss[ma] += allocatedQty
                 
                 # if order has been fully allocated update GA variables        
                 if qty <= 0:

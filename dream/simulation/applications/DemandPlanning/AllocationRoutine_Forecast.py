@@ -30,8 +30,6 @@ from Allocation_3 import Allocation2
 def AllocationRoutine_Forecast(initialWeek, itemList, itemType, seq):
     
     
-    EarlinessMA = {}
-    LatenessMA = {}
     
     # repeat allocation procedure for all items in the list
     for order in seq['seq']:
@@ -39,6 +37,10 @@ def AllocationRoutine_Forecast(initialWeek, itemList, itemType, seq):
         item = itemList[order]
 #        print 'item', item['orderID']
         
+        EarlinessMA = {}
+        LatenessMA = {}
+        lateForecast = 0
+        earlyForecast = 0
         #================================================
         # Allocation step 1...allocation at current Week
         #================================================
@@ -47,7 +49,9 @@ def AllocationRoutine_Forecast(initialWeek, itemList, itemType, seq):
         step = 1
         ind = G.WeekList.index(initialWeek)
         weekList = [initialWeek]
+        weekLateness = [0]
         capacity = deepcopy(G.CurrentCapacityDict)
+        incompleteBatches = deepcopy(G.incompleteBatches)
         qty = item['Qty']
         Allocation = []
         earliness = 0
@@ -55,31 +59,42 @@ def AllocationRoutine_Forecast(initialWeek, itemList, itemType, seq):
         previousAss = {}
         for ma in G.SPlist[item['sp']]:
             previousAss[ma] = 0
-
+            previousAss[ma] = incompleteBatches[ma]
+#            print 'ma in', ma, incompleteBatches[ma]
+            qty -= incompleteBatches[ma]
+            # make use of incomplete batch units available
+            incompleteBatches[ma] = 0
+        
+#        print 'order qty', qty   
         
         while step <= 3 and qty>0:
             
             if step == 2:                    
                 weekList = [G.WeekList[i] for i in range(ind-1, max(-1,ind-G.maxEarliness-1), -1)]
+                weekLateness = [i-ind for i in range(ind-1, max(-1,ind-G.maxEarliness-1), -1)]
+                assert (len(weekList)==len(weekLateness))
                 
             if step == 3:
                 weekList = [G.WeekList[i] for i in range(ind+1, min(G.planningHorizon,ind+G.maxLateness+1))]
-            
+                weekLateness = [i-ind for i in range(ind+1, min(G.planningHorizon,ind+G.maxLateness+1))]
+                
 #            print 'weeklist', weekList
             if len(weekList) == 0:
                 step+=1
                 continue
             
             # check different MAs
-            for week in weekList:
+            for weekIndex in range(len(weekList)):
+                
+                week = weekList[weekIndex]
                 
                 # optimise MA allocation               
-                spAllocation = Allocation_IP(item, week, previousAss, capacity,G.weightFactor)
+                spAllocation, probStatus = Allocation_IP(item, week, previousAss, capacity,G.weightFactor)
 #                print 'all', spAllocation
                 # implement optimal MA solution
                 for ma in spAllocation.keys():
                     if spAllocation[ma]:
-                        Results = Allocation2(ma, spAllocation[ma], [week], capacity, G.incompleteBatches, earliness, lateness, Allocation, initialWeek)
+                        Results = Allocation2(ma, spAllocation[ma], [week], capacity, incompleteBatches, earliness, lateness, Allocation, initialWeek)
                         assert (Results['remainingUnits'] == 0)
                         
                         # update variables
@@ -91,9 +106,10 @@ def AllocationRoutine_Forecast(initialWeek, itemList, itemType, seq):
                         if ma not in EarlinessMA:
                             EarlinessMA[ma] = 0
                             LatenessMA[ma] = 0
-                        EarlinessMA[ma] += max([0, initialWeek - week])*spAllocation[ma]
-                        LatenessMA[ma] += max([0, week - initialWeek])*spAllocation[ma]
-                            
+                        
+                        EarlinessMA[ma] += max([0, weekLateness[weekIndex]*(-1)])*spAllocation[ma]
+                        LatenessMA[ma] += max([0, weekLateness[weekIndex]])*spAllocation[ma]     #week - initialWeek
+                        
                         previousAss[ma] += spAllocation[ma]
                         
                 if qty <= 0:
@@ -103,14 +119,29 @@ def AllocationRoutine_Forecast(initialWeek, itemList, itemType, seq):
         
         # confirm results 
         if qty <= 0:
+            
+            minAss =item['Qty']*10
+            maIB = None
             G.CurrentCapacityDict = Results['remainingCap']
             G.incompleteBatches = Results['remUnits']
 #            print initialWeek, G.Earliness
             for maT in EarlinessMA:
+#                assert(Results['remUnits'][maT]==0)
                 G.Earliness[initialWeek][maT]['qty'].append(item['Qty'])
                 G.Earliness[initialWeek][maT]['earliness'].append(EarlinessMA[maT]/item['Qty'])
                 G.Lateness[initialWeek][maT]['qty'].append(item['Qty'])
                 G.Lateness[initialWeek][maT]['lateness'].append(LatenessMA[maT]/item['Qty'])
+                lateForecast += LatenessMA[maT]/item['Qty']
+                earlyForecast += EarlinessMA[maT]/item['Qty']
+                if previousAss[maT] <= minAss:
+                    minAss = previousAss[maT]
+                    maIB = maT
+            
+#            print 'ma ib', maIB, qty, cQty, item['Qty'], previousAss, EarlinessMA , [G.incompleteBatches[ma] for ma in G.SPlist[item['sp']]]
+            if maIB != None:
+                G.incompleteBatches[maIB] -= qty 
+#            print [G.incompleteBatches[ma] for ma in G.SPlist[item['sp']]]
+                
             G.orders[item['orderID']]['Allocation'] = Results['Allocation']
             G.orders[item['orderID']]['Excess'] = False
             chosenMA = []
@@ -119,14 +150,22 @@ def AllocationRoutine_Forecast(initialWeek, itemList, itemType, seq):
                     chosenMA.append(allMA['ma'])
             G.orders[item['orderID']]['chosenMA'] = chosenMA    
             
+            if lateForecast:
+                G.LateMeasures['noLateOrders'] += 1
+                G.LateMeasures['lateness'].append(lateForecast)
+                
+            if earlyForecast:
+                G.LateMeasures['noEarlyOrders'] += 1
+                G.LateMeasures['earliness'].append(earlyForecast)            
                            
     
             for allRep in Results['Allocation']:
                 G.globalMAAllocation[allRep['ma']][allRep['week']][itemType][item['priority']] += allRep['units']
+                G.globalMAAllocationIW[allRep['ma']][initialWeek][itemType][item['priority']] += allRep['units']
             
         
             if itemType == 'forecast':
-                G.forecastResults.append((item['ppos'], item['sp'], item['MAlist'], item['Week'], item['Qty'], item['priority'], chosenMA, Results['lateness'], Results['earliness']/item['Qty'], Results['Allocation']))
+                G.forecastResults.append((item['ppos'], item['sp'], item['MAlist'], item['Week'], item['Qty'], item['priority'], chosenMA, Results['lateness']/item['Qty'], Results['earliness']/item['Qty'], Results['Allocation']))
                 
         
         else:
@@ -134,5 +173,8 @@ def AllocationRoutine_Forecast(initialWeek, itemList, itemType, seq):
             G.orders[item['orderID']]['Allocation'] = []
             G.orders[item['orderID']]['Excess'] = True
             G.orders[item['orderID']]['chosenMA'] = None
+            G.globalMAAllocationIW[item['sp']][initialWeek][itemType][item['priority']] += item['Qty']
+            G.LateMeasures['noExcess'] += 1
+            G.LateMeasures['exUnits'] += item['Qty']
             if itemType == 'forecast':
                 G.forecastResults.append((item['ppos'], item['sp'], item['MAlist'], item['Week'], item['Qty'], item['priority'], None, 'NaN', 'NaN', 'None'))

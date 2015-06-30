@@ -135,8 +135,8 @@ def rankingElitist(candidates,elg):
     
     # assuming a linear ranking parameter equal to 2, complete the probability list...see matlab files as reference
     for i in range(numCand-2,-1,-1):
-        s[i] = s[i+1] + (2.0/numCand)*float(numCand-1-i)/(numCand-1)
-    
+        s[i] = s[i+1] + (1.0/numCand)*(0.2+1.6*float(numCand-1-i)/(numCand-1))        #(2.0/numCand)*float(numCand-1-i)/(numCand-1)
+        
     for i in range(numCand-elg):
         # randomly generate probability of selection
         probSel = random.random()*float(s[0])

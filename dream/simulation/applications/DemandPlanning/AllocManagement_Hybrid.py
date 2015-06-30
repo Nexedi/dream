@@ -23,12 +23,13 @@ Created on 15 Dec 2014
 @author: Anna
 '''
 
-from AllocationRoutine_2 import AllocationRoutine2
+from AllocationRoutine_Final2 import AllocationRoutine_Final
 from AllocationRoutine_Forecast import AllocationRoutine_Forecast
 from Allocation_GA import Allocation_GA
 from Allocation_ACO import Allocation_ACO
 from Globals import G
 import tablib
+from copy import deepcopy
 
 def AllocManagement_Hybrid(): 
     
@@ -62,7 +63,7 @@ def AllocManagement_Hybrid():
             
                 
         
-def AllocManagement_Hybrid2(): 
+def AllocManagement_Hybrid2(bestAnt): 
     
     # allocate items based on type and priority level
     
@@ -70,7 +71,7 @@ def AllocManagement_Hybrid2():
         
         ACOresults = tablib.Dataset(title='ACO_'+'order'+'_'+str(priority))
         ACOresults.headers = ('Week', 'generation', 'replication', 'antID', 'excess', 'lateness', 'earliness', 'targetUtil', 'minUtil')
-
+        resAnt = {}
         # starting from first week in planning horizon, complete the allocation of all orders within the same priority group
         for week in G.WeekList:  
             
@@ -80,12 +81,25 @@ def AllocManagement_Hybrid2():
                     if G.ACOdefault:
                         G.popSize = int(0.75*len(G.sortedOrders['order'][priority][week]) - 0.75*len(G.sortedOrders['order'][priority][week])%2)
                         G.noGen = 20*G.popSize
-                    ACOresults = Allocation_ACO(week, G.sortedOrders['order'][priority][week],'order',ACOresults)  
+                    ACOresults, anting = Allocation_ACO(week, G.sortedOrders['order'][priority][week],'order',ACOresults)  
+                    z=resAnt.copy()
+                    z.update(anting)
+                    resAnt = deepcopy(z)
                 else:
-                    AllocationRoutine2(week, G.sortedOrders['order'][priority][week],'order')        
+                    if bestAnt!=None:
+                        AllocationRoutine_Final(week, G.sortedOrders['order'][priority][week],'order',bestAnt)        
+                    else:
+                        AllocationRoutine_Final(week, G.sortedOrders['order'][priority][week],'order',0)   
         
         if G.ACO:
-            G.reportResults.add_sheet(ACOresults)
+            G.reportResults.add_sheet(ACOresults)        
+            return resAnt
+    
+        else:
+            return None
+
+
+def AllocManagement_Hybrid2_Forecast():     
     
     print 'start forecast allocation'
     for priority in G.priorityList['forecast']:
@@ -120,6 +134,3 @@ def AllocManagement_Hybrid2():
 
                     AllocationRoutine_Forecast(week,orderList,'forecast',{'seq':orderIDlist})
             
-        if G.GA:
-            G.reportResults.add_sheet(GAresults)
-        
