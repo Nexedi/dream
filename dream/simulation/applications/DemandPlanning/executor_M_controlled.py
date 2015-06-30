@@ -32,11 +32,10 @@ import time
 from numpy import mean, std, array
 from operator import itemgetter
 
-def main():
+def main(input, algorithmAttributes):
     
     startTime = time.time()
-    ImportInput()   
-    
+    ImportInput(input, algorithmAttributes)   
     if G.ACO == "all":
         G.acoRange = [0,1]
         G.minRange = {0:[0,1],1:[0,1]}
@@ -46,7 +45,6 @@ def main():
     else:
         G.acoRange = [0]
         G.minRange = {0:[G.minDeltaUt]}
-
  
     for j in G.acoRange:
         for i in G.minRange[j]:            
