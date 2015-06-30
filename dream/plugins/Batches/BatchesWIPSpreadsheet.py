@@ -57,6 +57,17 @@ class BatchesWIPSpreadsheet(plugin.InputPreparationPlugin):
                 wipDict['parentBatchId']=parentBatchId
                 wipDict['name']='Batch'+parentBatchId+'_SB'+partId+'wip'
             nodes[stationId]['wip'].append(wipDict)
+        # if the wip is in a decomposition
+        elif 'Decomposition' in stationClass:
+            wipDict={
+              "_class": _class,
+              "id": partId, 
+              "name": 'Batch_'+partId+'_wip',
+              "numberOfUnits":numberOfUnits,
+              "parentBatchId":parentBatchId,
+              "name":'Batch'+parentBatchId+'_SB'+partId+'wip'
+              }         
+            nodes[stationId]['wip'].append(wipDict)
         # if the wip is in a server
         else:
             workingBatchSize=int(nodes[stationId].get(('workingBatchSize'), standardBatchUnits))
@@ -140,7 +151,7 @@ class BatchesWIPSpreadsheet(plugin.InputPreparationPlugin):
                       "receiver":stationId          
                     })
                     sbId+=1            
-            # if the station is after batch decomposition and before reassembly
+            # if the station is after batch decomposition and before routing queue
             elif nodes[nextObject]['_class'].startswith('Dream.RoutingQueue')\
                 and nodes[previousObject]['_class'].startswith('Dream.BatchDecomposition'): 
                 sbId=0
@@ -243,5 +254,5 @@ class BatchesWIPSpreadsheet(plugin.InputPreparationPlugin):
                       "name":'Batch_'+partId+'_wip',
                       "numberOfUnits":numberOfUnits,  
                       "unitsToProcess": unitsToProcess, 
-                    })                
+                    })         
     return data
