@@ -19,12 +19,12 @@
 
 '''
 Created on 24 Nov 2014
-
 @author: Anna
 '''
 
 from Globals import G
 import xlrd
+from copy import deepcopy
 
 def withoutFormat(row,col,sheet,integer):
     
@@ -181,6 +181,7 @@ def ImportInput(input, algorithmAttributes):
         G.sortedOrders['order'][priority][week].append(G.orders[orderID])
         orderID += 1
 
+    print 'sorted orders keys', G.sortedOrders['order'].keys()
     # Import forecast
     sh = wbin.sheet_by_name('FC_Summary')
     rows = sh.nrows
@@ -238,16 +239,28 @@ def ImportInput(input, algorithmAttributes):
     
     # set 
     for sp in G.SPlist.keys():
+        G.globalMAAllocationIW[sp] = {}
+        for week in G.WeekList:
+            G.globalMAAllocationIW[sp][week] = {'order':{}, 'forecast':{}}
+            for priority in G.priorityList['order']:
+                G.globalMAAllocationIW[sp][week]['order'][priority] = 0
+            for priority in G.priorityList['forecast']:
+                G.globalMAAllocationIW[sp][week]['forecast'][priority] = 0
         for ma in G.SPlist[sp]:
             G.globalMAAllocation[ma] = {}
+            G.globalMAAllocationIW[ma] = {}
             for week in G.WeekList:
                 G.globalMAAllocation[ma][week] = {'order':{}}
+                G.globalMAAllocationIW[ma][week] = {'order':{}}
                 for priority in G.priorityList['order']:
                     G.globalMAAllocation[ma][week]['order'][priority] = 0 
+                    G.globalMAAllocationIW[ma][week]['order'][priority] = 0
                 G.globalMAAllocation[ma][week]['forecast'] = {}
+                G.globalMAAllocationIW[ma][week]['forecast'] = {}
                 for priority in G.priorityList['forecast']:
                     G.globalMAAllocation[ma][week]['forecast'][priority] = 0 
-                
+                    G.globalMAAllocationIW[ma][week]['forecast'][priority] = 0
+
     # set lateness and earliness results
     for week in G.WeekList:
         G.Lateness[week] = {}
@@ -262,18 +275,10 @@ def ImportInput(input, algorithmAttributes):
         G.Excess[sp] = {}
         for week in G.WeekList:
             G.Excess[sp][week] = 0
+
+    G.ordersOrig = deepcopy(G.orders)
+    G.sortedOrdersOrig = deepcopy(G.sortedOrders)
               
 if __name__ == '__main__':
     ImportInput()        
         
-        
-    
-        
-        
-        
-    
-            
-        
-        
-    
-
