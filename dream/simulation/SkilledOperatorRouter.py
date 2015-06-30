@@ -214,7 +214,13 @@ class SkilledRouter(Router):
                                       self.operators, previousAssignment=self.previousSolution,
                                       weightFactors=self.weightFactors,Tool=self.tool)
                 else:
+                    # if the LP is not called keep the previous solution
+                    # if there are no available operators though, remove those
                     solution=self.previousSolution
+                    for operatorID in solution.keys():
+                        if not operatorID in self.availableOperatorList:
+                            del solution[operatorID]
+                    
 #                 print '-------'
 #                 print self.env.now, solution
 #                 print 'time needed',time.time()-startLP
