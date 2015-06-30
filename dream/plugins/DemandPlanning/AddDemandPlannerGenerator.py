@@ -25,10 +25,9 @@ class AddDemandPlannerGenerator(plugin.InputPreparationPlugin):
             "start": 0,
             "stop": 0.5,
             "_class": "dream.simulation.EventGenerator.EventGenerator",
-            "method": "dream.simulation.applications.DemandPlanning.executor_ACO.main",
+            "method": "dream.simulation.applications.DemandPlanning.executor_M_controlled.main",
             "argumentDict": {'input':data_uri_encoded_input_data, 'algorithmAttributes':algorithmAttributes}
         }
-        #print nodes
         return data
 
     
