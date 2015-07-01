@@ -93,11 +93,11 @@ def ImportInput(input, algorithmAttributes):
         G.Bottlenecks.append(bn)
         
         G.Capacity[bn] = {}#{'OriginalCapacity':{}, 'RemainingCapacity':{}, 'minUtilisation':{}, 'targetUtilisation':{}}
-        G.CurrentCapacityDict[bn] = {}
+        G.CurrentCapacityDictOrig[bn] = {}
         
         for week in range(2,sh.ncols):
             G.Capacity[bn][Weeks[week]]={'OriginalCapacity':withoutFormat(row,week,sh,1), 'RemainingCapacity':withoutFormat(row+1,week,sh,1), 'minUtilisation':withoutFormat(row+2,week,sh,0), 'targetUtilisation':withoutFormat(row+3,week,sh,0)}
-            G.CurrentCapacityDict[bn][Weeks[week]] = withoutFormat(row,week,sh,1)
+            G.CurrentCapacityDictOrig[bn][Weeks[week]] = withoutFormat(row,week,sh,1)
     
             
             
@@ -280,5 +280,5 @@ def ImportInput(input, algorithmAttributes):
     G.sortedOrdersOrig = deepcopy(G.sortedOrders)
               
 if __name__ == '__main__':
-    ImportInput()        
-        
+    ImportInput()  
+    
