@@ -77,7 +77,7 @@
       }
     }, 
     "input": {
-      "view": {
+      "view_Input_viewProductionLine": {
         "gadget": "Input_viewProductionLine", 
         "title": "Production Line", 
         "type": "object_view"
@@ -161,6 +161,11 @@
         "title": "Product Builder Skills", 
         "type": "object_view"
       },
+      "view_run_simulation": {
+        "gadget": "Input_viewSimulation",
+        "title": "Run Simulation",
+        "type": "object_view"
+      },
       "view_wip_spreadsheet": {
         "configuration": {
           "columns": [
@@ -194,11 +199,7 @@
         "title": "WIP Spreadsheet", 
         "type": "object_view"
       },
-      "view_run_simulation": {
-        "gadget": "Input_viewSimulation",
-        "title": "Run Simulation",
-        "type": "object_view"
-      },
+      
       "view_result": {
         "gadget": "Input_viewResultList",
         "title": "Results",
