@@ -46,7 +46,7 @@ class DemandPlanningLine(plugin.OutputPreparationPlugin, TimeSupportMixin):
         # create the 3 lines
         for (utilizationType, utilizationLabel) in [
                 ( 'minUtilization', 'Min Utilization' ),
-                ( 'averageUtilization', 'Average Utilization' ),
+                ( 'averageUtilization', 'Actual Utilization' ),
                 ( 'maxUtilization', 'Target Utilization' ) ]:
             utilizationList=[]
             for record_id, record in bottleNeckUtilization.iteritems():
@@ -111,7 +111,7 @@ class BottleNeckByWeek(plugin.OutputPreparationPlugin, TimeSupportMixin):
       # create the 3 bars
       for (utilizationType, utilizationLabel) in [
                 ( 'minUtilization', 'Min Utilization' ),
-                ( 'averageUtilization', 'Average Utilization' ),
+                ( 'averageUtilization', 'Actual Utilization' ),
                 ( 'maxUtilization', 'Target Utilization' ) ]:
         series.append({
             "label": utilizationLabel,
