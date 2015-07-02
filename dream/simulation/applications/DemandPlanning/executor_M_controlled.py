@@ -36,16 +36,16 @@ def main(input, algorithmAttributes):
     
     startTime = time.time()
     ImportInput(input, algorithmAttributes)   
-    if G.ACO == "all":
+    if str(G.ACO).lower() == "all":
+        print "IN"
         G.acoRange = [0,1]
         G.minRange = {0:[0,1],1:[0,1]}
-    elif G.ACO == "1":
+    elif str(G.ACO) == "1":
         G.acoRange = [0,1]
         G.minRange = {0:[0,1],1:[G.minDeltaUt]}
     else:
         G.acoRange = [0]
         G.minRange = {0:[G.minDeltaUt]}
- 
     for j in G.acoRange:
         for i in G.minRange[j]:            
             initialiseVar() 
