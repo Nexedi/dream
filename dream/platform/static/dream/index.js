@@ -93,10 +93,38 @@
             return gadget.aq_pleasePublishMyState(forward_kw);
         });
     }
+    function getNextStepLink(gadget, portal_type, options) {
+        //if (options.action === "view_machine_shift_spreadsheet") {
+        if (options.action === "view") {
+            var forward_kw = {
+                action: "view_machine_shift_spreadsheet",
+                id: options.id
+            };
+            return gadget.aq_pleasePublishMyState(forward_kw);
+        } else if (options.action === "view_machine_shift_spreadsheet") {
+            var forward_kw1 = {
+                action: "view_operator_shift_spreadsheet",
+                id: options.id
+            };
+            return gadget.aq_pleasePublishMyState(forward_kw1);
+        } else if (options.action === "view_operator_shift_spreadsheet") {
+            var forward_kw2 = {
+                action: "view_wip_spreadsheet",
+                id: options.id
+            };
+            return gadget.aq_pleasePublishMyState(forward_kw2);
+        } else if (options.action === "view_wip_spreadsheet") {
+            var forward_kw3 = {
+                action: "view_run_simulation",
+                id: options.id
+            };
+            return gadget.aq_pleasePublishMyState(forward_kw3);
+        }
+    }
     function getTitle(gadget, portal_type, options) {
         var title;
         if (portal_type === "Input Module") {
-            title = "Documents";
+            title = "Documentas";
         } else if (portal_type === "Input") {
             title = gadget.getDeclaredGadget("jio").push(function(jio_gadget) {
                 return jio_gadget.get({
@@ -320,7 +348,7 @@
                 return page_gadget.render(options);
             }
         }).push(function() {
-            return RSVP.all([ page_gadget.getElement(), calculateNavigationHTML(gadget, portal_type, options), gadget.aq_pleasePublishMyState(back_kw), getTitle(gadget, portal_type, options), getNextLink(gadget, portal_type, options) ]);
+            return RSVP.all([ page_gadget.getElement(), calculateNavigationHTML(gadget, portal_type, options), gadget.aq_pleasePublishMyState(back_kw), getTitle(gadget, portal_type, options), getNextLink(gadget, portal_type, options), getNextStepLink(gadget, portal_type, options) ]);
         }).push(function(result_list) {
             var nav_html = result_list[1], page_element = result_list[0];
             // Update title
@@ -348,6 +376,33 @@
             }
             element.appendChild(page_element);
             $(element).trigger("create");
+            return result_list[5];
+        }).push(function(next_step_link) {
+            var button = gadget.props.element.getElementsByClassName("next_step_link")[0];
+            $(button).hide();
+            var idle_timer;
+            var stop_timer;
+            function resetTimer() {
+                clearTimeout(idle_timer);
+                idle_timer = setTimeout(function() {
+                    $(button).show();
+                }, idle_seconds * 1e3);
+            }
+            function hideButton() {
+                clearTimeout(stop_timer);
+                stop_timer = setTimeout(function() {
+                    $(button).hide();
+                }, idle_seconds2 * 1e3);
+            }
+            if (next_step_link !== false) {
+                button.href = next_step_link;
+                var idle_seconds = 5;
+                $(document.body).on("keydown click", resetTimer);
+                var idle_seconds2 = 12;
+                $(document.body).on("keydown click", hideButton);
+            } else {
+                $(document.body).off("keydown click", resetTimer);
+            }
             // XXX RenderJS hack to start sub gadget services
             // Only work if this gadget has no parent.
             if (page_gadget.startService !== undefined) {
