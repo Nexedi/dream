@@ -37,7 +37,6 @@ def main(input, algorithmAttributes):
     startTime = time.time()
     ImportInput(input, algorithmAttributes)   
     if str(G.ACO).lower() == "all":
-        print "IN"
         G.acoRange = [0,1]
         G.minRange = {0:[0,1],1:[0,1]}
     elif str(G.ACO) == "1":
