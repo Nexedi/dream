@@ -21,10 +21,10 @@
           "type": "number"
         }, 
         "ACO": {
-          "default": 0, 
+          "default": "0", 
           "description": "ACO", 
           "name": "ACO", 
-          "type": "number"
+          "type": "string"
         }, 
         "ACOpopulationSize": {
           "default": 5, 
