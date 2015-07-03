@@ -35,7 +35,8 @@ class DemandPlanningLine(plugin.OutputPreparationPlugin, TimeSupportMixin):
           "xaxis": {
             "mode": "time",
             "minTickSize": [1, "day"],
-          }
+          },
+          "legend": {"backgroundOpacity": 0.1},
         }
      
         bottleNeckUtilizationDict[bottleneck] = {
@@ -91,6 +92,7 @@ class BottleNeckByWeek(plugin.OutputPreparationPlugin, TimeSupportMixin):
           "minTickSize": 1,
           "ticks": ticks
         },
+        "legend": {"backgroundOpacity": 0.1},
         "series": {
           "bars": {
             "show": True,
