@@ -34,7 +34,7 @@ class DemandPlanningLine(plugin.OutputPreparationPlugin, TimeSupportMixin):
         options = {
           "xaxis": {
             "mode": "time",
-            "minTickSize": [1, self.getTimeUnitText()],
+            "minTickSize": [1, "day"],
           }
         }
      
