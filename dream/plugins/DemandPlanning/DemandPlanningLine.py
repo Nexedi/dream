@@ -115,7 +115,7 @@ class BottleNeckByWeek(plugin.OutputPreparationPlugin, TimeSupportMixin):
                 ( 'maxUtilization', 'Target Utilization' ) ]:
         series.append({
             "label": utilizationLabel,
-            "data": list(enumerate([x[utilizationType] for x in bottleneckData.values()])),
+            "data": list(enumerate([x[utilizationType] for x in sorted(bottleneckData.values())])),
         })
             
     return data
