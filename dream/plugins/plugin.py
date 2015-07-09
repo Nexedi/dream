@@ -1,6 +1,7 @@
 from copy import deepcopy
 import json
 import numpy
+import xlrd
 
 from zope.dottedname.resolve import resolve
 
@@ -75,6 +76,21 @@ class Plugin(object):
   # returns name of a node given its id
   def getNameFromId(self, data, node_id):
       return data['graph']['node'][node_id]['name']
+  
+  # gets an encoded excel workbook and a sheet name. It converts the data of the 
+  # sheet to the DREAM JSON format for spreadsheets
+  def convertExcelToList(self, ExcelData, sheetName):
+    mime_type, attachement_data = ExcelData[len('data:'):].split(';base64,', 1)
+    attachement_data = attachement_data.decode('base64')
+    wbin = xlrd.open_workbook(file_contents=attachement_data)
+    sheet = wbin.sheet_by_name(sheetName)
+    listData=[]
+    for i in range(sheet.nrows):
+        listData.append([])
+        for j in range(sheet.ncols):
+            listData[i].append(sheet.cell(i, j).value)
+    return listData
+
 
 class ExecutionPlugin(Plugin):
   """Plugin to handle the execution of multiple simulation runs.
