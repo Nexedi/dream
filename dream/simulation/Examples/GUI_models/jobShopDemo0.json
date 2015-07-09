@@ -346,6 +346,14 @@
         "gadget": "Output_viewGraph", 
         "title": "Station Utilization", 
         "type": "object_view"
+      },
+      "view_download_trace": {
+        "configuration": {
+          "output_id": "download_trace"
+        }, 
+        "gadget": "Output_viewDownloadFile", 
+        "title": "Download Trace File", 
+        "type": "object_view"
       }
     }, 
     "post_processing": {
@@ -375,6 +383,10 @@
         {
           "_class": "dream.plugins.JobShop.JSComponentTabSchedule.JSComponentTabSchedule", 
           "output_id": "component_schedule"
+        },
+        {
+          "_class": "dream.plugins.ParseTraceFile.ParseTraceFile", 
+          "output_id": "download_trace"
         }
       ]
     }, 
