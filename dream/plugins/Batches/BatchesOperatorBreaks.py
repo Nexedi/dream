@@ -23,6 +23,10 @@ class BatchesOperatorBreaks(plugin.InputPreparationPlugin, TimeSupportMixin):
             continue
         date=strptime(row[0], '%Y/%m/%d')
         operators=row[1].split(',')
+        
+        # if element has spaces in beginning or in end remove them
+        operators=self.stripStringsOfList(operators)
+
         i=4
         while row[i] not in ['', None]:
             breakStart=self.convertToSimulationTime(strptime("%s %s" % (row[0], row[i]), '%Y/%m/%d %H:%M'))
@@ -56,8 +60,5 @@ class BatchesOperatorBreaks(plugin.InputPreparationPlugin, TimeSupportMixin):
                                    ]
                               ]
                         }  
-#     import json
-#     outputJSONString=json.dumps(data['graph']['node'], indent=5)
-#     outputJSONFile=open('h.json', mode='w')
-#     outputJSONFile.write(outputJSONString)     
+    
     return data

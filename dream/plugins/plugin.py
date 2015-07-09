@@ -47,6 +47,14 @@ class Plugin(object):
   # return the average of a list    
   def getAverage(self, value_list):
     return sum(value_list) / float(len(value_list))
+
+  # takes a list of strings and removes spaces in the beginning or end
+  def stripStringsOfList(self, inputList):
+    i=0
+    for element in inputList:
+        inputList[i]=element.strip()
+        i+=1
+    return inputList
   
   # return the standard deviation of a list                                      
   def getStDev(self, value_list):

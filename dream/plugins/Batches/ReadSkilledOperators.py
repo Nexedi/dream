@@ -27,6 +27,9 @@ class ReadSkilledOperators(plugin.InputPreparationPlugin):
                 continue
             skills=PBitem[1].split(',')
             skills = filter(bool, skills) 
+            # if element has spaces in beginning or in end remove them
+            skills=self.stripStringsOfList(skills)
+            
             newSkills=[]
             for n_id,n in node.iteritems():
                 technology=n.get('technology',None)
