@@ -394,6 +394,10 @@
       "description": "", 
       "plugin_list": [
         {
+          "_class": "dream.plugins.JobShop.ChangeDecimalOperators.ChangeDecimalOperators", 
+          "input_id": ""
+        }, 
+        {
           "_class": "dream.plugins.JobShop.JSExitCancelCond.JSExitCancelCond", 
           "input_id": ""
         }, 
