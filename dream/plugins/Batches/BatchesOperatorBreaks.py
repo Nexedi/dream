@@ -1,6 +1,7 @@
 from dream.plugins import plugin
 from dream.plugins.TimeSupport import TimeSupportMixin
 import datetime
+from copy import copy
 
 class BatchesOperatorBreaks(plugin.InputPreparationPlugin, TimeSupportMixin):
   """ Output the schedule of operators in an Excel file to be downloaded
@@ -16,8 +17,22 @@ class BatchesOperatorBreaks(plugin.InputPreparationPlugin, TimeSupportMixin):
         now = strptime(data['general']['currentDate'], '%Y/%m/%d')
         data['general']['dateFormat']='%Y/%m/%d'
     self.initializeTimeSupport(data)
-    
-    breakData=data['input']['operator_shift_spreadsheet'] 
+
+    breakData=data['input']['operator_shift_spreadsheet']     
+    PBData=copy(data['input'].get('operator_skill_spreadsheet', None)) 
+
+    # create a string with all operator ids ids separated by commas
+    allString=''
+    for row in PBData:
+        if row[0]:
+            allString+=row[0]
+            allString+=','
+            
+    # if in operator shift there is ALL in a cell then give the all string 
+    for element in breakData:
+        if element[1] in ['ALL','All','all']:
+            element[1]=allString   
+
     for row in breakData:
         if row[0] in ['Date', '', None]:
             continue
@@ -26,6 +41,8 @@ class BatchesOperatorBreaks(plugin.InputPreparationPlugin, TimeSupportMixin):
         
         # if element has spaces in beginning or in end remove them
         operators=self.stripStringsOfList(operators)
+        # remove empty strings
+        operators = filter(bool, operators) 
 
         i=4
         while row[i] not in ['', None]:
