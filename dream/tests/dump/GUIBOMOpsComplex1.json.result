@@ -9,7 +9,7 @@
     "type": "project"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 3.0, 
     "entranceTime": 48.4, 
     "id": "PE001068AASSM12", 
@@ -20,7 +20,7 @@
     "text": "ID-00018; ASSM1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 15.000000000000007, 
     "entranceTime": 51.4, 
     "id": "PE001068AINJM24", 
@@ -31,7 +31,7 @@
     "text": "ID-00020; INJM2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 24.0, 
     "entranceTime": 66.4, 
     "id": "PE001068AINJM25", 
@@ -42,7 +42,7 @@
     "text": "ID-00020; INJM2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 23.0, 
     "id": "PE001068A-01CAM24", 
@@ -53,7 +53,7 @@
     "text": "ID-00003; CAM2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 24.5, 
     "id": "PE001068A-01MILL26", 
@@ -64,7 +64,7 @@
     "text": "ID-00007; MILL2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 4.0, 
     "entranceTime": 25.5, 
     "id": "PE001068A-01MILL27", 
@@ -75,7 +75,7 @@
     "text": "ID-00007; MILL2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 42.0, 
     "id": "PE001068A-01WORK19", 
@@ -86,7 +86,7 @@
     "text": "ID-00012; WORK1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.25, 
     "entranceTime": 43.5, 
     "id": "PE001068A-01WORK311", 
@@ -97,7 +97,7 @@
     "text": "ID-00015; WORK3"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.0, 
     "entranceTime": 48.4, 
     "id": "PE001068A-01ASSM113", 
@@ -108,7 +108,7 @@
     "text": "ID-00018; ASSM1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 23.0, 
     "id": "PE001068A-02CAM14", 
@@ -119,7 +119,7 @@
     "text": "ID-00004; CAM1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 24.5, 
     "id": "PE001068A-02MILL16", 
@@ -130,7 +130,7 @@
     "text": "ID-00009; MILL1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 4.0, 
     "entranceTime": 25.5, 
     "id": "PE001068A-02MILL17", 
@@ -141,7 +141,7 @@
     "text": "ID-00009; MILL1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 42.0, 
     "id": "PE001068A-02WORK29", 
@@ -152,7 +152,7 @@
     "text": "ID-00013; WORK2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.25, 
     "entranceTime": 43.5, 
     "id": "PE001068A-02WORK411", 
@@ -163,7 +163,7 @@
     "text": "ID-00016; WORK4"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.0, 
     "entranceTime": 48.4, 
     "id": "PE001068A-02ASSM113", 
@@ -174,7 +174,7 @@
     "text": "ID-00018; ASSM1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 24.5, 
     "id": "PE001068A-03CAM24", 
@@ -185,7 +185,7 @@
     "text": "ID-00005; CAM2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 42.0, 
     "id": "PE001068A-03MILL26", 
@@ -196,7 +196,7 @@
     "text": "ID-00011; MILL2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 4.0, 
     "entranceTime": 43.0, 
     "id": "PE001068A-03MILL27", 
@@ -207,7 +207,7 @@
     "text": "ID-00011; MILL2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 47.0, 
     "id": "PE001068A-03WORK19", 
@@ -218,7 +218,7 @@
     "text": "ID-00014; WORK1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.3999999999999986, 
     "entranceTime": 48.0, 
     "id": "PE001068A-03WORK211", 
@@ -229,7 +229,7 @@
     "text": "ID-00017; WORK2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.0, 
     "entranceTime": 48.4, 
     "id": "PE001068A-03ASSM113", 
@@ -240,7 +240,7 @@
     "text": "ID-00018; ASSM1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 18.0, 
     "entranceTime": 1.0, 
     "id": "PE001068A_DCAD13", 
@@ -251,7 +251,7 @@
     "text": "ID-00001; CAD1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 4.0, 
     "entranceTime": 19.0, 
     "id": "PE001068A_DCAD25", 
@@ -1997,7 +1997,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 1.0, 
     "id": "W1ID-000013", 
@@ -2019,7 +2019,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 18.0, 
     "id": "W1ID-000015", 
@@ -2030,7 +2030,7 @@
     "text": "ID-00001 CAD1 PE001068A_D"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 23.0, 
     "id": "W1ID-000046", 
@@ -2041,7 +2041,7 @@
     "text": "ID-00004 CAM1 PE001068A-02"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 24.5, 
     "id": "W1ID-000097", 
@@ -2063,7 +2063,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.25, 
     "entranceTime": 43.5, 
     "id": "W1ID-000169", 
@@ -2074,7 +2074,7 @@
     "text": "ID-00016 WORK4 PE001068A-02"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.6000000000000014, 
     "entranceTime": 51.4, 
     "id": "W1ID-0002010", 
@@ -2118,7 +2118,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 4.0, 
     "entranceTime": 19.0, 
     "id": "W2ID-000023", 
@@ -2129,7 +2129,7 @@
     "text": "ID-00002 CAD2 PE001068A_D"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 24.5, 
     "id": "W2ID-000054", 
@@ -2151,7 +2151,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.25, 
     "entranceTime": 43.5, 
     "id": "W2ID-000156", 
@@ -2162,7 +2162,7 @@
     "text": "ID-00015 WORK3 PE001068A-01"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 3.0, 
     "entranceTime": 48.4, 
     "id": "W2ID-000187", 
@@ -2206,7 +2206,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 23.0, 
     "id": "W3ID-000033", 
@@ -2217,7 +2217,7 @@
     "text": "ID-00003 CAM2 PE001068A-01"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 24.5, 
     "id": "W3ID-000074", 
@@ -2239,7 +2239,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 42.0, 
     "id": "W3ID-000116", 
@@ -2250,7 +2250,7 @@
     "text": "ID-00011 MILL2 PE001068A-03"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 47.0, 
     "id": "W3ID-000147", 
@@ -2272,7 +2272,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 10.0, 
     "entranceTime": 66.0, 
     "id": "W3ID-000209", 
@@ -2294,7 +2294,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.4000000000000057, 
     "entranceTime": 90.0, 
     "id": "W3ID-0002011", 
@@ -2327,7 +2327,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 42.0, 
     "id": "W4ID-000124", 
@@ -2338,7 +2338,7 @@
     "text": "ID-00012 WORK1 PE001068A-01"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.3999999999999986, 
     "entranceTime": 48.0, 
     "id": "W4ID-000175", 
@@ -2393,7 +2393,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 42.0, 
     "id": "W5ID-000134", 

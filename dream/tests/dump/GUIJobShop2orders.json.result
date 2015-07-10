@@ -15,7 +15,7 @@
     "type": "project"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 2.0, 
     "entranceTime": 118.85, 
     "id": "3.122.052.01.00ASSM32", 
@@ -26,7 +26,7 @@
     "text": "ID-00081; ASSM3"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 120.85, 
     "id": "3.122.052.01.00INJM14", 
@@ -37,7 +37,7 @@
     "text": "ID-00083; INJM1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 2.5, 
     "entranceTime": 121.85, 
     "id": "3.122.052.01.00INJM15", 
@@ -48,7 +48,7 @@
     "text": "ID-00083; INJM1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 2.0, 
     "entranceTime": 48.5, 
     "id": "3.122.052.01.00-01CAM14", 
@@ -59,7 +59,7 @@
     "text": "ID-00023; CAM1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 66.0, 
     "id": "3.122.052.01.00-01MILL16", 
@@ -70,7 +70,7 @@
     "text": "ID-00034; MILL1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 5.0, 
     "entranceTime": 67.5, 
     "id": "3.122.052.01.00-01MILL17", 
@@ -81,7 +81,7 @@
     "text": "ID-00034; MILL1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.25, 
     "entranceTime": 72.5, 
     "id": "3.122.052.01.00-01WORK29", 
@@ -92,7 +92,7 @@
     "text": "ID-00053; WORK2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 72.75, 
     "id": "3.122.052.01.00-01WORK411", 
@@ -103,7 +103,7 @@
     "text": "ID-00072; WORK4"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.0, 
     "entranceTime": 118.85, 
     "id": "3.122.052.01.00-01ASSM313", 
@@ -114,7 +114,7 @@
     "text": "ID-00081; ASSM3"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 2.0, 
     "entranceTime": 48.5, 
     "id": "3.122.052.01.00-02CAM24", 
@@ -125,7 +125,7 @@
     "text": "ID-00024; CAM2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 70.0, 
     "id": "3.122.052.01.00-02MILL26", 
@@ -136,7 +136,7 @@
     "text": "ID-00036; MILL2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 19.0, 
     "entranceTime": 71.5, 
     "id": "3.122.052.01.00-02MILL27", 
@@ -147,7 +147,7 @@
     "text": "ID-00036; MILL2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.25, 
     "entranceTime": 90.5, 
     "id": "3.122.052.01.00-02WORK39", 
@@ -158,7 +158,7 @@
     "text": "ID-00054; WORK3"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.5, 
     "entranceTime": 95.5, 
     "id": "3.122.052.01.00-02EDM111", 
@@ -169,7 +169,7 @@
     "text": "ID-00064; EDM1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.5, 
     "entranceTime": 96.0, 
     "id": "3.122.052.01.00-02EDM112", 
@@ -180,7 +180,7 @@
     "text": "ID-00064; EDM1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.25, 
     "entranceTime": 96.5, 
     "id": "3.122.052.01.00-02WORK114", 
@@ -191,7 +191,7 @@
     "text": "ID-00065; WORK1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 96.75, 
     "id": "3.122.052.01.00-02WORK316", 
@@ -202,7 +202,7 @@
     "text": "ID-00073; WORK3"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.0, 
     "entranceTime": 118.85, 
     "id": "3.122.052.01.00-02ASSM318", 
@@ -213,7 +213,7 @@
     "text": "ID-00081; ASSM3"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 16.0, 
     "entranceTime": 50.5, 
     "id": "3.122.052.01.00-03CAM14", 
@@ -224,7 +224,7 @@
     "text": "ID-00025; CAM1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 90.5, 
     "id": "3.122.052.01.00-03MILL26", 
@@ -235,7 +235,7 @@
     "text": "ID-00038; MILL2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 6.0, 
     "entranceTime": 92.0, 
     "id": "3.122.052.01.00-03MILL27", 
@@ -246,7 +246,7 @@
     "text": "ID-00038; MILL2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.25, 
     "entranceTime": 98.0, 
     "id": "3.122.052.01.00-03WORK29", 
@@ -257,7 +257,7 @@
     "text": "ID-00055; WORK2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.5, 
     "entranceTime": 98.25, 
     "id": "3.122.052.01.00-03EDM111", 
@@ -268,7 +268,7 @@
     "text": "ID-00061; EDM1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 2.5, 
     "entranceTime": 98.75, 
     "id": "3.122.052.01.00-03EDM112", 
@@ -279,7 +279,7 @@
     "text": "ID-00061; EDM1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.25, 
     "entranceTime": 114.0, 
     "id": "3.122.052.01.00-03WORK314", 
@@ -290,7 +290,7 @@
     "text": "ID-00062; WORK3"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.5, 
     "entranceTime": 114.25, 
     "id": "3.122.052.01.00-03WORK216", 
@@ -301,7 +301,7 @@
     "text": "ID-00074; WORK2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.0, 
     "entranceTime": 118.85, 
     "id": "3.122.052.01.00-03ASSM318", 
@@ -312,7 +312,7 @@
     "text": "ID-00081; ASSM3"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 16.0, 
     "entranceTime": 50.5, 
     "id": "3.122.052.01.00-04CAM24", 
@@ -323,7 +323,7 @@
     "text": "ID-00026; CAM2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 15.0, 
     "entranceTime": 99.1, 
     "id": "3.122.052.01.00-04MILL16", 
@@ -334,7 +334,7 @@
     "text": "ID-00040; MILL1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 4.0, 
     "entranceTime": 114.1, 
     "id": "3.122.052.01.00-04MILL17", 
@@ -345,7 +345,7 @@
     "text": "ID-00040; MILL1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.25, 
     "entranceTime": 118.1, 
     "id": "3.122.052.01.00-04WORK39", 
@@ -356,7 +356,7 @@
     "text": "ID-00056; WORK3"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.5, 
     "entranceTime": 118.35, 
     "id": "3.122.052.01.00-04WORK211", 
@@ -367,7 +367,7 @@
     "text": "ID-00075; WORK2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.0, 
     "entranceTime": 118.85, 
     "id": "3.122.052.01.00-04ASSM313", 
@@ -378,7 +378,7 @@
     "text": "ID-00081; ASSM3"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 66.5, 
     "id": "3.122.052.01.00-05CAM14", 
@@ -389,7 +389,7 @@
     "text": "ID-00027; CAM1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 91.1, 
     "id": "3.122.052.01.00-05MILL16", 
@@ -400,7 +400,7 @@
     "text": "ID-00042; MILL1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 3.0, 
     "entranceTime": 92.1, 
     "id": "3.122.052.01.00-05MILL17", 
@@ -411,7 +411,7 @@
     "text": "ID-00042; MILL1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.25, 
     "entranceTime": 95.1, 
     "id": "3.122.052.01.00-05WORK29", 
@@ -422,7 +422,7 @@
     "text": "ID-00057; WORK2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.5, 
     "entranceTime": 95.35, 
     "id": "3.122.052.01.00-05WORK411", 
@@ -433,7 +433,7 @@
     "text": "ID-00076; WORK4"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.0, 
     "entranceTime": 118.85, 
     "id": "3.122.052.01.00-05ASSM313", 
@@ -444,7 +444,7 @@
     "text": "ID-00081; ASSM3"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 67.0, 
     "id": "3.122.052.01.00-06CAM24", 
@@ -455,7 +455,7 @@
     "text": "ID-00028; CAM2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 95.1, 
     "id": "3.122.052.01.00-06MILL16", 
@@ -466,7 +466,7 @@
     "text": "ID-00044; MILL1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 3.0, 
     "entranceTime": 96.1, 
     "id": "3.122.052.01.00-06MILL17", 
@@ -477,7 +477,7 @@
     "text": "ID-00044; MILL1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.25, 
     "entranceTime": 99.1, 
     "id": "3.122.052.01.00-06WORK49", 
@@ -488,7 +488,7 @@
     "text": "ID-00058; WORK4"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.5, 
     "entranceTime": 99.35, 
     "id": "3.122.052.01.00-06WORK111", 
@@ -499,7 +499,7 @@
     "text": "ID-00077; WORK1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.0, 
     "entranceTime": 118.85, 
     "id": "3.122.052.01.00-06ASSM313", 
@@ -510,7 +510,7 @@
     "text": "ID-00081; ASSM3"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 68.0, 
     "id": "3.122.052.01.00-07CAM14", 
@@ -521,7 +521,7 @@
     "text": "ID-00029; CAM1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 98.0, 
     "id": "3.122.052.01.00-07MILL26", 
@@ -532,7 +532,7 @@
     "text": "ID-00046; MILL2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 17.0, 
     "entranceTime": 99.0, 
     "id": "3.122.052.01.00-07MILL27", 
@@ -543,7 +543,7 @@
     "text": "ID-00046; MILL2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.25, 
     "entranceTime": 116.0, 
     "id": "3.122.052.01.00-07WORK49", 
@@ -554,7 +554,7 @@
     "text": "ID-00059; WORK4"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.5, 
     "entranceTime": 116.25, 
     "id": "3.122.052.01.00-07WORK111", 
@@ -565,7 +565,7 @@
     "text": "ID-00078; WORK1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.0, 
     "entranceTime": 118.85, 
     "id": "3.122.052.01.00-07ASSM313", 
@@ -576,7 +576,7 @@
     "text": "ID-00081; ASSM3"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.5, 
     "entranceTime": 68.5, 
     "id": "3.122.052.01.00-08CAM24", 
@@ -587,7 +587,7 @@
     "text": "ID-00030; CAM2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 72.5, 
     "id": "3.122.052.01.00-08MILL16", 
@@ -598,7 +598,7 @@
     "text": "ID-00048; MILL1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 74.0, 
     "id": "3.122.052.01.00-08MILL17", 
@@ -609,7 +609,7 @@
     "text": "ID-00048; MILL1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 14.599999999999994, 
     "entranceTime": 75.5, 
     "id": "3.122.052.01.00-08WORK19", 
@@ -620,7 +620,7 @@
     "text": "ID-00079; WORK1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.0, 
     "entranceTime": 118.85, 
     "id": "3.122.052.01.00-08ASSM311", 
@@ -631,7 +631,7 @@
     "text": "ID-00081; ASSM3"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.5, 
     "entranceTime": 48.5, 
     "id": "3.122.052.01.00-09MILL13", 
@@ -642,7 +642,7 @@
     "text": "ID-00067; MILL1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 49.0, 
     "id": "3.122.052.01.00-09MILL14", 
@@ -653,7 +653,7 @@
     "text": "ID-00067; MILL1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.0, 
     "entranceTime": 118.85, 
     "id": "3.122.052.01.00-09ASSM36", 
@@ -664,7 +664,7 @@
     "text": "ID-00081; ASSM3"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.5, 
     "entranceTime": 50.5, 
     "id": "3.122.052.01.00-10MILL23", 
@@ -675,7 +675,7 @@
     "text": "ID-00069; MILL2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 16.0, 
     "entranceTime": 51.0, 
     "id": "3.122.052.01.00-10MILL24", 
@@ -686,7 +686,7 @@
     "text": "ID-00069; MILL2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.0, 
     "entranceTime": 118.85, 
     "id": "3.122.052.01.00-10ASSM36", 
@@ -697,7 +697,7 @@
     "text": "ID-00081; ASSM3"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 48.5, 
     "id": "3.122.052.01.00-11TURN13", 
@@ -708,7 +708,7 @@
     "text": "ID-00070; TURN1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.0, 
     "entranceTime": 118.85, 
     "id": "3.122.052.01.00-11ASSM35", 
@@ -719,7 +719,7 @@
     "text": "ID-00081; ASSM3"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 50.0, 
     "id": "3.122.052.01.00-12TURN13", 
@@ -730,7 +730,7 @@
     "text": "ID-00071; TURN1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.0, 
     "entranceTime": 118.85, 
     "id": "3.122.052.01.00-12ASSM35", 
@@ -741,7 +741,7 @@
     "text": "ID-00081; ASSM3"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 16.0, 
     "entranceTime": 51.5, 
     "id": "3.122.052.01.00-13TURN13", 
@@ -752,7 +752,7 @@
     "text": "ID-00080; TURN1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.0, 
     "entranceTime": 118.85, 
     "id": "3.122.052.01.00-13ASSM35", 
@@ -763,7 +763,7 @@
     "text": "ID-00081; ASSM3"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 69.0, 
     "id": "3.122.052.01.00-E01CAM24", 
@@ -774,7 +774,7 @@
     "text": "ID-00031; CAM2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.5, 
     "entranceTime": 75.5, 
     "id": "3.122.052.01.00-E01MILL16", 
@@ -785,7 +785,7 @@
     "text": "ID-00050; MILL1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 3.0, 
     "entranceTime": 76.0, 
     "id": "3.122.052.01.00-E01MILL17", 
@@ -796,7 +796,7 @@
     "text": "ID-00050; MILL1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.0, 
     "entranceTime": 118.85, 
     "id": "3.122.052.01.00-E01ASSM39", 
@@ -807,7 +807,7 @@
     "text": "ID-00081; ASSM3"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 69.5, 
     "id": "3.122.052.01.00-E02CAM14", 
@@ -818,7 +818,7 @@
     "text": "ID-00032; CAM1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.5, 
     "entranceTime": 90.1, 
     "id": "3.122.052.01.00-E02MILL16", 
@@ -829,7 +829,7 @@
     "text": "ID-00052; MILL1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.5, 
     "entranceTime": 90.6, 
     "id": "3.122.052.01.00-E02MILL17", 
@@ -840,7 +840,7 @@
     "text": "ID-00052; MILL1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.0, 
     "entranceTime": 118.85, 
     "id": "3.122.052.01.00-E02ASSM39", 
@@ -851,7 +851,7 @@
     "text": "ID-00081; ASSM3"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 20.0, 
     "entranceTime": 2.0, 
     "id": "3.122.052.01.00_DCAD13", 
@@ -862,7 +862,7 @@
     "text": "ID-00021; CAD1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 26.0, 
     "entranceTime": 22.5, 
     "id": "3.122.052.01.00_DCAD25", 
@@ -873,7 +873,7 @@
     "text": "ID-00022; CAD2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 3.0, 
     "entranceTime": 48.9, 
     "id": "PE001068AASSM12", 
@@ -884,7 +884,7 @@
     "text": "ID-00018; ASSM1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 70.5, 
     "id": "PE001068AINJM24", 
@@ -895,7 +895,7 @@
     "text": "ID-00020; INJM2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 24.0, 
     "entranceTime": 71.5, 
     "id": "PE001068AINJM25", 
@@ -906,7 +906,7 @@
     "text": "ID-00020; INJM2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 20.0, 
     "id": "PE001068A-01CAM24", 
@@ -917,7 +917,7 @@
     "text": "ID-00003; CAM2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 21.5, 
     "id": "PE001068A-01MILL26", 
@@ -928,7 +928,7 @@
     "text": "ID-00007; MILL2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 4.0, 
     "entranceTime": 22.5, 
     "id": "PE001068A-01MILL27", 
@@ -939,7 +939,7 @@
     "text": "ID-00007; MILL2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 26.5, 
     "id": "PE001068A-01WORK19", 
@@ -950,7 +950,7 @@
     "text": "ID-00012; WORK1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.25, 
     "entranceTime": 42.0, 
     "id": "PE001068A-01WORK311", 
@@ -961,7 +961,7 @@
     "text": "ID-00015; WORK3"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.0, 
     "entranceTime": 48.9, 
     "id": "PE001068A-01ASSM113", 
@@ -972,7 +972,7 @@
     "text": "ID-00018; ASSM1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 20.0, 
     "id": "PE001068A-02CAM14", 
@@ -983,7 +983,7 @@
     "text": "ID-00004; CAM1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 22.0, 
     "id": "PE001068A-02MILL16", 
@@ -994,7 +994,7 @@
     "text": "ID-00009; MILL1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 4.0, 
     "entranceTime": 23.0, 
     "id": "PE001068A-02MILL17", 
@@ -1005,7 +1005,7 @@
     "text": "ID-00009; MILL1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 15.5, 
     "entranceTime": 27.0, 
     "id": "PE001068A-02WORK29", 
@@ -1016,7 +1016,7 @@
     "text": "ID-00013; WORK2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.25, 
     "entranceTime": 42.5, 
     "id": "PE001068A-02WORK411", 
@@ -1027,7 +1027,7 @@
     "text": "ID-00016; WORK4"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.0, 
     "entranceTime": 48.9, 
     "id": "PE001068A-02ASSM113", 
@@ -1038,7 +1038,7 @@
     "text": "ID-00018; ASSM1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 21.5, 
     "id": "PE001068A-03CAM24", 
@@ -1049,7 +1049,7 @@
     "text": "ID-00005; CAM2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 42.5, 
     "id": "PE001068A-03MILL26", 
@@ -1060,7 +1060,7 @@
     "text": "ID-00011; MILL2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 4.0, 
     "entranceTime": 43.5, 
     "id": "PE001068A-03MILL27", 
@@ -1071,7 +1071,7 @@
     "text": "ID-00011; MILL2"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 47.5, 
     "id": "PE001068A-03WORK19", 
@@ -1082,7 +1082,7 @@
     "text": "ID-00014; WORK1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.3999999999999986, 
     "entranceTime": 48.5, 
     "id": "PE001068A-03WORK311", 
@@ -1093,7 +1093,7 @@
     "text": "ID-00017; WORK3"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.0, 
     "entranceTime": 48.9, 
     "id": "PE001068A-03ASSM113", 
@@ -1104,7 +1104,7 @@
     "text": "ID-00018; ASSM1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 2.0, 
     "entranceTime": 0.0, 
     "id": "PE001068A_DCAD13", 
@@ -1115,7 +1115,7 @@
     "text": "ID-00001; CAD1"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 18.0, 
     "entranceTime": 2.0, 
     "id": "PE001068A_DCAD25", 
@@ -5331,7 +5331,7 @@
     "type": "operator"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 2.0, 
     "entranceTime": 0, 
     "id": "W1ID-000012", 
@@ -5342,7 +5342,7 @@
     "text": "ID-00001 CAD1 PE001068A_D"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 2.0, 
     "id": "W1ID-000213", 
@@ -5364,7 +5364,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 3.0, 
     "entranceTime": 19.0, 
     "id": "W1ID-000215", 
@@ -5375,7 +5375,7 @@
     "text": "ID-00021 CAD1 3.122.052.01.00_D"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 22.0, 
     "id": "W1ID-000096", 
@@ -5397,7 +5397,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.25, 
     "entranceTime": 42.5, 
     "id": "W1ID-000168", 
@@ -5408,7 +5408,7 @@
     "text": "ID-00016 WORK4 PE001068A-02"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 2.0, 
     "entranceTime": 48.5, 
     "id": "W1ID-000239", 
@@ -5419,7 +5419,7 @@
     "text": "ID-00023 CAM1 3.122.052.01.00-01"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 50.5, 
     "id": "W1ID-0002610", 
@@ -5441,7 +5441,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.5, 
     "entranceTime": 66.0, 
     "id": "W1ID-0002512", 
@@ -5452,7 +5452,7 @@
     "text": "ID-00025 CAM1 3.122.052.01.00-03"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.5, 
     "entranceTime": 66.5, 
     "id": "W1ID-0006913", 
@@ -5463,7 +5463,7 @@
     "text": "ID-00069 MILL2 3.122.052.01.00-10"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 67.0, 
     "id": "W1ID-0002814", 
@@ -5474,7 +5474,7 @@
     "text": "ID-00028 CAM2 3.122.052.01.00-06"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.5, 
     "entranceTime": 68.5, 
     "id": "W1ID-0003015", 
@@ -5485,7 +5485,7 @@
     "text": "ID-00030 CAM2 3.122.052.01.00-08"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 69.0, 
     "id": "W1ID-0003116", 
@@ -5496,7 +5496,7 @@
     "text": "ID-00031 CAM2 3.122.052.01.00-E01"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 6.0, 
     "entranceTime": 70.0, 
     "id": "W1ID-0003617", 
@@ -5518,7 +5518,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 90.1, 
     "id": "W1ID-0005219", 
@@ -5529,7 +5529,7 @@
     "text": "ID-00052 MILL1 3.122.052.01.00-E02"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 4.0, 
     "entranceTime": 91.1, 
     "id": "W1ID-0004220", 
@@ -5540,7 +5540,7 @@
     "text": "ID-00042 MILL1 3.122.052.01.00-05"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 4.0, 
     "entranceTime": 95.1, 
     "id": "W1ID-0004421", 
@@ -5562,7 +5562,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.25, 
     "entranceTime": 116.0, 
     "id": "W1ID-0005923", 
@@ -5573,7 +5573,7 @@
     "text": "ID-00059 WORK4 3.122.052.01.00-07"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 2.0, 
     "entranceTime": 118.85, 
     "id": "W1ID-0008124", 
@@ -5595,7 +5595,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 2.0, 
     "entranceTime": 2.0, 
     "id": "W2ID-000022", 
@@ -5617,7 +5617,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 2.0, 
     "entranceTime": 18.0, 
     "id": "W2ID-000024", 
@@ -5628,7 +5628,7 @@
     "text": "ID-00002 CAD2 PE001068A_D"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 20.0, 
     "id": "W2ID-000045", 
@@ -5639,7 +5639,7 @@
     "text": "ID-00004 CAM1 PE001068A-02"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 21.5, 
     "id": "W2ID-000076", 
@@ -5650,7 +5650,7 @@
     "text": "ID-00007 MILL2 PE001068A-01"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 5.5, 
     "entranceTime": 22.5, 
     "id": "W2ID-000227", 
@@ -5672,7 +5672,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 6.5, 
     "entranceTime": 42.0, 
     "id": "W2ID-000229", 
@@ -5683,7 +5683,7 @@
     "text": "ID-00022 CAD2 3.122.052.01.00_D"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 2.0, 
     "entranceTime": 48.5, 
     "id": "W2ID-0002410", 
@@ -5694,7 +5694,7 @@
     "text": "ID-00024 CAM2 3.122.052.01.00-02"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 50.5, 
     "id": "W2ID-0002511", 
@@ -5716,7 +5716,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.5, 
     "entranceTime": 66.0, 
     "id": "W2ID-0002613", 
@@ -5727,7 +5727,7 @@
     "text": "ID-00026 CAM2 3.122.052.01.00-04"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 66.5, 
     "id": "W2ID-0002714", 
@@ -5738,7 +5738,7 @@
     "text": "ID-00027 CAM1 3.122.052.01.00-05"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 68.0, 
     "id": "W2ID-0002915", 
@@ -5749,7 +5749,7 @@
     "text": "ID-00029 CAM1 3.122.052.01.00-07"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 69.5, 
     "id": "W2ID-0003216", 
@@ -5760,7 +5760,7 @@
     "text": "ID-00032 CAM1 3.122.052.01.00-E02"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 5.5, 
     "entranceTime": 70.5, 
     "id": "W2ID-0002017", 
@@ -5782,7 +5782,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 5.5, 
     "entranceTime": 90.0, 
     "id": "W2ID-0002019", 
@@ -5793,7 +5793,7 @@
     "text": "ID-00020 INJM2 PE001068A"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.5, 
     "entranceTime": 95.5, 
     "id": "W2ID-0006420", 
@@ -5804,7 +5804,7 @@
     "text": "ID-00064 EDM1 3.122.052.01.00-02"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 2.0, 
     "entranceTime": 98.0, 
     "id": "W2ID-0004621", 
@@ -5826,7 +5826,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 4.099999999999994, 
     "entranceTime": 114.0, 
     "id": "W2ID-0004023", 
@@ -5837,7 +5837,7 @@
     "text": "ID-00040 MILL1 3.122.052.01.00-04"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 120.85, 
     "id": "W2ID-0008324", 
@@ -5870,7 +5870,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 20.0, 
     "id": "W3ID-000033", 
@@ -5881,7 +5881,7 @@
     "text": "ID-00003 CAM2 PE001068A-01"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 21.5, 
     "id": "W3ID-000054", 
@@ -5903,7 +5903,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 42.5, 
     "id": "W3ID-000116", 
@@ -5914,7 +5914,7 @@
     "text": "ID-00011 MILL2 PE001068A-03"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 2.0, 
     "entranceTime": 48.5, 
     "id": "W3ID-000677", 
@@ -5925,7 +5925,7 @@
     "text": "ID-00067 MILL1 3.122.052.01.00-09"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 50.5, 
     "id": "W3ID-000698", 
@@ -5947,7 +5947,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 6.5, 
     "entranceTime": 66.0, 
     "id": "W3ID-0003410", 
@@ -5958,7 +5958,7 @@
     "text": "ID-00034 MILL1 3.122.052.01.00-01"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 3.0, 
     "entranceTime": 72.5, 
     "id": "W3ID-0004811", 
@@ -5969,7 +5969,7 @@
     "text": "ID-00048 MILL1 3.122.052.01.00-08"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.5, 
     "entranceTime": 75.5, 
     "id": "W3ID-0005012", 
@@ -5991,7 +5991,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.5, 
     "entranceTime": 90.0, 
     "id": "W3ID-0003614", 
@@ -6002,7 +6002,7 @@
     "text": "ID-00036 MILL2 3.122.052.01.00-02"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 7.5, 
     "entranceTime": 90.5, 
     "id": "W3ID-0003815", 
@@ -6013,7 +6013,7 @@
     "text": "ID-00038 MILL2 3.122.052.01.00-03"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.5, 
     "entranceTime": 98.25, 
     "id": "W3ID-0006116", 
@@ -6024,7 +6024,7 @@
     "text": "ID-00061 EDM1 3.122.052.01.00-03"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.9000000000000057, 
     "entranceTime": 99.1, 
     "id": "W3ID-0004017", 
@@ -6046,7 +6046,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 2.0, 
     "entranceTime": 114.0, 
     "id": "W3ID-0004619", 
@@ -6057,7 +6057,7 @@
     "text": "ID-00046 MILL2 3.122.052.01.00-07"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.25, 
     "entranceTime": 118.1, 
     "id": "W3ID-0005620", 
@@ -6090,7 +6090,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 27.0, 
     "id": "W4ID-000133", 
@@ -6112,7 +6112,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.25, 
     "entranceTime": 42.0, 
     "id": "W4ID-000155", 
@@ -6123,7 +6123,7 @@
     "text": "ID-00015 WORK3 PE001068A-01"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 47.5, 
     "id": "W4ID-000146", 
@@ -6134,7 +6134,7 @@
     "text": "ID-00014 WORK1 PE001068A-03"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.3999999999999986, 
     "entranceTime": 48.5, 
     "id": "W4ID-000177", 
@@ -6145,7 +6145,7 @@
     "text": "ID-00017 WORK3 PE001068A-03"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 3.0, 
     "entranceTime": 48.9, 
     "id": "W4ID-000188", 
@@ -6167,7 +6167,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 66.0, 
     "id": "W4ID-0008010", 
@@ -6178,7 +6178,7 @@
     "text": "ID-00080 TURN1 3.122.052.01.00-13"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.25, 
     "entranceTime": 72.5, 
     "id": "W4ID-0005311", 
@@ -6189,7 +6189,7 @@
     "text": "ID-00053 WORK2 3.122.052.01.00-01"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.5, 
     "entranceTime": 75.5, 
     "id": "W4ID-0007912", 
@@ -6211,7 +6211,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.09999999999999432, 
     "entranceTime": 90.0, 
     "id": "W4ID-0007914", 
@@ -6222,7 +6222,7 @@
     "text": "ID-00079 WORK1 3.122.052.01.00-08"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.25, 
     "entranceTime": 90.5, 
     "id": "W4ID-0005415", 
@@ -6233,7 +6233,7 @@
     "text": "ID-00054 WORK3 3.122.052.01.00-02"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.25, 
     "entranceTime": 95.1, 
     "id": "W4ID-0005716", 
@@ -6244,7 +6244,7 @@
     "text": "ID-00057 WORK2 3.122.052.01.00-05"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.25, 
     "entranceTime": 96.5, 
     "id": "W4ID-0006517", 
@@ -6255,7 +6255,7 @@
     "text": "ID-00065 WORK1 3.122.052.01.00-02"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.25, 
     "entranceTime": 98.0, 
     "id": "W4ID-0005518", 
@@ -6266,7 +6266,7 @@
     "text": "ID-00055 WORK2 3.122.052.01.00-03"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.25, 
     "entranceTime": 99.1, 
     "id": "W4ID-0005819", 
@@ -6288,7 +6288,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.25, 
     "entranceTime": 114.0, 
     "id": "W4ID-0006221", 
@@ -6299,7 +6299,7 @@
     "text": "ID-00062 WORK3 3.122.052.01.00-03"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.5, 
     "entranceTime": 116.25, 
     "id": "W4ID-0007822", 
@@ -6332,7 +6332,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 26.5, 
     "id": "W5ID-000123", 
@@ -6354,7 +6354,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.5, 
     "entranceTime": 42.0, 
     "id": "W5ID-000135", 
@@ -6365,7 +6365,7 @@
     "text": "ID-00013 WORK2 PE001068A-02"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 48.5, 
     "id": "W5ID-000706", 
@@ -6376,7 +6376,7 @@
     "text": "ID-00070 TURN1 3.122.052.01.00-11"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.5, 
     "entranceTime": 50.0, 
     "id": "W5ID-000717", 
@@ -6387,7 +6387,7 @@
     "text": "ID-00071 TURN1 3.122.052.01.00-12"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.5, 
     "entranceTime": 51.5, 
     "id": "W5ID-000808", 
@@ -6409,7 +6409,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 72.75, 
     "id": "W5ID-0007210", 
@@ -6431,7 +6431,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.5, 
     "entranceTime": 95.35, 
     "id": "W5ID-0007612", 
@@ -6442,7 +6442,7 @@
     "text": "ID-00076 WORK4 3.122.052.01.00-05"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 1.0, 
     "entranceTime": 96.75, 
     "id": "W5ID-0007313", 
@@ -6453,7 +6453,7 @@
     "text": "ID-00073 WORK3 3.122.052.01.00-02"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.5, 
     "entranceTime": 99.35, 
     "id": "W5ID-0007714", 
@@ -6475,7 +6475,7 @@
     "text": "off-shift"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.5, 
     "entranceTime": 114.25, 
     "id": "W5ID-0007416", 
@@ -6486,7 +6486,7 @@
     "text": "ID-00074 WORK2 3.122.052.01.00-03"
    }, 
    {
-    "color": "cyan", 
+    "color": "transparent", 
     "duration": 0.5, 
     "entranceTime": 118.35, 
     "id": "W5ID-0007517", 
