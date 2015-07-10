@@ -74,7 +74,7 @@ class JSOperatorGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
                       exitTime).strftime(date_format),
                 open=False,
                 entranceTime=entranceTime,
-                color='cyan',
+                color='transparent',
                 duration=exitTime-entranceTime,
               )
               if task_id == 'off-shift':
