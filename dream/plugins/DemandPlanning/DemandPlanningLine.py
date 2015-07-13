@@ -34,8 +34,13 @@ class DemandPlanningLine(plugin.OutputPreparationPlugin, TimeSupportMixin):
         options = {
           "xaxis": {
             "mode": "time",
-            "minTickSize": [1, self.getTimeUnitText()],
-          }
+            #"minTickSize": [1, self.getTimeUnitText()],
+            "minTickSize": [1, "day"],
+          },
+          "legend": {
+            "backgroundOpacity": 0.1,
+            "position":"se",
+            },
         }
      
         bottleNeckUtilizationDict[bottleneck] = {
@@ -84,13 +89,18 @@ class BottleNeckByWeek(plugin.OutputPreparationPlugin, TimeSupportMixin):
 
     for week, bottleneckData in by_week.items():
       series = []
-      ticks = list(enumerate(bottleneckData.keys()))
+      #ticks = list(enumerate(bottleneckData.keys()))
+      ticks = list(enumerate(G.Bottlenecks))
       
-      options = {
+      options = { 
         "xaxis": {
           "minTickSize": 1,
           "ticks": ticks
         },
+        "legend": {
+            "backgroundOpacity": 0.1,
+            "position":"se",
+            },
         "series": {
           "bars": {
             "show": True,
@@ -115,7 +125,7 @@ class BottleNeckByWeek(plugin.OutputPreparationPlugin, TimeSupportMixin):
                 ( 'maxUtilization', 'Target Utilization' ) ]:
         series.append({
             "label": utilizationLabel,
-            "data": list(enumerate([x[utilizationType] for x in bottleneckData.values()])),
+            "data": list(enumerate([bottleneckData[x][utilizationType] for x in G.Bottlenecks])),
         })
             
     return data

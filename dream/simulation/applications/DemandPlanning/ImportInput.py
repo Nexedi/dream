@@ -50,6 +50,7 @@ def ImportInput(input, algorithmAttributes):
     wbin = xlrd.open_workbook(file_contents=attachement_data)
     G.maxEarliness = algorithmAttributes.get('maxEarliness',None)
     G.maxLateness = algorithmAttributes.get('maxLateness',None)
+    startWeek =  algorithmAttributes.get('CurrentWeek',None)
     
     # utilisation calculation
     G.minDeltaUt = algorithmAttributes.get('minDelta',None)
@@ -81,12 +82,24 @@ def ImportInput(input, algorithmAttributes):
     sh = wbin.sheet_by_name('BN_Capa')
     rows = sh.nrows
     
-    G.planningHorizon = sh.ncols - 2
+    
     Weeks = {}
-    for week in range(2,sh.ncols):
+    w = 2
+    while w<sh.ncols and withoutFormat(1,w,sh,1) != startWeek:
+        w += 1
+        
+    if w == sh.ncols:
+        print "please enter a valid week value"
+        return "stop"
+    
+    refCap = {}
+    noTarget = []
+    
+    for week in range(w,sh.ncols):
         Weeks[week] = withoutFormat(1,week,sh,1)
         G.WeekList.append(withoutFormat(1,week,sh,1))
-    
+        refCap[Weeks[week]] = 1
+    G.planningHorizon = len(G.WeekList)
     for row in range(2,rows,4):
         
         bn = withoutFormat(row,0,sh,0)
@@ -95,18 +108,42 @@ def ImportInput(input, algorithmAttributes):
         G.Capacity[bn] = {}#{'OriginalCapacity':{}, 'RemainingCapacity':{}, 'minUtilisation':{}, 'targetUtilisation':{}}
         G.CurrentCapacityDictOrig[bn] = {}
         
-        for week in range(2,sh.ncols):
-            G.Capacity[bn][Weeks[week]]={'OriginalCapacity':withoutFormat(row,week,sh,1), 'RemainingCapacity':withoutFormat(row+1,week,sh,1), 'minUtilisation':withoutFormat(row+2,week,sh,0), 'targetUtilisation':withoutFormat(row+3,week,sh,0)}
+        for week in range(w,sh.ncols):
+            G.Capacity[bn][Weeks[week]]={'OriginalCapacity':withoutFormat(row,week,sh,1), 'RemainingCapacity':withoutFormat(row+1,week,sh,1), 'minUtOrig':withoutFormat(row+2,week,sh,0), 'targetUtOrig':withoutFormat(row+3,week,sh,0)}
+            if G.Capacity[bn][Weeks[week]]['minUtOrig'] == '':
+                G.Capacity[bn][Weeks[week]]['minUtilisation'] = 0
+            else:
+                G.Capacity[bn][Weeks[week]]['minUtilisation'] = G.Capacity[bn][Weeks[week]]['minUtOrig']
+            
+            if G.Capacity[bn][Weeks[week]]['targetUtOrig'] == '':
+                G.Capacity[bn][Weeks[week]]['targetUtilisation'] = 1
+                noTarget.append([bn, Weeks[week]])
+            else:
+                G.Capacity[bn][Weeks[week]]['targetUtilisation'] = G.Capacity[bn][Weeks[week]]['targetUtOrig']
+                if G.Capacity[bn][Weeks[week]]['targetUtOrig'] < refCap[Weeks[week]]:
+                    refCap[Weeks[week]] = G.Capacity[bn][Weeks[week]]['targetUtOrig']
+                    
+                
             G.CurrentCapacityDictOrig[bn][Weeks[week]] = withoutFormat(row,week,sh,1)
+            
+    for coppie in noTarget:
+        if refCap[coppie[1]] == 1:
+            refCap[coppie[1]] = 0
+        G.Capacity[coppie[0]][coppie[1]]['targetUtilisation'] = refCap[coppie[1]]
+                
     
             
             
     # Import loading factors
     sh = wbin.sheet_by_name('BN_Load Factor')
     rows = sh.nrows
+
+    w = 3
+    while withoutFormat(1,w,sh,1) != startWeek:
+        w += 1
     
     Weeks = {}
-    for week in range(3,sh.ncols):
+    for week in range(w,sh.ncols):
         Weeks[week] = withoutFormat(1,week,sh,1)
         
     for row in range(2,rows):
@@ -125,15 +162,19 @@ def ImportInput(input, algorithmAttributes):
         
         bn = withoutFormat(row,2,sh,0)
         G.RouteDict[ma][bn] = {}
-        for week in range(3,sh.ncols):
+        for week in range(w,sh.ncols):
             G.RouteDict[ma][bn][Weeks[week]] = withoutFormat(row,week,sh,0)
             
     # Import batch size
     sh = wbin.sheet_by_name('BatchSize')
     rows = sh.nrows
     
+    w = 2
+    while withoutFormat(2,w,sh,1) != startWeek:
+        w += 1
+    
     Weeks = {}
-    for week in range(2,sh.ncols):
+    for week in range(w,sh.ncols):
         Weeks[week] = withoutFormat(2,week,sh,1)
     
     for row in range(3,rows):
@@ -144,7 +185,7 @@ def ImportInput(input, algorithmAttributes):
         
         G.BatchSize[ma]= {}
         G.incompleteBatches[ma] = 0
-        for week in range(2,sh.ncols):
+        for week in range(w,sh.ncols):
             G.BatchSize[ma][Weeks[week]] = withoutFormat(row,week,sh,0)
 #            G.incompleteBatches[ma][Weeks[week]] = 0 
             
@@ -153,24 +194,28 @@ def ImportInput(input, algorithmAttributes):
     sh = wbin.sheet_by_name('OrderSummary')
     rows = sh.nrows
     
-    orderID = 1
     G.priorityList['order'] = []
     G.sortedOrders['order'] = {}
     
     for row in range(1,rows):
+        
+        week = withoutFormat(row,3,sh,1)
+        if week < startWeek:
+            continue
+        
+        orderID = withoutFormat(row,2,sh,0)
         G.orders[orderID] = {}
         G.orders[orderID]['orderID'] = orderID 
-        G.orders[orderID]['ppos'] = 0
-        G.orders[orderID]['sp'] = withoutFormat(row,1,sh,0)
-        maList = withoutFormat(row,2,sh,0)
+        G.orders[orderID]['sp'] = withoutFormat(row,0,sh,0)
+        maList = withoutFormat(row,1,sh,0)
         maList = my_split(maList, ['; ', ';'])
+        print 'malist', maList
         maList.remove('')
         G.orders[orderID]['MAlist'] = maList
-        week = withoutFormat(row,3,sh,1)
+        
         G.orders[orderID]['Week'] = week
-        G.orders[orderID]['Customer'] = withoutFormat(row, 4, sh, 0)
-        G.orders[orderID]['Qty'] = withoutFormat(row, 5, sh, 0)
-        priority = withoutFormat(row, 6, sh, 1)
+        G.orders[orderID]['Qty'] = withoutFormat(row, 4, sh, 0)
+        priority = withoutFormat(row, 5, sh, 1)
         G.orders[orderID]['priority'] = priority
         if priority not in G.priorityList['order']:
             G.priorityList['order'].append(priority)
@@ -179,19 +224,22 @@ def ImportInput(input, algorithmAttributes):
         if week not in G.sortedOrders['order'][priority]:
             G.sortedOrders['order'][priority][week] = []
         G.sortedOrders['order'][priority][week].append(G.orders[orderID])
-        orderID += 1
 
-    print 'sorted orders keys', G.sortedOrders['order'].keys()
     # Import forecast
     sh = wbin.sheet_by_name('FC_Summary')
     rows = sh.nrows
     G.priorityList['forecast'] = []
     G.sortedOrders['forecast'] = {}
     Weeks = {}
+    
+    w = 3
+    while withoutFormat(1,w,sh,1) != startWeek:
+        w += 1
+    
     for week in range(3,sh.ncols):
         Weeks[week] = withoutFormat(1,week,sh,1)
     
-    row = 2
+    row = w
     while row < rows:
         
         newSp = withoutFormat(row,1,sh,0)
@@ -210,6 +258,8 @@ def ImportInput(input, algorithmAttributes):
             subRow += 1
         
         print 'ma sug', maSuggested, subRow
+        oID = 1
+        orderID = 'Forecast_'+str(oID)
         for week in range(4,sh.ncols):        
             qty = withoutFormat(row+subRow,week,sh,1)
             if qty:
@@ -233,7 +283,8 @@ def ImportInput(input, algorithmAttributes):
                 if Weeks[week] not in G.sortedOrders['forecast'][priority]:
                     G.sortedOrders['forecast'][priority][Weeks[week]] = []
                 G.sortedOrders['forecast'][priority][Weeks[week]].append(G.orders[orderID])
-                orderID += 1
+                oID += 1
+                orderID = 'Forecast_'+str(oID)
             
         row += subRow+1
     
@@ -260,7 +311,7 @@ def ImportInput(input, algorithmAttributes):
                 for priority in G.priorityList['forecast']:
                     G.globalMAAllocation[ma][week]['forecast'][priority] = 0 
                     G.globalMAAllocationIW[ma][week]['forecast'][priority] = 0
-
+                
     # set lateness and earliness results
     for week in G.WeekList:
         G.Lateness[week] = {}
@@ -275,10 +326,11 @@ def ImportInput(input, algorithmAttributes):
         G.Excess[sp] = {}
         for week in G.WeekList:
             G.Excess[sp][week] = 0
-
+            
     G.ordersOrig = deepcopy(G.orders)
     G.sortedOrdersOrig = deepcopy(G.sortedOrders)
-              
+
 if __name__ == '__main__':
-    ImportInput()  
-    
+    ImportInput()        
+        
+     

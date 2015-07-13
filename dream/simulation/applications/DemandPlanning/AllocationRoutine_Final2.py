@@ -150,9 +150,9 @@ def AllocationRoutine_Final(initialWeek, itemList, itemType, ant):
         # for orders add allocation information
         if itemType == 'order':
             if chosenMA == None:                    
-                G.OrderResults.append((item['orderID'], item['sp'], item['MAlist'], item['Week'], item['Customer'], item['Qty'], item['priority'], chosenMA, oMAlist2, 'NaN', 'NaN', 'None'))
+                G.OrderResults.append((item['orderID'], item['sp'], item['MAlist'], item['Week'], item['Qty'], item['priority'], chosenMA, oMAlist2, 'NaN', 'NaN', 'None'))
             else:
-                G.OrderResults.append((item['orderID'], item['sp'], item['MAlist'], item['Week'], item['Customer'], item['Qty'], item['priority'], chosenMA, oMAlist2, Results[chosenMA]['lateness'], Results[chosenMA]['earliness'], Results[chosenMA]['Allocation']))
+                G.OrderResults.append((item['orderID'], item['sp'], item['MAlist'], item['Week'], item['Qty'], item['priority'], chosenMA, oMAlist2, Results[chosenMA]['lateness'], Results[chosenMA]['earliness'], Results[chosenMA]['Allocation']))
                 
         if itemType == 'forecast':
             if chosenMA == None:                    
@@ -180,8 +180,15 @@ def choseMA(allResults, possibleSolutions, MAlist, weeklist):
             for week in weeklist:
                 for bn in allResults[ma]['utilisation']:
                     if week in allResults[ma]['utilisation'][bn]:
-                        minUtil.append(max(0, (G.Capacity[bn][week]['minUtilisation']-allResults[ma]['utilisation'][bn][week])/G.Capacity[bn][week]['minUtilisation']))
-                        targetUtil.append((G.Capacity[bn][week]['targetUtilisation']-allResults[ma]['utilisation'][bn][week])/G.Capacity[bn][week]['targetUtilisation'])
+                        if G.Capacity[bn][week]['minUtilisation']:
+                            minUtil.append(max(0, (G.Capacity[bn][week]['minUtilisation']-allResults[ma]['utilisation'][bn][week])/G.Capacity[bn][week]['minUtilisation']))
+                        else:
+                            minUtil.append(max(0, (G.Capacity[bn][week]['minUtilisation']-allResults[ma]['utilisation'][bn][week])))
+                        
+                        if G.Capacity[bn][week]['targetUtilisation']:
+                            targetUtil.append((G.Capacity[bn][week]['targetUtilisation']-allResults[ma]['utilisation'][bn][week])/G.Capacity[bn][week]['targetUtilisation'])
+                        else:
+                            targetUtil.append(G.Capacity[bn][week]['targetUtilisation']-allResults[ma]['utilisation'][bn][week])
                 
             res.append([ma, allResults[ma]['remainingUnits'], allResults[ma]['lateness'], std(array(targetUtil)), std(array(minUtil)), allResults[ma]['earliness']])
     
@@ -218,13 +225,20 @@ def choseMA2(allResults, possibleSolutions, MAlist, weeklist):      # more simil
                 targetU = []
                 for week in weeklist:
                     utilisation = float(G.Capacity[bottleneck][week]['OriginalCapacity'] - allResults[ma]['remainingCap'][bottleneck][week])/G.Capacity[bottleneck][week]['OriginalCapacity']
-                    minU.append(max(0, (G.Capacity[bottleneck][week]['minUtilisation']-utilisation)/G.Capacity[bottleneck][week]['minUtilisation']))
-                    targetU.append((utilisation - G.Capacity[bottleneck][week]['targetUtilisation'])/G.Capacity[bottleneck][week]['targetUtilisation'])
+                    if G.Capacity[bottleneck][week]['minUtilisation']:
+                        minU.append(max(0, (G.Capacity[bottleneck][week]['minUtilisation']-utilisation)/G.Capacity[bottleneck][week]['minUtilisation']))
+                    else:
+                        minU.append(max(0, (G.Capacity[bottleneck][week]['minUtilisation']-utilisation)))
+                    if G.Capacity[bottleneck][week]['targetUtilisation']:
+                        targetU.append((utilisation - G.Capacity[bottleneck][week]['targetUtilisation'])/G.Capacity[bottleneck][week]['targetUtilisation'])
+                    else:
+                        targetU.append((utilisation - G.Capacity[bottleneck][week]['targetUtilisation']))
+                        
                     
                 minUtil.append(mean(array(minU)))
                 targetUtil.append(mean(absolute(targetU)))
                         
-            res.append([ma, allResults[ma]['remainingUnits'], allResults[ma]['lateness'], std(array(targetUtil)), std(array(minUtil)), allResults[ma]['earliness']])
+            res.append([ma, allResults[ma]['remainingUnits'], allResults[ma]['lateness'], mean(array(targetUtil)), mean(array(minUtil)), allResults[ma]['earliness']])
 
         # order results...1st criterion: target utilisation (stdDev), 2nd criterion: min utilisation(stdDev)
         sortedMA = sorted(res, key=itemgetter(1, 2, 3, 4, 5))

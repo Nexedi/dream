@@ -71,7 +71,7 @@ def outputResults():
         G.CapacityResults.append([bottleneck, 'Capa Pegging Resource Capacity (UoM)',]+initialCap)
         G.CapacityResults.append(['', 'Capa Pegging Resource Total Load (UoM)',]+[G.Capacity[bottleneck][week]['OriginalCapacity']-G.CurrentCapacityDict[bottleneck][week] for week in G.WeekList])
         G.CapacityResults.append(['', 'Capa Pegging Resource Total Util (Percent)',]+[float(G.Capacity[bottleneck][week]['OriginalCapacity']-G.CurrentCapacityDict[bottleneck][week])/G.Capacity[bottleneck][week]['OriginalCapacity']*100 for week in G.WeekList])       
-        G.CapacityResults.append(['', 'Capa Pegging Resource Min Util (Percent)',]+[G.Capacity[bottleneck][week]['minUtilisation']*100 for week in G.WeekList])       
+        G.CapacityResults.append(['', 'Capa Pegging Resource Min Util (Percent)',]+[G.Capacity[bottleneck][week]['minUtOrig']*100 for week in G.WeekList])       
         G.CapacityResults.append(['', 'Capa Pegging Resource Target Util (Percent)',]+[G.Capacity[bottleneck][week]['targetUtilisation']*100 for week in G.WeekList])       
         
     # utilisation results

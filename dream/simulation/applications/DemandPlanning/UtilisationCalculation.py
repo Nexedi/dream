@@ -51,12 +51,15 @@ def utilisationCalc1(ACOcapacityDict, initialWeek, ind):
         for week in weekList:
             utilisation = float(G.Capacity[bottleneck][week]['OriginalCapacity']-ACOcapacityDict[bottleneck][week])/G.Capacity[bottleneck][week]['OriginalCapacity'] 
             minU.append(utilisation > G.Capacity[bottleneck][week]['minUtilisation'])
-            targetU.append(float(utilisation - G.Capacity[bottleneck][week]['targetUtilisation'])/G.Capacity[bottleneck][week]['targetUtilisation'])                
+            if G.Capacity[bottleneck][week]['targetUtilisation']:
+                targetU.append(float(utilisation - G.Capacity[bottleneck][week]['targetUtilisation'])/G.Capacity[bottleneck][week]['targetUtilisation'])
+            else:
+                targetU.append(float(utilisation - G.Capacity[bottleneck][week]['targetUtilisation']))
             
         minUtil.append(mean(array(minU)))
         targetUtil.append(mean(absolute(targetU)))
         
-    ACOtargetUtil = std(array(targetUtil))    #mean(array(targetUtil)) #FIXME: potrebbe essere std(array(targetUtil))
+    ACOtargetUtil = mean(array(targetUtil))    #mean(array(targetUtil)) #FIXME: potrebbe essere std(array(targetUtil))
     ACOminUtil = mean(array(minUtil))*-1
     
     return ACOtargetUtil, ACOminUtil
@@ -72,11 +75,14 @@ def utilisationCalc2(ACOcapacityDict, initialWeek, ind):
     minUtil = []
     targetUtil = []   
     for bottleneck in G.Bottlenecks:
-        weekList = [initialWeek] + [G.WeekList[i] for i in range(ind-1, max(-1,ind-G.maxEarliness-1), -1)]
+        weekList = [initialWeek] #+ [G.WeekList[i] for i in range(ind-1, max(-1,ind-G.maxEarliness-1), -1)]
         for week in weekList:
             utilisation = float(G.Capacity[bottleneck][week]['OriginalCapacity']-ACOcapacityDict[bottleneck][week])/G.Capacity[bottleneck][week]['OriginalCapacity'] 
             minUtil.append(utilisation > G.Capacity[bottleneck][week]['minUtilisation'])
-            targetUtil.append(float(utilisation - G.Capacity[bottleneck][week]['targetUtilisation'])/G.Capacity[bottleneck][week]['targetUtilisation'])                
+            if G.Capacity[bottleneck][week]['targetUtilisation']:
+                targetUtil.append(float(utilisation - G.Capacity[bottleneck][week]['targetUtilisation'])/G.Capacity[bottleneck][week]['targetUtilisation'])
+            else:                
+                targetUtil.append(float(utilisation - G.Capacity[bottleneck][week]['targetUtilisation']))
             
     ACOtargetUtil = std(array(targetUtil))
     ACOminUtil = mean(array(minUtil))*-1
@@ -100,7 +106,10 @@ def utilisationCalc3(ACOcapacityDict, initialWeek, ind):
         for week in weekList:
             utilisation = float(G.Capacity[bottleneck][week]['OriginalCapacity']-ACOcapacityDict[bottleneck][week])/G.Capacity[bottleneck][week]['OriginalCapacity'] 
             minU.append(utilisation)
-            targetU.append(float(utilisation - G.Capacity[bottleneck][week]['targetUtilisation'])/G.Capacity[bottleneck][week]['targetUtilisation'])                
+            if G.Capacity[bottleneck][week]['targetUtilisation']:
+                targetU.append(float(utilisation - G.Capacity[bottleneck][week]['targetUtilisation'])/G.Capacity[bottleneck][week]['targetUtilisation'])  
+            else:
+                targetU.append(float(utilisation - G.Capacity[bottleneck][week]['targetUtilisation']))  
             
         minUtil.append(mean(array(minU)))
         targetUtil.append(mean(array(max(minU))))
