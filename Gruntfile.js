@@ -253,6 +253,11 @@ module.exports = function (grunt) {
         relative_dest: 'lib/moment.js',
         dest: '<%= global_config.dest %>/<%= curl.momentjs.relative_dest %>'
       },
+      daff: {
+        src: "<%= global_config.lib %>/daff.js",
+        relative_dest: 'lib/daff.js',
+        dest: '<%= global_config.dest %>/<%= curl.daff.relative_dest %>'
+      },
       handsontablejs: {
         src: 'https://raw.githubusercontent.com/warpech/' +
           'jquery-handsontable/v0.10.5/dist/jquery.handsontable.full.js',
