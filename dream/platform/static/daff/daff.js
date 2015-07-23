@@ -11,7 +11,7 @@
         diff2html.render(table_diff);
         table_diff_html = diff2html.html();
         return this.getElement().push(function(element) {
-            $(element).html(table_diff_html);
+            $(element).addClass("highlighter").html(table_diff_html);
         });
     });
 })(window, jQuery, rJS, JSON, daff);
