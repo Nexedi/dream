@@ -26,6 +26,8 @@
             }
           }
       }, false);
+      window.applicationCache.addEventListener('error', function() {
+        alert("Fatal error while updating, retrying"); window.location.reload();}, false );
     }
   }, false);
 
