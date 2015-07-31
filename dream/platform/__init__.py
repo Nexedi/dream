@@ -211,7 +211,7 @@ def main(*args):
   parser = argparse.ArgumentParser(description='Launch the DREAM simulation platform.')
   parser.add_argument('--port', default=5000, type=int,
                       help='Port number to listen on')
-  parser.add_argument('--host', default="localhost", help='Host address')
+  parser.add_argument('--host', default="127.0.0.1", help='Host address')
   parser.add_argument('--logfile', help='Log to file')
   parser.add_argument('--debug', help='Debug mode', action='store_true')
   arguments = parser.parse_args()
