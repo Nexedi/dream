@@ -15,6 +15,8 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
     def preprocess(self, data):
         nodes=data['graph']['node']
         WIPData=data['input'].get(self.configuration_dict['input_id'], {})
+        batchCounter=0
+        
         from pprint import pprint
                
         # get the number of units for a standard batch
@@ -27,25 +29,60 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
         # remove the titles
         WIPData.pop(0)
 
+        # group the stations that may share sub-batches
+        groups=[]
+        alreadyGrouped=[]
         for row in WIPData:
             # on the first empty row break
             if not row[0]:
                 break
-            # if there is not record for the station continue
-            if (not row[1]) and not (row[2]):
-                pass
-                # continue
             stationId=row[0]
-            workingBatchSize=nodes[stationId]['workingBatchSize']
+            if stationId in alreadyGrouped:
+                continue
             
+            workingBatchSize=nodes[stationId]['workingBatchSize']
+
             # get a list with the stations that the station might share batches with (if any)           
             sharingStations=[]
             if workingBatchSize!=standardBatchUnits:
                 sharingStations=self.findSharingStations(data,stationId)
                 self.checkIfDefinitionIsValid(data, WIPData, stationId, sharingStations,standardBatchUnits)
-            
-            print stationId, self.getDistanceFromSource(data, stationId)
+            if sharingStations:
+                groups.append([stationId]+sharingStations)
+                alreadyGrouped.extend(sharingStations)
+            else:
+                groups.append([stationId])
+        
+        # set the WIP for every group
+        for group in groups:
+            # if we have stations that may share sub-batches
+            if len(group)>1:
+                currentBatchId='Batch_'+str(batchCounter)+'_WIP'
+                unitsToCompleteBatch=standardBatchUnits
+                group.sort(key=lambda x: self.getDistanceFromSource(data, x))
+                for stationId in group:
+                    stationWIPData=[element for element in WIPData if element[0] == stationId][0]
+                    print stationWIPData
+                    awaiting=stationWIPData[1]
+                    complete=stationWIPData[2]
+                    if not awaiting:
+                        awaiting=0
+                    awaiting=int(awaiting)
+                    if not complete:
+                        complete=0                    
+                    complete=int(complete)
+                    
+                    buffered=awaiting - (awaiting % workingBatchSize)
+                    proceeded=complete - (complete % workingBatchSize)
+                    currentCompleted=awaiting % workingBatchSize
+                    print buffered,proceeded,currentCompleted
+            # for stations that do not share sub-batches with others
+            else:
+                pass
+                    
         return data
+    
+
     
     # gets the data and a station id and returns a list with all the stations that the station may share batches
     def findSharingStations(self,data,stationId):
