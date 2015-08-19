@@ -23,7 +23,6 @@ class CapacityStationWIP(plugin.InputPreparationPlugin):
                 wipColumn=i
                 break
             i+=1
-        print wipColumn
         if projectData:
             alreadyConsideredProjects=[]
             for row in range(1, len(projectData)):
@@ -45,7 +44,6 @@ class CapacityStationWIP(plugin.InputPreparationPlugin):
                     for stationRecord in range(numberOfOperations):
                         stationId=projectData[row+stationRecord][4]
                         requiredCapacity=float(projectData[row+stationRecord][wipColumn])
-                        print projectId, 'has wip requirements of', requiredCapacity, 'from', stationId
                         if requiredCapacity:
                             capacityBuffer=self.getBuffer(data, stationId)
                             data['graph']['node'][capacityBuffer]['wip'].append({
