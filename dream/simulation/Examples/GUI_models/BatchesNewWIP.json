@@ -386,7 +386,7 @@
           "input_id": "EntryData"
         }, 
         {
-          "_class": "dream.plugins.Batches.BatchesWIPSpreadsheet.BatchesWIPSpreadsheet", 
+          "_class": "dream.plugins.Batches.BatchesWIPShort.BatchesWIPShort", 
           "input_id": "WipSpreadsheet"
         }, 
         {
