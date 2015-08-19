@@ -16,8 +16,7 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
         nodes=data['graph']['node']
         WIPData=data['input'].get(self.configuration_dict['input_id'], {})
         from pprint import pprint
-        # pprint(WIPData)
-        
+               
         # get the number of units for a standard batch
         standardBatchUnits=0
         for node_id, node in nodes.iteritems():
@@ -45,6 +44,7 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
                 sharingStations=self.findSharingStations(data,stationId)
                 self.checkIfDefinitionIsValid(data, WIPData, stationId, sharingStations,standardBatchUnits)
             
+            print stationId, self.getDistanceFromSource(data, stationId)
         return data
     
     # gets the data and a station id and returns a list with all the stations that the station may share batches
@@ -102,8 +102,19 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
                     totalUnits+=int(row[2])
         assert totalUnits % standardBatchUnits == 0, 'wrong wip definition in group '+str(allStations)+'. Not full batches.'
                 
-        
-        
+    # returns how far a station is from source. Useful for sorting
+    def getDistanceFromSource(self,data,stationId):
+        distance=0
+        nodes=data['graph']['node']
+        current=stationId
+        # find all the predecessors that may share batches
+        while 1:
+            previous=self.getPredecessors(data, current)[0]      
+            if 'Source' in nodes[previous]['_class']:
+                break
+            distance+=1
+            current=previous  
+        return distance
         
         
     
