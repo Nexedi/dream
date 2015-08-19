@@ -87,7 +87,7 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
                         if unitsToCompleteBatch==0:
                             subBatchCounter=0
                             batchCounter+=1
-                    # set the buffered sub-batches to the previous station
+                    # set the completed sub-batches to the next station
                     for i in range(int(proceeded/workingBatchSize)):
                         bufferId=self.getSuccessors(data, stationId)[0]
                         self.createSubBatch(data, bufferId, currentBatchId, currentBatchId, subBatchCounter, workingBatchSize)
@@ -96,6 +96,16 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
                         if unitsToCompleteBatch==0:
                             subBatchCounter=0
                             batchCounter+=1
+                    # set the sub-batch inside the station
+                    if currentCompleted:
+                        self.createSubBatch(data, stationId, currentBatchId, currentBatchId, subBatchCounter, workingBatchSize,
+                                            unitsToProcess=currentCompleted)
+                        subBatchCounter+=1
+                        unitsToCompleteBatch-=workingBatchSize
+                        if unitsToCompleteBatch==0:
+                            subBatchCounter=0
+                            batchCounter+=1
+                        
             # for stations that do not share sub-batches with others
             else:
                 pass
