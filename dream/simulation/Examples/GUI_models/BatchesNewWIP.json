@@ -387,7 +387,7 @@
         }, 
         {
           "_class": "dream.plugins.Batches.BatchesWIPShort.BatchesWIPShort", 
-          "input_id": "WipSpreadsheet"
+          "input_id": "wip_spreadsheet"
         }, 
         {
           "_class": "dream.plugins.Batches.ReadSkilledOperators.ReadSkilledOperators", 
