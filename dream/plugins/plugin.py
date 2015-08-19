@@ -33,6 +33,18 @@ class Plugin(object):
             successors.append(edge['destination'])
     return successors
 
+  # returns the parallel stations for a station if any
+  def getParallelStations(self, data, node_id):
+    predecessors=self.getPredecessors(data, node_id)
+    if not predecessors:
+        return []
+    previous=predecessors[0]
+    parallelStations=self.getSuccessors(data, previous)
+    parallelStations.remove(node_id)
+    return parallelStations
+
+
+
   # calculate the confidence interval for a list and a confidence level
   def getConfidenceInterval(self, value_list, confidenceLevel):
     from dream.KnowledgeExtraction.ConfidenceIntervals import ConfidenceIntervals
