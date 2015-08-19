@@ -222,6 +222,7 @@ class CapacityStationController(EventGenerator):
 
     def calculateWhatIsToBeProcessed(self):
         import dream.simulation.Globals as Globals
+       
         # calculate what space is available
         availableSpace=self.assemblySpace-self.calculateConsumedSpace()
         assert availableSpace>=0, 'negative available space'
@@ -230,7 +231,6 @@ class CapacityStationController(EventGenerator):
         
         # loop through the capacity station buffers
         for buffer in G.CapacityStationBufferList:
-            pr = False
             # if the buffer was considered before (due to shared resources) continue
             if buffer in alreadyConsideredBuffers:
                 continue
@@ -257,7 +257,6 @@ class CapacityStationController(EventGenerator):
 
             totalAvailableCapacity=station.remainingIntervalCapacity[0]     # get the available capacity of the station
                                                                             # for this interval
-
 
             # list to keep entities that have not been already allocated
             entitiesNotAllocated=list(entitiesConsidered)                                                                             
@@ -304,7 +303,7 @@ class CapacityStationController(EventGenerator):
                         if not self.checkIfProjectConsumesAssemblySpace(entity, entityBuffer):
                             consideredSpace-=entity.capacityProject.assemblySpaceRequirement
                         totalRequestedCapacity+=entity.requiredCapacity
-            
+                                    
                 # if there is enough capacity for all the entities set them that they all should move
                 if totalRequestedCapacity<=totalAvailableCapacity:
                     availableCapacity=float(totalAvailableCapacity)
@@ -360,14 +359,26 @@ class CapacityStationController(EventGenerator):
                 else:
                     allCapacityConsumed=True
                     entitiesToBeBroken=list(entitiesWithinThreshold)
-                    # we sort the entities so the ones that can finish in current period (if any) go in front
+                    leftCapacity=totalAvailableCapacity
+                    leftSpace=availableSpace
+                    # with the below we calculate the projects that can finish in the current period
+                    # and sort the entities so the ones that can finish in current period (if any) go in front
+                    for e in entitiesToBeBroken:
+                        e.willFinishNow=False
+                        if self.checkIfAProjectCanBeFinishedInStation(e,e.currentStation.next[0],leftCapacity) and\
+                              (not self.checkIfProjectNeedsToBeAssembled(e.capacityProject, e.currentStation)) and\
+                              self.checkIfProjectCanStartInStation(e.capacityProject, e.currentStation.next[0]) and\
+                              self.checkIfThereIsEnoughSpace(entity, entityBuffer, leftSpace):
+                            leftCapacity-=e.requiredCapacity
+                            if e.currentStation.requireFullProject and \
+                                    (not self.checkIfProjectConsumesAssemblySpace(e, e.currentStation)):                                    
+                                leftSpace-=e.capacityProject.assemblySpaceRequirement  
+                            e.willFinishNow=True
                     entitiesToBeBroken.sort(key=lambda \
-                                            x: self.checkIfAProjectCanBeFinishedInStation(x,x.currentStation.next[0], 
-                                                                                          totalAvailableCapacity) \
-                                            and self.prioritizeIfCanFinish, 
-                                                reverse=True)    
+                                            x: x.willFinishNow and self.prioritizeIfCanFinish, reverse=True)  
+                      
                     # loop through the entities
-                    for entity in entitiesToBeBroken:
+                    for entity in entitiesToBeBroken:    
                         # get buffer where the entity is and the station it requests to get in
                         entityBuffer=entity.currentStation
                         entityStation=entity.currentStation.next[0]
@@ -388,6 +399,7 @@ class CapacityStationController(EventGenerator):
                                 # update the values
                                 totalAvailableCapacity-=entity.requiredCapacity
                                 totalRequestedCapacity-=entity.requiredCapacity
+
                             # else break the entity according to rule    
                             else:
                                 if self.breakEntity(entity, entityBuffer, entityStation, 
