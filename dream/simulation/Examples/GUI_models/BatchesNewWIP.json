@@ -1210,6 +1210,7 @@
     "confidenceLevel": 0.95, 
     "currentDate": "2015/02/16 07:00", 
     "maxSimTime": 540, 
+    "name": "BatchesNewWIP.json", 
     "numberOfAntsPerGenerations": 3, 
     "numberOfGenerations": 3, 
     "numberOfReplications": 1, 
@@ -2257,6 +2258,88 @@
         "9_Packaging"
       ], 
       [
+        null, 
+        null
+      ]
+    ], 
+    "wip_spreadsheet": [
+      [
+        "Station", 
+        "# units awaiting processing", 
+        "# units complete but not passed on"
+      ], 
+      [
+        "1_RO_E_M_A_A", 
+        null, 
+        null
+      ], 
+      [
+        "2_P_B_A_A", 
+        null, 
+        null
+      ], 
+      [
+        "3_D_B_A_A", 
+        null, 
+        null
+      ], 
+      [
+        "1_RO_E_M_A_B", 
+        null, 
+        null
+      ], 
+      [
+        "2_P_B_A_B", 
+        null, 
+        null
+      ], 
+      [
+        "3_D_B_A_B", 
+        null, 
+        null
+      ], 
+      [
+        "4_Cut & Bend", 
+        null, 
+        null
+      ], 
+      [
+        "5_Moulding", 
+        null, 
+        null
+      ], 
+      [
+        "6_Flag Labelling", 
+        null, 
+        null
+      ], 
+      [
+        "7_Pressure A", 
+        null, 
+        null
+      ], 
+      [
+        "7_Pressure B", 
+        null, 
+        null
+      ], 
+      [
+        "8_Carding", 
+        null, 
+        null
+      ], 
+      [
+        "9_Packaging A", 
+        null, 
+        null
+      ], 
+      [
+        "9_Packaging B", 
+        null, 
+        null
+      ], 
+      [
+        null, 
         null, 
         null
       ]
