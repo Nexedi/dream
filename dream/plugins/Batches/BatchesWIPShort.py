@@ -43,7 +43,7 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
             sharingStations=[]
             if workingBatchSize!=standardBatchUnits:
                 sharingStations=self.findSharingStations(data,stationId)
-                self.checkIfDefinitionIsValid(data, WIPData, stationId, sharingStations)
+                self.checkIfDefinitionIsValid(data, WIPData, stationId, sharingStations,standardBatchUnits)
             
         return data
     
@@ -82,7 +82,7 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
         return sharingStations
         
     # validates the definition of WIP and throws an error message in case it is not valid, i.e. not full batches are formed
-    def checkIfDefinitionIsValid(self,data,WIPData,stationId,sharingStations):
+    def checkIfDefinitionIsValid(self,data,WIPData,stationId,sharingStations,standardBatchUnits):
         # find all the stations in the group. For example PackagingA may not share batches with PackagingB. 
         # but carding does share with both so the group should contain all 3 stations
         allStations=[stationId]+sharingStations
@@ -100,7 +100,7 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
                     totalUnits+=int(row[1])
                 if row[2]:
                     totalUnits+=int(row[2])
-        assert totalUnits % 80 == 0, 'wrong wip definition in group '+str(allStations)+'. Not full batches.'
+        assert totalUnits % standardBatchUnits == 0, 'wrong wip definition in group '+str(allStations)+'. Not full batches.'
                 
         
         
