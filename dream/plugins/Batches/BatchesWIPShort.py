@@ -55,17 +55,18 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
         
         # set the WIP for every group
         for group in groups:
-            # if we have stations that may share sub-batches
+            # if the station does not work in full batch
             groupWorkingBatchSize=nodes[group[0]]['workingBatchSize']
+            currentBatchId='Batch_'+str(batchCounter)+'_WIP'
+            subBatchCounter=0
+            unitsToCompleteBatch=standardBatchUnits
+            group.sort(key=lambda x: self.getDistanceFromSource(data, x))
             if groupWorkingBatchSize<standardBatchUnits:
-                currentBatchId='Batch_'+str(batchCounter)+'_WIP'
-                subBatchCounter=0
-                unitsToCompleteBatch=standardBatchUnits
-                group.sort(key=lambda x: self.getDistanceFromSource(data, x))
                 for stationId in group:
                     workingBatchSize=nodes[stationId]['workingBatchSize']
                     stationWIPData=[element for element in WIPData if element[0] == stationId][0]
                     print stationWIPData
+                    print stationId, self.checkIfStationIsAfterDecomposition(data, stationId),self.getBuffer(data, stationId)
                     awaiting=stationWIPData[1]
                     complete=stationWIPData[2]
                     if not awaiting:
@@ -204,6 +205,34 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
             distance+=1
             current=previous  
         return distance
+        
+    # returns the buffer for a station id.
+    def getBuffer(self,data,stationId):
+        nodes=data['graph']['node']
+        current=stationId
+        # find all the predecessors that may share batches
+        while 1:
+            previous=self.getPredecessors(data, current)[0]
+            # when a decomposition is reached break
+            if 'Queue' in nodes[previous]['_class'] or 'Clearance' in nodes[previous]['_class']:
+                return previous    
+            if 'Source' in nodes[previous]['_class'] or 'Clearance' in nodes[previous]['_class']:
+                return None       
+            current=previous
+        
+    # returns true if the buffer is closer to a decompositions than a buffer
+    def checkIfStationIsAfterDecomposition(self,data,stationId):       
+        nodes=data['graph']['node']
+        current=stationId
+        # find all the predecessors that may share batches
+        while 1:
+            previous=self.getPredecessors(data, current)[0]
+            # when a decomposition is reached break
+            if 'Queue' in nodes[previous]['_class'] or 'Clearance' in nodes[previous]['_class']:
+                return False    
+            if 'Decomposition' in nodes[previous]['_class']:
+                return True
+            current=previous        
         
         
     
