@@ -38,6 +38,9 @@ import xlrd
 from dateutil.parser import *
 import datetime
 from time import mktime
+import dream.simulation.LineGenerationJSON as ManPyMain
+# import dream.simulation.LineGenerationCMSD1 as ManPyMain
+import json
 
 #Read from the given directory the Excel document with the input data
 workbook = xlrd.open_workbook('prod_data.xls')
@@ -433,6 +436,14 @@ scrapQuant11=exportCMSD.ScrapQuantity(scrapQuant10, 'P11', dictScrap['PaA'])
 
 scrapQuant11.write('CMSD_example_Output.xml',encoding="utf8")
 
+data1 = open('CMSD_example_Output.xml','r')
 #Call the JSONOutput object giving as attributes the dictionaries with the processing times distributions and the scrap quantities distributions and the WIP levels in the assembly line
 exportJSON=JSONOutput()
-exportJSON.JSONOutput(dictProc,dictScrap,WIP)
+data2 = exportJSON.JSONOutput(dictProc,dictScrap,WIP)
+
+simulationOutput=ManPyMain.main(input_data=str(data2))
+# simulationOutput=ManPyMain.main(input_data=data1)
+    # save the simulation output
+jsonFile = open('ManPyOutput.json',"w")     #It opens the JSON file
+jsonFile.write(simulationOutput)           #It writes the updated data to the JSON file 
+jsonFile.close()                         #It closes the file
