@@ -277,6 +277,11 @@
 						</DistributionParameterB>
 					</Distribution>	
 				</Property>
+				<Property>
+					<Name>BufferIn</Name>						
+					<Identifier>StartQ</Identifier>
+					<Capacity>10000</Capacity>
+				</Property>
 			</Process>
 			
 			<Process>
@@ -336,6 +341,11 @@
 						</DistributionParameterB>
 					</Distribution>	
 				</Property>
+				<Property>
+					<Name>BufferIn</Name>						
+					<Identifier>Q1A</Identifier>
+					<Capacity>2</Capacity>
+				</Property>
 			</Process>
 			
 			<Process>
@@ -393,6 +403,11 @@
 							<Value></Value>
 						</DistributionParameterB>
 					</Distribution>										
+				</Property>
+				<Property>
+					<Name>BufferIn</Name>						
+					<Identifier>Q2A</Identifier>
+					<Capacity>2</Capacity>
 				</Property>
 			</Process>
 			
@@ -453,8 +468,12 @@
 						</DistributionParameterB>
 					</Distribution>	
 				</Property>
+				<Property>
+					<Name>BufferIn</Name>						
+					<Identifier>StartQ</Identifier>
+					<Capacity>10000</Capacity>
+				</Property>
 			</Process>
-			
 			
 			<Process>
 				<Identifier>P5</Identifier>
@@ -512,6 +531,11 @@
 							<Value></Value>
 						</DistributionParameterB>
 					</Distribution>	
+				</Property>
+				<Property>
+					<Name>BufferIn</Name>						
+					<Identifier>Q1B</Identifier>
+					<Capacity>2</Capacity>
 				</Property>
 			</Process>
 			
@@ -573,6 +597,11 @@
 						</DistributionParameterB>
 					</Distribution>	
 				</Property>
+				<Property>
+					<Name>BufferIn</Name>						
+					<Identifier>Q2B</Identifier>
+					<Capacity>2</Capacity>
+				</Property>
 			</Process>
 			
 			<Process>
@@ -632,6 +661,11 @@
 							<Value></Value>
 						</DistributionParameterB>
 					</Distribution>	
+				</Property>
+				<Property>
+					<Name>BufferIn</Name>						
+					<Identifier>QMould</Identifier>
+					<Capacity>3</Capacity>
 				</Property>
 			</Process>
 			
@@ -693,6 +727,11 @@
 						</DistributionParameterB>
 					</Distribution>	
 				</Property>
+				<Property>
+					<Name>BufferIn</Name>						
+					<Identifier>QPressure</Identifier>
+					<Capacity>2</Capacity>
+				</Property>
 			</Process>
 			
 			<Process>
@@ -752,6 +791,11 @@
 							<Value></Value>
 						</DistributionParameterB>
 					</Distribution>	
+				</Property>
+				<Property>
+					<Name>BufferIn</Name>						
+					<Identifier>QPressure</Identifier>
+					<Capacity>2</Capacity>
 				</Property>
 			</Process>
 			
@@ -814,6 +858,11 @@
 						</DistributionParameterB>
 					</Distribution>										
 				</Property>
+				<Property>
+					<Name>BufferIn</Name>						
+					<Identifier>QPackaging</Identifier>
+					<Capacity>2</Capacity>
+				</Property>
 			</Process>
 			
 			<Process>
@@ -874,6 +923,11 @@
 							<Value></Value>
 						</DistributionParameterB>
 					</Distribution>	
+				</Property>
+				<Property>
+					<Name>BufferIn</Name>						
+					<Identifier>QPackaging</Identifier>
+					<Capacity>2</Capacity>
 				</Property>
 			</Process>
 			</ProcessPlan>
