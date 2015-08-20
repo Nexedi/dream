@@ -129,8 +129,33 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
                             unitsToCompleteBatch=standardBatchUnits
             # for stations that operate on full batches
             else:
-                pass
-                    
+                stationId=group[0]
+                print '@@@@@@@@@@@@@@@@@@@@@@@@@',stationId
+                workingBatchSize=standardBatchUnits
+                stationWIPData=[element for element in WIPData if element[0] == stationId][0]
+                print stationWIPData
+                awaiting=stationWIPData[1]
+                complete=stationWIPData[2]
+                if not awaiting:
+                    awaiting=0
+                awaiting=int(awaiting)
+                if not complete:
+                    complete=0                    
+                complete=int(complete)
+                buffered=awaiting - (awaiting % workingBatchSize)
+                bufferedBatches=int(buffered/standardBatchUnits)
+                print buffered           
+                for i in range(bufferedBatches):
+                    bufferId=self.getBuffer(data, stationId)
+                    self.createBatch(data, bufferId, currentBatchId, currentBatchId,standardBatchUnits)
+                    batchCounter+=1
+                    currentBatchId='Batch_'+str(batchCounter)+'_WIP'
+                
+                if complete:
+                    unitsToProcess=standardBatchUnits-complete
+                    self.createBatch(data, stationId, currentBatchId, currentBatchId,standardBatchUnits,unitsToProcess=unitsToProcess)
+                    print unitsToProcess
+                print '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@'
         return data
     
     # creates a sub-batch in a station
