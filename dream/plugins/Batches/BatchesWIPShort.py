@@ -62,6 +62,7 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
                 unitsToCompleteBatch=standardBatchUnits
                 group.sort(key=lambda x: self.getDistanceFromSource(data, x))
                 for stationId in group:
+                    workingBatchSize=nodes[stationId]['workingBatchSize']
                     stationWIPData=[element for element in WIPData if element[0] == stationId][0]
                     print stationWIPData
                     awaiting=stationWIPData[1]
