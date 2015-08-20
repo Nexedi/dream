@@ -502,10 +502,9 @@
 	"_class": "Dream.Simulation",
 	"general": {
 		"confidenceLevel": "0.95",
-		"_class": "Dream.Configuration",		
-		"maxSimTime": "2880", 
-		"numberOfReplications": "1", 
-		"processTimeout": "0.5",
+		"_class": "Dream.Configuration",
+		"maxSimTime": "2880",
+		"numberOfReplications": "1",
 		"trace": "No"
-		}
+	}
 }
