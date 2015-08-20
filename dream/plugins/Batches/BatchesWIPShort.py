@@ -88,6 +88,8 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
                         if unitsToCompleteBatch==0:
                             subBatchCounter=0
                             batchCounter+=1
+                            currentBatchId='Batch_'+str(batchCounter)+'_WIP'
+                            unitsToCompleteBatch=standardBatchUnits                       
                     # set the completed sub-batches to the next station
                     for i in range(int(proceeded/workingBatchSize)):
                         bufferId=self.getSuccessors(data, stationId)[0]
@@ -97,6 +99,8 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
                         if unitsToCompleteBatch==0:
                             subBatchCounter=0
                             batchCounter+=1
+                            currentBatchId='Batch_'+str(batchCounter)+'_WIP'
+                            unitsToCompleteBatch=standardBatchUnits
                     # set the sub-batch inside the station
                     if currentCompleted:
                         self.createSubBatch(data, stationId, currentBatchId, currentBatchId, subBatchCounter, workingBatchSize,
@@ -106,6 +110,8 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
                         if unitsToCompleteBatch==0:
                             subBatchCounter=0
                             batchCounter+=1
+                            currentBatchId='Batch_'+str(batchCounter)+'_WIP'
+                            unitsToCompleteBatch=standardBatchUnits
                         
             # for stations that do not share sub-batches with others
             else:
@@ -117,7 +123,7 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
     def createSubBatch(self,data,stationId,parentBatchId,parentBatchName,subBatchId,numberOfUnits,
                         unitsToProcess=0,receiver=None):
         print 'creating',stationId,parentBatchId
-        data['graph']['node'][stationId]['wip'].append({
+        data['graph']['node'][stationId]['wip'].insert(0,{
               "_class": 'Dream.SubBatch',
               "id": parentBatchId+'_SB_'+str(subBatchId)+'_wip', 
               "name":parentBatchName+'_SB_'+str(subBatchId)+'_wip', 
@@ -126,7 +132,8 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
               "parentBatchId":parentBatchId,
               "parentBatchName":parentBatchName,
               "receiver":receiver                                               
-        })   
+              }
+        )   
     
     # gets the data and a station id and returns a list with all the stations that the station may share batches
     def findSharingStations(self,data,stationId):
