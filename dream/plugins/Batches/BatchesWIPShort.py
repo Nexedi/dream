@@ -56,7 +56,8 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
         # set the WIP for every group
         for group in groups:
             # if we have stations that may share sub-batches
-            if len(group)>1:
+            groupWorkingBatchSize=nodes[group[0]]['workingBatchSize']
+            if groupWorkingBatchSize<standardBatchUnits:
                 currentBatchId='Batch_'+str(batchCounter)+'_WIP'
                 subBatchCounter=0
                 unitsToCompleteBatch=standardBatchUnits
