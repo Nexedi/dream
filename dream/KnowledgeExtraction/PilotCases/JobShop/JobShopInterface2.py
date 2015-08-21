@@ -112,7 +112,7 @@ class TIMEIN(Frame):
             
             self.machineOption = StringVar()
             self.machineOption.set(None)
-            options = ['CAD1 - SolidWorks Pro', 'CAD2 - SolidWorks Base', 'CAD3 - CATIA V5', 'CAM1 - WorkNC 5axis', 'CAM2 - WorkNC 3axis', 'MILL1 - DMU50 eVo', 'MILL2 - HSC20 linear', 'TURN1 - EMCO', 'DRILL1 - FLOTT SB', 'EDM1- AGIE Form 20', 'WORK1 - Workbench 1', 'WORK2 - Workbench 2', 'WORK3 - Workbench 3', 'WORK4 - Workbench 4', 'INJM1 - SYSTEC 35', 'INJM2 - SYSTEC 120']
+            options = ['CAD1 - SolidWorks Pro', 'CAD2 - SolidWorks Base', 'CAD3 - CATIA V5', 'CAM1 - WorkNC 5axis', 'CAM2 - WorkNC 3axis', 'MILL1 - DMU50 eVo', 'MILL2 - HSC20 linear', 'TURN1 - EMCO', 'DRILL1 - FLOTT SB', 'EDM1- AGIE Form 20', 'WORK1 - Workbench 1', 'WORK2 - Workbench 2', 'WORK3 - Workbench 3', 'WORK4 - Workbench 4', 'ASSM1 - Workbench 1', 'ASSM2 - Workbench 2', 'ASSM3 - Workbench 3', 'ASSM4 - Workbench 4', 'INJM1 - SYSTEC 35', 'INJM2 - SYSTEC 120']
             self.machineDropDown = OptionMenu(app, self.machineOption, *options).pack()
             
             self.checkBoxVal = IntVar()
