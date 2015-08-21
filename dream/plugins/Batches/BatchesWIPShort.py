@@ -75,10 +75,16 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
                         complete=0                    
                     complete=int(complete)
                     
+                    # we calculate how many sub-batches are 
+                    # before station (in buffer or decomposition)
+                    # after station (in buffer or reassembly) and
+                    # inside station (currently worked)
                     buffered=awaiting - (awaiting % workingBatchSize)
                     proceeded=complete - (complete % workingBatchSize)
                     currentCompleted=awaiting % workingBatchSize
                     bufferedSubBatches=int(buffered/workingBatchSize)
+                    # if the station is after decomposition and has full batches waiting
+                    # these should go to the buffer before decomposition
                     if self.checkIfStationIsAfterDecomposition(data, stationId):
                         if buffered>=standardBatchUnits:
                             bufferedBatches=int(buffered/standardBatchUnits)                        
@@ -137,7 +143,6 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
                 stationId=group[0]
                 workingBatchSize=standardBatchUnits
                 stationWIPData=[element for element in WIPData if element[0] == stationId][0]
-                print stationWIPData
                 awaiting=stationWIPData[1]
                 complete=stationWIPData[2]
                 if not awaiting:
@@ -146,15 +151,16 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
                 if not complete:
                     complete=0                    
                 complete=int(complete)
+                # calculate how many full batches wait in buffer
                 buffered=awaiting - (awaiting % workingBatchSize)
                 bufferedBatches=int(buffered/standardBatchUnits)
-                print buffered           
+                # create the full batches in buffer
                 for i in range(bufferedBatches):
                     bufferId=self.getBuffer(data, stationId)
                     self.createBatch(data, bufferId, currentBatchId, currentBatchId,standardBatchUnits)
                     batchCounter+=1
                     currentBatchId='Batch_'+str(batchCounter)+'_WIP'
-                
+                # if there is work in progress, create the batch giving the remaining units (unitsToProcess)
                 if complete:
                     unitsToProcess=standardBatchUnits-complete
                     self.createBatch(data, stationId, currentBatchId, currentBatchId,standardBatchUnits,unitsToProcess=unitsToProcess)
