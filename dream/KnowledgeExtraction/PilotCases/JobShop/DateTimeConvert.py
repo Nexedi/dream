@@ -39,13 +39,13 @@ class DateTimeConvert(plugin.InputPreparationPlugin, TimeSupportMixin):
             timeIn = entity.pop('timeIn', 'NA')
             if not timeIn=='NA':
                 timeIn = strptime(timeIn, '%Y-%m-%d %H:%M:%S')
+                print timeIn
             if timeOut:
                 entity['remainingProcessingTime'] = 0
             else:
                 #calculate the time difference between the TIMEIN and the moment the user wants to run the simulation (e.g. datetime.now())
-                print type(now)
-                print type(timeIn)
                 timeDelta= now - timeIn
+                print timeDelta
                 if self.timeUnit == 'second':
                   timeDiff = timeDelta.total_seconds() #24 * 60 * 60
                 elif self.timeUnit == 'minute':
@@ -62,7 +62,7 @@ class DateTimeConvert(plugin.InputPreparationPlugin, TimeSupportMixin):
                   timeDiff = timeDelta.total_seconds()/(60*60*24*7*30*360) #1 / 360.
                 else:
                   raise ValueError("Unsupported time unit %s" % self.timeUnit)
-
+                print timeDiff
                 for order in orders:
                     comps = order.get('componentsList', [])
                     for comp in comps:
@@ -70,14 +70,13 @@ class DateTimeConvert(plugin.InputPreparationPlugin, TimeSupportMixin):
                             for step in comp.get('route', []):
                                 if step.get('task_id', None) == task_id:
                                     proc_time = step.get('processingTime', {}).get('Fixed',{}).get('mean', 0)
-                                    print proc_time
                                     break
                         if proc_time:
                             break
                     if proc_time:
                         break
                 #calculate the remaining time the part needs to be processed 
-                entity['remainingProcessingTime']= round((proc_time - timeDiff),2) 
+                entity['remainingProcessingTime']= max([round((proc_time - timeDiff),2),0.1]) 
 
         for order in orders:
             orderDate = order.get('orderDate', None)
