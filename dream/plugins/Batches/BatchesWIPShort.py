@@ -69,6 +69,7 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
                     print stationId, self.checkIfStationIsAfterDecomposition(data, stationId),self.getBuffer(data, stationId)
                     awaiting=stationWIPData[1]
                     complete=stationWIPData[2]
+                    startingBatchCounter=batchCounter
                     if not awaiting:
                         awaiting=0
                     awaiting=int(awaiting)
@@ -95,9 +96,17 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
                     
                     # set the buffered sub-batches to the previous station
                     for i in range(bufferedSubBatches):
+                        receiver=None
+                        
+                        if startingBatchCounter!=batchCounter and bufferedSubBatches % (standardBatchUnits/workingBatchSize):
+                            if (proceeded or currentCompleted):
+                                receiver=stationId
+                            else:
+                                receiver=self.getParallelStations(data, stationId)[0]
+                        
                         bufferId=self.getPredecessors(data, stationId)[0]
                         self.createSubBatch(data, bufferId, currentBatchId, currentBatchId, subBatchCounter, 
-                                            workingBatchSize,receiver=stationId)
+                                            workingBatchSize,receiver=receiver)
                         subBatchCounter+=1
                         unitsToCompleteBatch-=workingBatchSize
                         if unitsToCompleteBatch==0:
@@ -161,7 +170,7 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
     # creates a sub-batch in a station
     def createSubBatch(self,data,stationId,parentBatchId,parentBatchName,subBatchId,numberOfUnits,
                         unitsToProcess=0,receiver=None):
-        print 'creating sub-batch',stationId,parentBatchId
+        print 'creating sub-batch',stationId,parentBatchId,receiver
         data['graph']['node'][stationId]['wip'].insert(0,{
               "_class": 'Dream.SubBatch',
               "id": parentBatchId+'_SB_'+str(subBatchId)+'_wip', 
