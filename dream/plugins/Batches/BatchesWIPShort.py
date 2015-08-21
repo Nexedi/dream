@@ -65,8 +65,6 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
                 for stationId in group:
                     workingBatchSize=nodes[stationId]['workingBatchSize']
                     stationWIPData=[element for element in WIPData if element[0] == stationId][0]
-                    print stationWIPData
-                    print stationId, self.checkIfStationIsAfterDecomposition(data, stationId),self.getBuffer(data, stationId)
                     awaiting=stationWIPData[1]
                     complete=stationWIPData[2]
                     startingBatchCounter=batchCounter
@@ -80,13 +78,11 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
                     buffered=awaiting - (awaiting % workingBatchSize)
                     proceeded=complete - (complete % workingBatchSize)
                     currentCompleted=awaiting % workingBatchSize
-                    print buffered,proceeded,currentCompleted
                     bufferedSubBatches=int(buffered/workingBatchSize)
                     if self.checkIfStationIsAfterDecomposition(data, stationId):
                         if buffered>=standardBatchUnits:
                             bufferedBatches=int(buffered/standardBatchUnits)                        
                             bufferedSubBatches=int((buffered-bufferedBatches*standardBatchUnits)/workingBatchSize)
-                            print bufferedBatches,bufferedSubBatches
                             
                             for i in range(bufferedBatches):
                                 bufferId=self.getBuffer(data, stationId)
@@ -139,7 +135,6 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
             # for stations that operate on full batches
             else:
                 stationId=group[0]
-                print '@@@@@@@@@@@@@@@@@@@@@@@@@',stationId
                 workingBatchSize=standardBatchUnits
                 stationWIPData=[element for element in WIPData if element[0] == stationId][0]
                 print stationWIPData
@@ -163,14 +158,12 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
                 if complete:
                     unitsToProcess=standardBatchUnits-complete
                     self.createBatch(data, stationId, currentBatchId, currentBatchId,standardBatchUnits,unitsToProcess=unitsToProcess)
-                    print unitsToProcess
-                print '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@'
         return data
     
     # creates a sub-batch in a station
     def createSubBatch(self,data,stationId,parentBatchId,parentBatchName,subBatchId,numberOfUnits,
                         unitsToProcess=0,receiver=None):
-        print 'creating sub-batch',stationId,parentBatchId,receiver
+#         print 'creating sub-batch',stationId,parentBatchId,receiver
         data['graph']['node'][stationId]['wip'].insert(0,{
               "_class": 'Dream.SubBatch',
               "id": parentBatchId+'_SB_'+str(subBatchId)+'_wip', 
@@ -185,7 +178,7 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
         
     # creates a batch in a station
     def createBatch(self,data,stationId,batchId,batchName,numberOfUnits,unitsToProcess=0):
-        print 'creating batch',stationId,batchId,numberOfUnits
+#         print 'creating batch',stationId,batchId,numberOfUnits
         data['graph']['node'][stationId]['wip'].insert(0,{
               "_class": 'Dream.Batch',
               "id": batchId+'_wip',
