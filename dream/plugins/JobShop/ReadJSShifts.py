@@ -141,7 +141,7 @@ class ReadJSShifts(plugin.InputPreparationPlugin, TimeSupportMixin):
       #sorts the list in case the records were not entered in correct ascending order
       for info in exceptionShiftPattern:
         exceptionShiftPattern[info].sort(key=itemgetter(0))
-      
+
       # ================================================================
       #create default pattern for all operators (10 days long)
       timeStartList = []
@@ -188,23 +188,30 @@ class ReadJSShifts(plugin.InputPreparationPlugin, TimeSupportMixin):
               # calculate the number of days till the end of the exception
               else:
                 exceptionDay = math.floor((exception[-1] - hoursToEndFirstDay.total_seconds()/3600)/24) + 1
-              for index2, default in enumerate(defaultShiftPattern[node]):
-                # check if we still are in the first day
-                if hoursToEndFirstDay.total_seconds()/3600 > default[-1]:
-                  defaultDay = 0
-                # calculate the number of days till the end of the default shift
-                else:
-                  defaultDay = math.floor((default[-1] - hoursToEndFirstDay.total_seconds()/3600)/24) + 1
-                if exceptionDay == defaultDay:
-                  # update the defaultShiftPattern of the node (operator or machine)
-                  # if the exception day has not been modified then delete the previous entry and use the first exception that occurs
-                  if not exceptionDay in modifiedDefaultDays:
-                    defaultShiftPattern[node][index2] = exception
-                  # otherwise append it at the end 
-                  else:
-                    defaultShiftPattern[node].append(exception)
-                  modifiedDefaultDays.append(exceptionDay) # the day has been modified, add to the modified days
-                  break
+              # check the weekday 
+              exceptionDate=now+datetime.timedelta(days=exceptionDay)
+              # if it is weekend create shift entry for that date. The default pattern does not need to be changed
+              if exceptionDate.weekday() in [5,6]:
+                  defaultShiftPattern[node].append(exception)
+              # for exceptions in weekdays
+              else:                
+                  for index2, default in enumerate(defaultShiftPattern[node]):
+                    # check if we still are in the first day
+                    if hoursToEndFirstDay.total_seconds()/3600 > default[-1]:
+                      defaultDay = 0
+                    # calculate the number of days till the end of the default shift
+                    else:
+                      defaultDay = math.floor((default[-1] - hoursToEndFirstDay.total_seconds()/3600)/24) + 1
+                    if exceptionDay == defaultDay:
+                      # update the defaultShiftPattern of the node (operator or machine)
+                      # if the exception day has not been modified then delete the previous entry and use the first exception that occurs
+                      if not exceptionDay in modifiedDefaultDays:
+                        defaultShiftPattern[node][index2] = exception
+                      # otherwise append it at the end 
+                      else:
+                        defaultShiftPattern[node].append(exception)
+                      modifiedDefaultDays.append(exceptionDay) # the day has been modified, add to the modified days
+                      break
           # update the interruptions of the nodes that have a defaultShiftPattern
           if node in defaultShiftPattern:
             # sort the shift pattern of every node
