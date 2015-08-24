@@ -248,7 +248,7 @@
       }, 
       "view_wip_spreadsheet": {
         "gadget": "Input_viewAttachDocument", 
-		"input_id": "attached_document", 
+		"input_id": "wip_report", 
         "priority": 4, 
         "title": "Upload WIP report", 
         "type": "object_view"
@@ -359,6 +359,10 @@
       "description": "", 
       "plugin_list": [
         {
+          "_class": "dream.plugins.Batches.BatchesWIPKEtool.BatchesWIPKEtool", 
+          "input_id": "wip_report"
+        }, 
+     	{
           "_class": "dream.plugins.Batches.AddBatchStations.AddBatchStations", 
           "input_id": "batchStations"
         }, 
@@ -369,10 +373,6 @@
         {
           "_class": "dream.plugins.ReadEntryData.ReadEntryData", 
           "input_id": "EntryData"
-        }, 
-        {
-          "_class": "dream.plugins.Batches.BatchesWIPKEtool.BatchesWIPKEtool", 
-          "input_id": "wip_spreadsheet"
         }, 
         {
           "_class": "dream.plugins.Batches.ReadSkilledOperators.ReadSkilledOperators", 
