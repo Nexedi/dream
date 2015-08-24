@@ -23,12 +23,12 @@ Created on 17 Apr 2015
 # ===========================================================================
 
 from __future__ import division
-from dream.KnowledgeExtraction.StatisticalMeasures import BasicStatisticalMeasures
+from dream.KnowledgeExtraction.StatisticalMeasures import StatisticalMeasures
 from dream.KnowledgeExtraction.DistributionFitting import Distributions
 from dream.KnowledgeExtraction.DistributionFitting import DistFittest
-from dream.KnowledgeExtraction.ReplaceMissingValues import HandleMissingValues
+from dream.KnowledgeExtraction.ReplaceMissingValues import ReplaceMissingValues
 from dream.KnowledgeExtraction.ImportDatabase import ConnectionData
-from dream.KnowledgeExtraction.DetectOutliers import HandleOutliers
+from dream.KnowledgeExtraction.DetectOutliers import DetectOutliers
 from JSONOutput import JSONOutput
 from dream.KnowledgeExtraction.CMSDOutput import CMSDOutput
 from xml.etree import ElementTree as et
@@ -267,7 +267,7 @@ for key in processStory.keys():
                 continue
 
 #Call the HandleMissingValues object and delete the missing values in the lists with the scrap quantity and processing times data 
-B= HandleMissingValues()
+B= ReplaceMissingValues()
 MA_Scrap= B.DeleteMissingValue(MA.get('ScrapQuant',[]))
 MA_Proc= B.DeleteMissingValue(MA.get('ProcTime',[]))
 M1A_Scrap= B.DeleteMissingValue(M1A.get('ScrapQuant',[]))
@@ -299,7 +299,7 @@ Pb_Scrap= B.DeleteMissingValue(Pb.get('ScrapQuant',[]))
 Pb_Proc= B.DeleteMissingValue(Pb.get('ProcTime',[]))
 
 #Call the HandleOutliers object and delete the outliers in the lists with the processing times data of each station
-C= HandleOutliers()
+C= DetectOutliers()
 MA_Proc= C.DeleteOutliers(MA_Proc)
 M1A_Proc= C.DeleteOutliers(M1A_Proc)
 M1B_Proc= C.DeleteOutliers(M1B_Proc)
