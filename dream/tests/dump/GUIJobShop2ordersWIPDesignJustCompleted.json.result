@@ -18,34 +18,34 @@
    {
     "color": "transparent", 
     "duration": 2.0, 
-    "entranceTime": 119.25, 
+    "entranceTime": 167.25, 
     "id": "3.122.052.01.00ASSM32", 
     "open": false, 
     "parent": "3.122.052.01.00", 
-    "start_date": "28-02-2015 13:15", 
-    "stop_date": "28-02-2015 15:15", 
+    "start_date": "02-03-2015 13:15", 
+    "stop_date": "02-03-2015 15:15", 
     "text": "ID-00081; ASSM3"
    }, 
    {
     "color": "transparent", 
     "duration": 1.0, 
-    "entranceTime": 121.25, 
+    "entranceTime": 169.25, 
     "id": "3.122.052.01.00INJM14", 
     "open": false, 
     "parent": "3.122.052.01.00", 
-    "start_date": "28-02-2015 15:15", 
-    "stop_date": "28-02-2015 16:15", 
+    "start_date": "02-03-2015 15:15", 
+    "stop_date": "02-03-2015 16:15", 
     "text": "ID-00083; INJM1"
    }, 
    {
     "color": "transparent", 
     "duration": 2.5, 
-    "entranceTime": 122.25, 
+    "entranceTime": 170.25, 
     "id": "3.122.052.01.00INJM15", 
     "open": false, 
     "parent": "3.122.052.01.00", 
-    "start_date": "28-02-2015 16:15", 
-    "stop_date": "28-02-2015 18:45", 
+    "start_date": "02-03-2015 16:15", 
+    "stop_date": "02-03-2015 18:45", 
     "text": "ID-00083; INJM1"
    }, 
    {
@@ -106,12 +106,12 @@
    {
     "color": "transparent", 
     "duration": 0.0, 
-    "entranceTime": 119.25, 
+    "entranceTime": 167.25, 
     "id": "3.122.052.01.00-01ASSM313", 
     "open": false, 
     "parent": "3.122.052.01.00-01", 
-    "start_date": "28-02-2015 13:15", 
-    "stop_date": "28-02-2015 13:15", 
+    "start_date": "02-03-2015 13:15", 
+    "stop_date": "02-03-2015 13:15", 
     "text": "ID-00081; ASSM3"
    }, 
    {
@@ -161,56 +161,56 @@
    {
     "color": "transparent", 
     "duration": 0.5, 
-    "entranceTime": 116.5, 
+    "entranceTime": 164.5, 
     "id": "3.122.052.01.00-02EDM111", 
     "open": false, 
     "parent": "3.122.052.01.00-02", 
-    "start_date": "28-02-2015 10:30", 
-    "stop_date": "28-02-2015 11:00", 
+    "start_date": "02-03-2015 10:30", 
+    "stop_date": "02-03-2015 11:00", 
     "text": "ID-00064; EDM1"
    }, 
    {
     "color": "transparent", 
     "duration": 0.5, 
-    "entranceTime": 117.0, 
+    "entranceTime": 165.0, 
     "id": "3.122.052.01.00-02EDM112", 
     "open": false, 
     "parent": "3.122.052.01.00-02", 
-    "start_date": "28-02-2015 11:00", 
-    "stop_date": "28-02-2015 11:30", 
+    "start_date": "02-03-2015 11:00", 
+    "stop_date": "02-03-2015 11:30", 
     "text": "ID-00064; EDM1"
    }, 
    {
     "color": "transparent", 
     "duration": 0.25, 
-    "entranceTime": 117.5, 
+    "entranceTime": 165.5, 
     "id": "3.122.052.01.00-02WORK314", 
     "open": false, 
     "parent": "3.122.052.01.00-02", 
-    "start_date": "28-02-2015 11:30", 
-    "stop_date": "28-02-2015 11:45", 
+    "start_date": "02-03-2015 11:30", 
+    "stop_date": "02-03-2015 11:45", 
     "text": "ID-00065; WORK3"
    }, 
    {
     "color": "transparent", 
     "duration": 1.0, 
-    "entranceTime": 117.75, 
+    "entranceTime": 165.75, 
     "id": "3.122.052.01.00-02WORK416", 
     "open": false, 
     "parent": "3.122.052.01.00-02", 
-    "start_date": "28-02-2015 11:45", 
-    "stop_date": "28-02-2015 12:45", 
+    "start_date": "02-03-2015 11:45", 
+    "stop_date": "02-03-2015 12:45", 
     "text": "ID-00073; WORK4"
    }, 
    {
     "color": "transparent", 
     "duration": 0.0, 
-    "entranceTime": 119.25, 
+    "entranceTime": 167.25, 
     "id": "3.122.052.01.00-02ASSM318", 
     "open": false, 
     "parent": "3.122.052.01.00-02", 
-    "start_date": "28-02-2015 13:15", 
-    "stop_date": "28-02-2015 13:15", 
+    "start_date": "02-03-2015 13:15", 
+    "stop_date": "02-03-2015 13:15", 
     "text": "ID-00081; ASSM3"
    }, 
    {
@@ -282,34 +282,34 @@
    {
     "color": "transparent", 
     "duration": 0.25, 
-    "entranceTime": 114.0, 
+    "entranceTime": 162.0, 
     "id": "3.122.052.01.00-03WORK314", 
     "open": false, 
     "parent": "3.122.052.01.00-03", 
-    "start_date": "28-02-2015 08:00", 
-    "stop_date": "28-02-2015 08:15", 
+    "start_date": "02-03-2015 08:00", 
+    "stop_date": "02-03-2015 08:15", 
     "text": "ID-00062; WORK3"
    }, 
    {
     "color": "transparent", 
     "duration": 0.5, 
-    "entranceTime": 114.25, 
+    "entranceTime": 162.25, 
     "id": "3.122.052.01.00-03WORK116", 
     "open": false, 
     "parent": "3.122.052.01.00-03", 
-    "start_date": "28-02-2015 08:15", 
-    "stop_date": "28-02-2015 08:45", 
+    "start_date": "02-03-2015 08:15", 
+    "stop_date": "02-03-2015 08:45", 
     "text": "ID-00074; WORK1"
    }, 
    {
     "color": "transparent", 
     "duration": 0.0, 
-    "entranceTime": 119.25, 
+    "entranceTime": 167.25, 
     "id": "3.122.052.01.00-03ASSM318", 
     "open": false, 
     "parent": "3.122.052.01.00-03", 
-    "start_date": "28-02-2015 13:15", 
-    "stop_date": "28-02-2015 13:15", 
+    "start_date": "02-03-2015 13:15", 
+    "stop_date": "02-03-2015 13:15", 
     "text": "ID-00081; ASSM3"
    }, 
    {
@@ -359,23 +359,23 @@
    {
     "color": "transparent", 
     "duration": 0.5, 
-    "entranceTime": 118.75, 
+    "entranceTime": 166.75, 
     "id": "3.122.052.01.00-04WORK311", 
     "open": false, 
     "parent": "3.122.052.01.00-04", 
-    "start_date": "28-02-2015 12:45", 
-    "stop_date": "28-02-2015 13:15", 
+    "start_date": "02-03-2015 12:45", 
+    "stop_date": "02-03-2015 13:15", 
     "text": "ID-00075; WORK3"
    }, 
    {
     "color": "transparent", 
     "duration": 0.0, 
-    "entranceTime": 119.25, 
+    "entranceTime": 167.25, 
     "id": "3.122.052.01.00-04ASSM313", 
     "open": false, 
     "parent": "3.122.052.01.00-04", 
-    "start_date": "28-02-2015 13:15", 
-    "stop_date": "28-02-2015 13:15", 
+    "start_date": "02-03-2015 13:15", 
+    "stop_date": "02-03-2015 13:15", 
     "text": "ID-00081; ASSM3"
    }, 
    {
@@ -424,24 +424,24 @@
    }, 
    {
     "color": "transparent", 
-    "duration": 14.5, 
+    "duration": 62.5, 
     "entranceTime": 99.75, 
     "id": "3.122.052.01.00-05WORK211", 
     "open": false, 
     "parent": "3.122.052.01.00-05", 
     "start_date": "27-02-2015 17:45", 
-    "stop_date": "28-02-2015 08:15", 
+    "stop_date": "02-03-2015 08:15", 
     "text": "ID-00076; WORK2"
    }, 
    {
     "color": "transparent", 
     "duration": 0.0, 
-    "entranceTime": 119.25, 
+    "entranceTime": 167.25, 
     "id": "3.122.052.01.00-05ASSM313", 
     "open": false, 
     "parent": "3.122.052.01.00-05", 
-    "start_date": "28-02-2015 13:15", 
-    "stop_date": "28-02-2015 13:15", 
+    "start_date": "02-03-2015 13:15", 
+    "stop_date": "02-03-2015 13:15", 
     "text": "ID-00081; ASSM3"
    }, 
    {
@@ -468,46 +468,46 @@
    }, 
    {
     "color": "transparent", 
-    "duration": 17.0, 
+    "duration": 65.0, 
     "entranceTime": 98.5, 
     "id": "3.122.052.01.00-06MILL17", 
     "open": false, 
     "parent": "3.122.052.01.00-06", 
     "start_date": "27-02-2015 16:30", 
-    "stop_date": "28-02-2015 09:30", 
+    "stop_date": "02-03-2015 09:30", 
     "text": "ID-00044; MILL1"
    }, 
    {
     "color": "transparent", 
     "duration": 0.25, 
-    "entranceTime": 115.5, 
+    "entranceTime": 163.5, 
     "id": "3.122.052.01.00-06WORK49", 
     "open": false, 
     "parent": "3.122.052.01.00-06", 
-    "start_date": "28-02-2015 09:30", 
-    "stop_date": "28-02-2015 09:45", 
+    "start_date": "02-03-2015 09:30", 
+    "stop_date": "02-03-2015 09:45", 
     "text": "ID-00058; WORK4"
    }, 
    {
     "color": "transparent", 
     "duration": 0.5, 
-    "entranceTime": 115.75, 
+    "entranceTime": 163.75, 
     "id": "3.122.052.01.00-06WORK211", 
     "open": false, 
     "parent": "3.122.052.01.00-06", 
-    "start_date": "28-02-2015 09:45", 
-    "stop_date": "28-02-2015 10:15", 
+    "start_date": "02-03-2015 09:45", 
+    "stop_date": "02-03-2015 10:15", 
     "text": "ID-00077; WORK2"
    }, 
    {
     "color": "transparent", 
     "duration": 0.0, 
-    "entranceTime": 119.25, 
+    "entranceTime": 167.25, 
     "id": "3.122.052.01.00-06ASSM313", 
     "open": false, 
     "parent": "3.122.052.01.00-06", 
-    "start_date": "28-02-2015 13:15", 
-    "stop_date": "28-02-2015 13:15", 
+    "start_date": "02-03-2015 13:15", 
+    "stop_date": "02-03-2015 13:15", 
     "text": "ID-00081; ASSM3"
    }, 
    {
@@ -523,57 +523,57 @@
    }, 
    {
     "color": "transparent", 
-    "duration": 15.0, 
+    "duration": 63.0, 
     "entranceTime": 99.5, 
     "id": "3.122.052.01.00-07MILL26", 
     "open": false, 
     "parent": "3.122.052.01.00-07", 
     "start_date": "27-02-2015 17:30", 
-    "stop_date": "28-02-2015 08:30", 
+    "stop_date": "02-03-2015 08:30", 
     "text": "ID-00046; MILL2"
    }, 
    {
     "color": "transparent", 
     "duration": 3.0, 
-    "entranceTime": 114.5, 
+    "entranceTime": 162.5, 
     "id": "3.122.052.01.00-07MILL27", 
     "open": false, 
     "parent": "3.122.052.01.00-07", 
-    "start_date": "28-02-2015 08:30", 
-    "stop_date": "28-02-2015 11:30", 
+    "start_date": "02-03-2015 08:30", 
+    "stop_date": "02-03-2015 11:30", 
     "text": "ID-00046; MILL2"
    }, 
    {
     "color": "transparent", 
     "duration": 0.25, 
-    "entranceTime": 117.5, 
+    "entranceTime": 165.5, 
     "id": "3.122.052.01.00-07WORK19", 
     "open": false, 
     "parent": "3.122.052.01.00-07", 
-    "start_date": "28-02-2015 11:30", 
-    "stop_date": "28-02-2015 11:45", 
+    "start_date": "02-03-2015 11:30", 
+    "stop_date": "02-03-2015 11:45", 
     "text": "ID-00059; WORK1"
    }, 
    {
     "color": "transparent", 
     "duration": 0.5, 
-    "entranceTime": 117.75, 
+    "entranceTime": 165.75, 
     "id": "3.122.052.01.00-07WORK211", 
     "open": false, 
     "parent": "3.122.052.01.00-07", 
-    "start_date": "28-02-2015 11:45", 
-    "stop_date": "28-02-2015 12:15", 
+    "start_date": "02-03-2015 11:45", 
+    "stop_date": "02-03-2015 12:15", 
     "text": "ID-00078; WORK2"
    }, 
    {
     "color": "transparent", 
     "duration": 0.0, 
-    "entranceTime": 119.25, 
+    "entranceTime": 167.25, 
     "id": "3.122.052.01.00-07ASSM313", 
     "open": false, 
     "parent": "3.122.052.01.00-07", 
-    "start_date": "28-02-2015 13:15", 
-    "stop_date": "28-02-2015 13:15", 
+    "start_date": "02-03-2015 13:15", 
+    "stop_date": "02-03-2015 13:15", 
     "text": "ID-00081; ASSM3"
    }, 
    {
@@ -623,12 +623,12 @@
    {
     "color": "transparent", 
     "duration": 0.0, 
-    "entranceTime": 119.25, 
+    "entranceTime": 167.25, 
     "id": "3.122.052.01.00-08ASSM311", 
     "open": false, 
     "parent": "3.122.052.01.00-08", 
-    "start_date": "28-02-2015 13:15", 
-    "stop_date": "28-02-2015 13:15", 
+    "start_date": "02-03-2015 13:15", 
+    "stop_date": "02-03-2015 13:15", 
     "text": "ID-00081; ASSM3"
    }, 
    {
@@ -656,12 +656,12 @@
    {
     "color": "transparent", 
     "duration": 0.0, 
-    "entranceTime": 119.25, 
+    "entranceTime": 167.25, 
     "id": "3.122.052.01.00-09ASSM36", 
     "open": false, 
     "parent": "3.122.052.01.00-09", 
-    "start_date": "28-02-2015 13:15", 
-    "stop_date": "28-02-2015 13:15", 
+    "start_date": "02-03-2015 13:15", 
+    "stop_date": "02-03-2015 13:15", 
     "text": "ID-00081; ASSM3"
    }, 
    {
@@ -689,12 +689,12 @@
    {
     "color": "transparent", 
     "duration": 0.0, 
-    "entranceTime": 119.25, 
+    "entranceTime": 167.25, 
     "id": "3.122.052.01.00-10ASSM36", 
     "open": false, 
     "parent": "3.122.052.01.00-10", 
-    "start_date": "28-02-2015 13:15", 
-    "stop_date": "28-02-2015 13:15", 
+    "start_date": "02-03-2015 13:15", 
+    "stop_date": "02-03-2015 13:15", 
     "text": "ID-00081; ASSM3"
    }, 
    {
@@ -711,12 +711,12 @@
    {
     "color": "transparent", 
     "duration": 0.0, 
-    "entranceTime": 119.25, 
+    "entranceTime": 167.25, 
     "id": "3.122.052.01.00-11ASSM35", 
     "open": false, 
     "parent": "3.122.052.01.00-11", 
-    "start_date": "28-02-2015 13:15", 
-    "stop_date": "28-02-2015 13:15", 
+    "start_date": "02-03-2015 13:15", 
+    "stop_date": "02-03-2015 13:15", 
     "text": "ID-00081; ASSM3"
    }, 
    {
@@ -733,12 +733,12 @@
    {
     "color": "transparent", 
     "duration": 0.0, 
-    "entranceTime": 119.25, 
+    "entranceTime": 167.25, 
     "id": "3.122.052.01.00-12ASSM35", 
     "open": false, 
     "parent": "3.122.052.01.00-12", 
-    "start_date": "28-02-2015 13:15", 
-    "stop_date": "28-02-2015 13:15", 
+    "start_date": "02-03-2015 13:15", 
+    "stop_date": "02-03-2015 13:15", 
     "text": "ID-00081; ASSM3"
    }, 
    {
@@ -755,12 +755,12 @@
    {
     "color": "transparent", 
     "duration": 0.0, 
-    "entranceTime": 119.25, 
+    "entranceTime": 167.25, 
     "id": "3.122.052.01.00-13ASSM35", 
     "open": false, 
     "parent": "3.122.052.01.00-13", 
-    "start_date": "28-02-2015 13:15", 
-    "stop_date": "28-02-2015 13:15", 
+    "start_date": "02-03-2015 13:15", 
+    "stop_date": "02-03-2015 13:15", 
     "text": "ID-00081; ASSM3"
    }, 
    {
@@ -799,12 +799,12 @@
    {
     "color": "transparent", 
     "duration": 0.0, 
-    "entranceTime": 119.25, 
+    "entranceTime": 167.25, 
     "id": "3.122.052.01.00-E01ASSM39", 
     "open": false, 
     "parent": "3.122.052.01.00-E01", 
-    "start_date": "28-02-2015 13:15", 
-    "stop_date": "28-02-2015 13:15", 
+    "start_date": "02-03-2015 13:15", 
+    "stop_date": "02-03-2015 13:15", 
     "text": "ID-00081; ASSM3"
    }, 
    {
@@ -821,34 +821,34 @@
    {
     "color": "transparent", 
     "duration": 0.5, 
-    "entranceTime": 115.5, 
+    "entranceTime": 163.5, 
     "id": "3.122.052.01.00-E02MILL16", 
     "open": false, 
     "parent": "3.122.052.01.00-E02", 
-    "start_date": "28-02-2015 09:30", 
-    "stop_date": "28-02-2015 10:00", 
+    "start_date": "02-03-2015 09:30", 
+    "stop_date": "02-03-2015 10:00", 
     "text": "ID-00052; MILL1"
    }, 
    {
     "color": "transparent", 
     "duration": 0.5, 
-    "entranceTime": 116.0, 
+    "entranceTime": 164.0, 
     "id": "3.122.052.01.00-E02MILL17", 
     "open": false, 
     "parent": "3.122.052.01.00-E02", 
-    "start_date": "28-02-2015 10:00", 
-    "stop_date": "28-02-2015 10:30", 
+    "start_date": "02-03-2015 10:00", 
+    "stop_date": "02-03-2015 10:30", 
     "text": "ID-00052; MILL1"
    }, 
    {
     "color": "transparent", 
     "duration": 0.0, 
-    "entranceTime": 119.25, 
+    "entranceTime": 167.25, 
     "id": "3.122.052.01.00-E02ASSM39", 
     "open": false, 
     "parent": "3.122.052.01.00-E02", 
-    "start_date": "28-02-2015 13:15", 
-    "stop_date": "28-02-2015 13:15", 
+    "start_date": "02-03-2015 13:15", 
+    "stop_date": "02-03-2015 13:15", 
     "text": "ID-00081; ASSM3"
    }, 
    {
@@ -1286,7 +1286,7 @@
    }, 
    {
     "color": "DodgerBlue", 
-    "entranceTime": 119.25, 
+    "entranceTime": 167.25, 
     "id": "3.122.052.01.00", 
     "open": false, 
     "parent": "W134239", 
@@ -1944,7 +1944,7 @@
    "ID-00044", 
    "MILL1", 
    "2015/02/27 16:30", 
-   17.0, 
+   65.0, 
    "W3"
   ], 
   [
@@ -1964,7 +1964,7 @@
    "ID-00046", 
    "MILL2", 
    "2015/02/27 17:30", 
-   15.0, 
+   63.0, 
    "W2"
   ], 
   [
@@ -1974,7 +1974,7 @@
    "ID-00076", 
    "WORK2", 
    "2015/02/27 17:45", 
-   14.5, 
+   62.5, 
    "W5"
   ], 
   [
@@ -1983,7 +1983,7 @@
    "2015/04/02 00:00", 
    "ID-00062", 
    "WORK3", 
-   "2015/02/28 08:00", 
+   "2015/03/02 08:00", 
    0.25, 
    "W4"
   ], 
@@ -1993,7 +1993,7 @@
    "2015/04/02 00:00", 
    "ID-00074", 
    "WORK1", 
-   "2015/02/28 08:15", 
+   "2015/03/02 08:15", 
    0.5, 
    "W1"
   ], 
@@ -2003,7 +2003,7 @@
    "2015/04/02 00:00", 
    "ID-00046", 
    "MILL2", 
-   "2015/02/28 08:30", 
+   "2015/03/02 08:30", 
    3.0, 
    "W2"
   ], 
@@ -2013,7 +2013,7 @@
    "2015/04/02 00:00", 
    "ID-00058", 
    "WORK4", 
-   "2015/02/28 09:30", 
+   "2015/03/02 09:30", 
    0.25, 
    "W4"
   ], 
@@ -2023,7 +2023,7 @@
    "2015/04/02 00:00", 
    "ID-00052", 
    "MILL1", 
-   "2015/02/28 09:30", 
+   "2015/03/02 09:30", 
    0.5, 
    "W1"
   ], 
@@ -2033,7 +2033,7 @@
    "2015/04/02 00:00", 
    "ID-00077", 
    "WORK2", 
-   "2015/02/28 09:45", 
+   "2015/03/02 09:45", 
    0.5, 
    "W5"
   ], 
@@ -2043,7 +2043,7 @@
    "2015/04/02 00:00", 
    "ID-00052", 
    "MILL1", 
-   "2015/02/28 10:00", 
+   "2015/03/02 10:00", 
    0.5, 
    "W1"
   ], 
@@ -2053,7 +2053,7 @@
    "2015/04/02 00:00", 
    "ID-00064", 
    "EDM1", 
-   "2015/02/28 10:30", 
+   "2015/03/02 10:30", 
    0.5, 
    "W3"
   ], 
@@ -2063,7 +2063,7 @@
    "2015/04/02 00:00", 
    "ID-00064", 
    "EDM1", 
-   "2015/02/28 11:00", 
+   "2015/03/02 11:00", 
    0.5, 
    "W3"
   ], 
@@ -2073,7 +2073,7 @@
    "2015/04/02 00:00", 
    "ID-00065", 
    "WORK3", 
-   "2015/02/28 11:30", 
+   "2015/03/02 11:30", 
    0.25, 
    "W4"
   ], 
@@ -2083,7 +2083,7 @@
    "2015/04/02 00:00", 
    "ID-00059", 
    "WORK1", 
-   "2015/02/28 11:30", 
+   "2015/03/02 11:30", 
    0.25, 
    "W1"
   ], 
@@ -2093,7 +2093,7 @@
    "2015/04/02 00:00", 
    "ID-00073", 
    "WORK4", 
-   "2015/02/28 11:45", 
+   "2015/03/02 11:45", 
    1.0, 
    "W5"
   ], 
@@ -2103,7 +2103,7 @@
    "2015/04/02 00:00", 
    "ID-00078", 
    "WORK2", 
-   "2015/02/28 11:45", 
+   "2015/03/02 11:45", 
    0.5, 
    "W3"
   ], 
@@ -2113,7 +2113,7 @@
    "2015/04/02 00:00", 
    "ID-00075", 
    "WORK3", 
-   "2015/02/28 12:45", 
+   "2015/03/02 12:45", 
    0.5, 
    "W2"
   ], 
@@ -2123,7 +2123,7 @@
    "2015/04/02 00:00", 
    "ID-00081", 
    "ASSM3", 
-   "2015/02/28 13:15", 
+   "2015/03/02 13:15", 
    0.0, 
    "W4"
   ], 
@@ -2133,7 +2133,7 @@
    "2015/04/02 00:00", 
    "ID-00081", 
    "ASSM3", 
-   "2015/02/28 13:15", 
+   "2015/03/02 13:15", 
    0.0, 
    "W4"
   ], 
@@ -2143,7 +2143,7 @@
    "2015/04/02 00:00", 
    "ID-00081", 
    "ASSM3", 
-   "2015/02/28 13:15", 
+   "2015/03/02 13:15", 
    0.0, 
    "W4"
   ], 
@@ -2153,7 +2153,7 @@
    "2015/04/02 00:00", 
    "ID-00081", 
    "ASSM3", 
-   "2015/02/28 13:15", 
+   "2015/03/02 13:15", 
    0.0, 
    "W4"
   ], 
@@ -2163,7 +2163,7 @@
    "2015/04/02 00:00", 
    "ID-00081", 
    "ASSM3", 
-   "2015/02/28 13:15", 
+   "2015/03/02 13:15", 
    0.0, 
    "W4"
   ], 
@@ -2173,7 +2173,7 @@
    "2015/04/02 00:00", 
    "ID-00081", 
    "ASSM3", 
-   "2015/02/28 13:15", 
+   "2015/03/02 13:15", 
    0.0, 
    "W4"
   ], 
@@ -2183,7 +2183,7 @@
    "2015/04/02 00:00", 
    "ID-00081", 
    "ASSM3", 
-   "2015/02/28 13:15", 
+   "2015/03/02 13:15", 
    0.0, 
    "W4"
   ], 
@@ -2193,7 +2193,7 @@
    "2015/04/02 00:00", 
    "ID-00081", 
    "ASSM3", 
-   "2015/02/28 13:15", 
+   "2015/03/02 13:15", 
    0.0, 
    "W4"
   ], 
@@ -2203,7 +2203,7 @@
    "2015/04/02 00:00", 
    "ID-00081", 
    "ASSM3", 
-   "2015/02/28 13:15", 
+   "2015/03/02 13:15", 
    0.0, 
    "W4"
   ], 
@@ -2213,7 +2213,7 @@
    "2015/04/02 00:00", 
    "ID-00081", 
    "ASSM3", 
-   "2015/02/28 13:15", 
+   "2015/03/02 13:15", 
    0.0, 
    "W4"
   ], 
@@ -2223,7 +2223,7 @@
    "2015/04/02 00:00", 
    "ID-00081", 
    "ASSM3", 
-   "2015/02/28 13:15", 
+   "2015/03/02 13:15", 
    0.0, 
    "W4"
   ], 
@@ -2233,7 +2233,7 @@
    "2015/04/02 00:00", 
    "ID-00081", 
    "ASSM3", 
-   "2015/02/28 13:15", 
+   "2015/03/02 13:15", 
    0.0, 
    "W4"
   ], 
@@ -2243,7 +2243,7 @@
    "2015/04/02 00:00", 
    "ID-00081", 
    "ASSM3", 
-   "2015/02/28 13:15", 
+   "2015/03/02 13:15", 
    0.0, 
    "W4"
   ], 
@@ -2253,7 +2253,7 @@
    "2015/04/02 00:00", 
    "ID-00081", 
    "ASSM3", 
-   "2015/02/28 13:15", 
+   "2015/03/02 13:15", 
    0.0, 
    "W4"
   ], 
@@ -2263,7 +2263,7 @@
    "2015/04/02 00:00", 
    "ID-00081", 
    "ASSM3", 
-   "2015/02/28 13:15", 
+   "2015/03/02 13:15", 
    0.0, 
    "W4"
   ], 
@@ -2273,7 +2273,7 @@
    "2015/04/02 00:00", 
    "ID-00081", 
    "ASSM3", 
-   "2015/02/28 13:15", 
+   "2015/03/02 13:15", 
    2.0, 
    "W4"
   ], 
@@ -2283,7 +2283,7 @@
    "2015/04/02 00:00", 
    "ID-00083", 
    "INJM1", 
-   "2015/02/28 15:15", 
+   "2015/03/02 15:15", 
    1.0, 
    "W1"
   ], 
@@ -2293,7 +2293,7 @@
    "2015/04/02 00:00", 
    "ID-00083", 
    "INJM1", 
-   "2015/02/28 16:15", 
+   "2015/03/02 16:15", 
    2.5, 
    "W1"
   ]
@@ -2304,35 +2304,35 @@
    "family": "Job", 
    "id": "3.122.052.01.00", 
    "results": {
-    "completionTime": 124.75, 
-    "delay": -773.25, 
+    "completionTime": 172.75, 
+    "delay": -725.25, 
     "schedule": [
      {
-      "entranceTime": 119.25, 
-      "exitTime": 121.25, 
+      "entranceTime": 167.25, 
+      "exitTime": 169.25, 
       "stationId": "ASSM3", 
       "task_id": "ID-00081"
      }, 
      {
-      "entranceTime": 121.25, 
-      "exitTime": 121.25, 
+      "entranceTime": 169.25, 
+      "exitTime": 169.25, 
       "stationId": "QIM", 
       "task_id": "ID-00083"
      }, 
      {
-      "entranceTime": 121.25, 
-      "exitTime": 122.25, 
+      "entranceTime": 169.25, 
+      "exitTime": 170.25, 
       "stationId": "INJM1", 
       "task_id": "ID-00083"
      }, 
      {
-      "entranceTime": 122.25, 
-      "exitTime": 124.75, 
+      "entranceTime": 170.25, 
+      "exitTime": 172.75, 
       "stationId": "INJM1", 
       "task_id": "ID-00083"
      }, 
      {
-      "entranceTime": 124.75, 
+      "entranceTime": 172.75, 
       "stationId": "E1"
      }
     ]
@@ -2343,8 +2343,8 @@
    "family": "Job", 
    "id": "3.122.052.01.00-01", 
    "results": {
-    "completionTime": 119.25, 
-    "delay": -778.75, 
+    "completionTime": 167.25, 
+    "delay": -730.75, 
     "schedule": [
      {
       "entranceTime": 46.0, 
@@ -2407,13 +2407,13 @@
      }, 
      {
       "entranceTime": 73.75, 
-      "exitTime": 119.25, 
+      "exitTime": 167.25, 
       "stationId": "ASSMB1", 
       "task_id": "ID-00081"
      }, 
      {
-      "entranceTime": 119.25, 
-      "exitTime": 119.25, 
+      "entranceTime": 167.25, 
+      "exitTime": 167.25, 
       "stationId": "ASSM3", 
       "task_id": "ID-00081"
      }
@@ -2425,8 +2425,8 @@
    "family": "Job", 
    "id": "3.122.052.01.00-02", 
    "results": {
-    "completionTime": 119.25, 
-    "delay": -778.75, 
+    "completionTime": 167.25, 
+    "delay": -730.75, 
     "schedule": [
      {
       "entranceTime": 46.0, 
@@ -2477,55 +2477,55 @@
      }, 
      {
       "entranceTime": 73.15, 
-      "exitTime": 116.5, 
+      "exitTime": 164.5, 
       "stationId": "QEDM", 
       "task_id": "ID-00064"
      }, 
      {
-      "entranceTime": 116.5, 
-      "exitTime": 117.0, 
+      "entranceTime": 164.5, 
+      "exitTime": 165.0, 
       "stationId": "EDM1", 
       "task_id": "ID-00064"
      }, 
      {
-      "entranceTime": 117.0, 
-      "exitTime": 117.5, 
+      "entranceTime": 165.0, 
+      "exitTime": 165.5, 
       "stationId": "EDM1", 
       "task_id": "ID-00064"
      }, 
      {
-      "entranceTime": 117.5, 
-      "exitTime": 117.5, 
+      "entranceTime": 165.5, 
+      "exitTime": 165.5, 
       "stationId": "QWORK", 
       "task_id": "ID-00065"
      }, 
      {
-      "entranceTime": 117.5, 
-      "exitTime": 117.75, 
+      "entranceTime": 165.5, 
+      "exitTime": 165.75, 
       "stationId": "WORK3", 
       "task_id": "ID-00065"
      }, 
      {
-      "entranceTime": 117.75, 
-      "exitTime": 117.75, 
+      "entranceTime": 165.75, 
+      "exitTime": 165.75, 
       "stationId": "QWORK", 
       "task_id": "ID-00073"
      }, 
      {
-      "entranceTime": 117.75, 
-      "exitTime": 118.75, 
+      "entranceTime": 165.75, 
+      "exitTime": 166.75, 
       "stationId": "WORK4", 
       "task_id": "ID-00073"
      }, 
      {
-      "entranceTime": 118.75, 
-      "exitTime": 119.25, 
+      "entranceTime": 166.75, 
+      "exitTime": 167.25, 
       "stationId": "ASSMB1", 
       "task_id": "ID-00081"
      }, 
      {
-      "entranceTime": 119.25, 
-      "exitTime": 119.25, 
+      "entranceTime": 167.25, 
+      "exitTime": 167.25, 
       "stationId": "ASSM3", 
       "task_id": "ID-00081"
      }
@@ -2537,8 +2537,8 @@
    "family": "Job", 
    "id": "3.122.052.01.00-03", 
    "results": {
-    "completionTime": 119.25, 
-    "delay": -778.75, 
+    "completionTime": 167.25, 
+    "delay": -730.75, 
     "schedule": [
      {
       "entranceTime": 46.0, 
@@ -2607,37 +2607,37 @@
      }, 
      {
       "entranceTime": 100.5, 
-      "exitTime": 114.0, 
+      "exitTime": 162.0, 
       "stationId": "QWORK", 
       "task_id": "ID-00062"
      }, 
      {
-      "entranceTime": 114.0, 
-      "exitTime": 114.25, 
+      "entranceTime": 162.0, 
+      "exitTime": 162.25, 
       "stationId": "WORK3", 
       "task_id": "ID-00062"
      }, 
      {
-      "entranceTime": 114.25, 
-      "exitTime": 114.25, 
+      "entranceTime": 162.25, 
+      "exitTime": 162.25, 
       "stationId": "QWORK", 
       "task_id": "ID-00074"
      }, 
      {
-      "entranceTime": 114.25, 
-      "exitTime": 114.75, 
+      "entranceTime": 162.25, 
+      "exitTime": 162.75, 
       "stationId": "WORK1", 
       "task_id": "ID-00074"
      }, 
      {
-      "entranceTime": 114.75, 
-      "exitTime": 119.25, 
+      "entranceTime": 162.75, 
+      "exitTime": 167.25, 
       "stationId": "ASSMB1", 
       "task_id": "ID-00081"
      }, 
      {
-      "entranceTime": 119.25, 
-      "exitTime": 119.25, 
+      "entranceTime": 167.25, 
+      "exitTime": 167.25, 
       "stationId": "ASSM3", 
       "task_id": "ID-00081"
      }
@@ -2649,8 +2649,8 @@
    "family": "Job", 
    "id": "3.122.052.01.00-04", 
    "results": {
-    "completionTime": 119.25, 
-    "delay": -778.75, 
+    "completionTime": 167.25, 
+    "delay": -730.75, 
     "schedule": [
      {
       "entranceTime": 46.0, 
@@ -2701,25 +2701,25 @@
      }, 
      {
       "entranceTime": 95.75, 
-      "exitTime": 118.75, 
+      "exitTime": 166.75, 
       "stationId": "QWORK", 
       "task_id": "ID-00075"
      }, 
      {
-      "entranceTime": 118.75, 
-      "exitTime": 119.25, 
+      "entranceTime": 166.75, 
+      "exitTime": 167.25, 
       "stationId": "WORK3", 
       "task_id": "ID-00075"
      }, 
      {
-      "entranceTime": 119.25, 
-      "exitTime": 119.25, 
+      "entranceTime": 167.25, 
+      "exitTime": 167.25, 
       "stationId": "ASSMB1", 
       "task_id": "ID-00081"
      }, 
      {
-      "entranceTime": 119.25, 
-      "exitTime": 119.25, 
+      "entranceTime": 167.25, 
+      "exitTime": 167.25, 
       "stationId": "ASSM3", 
       "task_id": "ID-00081"
      }
@@ -2731,8 +2731,8 @@
    "family": "Job", 
    "id": "3.122.052.01.00-05", 
    "results": {
-    "completionTime": 119.25, 
-    "delay": -778.75, 
+    "completionTime": 167.25, 
+    "delay": -730.75, 
     "schedule": [
      {
       "entranceTime": 46.0, 
@@ -2789,19 +2789,19 @@
      }, 
      {
       "entranceTime": 99.75, 
-      "exitTime": 114.25, 
+      "exitTime": 162.25, 
       "stationId": "WORK2", 
       "task_id": "ID-00076"
      }, 
      {
-      "entranceTime": 114.25, 
-      "exitTime": 119.25, 
+      "entranceTime": 162.25, 
+      "exitTime": 167.25, 
       "stationId": "ASSMB1", 
       "task_id": "ID-00081"
      }, 
      {
-      "entranceTime": 119.25, 
-      "exitTime": 119.25, 
+      "entranceTime": 167.25, 
+      "exitTime": 167.25, 
       "stationId": "ASSM3", 
       "task_id": "ID-00081"
      }
@@ -2813,8 +2813,8 @@
    "family": "Job", 
    "id": "3.122.052.01.00-06", 
    "results": {
-    "completionTime": 119.25, 
-    "delay": -778.75, 
+    "completionTime": 167.25, 
+    "delay": -730.75, 
     "schedule": [
      {
       "entranceTime": 46.0, 
@@ -2847,43 +2847,43 @@
      }, 
      {
       "entranceTime": 98.5, 
-      "exitTime": 115.5, 
+      "exitTime": 163.5, 
       "stationId": "MILL1", 
       "task_id": "ID-00044"
      }, 
      {
-      "entranceTime": 115.5, 
-      "exitTime": 115.5, 
+      "entranceTime": 163.5, 
+      "exitTime": 163.5, 
       "stationId": "QWORK", 
       "task_id": "ID-00058"
      }, 
      {
-      "entranceTime": 115.5, 
-      "exitTime": 115.75, 
+      "entranceTime": 163.5, 
+      "exitTime": 163.75, 
       "stationId": "WORK4", 
       "task_id": "ID-00058"
      }, 
      {
-      "entranceTime": 115.75, 
-      "exitTime": 115.75, 
+      "entranceTime": 163.75, 
+      "exitTime": 163.75, 
       "stationId": "QWORK", 
       "task_id": "ID-00077"
      }, 
      {
-      "entranceTime": 115.75, 
-      "exitTime": 116.25, 
+      "entranceTime": 163.75, 
+      "exitTime": 164.25, 
       "stationId": "WORK2", 
       "task_id": "ID-00077"
      }, 
      {
-      "entranceTime": 116.25, 
-      "exitTime": 119.25, 
+      "entranceTime": 164.25, 
+      "exitTime": 167.25, 
       "stationId": "ASSMB1", 
       "task_id": "ID-00081"
      }, 
      {
-      "entranceTime": 119.25, 
-      "exitTime": 119.25, 
+      "entranceTime": 167.25, 
+      "exitTime": 167.25, 
       "stationId": "ASSM3", 
       "task_id": "ID-00081"
      }
@@ -2895,8 +2895,8 @@
    "family": "Job", 
    "id": "3.122.052.01.00-07", 
    "results": {
-    "completionTime": 119.25, 
-    "delay": -778.75, 
+    "completionTime": 167.25, 
+    "delay": -730.75, 
     "schedule": [
      {
       "entranceTime": 46.0, 
@@ -2923,49 +2923,49 @@
      }, 
      {
       "entranceTime": 99.5, 
-      "exitTime": 114.5, 
+      "exitTime": 162.5, 
       "stationId": "MILL2", 
       "task_id": "ID-00046"
      }, 
      {
-      "entranceTime": 114.5, 
-      "exitTime": 117.5, 
+      "entranceTime": 162.5, 
+      "exitTime": 165.5, 
       "stationId": "MILL2", 
       "task_id": "ID-00046"
      }, 
      {
-      "entranceTime": 117.5, 
-      "exitTime": 117.5, 
+      "entranceTime": 165.5, 
+      "exitTime": 165.5, 
       "stationId": "QWORK", 
       "task_id": "ID-00059"
      }, 
      {
-      "entranceTime": 117.5, 
-      "exitTime": 117.75, 
+      "entranceTime": 165.5, 
+      "exitTime": 165.75, 
       "stationId": "WORK1", 
       "task_id": "ID-00059"
      }, 
      {
-      "entranceTime": 117.75, 
-      "exitTime": 117.75, 
+      "entranceTime": 165.75, 
+      "exitTime": 165.75, 
       "stationId": "QWORK", 
       "task_id": "ID-00078"
      }, 
      {
-      "entranceTime": 117.75, 
-      "exitTime": 118.25, 
+      "entranceTime": 165.75, 
+      "exitTime": 166.25, 
       "stationId": "WORK2", 
       "task_id": "ID-00078"
      }, 
      {
-      "entranceTime": 118.25, 
-      "exitTime": 119.25, 
+      "entranceTime": 166.25, 
+      "exitTime": 167.25, 
       "stationId": "ASSMB1", 
       "task_id": "ID-00081"
      }, 
      {
-      "entranceTime": 119.25, 
-      "exitTime": 119.25, 
+      "entranceTime": 167.25, 
+      "exitTime": 167.25, 
       "stationId": "ASSM3", 
       "task_id": "ID-00081"
      }
@@ -2977,8 +2977,8 @@
    "family": "Job", 
    "id": "3.122.052.01.00-08", 
    "results": {
-    "completionTime": 119.25, 
-    "delay": -778.75, 
+    "completionTime": 167.25, 
+    "delay": -730.75, 
     "schedule": [
      {
       "entranceTime": 46.0, 
@@ -3029,13 +3029,13 @@
      }, 
      {
       "entranceTime": 91.1, 
-      "exitTime": 119.25, 
+      "exitTime": 167.25, 
       "stationId": "ASSMB1", 
       "task_id": "ID-00081"
      }, 
      {
-      "entranceTime": 119.25, 
-      "exitTime": 119.25, 
+      "entranceTime": 167.25, 
+      "exitTime": 167.25, 
       "stationId": "ASSM3", 
       "task_id": "ID-00081"
      }
@@ -3047,8 +3047,8 @@
    "family": "Job", 
    "id": "3.122.052.01.00-09", 
    "results": {
-    "completionTime": 119.25, 
-    "delay": -778.75, 
+    "completionTime": 167.25, 
+    "delay": -730.75, 
     "schedule": [
      {
       "entranceTime": 46.0, 
@@ -3070,13 +3070,13 @@
      }, 
      {
       "entranceTime": 50.0, 
-      "exitTime": 119.25, 
+      "exitTime": 167.25, 
       "stationId": "ASSMB1", 
       "task_id": "ID-00081"
      }, 
      {
-      "entranceTime": 119.25, 
-      "exitTime": 119.25, 
+      "entranceTime": 167.25, 
+      "exitTime": 167.25, 
       "stationId": "ASSM3", 
       "task_id": "ID-00081"
      }
@@ -3088,8 +3088,8 @@
    "family": "Job", 
    "id": "3.122.052.01.00-10", 
    "results": {
-    "completionTime": 119.25, 
-    "delay": -778.75, 
+    "completionTime": 167.25, 
+    "delay": -730.75, 
     "schedule": [
      {
       "entranceTime": 46.0, 
@@ -3111,13 +3111,13 @@
      }, 
      {
       "entranceTime": 51.5, 
-      "exitTime": 119.25, 
+      "exitTime": 167.25, 
       "stationId": "ASSMB1", 
       "task_id": "ID-00081"
      }, 
      {
-      "entranceTime": 119.25, 
-      "exitTime": 119.25, 
+      "entranceTime": 167.25, 
+      "exitTime": 167.25, 
       "stationId": "ASSM3", 
       "task_id": "ID-00081"
      }
@@ -3129,8 +3129,8 @@
    "family": "Job", 
    "id": "3.122.052.01.00-11", 
    "results": {
-    "completionTime": 119.25, 
-    "delay": -778.75, 
+    "completionTime": 167.25, 
+    "delay": -730.75, 
     "schedule": [
      {
       "entranceTime": 46.0, 
@@ -3146,13 +3146,13 @@
      }, 
      {
       "entranceTime": 47.5, 
-      "exitTime": 119.25, 
+      "exitTime": 167.25, 
       "stationId": "ASSMB1", 
       "task_id": "ID-00081"
      }, 
      {
-      "entranceTime": 119.25, 
-      "exitTime": 119.25, 
+      "entranceTime": 167.25, 
+      "exitTime": 167.25, 
       "stationId": "ASSM3", 
       "task_id": "ID-00081"
      }
@@ -3164,8 +3164,8 @@
    "family": "Job", 
    "id": "3.122.052.01.00-12", 
    "results": {
-    "completionTime": 119.25, 
-    "delay": -778.75, 
+    "completionTime": 167.25, 
+    "delay": -730.75, 
     "schedule": [
      {
       "entranceTime": 46.0, 
@@ -3181,13 +3181,13 @@
      }, 
      {
       "entranceTime": 49.0, 
-      "exitTime": 119.25, 
+      "exitTime": 167.25, 
       "stationId": "ASSMB1", 
       "task_id": "ID-00081"
      }, 
      {
-      "entranceTime": 119.25, 
-      "exitTime": 119.25, 
+      "entranceTime": 167.25, 
+      "exitTime": 167.25, 
       "stationId": "ASSM3", 
       "task_id": "ID-00081"
      }
@@ -3199,8 +3199,8 @@
    "family": "Job", 
    "id": "3.122.052.01.00-13", 
    "results": {
-    "completionTime": 119.25, 
-    "delay": -778.75, 
+    "completionTime": 167.25, 
+    "delay": -730.75, 
     "schedule": [
      {
       "entranceTime": 46.0, 
@@ -3216,13 +3216,13 @@
      }, 
      {
       "entranceTime": 51.0, 
-      "exitTime": 119.25, 
+      "exitTime": 167.25, 
       "stationId": "ASSMB1", 
       "task_id": "ID-00081"
      }, 
      {
-      "entranceTime": 119.25, 
-      "exitTime": 119.25, 
+      "entranceTime": 167.25, 
+      "exitTime": 167.25, 
       "stationId": "ASSM3", 
       "task_id": "ID-00081"
      }
@@ -3234,8 +3234,8 @@
    "family": "Job", 
    "id": "3.122.052.01.00-E01", 
    "results": {
-    "completionTime": 119.25, 
-    "delay": -778.75, 
+    "completionTime": 167.25, 
+    "delay": -730.75, 
     "schedule": [
      {
       "entranceTime": 46.0, 
@@ -3274,13 +3274,13 @@
      }, 
      {
       "entranceTime": 97.5, 
-      "exitTime": 119.25, 
+      "exitTime": 167.25, 
       "stationId": "ASSMB1", 
       "task_id": "ID-00081"
      }, 
      {
-      "entranceTime": 119.25, 
-      "exitTime": 119.25, 
+      "entranceTime": 167.25, 
+      "exitTime": 167.25, 
       "stationId": "ASSM3", 
       "task_id": "ID-00081"
      }
@@ -3292,8 +3292,8 @@
    "family": "Job", 
    "id": "3.122.052.01.00-E02", 
    "results": {
-    "completionTime": 119.25, 
-    "delay": -778.75, 
+    "completionTime": 167.25, 
+    "delay": -730.75, 
     "schedule": [
      {
       "entranceTime": 46.0, 
@@ -3314,31 +3314,31 @@
      }, 
      {
       "entranceTime": 73.9, 
-      "exitTime": 115.5, 
+      "exitTime": 163.5, 
       "stationId": "QMILL", 
       "task_id": "ID-00052"
      }, 
      {
-      "entranceTime": 115.5, 
-      "exitTime": 116.0, 
+      "entranceTime": 163.5, 
+      "exitTime": 164.0, 
       "stationId": "MILL1", 
       "task_id": "ID-00052"
      }, 
      {
-      "entranceTime": 116.0, 
-      "exitTime": 116.5, 
+      "entranceTime": 164.0, 
+      "exitTime": 164.5, 
       "stationId": "MILL1", 
       "task_id": "ID-00052"
      }, 
      {
-      "entranceTime": 116.5, 
-      "exitTime": 119.25, 
+      "entranceTime": 164.5, 
+      "exitTime": 167.25, 
       "stationId": "ASSMB1", 
       "task_id": "ID-00081"
      }, 
      {
-      "entranceTime": 119.25, 
-      "exitTime": 119.25, 
+      "entranceTime": 167.25, 
+      "exitTime": 167.25, 
       "stationId": "ASSM3", 
       "task_id": "ID-00081"
      }
@@ -3407,10 +3407,10 @@
      0.0
     ], 
     "waiting_ratio": [
-     97.59519038076152
+     98.26338639652677
     ], 
     "working_ratio": [
-     2.404809619238477
+     1.7366136034732271
     ]
    }
   }, 
@@ -3469,10 +3469,10 @@
      0.0
     ], 
     "waiting_ratio": [
-     98.39679358717434
+     98.84225759768451
     ], 
     "working_ratio": [
-     1.6032064128256514
+     1.1577424023154848
     ]
    }
   }, 
@@ -3537,10 +3537,10 @@
      0.0
     ], 
     "waiting_ratio": [
-     96.7935871743487
+     97.68451519536903
     ], 
     "working_ratio": [
-     3.2064128256513027
+     2.3154848046309695
     ]
    }
   }, 
@@ -3568,10 +3568,10 @@
      0.0
     ], 
     "waiting_ratio": [
-     90.38076152304609
+     93.05354558610709
     ], 
     "working_ratio": [
-     9.619238476953909
+     6.9464544138929085
     ]
    }
   }, 
@@ -3599,10 +3599,10 @@
      0.0
     ], 
     "waiting_ratio": [
-     92.78557114228457
+     94.79015918958032
     ], 
     "working_ratio": [
-     7.214428857715431
+     5.209840810419681
     ]
    }
   }, 
@@ -3630,10 +3630,10 @@
      0.0
     ], 
     "waiting_ratio": [
-     91.98396793587175
+     94.21128798842257
     ], 
     "working_ratio": [
-     8.016032064128256
+     5.788712011577424
     ]
    }
   }, 
@@ -3643,10 +3643,10 @@
    "id": "E1", 
    "results": {
     "lifespan": [
-     95.575
+     119.575
     ], 
     "takt_time": [
-     62.375
+     86.375
     ], 
     "throughput": [
      2
@@ -3674,13 +3674,13 @@
      0.0
     ], 
     "setup_ratio": [
-     0.8016032064128257
+     0.5788712011577424
     ], 
     "waiting_ratio": [
-     96.7935871743487
+     97.68451519536903
     ], 
     "working_ratio": [
-     2.404809619238477
+     1.7366136034732271
     ]
    }
   }, 
@@ -3705,13 +3705,13 @@
      0.0
     ], 
     "setup_ratio": [
-     0.8016032064128257
+     0.5788712011577424
     ], 
     "waiting_ratio": [
-     97.1943887775551
+     97.9739507959479
     ], 
     "working_ratio": [
-     2.004008016032064
+     1.447178002894356
     ]
    }
   }, 
@@ -3736,13 +3736,13 @@
      0.0
     ], 
     "setup_ratio": [
-     0.8016032064128257
+     0.5788712011577424
     ], 
     "waiting_ratio": [
-     91.18236472945891
+     93.63241678726483
     ], 
     "working_ratio": [
-     8.016032064128263
+     5.788712011577428
     ]
    }
   }, 
@@ -3767,13 +3767,13 @@
      0.0
     ], 
     "setup_ratio": [
-     5.210420841683367
+     3.7626628075253254
     ], 
     "waiting_ratio": [
-     76.35270541082164
+     82.9232995658466
     ], 
     "working_ratio": [
-     18.43687374749499
+     13.314037626628075
     ]
    }
   }, 
@@ -3798,13 +3798,13 @@
      0.0
     ], 
     "setup_ratio": [
-     6.813627254509018
+     4.92040520984081
     ], 
     "waiting_ratio": [
-     72.34468937875752
+     80.02894356005788
     ], 
     "working_ratio": [
-     20.841683366733466
+     15.050651230101302
     ]
    }
   }, 
@@ -4141,10 +4141,10 @@
      0.0
     ], 
     "waiting_ratio": [
-     95.99198396793587
+     97.10564399421129
     ], 
     "working_ratio": [
-     4.008016032064128
+     2.894356005788712
     ]
    }
   }, 
@@ -4154,7 +4154,7 @@
    "id": "W1", 
    "results": {
     "off_shift_ratio": [
-     59.11823647294589
+     70.47756874095514
     ], 
     "on_break_ratio": [
      0.0
@@ -4252,48 +4252,48 @@
      }, 
      {
       "entranceTime": 100.0, 
-      "exitTime": 114.0, 
+      "exitTime": 162.0, 
       "stationId": "off-shift"
      }, 
      {
       "entityId": "3.122.052.01.00-03", 
-      "entranceTime": 114.25, 
-      "exitTime": 114.75, 
+      "entranceTime": 162.25, 
+      "exitTime": 162.75, 
       "stationId": "WORK1", 
       "task_id": "ID-00074"
      }, 
      {
       "entityId": "3.122.052.01.00-E02", 
-      "entranceTime": 115.5, 
-      "exitTime": 116.5, 
+      "entranceTime": 163.5, 
+      "exitTime": 164.5, 
       "stationId": "MILL1", 
       "task_id": "ID-00052"
      }, 
      {
       "entityId": "3.122.052.01.00-07", 
-      "entranceTime": 117.5, 
-      "exitTime": 117.75, 
+      "entranceTime": 165.5, 
+      "exitTime": 165.75, 
       "stationId": "WORK1", 
       "task_id": "ID-00059"
      }, 
      {
       "entityId": "3.122.052.01.00", 
-      "entranceTime": 121.25, 
-      "exitTime": 122.25, 
+      "entranceTime": 169.25, 
+      "exitTime": 170.25, 
       "stationId": "INJM1", 
       "task_id": "ID-00083"
      }, 
      {
-      "entranceTime": 124.0, 
-      "exitTime": 124.75, 
+      "entranceTime": 172.0, 
+      "exitTime": 172.75, 
       "stationId": "off-shift"
      }
     ], 
     "waiting_ratio": [
-     16.63326653306613
+     12.011577424023155
     ], 
     "working_ratio": [
-     24.248496993987978
+     17.510853835021706
     ]
    }
   }, 
@@ -4303,7 +4303,7 @@
    "id": "W2", 
    "results": {
     "off_shift_ratio": [
-     56.71342685370742
+     68.7409551374819
     ], 
     "on_break_ratio": [
      0.0
@@ -4464,34 +4464,34 @@
      }, 
      {
       "entranceTime": 100.0, 
-      "exitTime": 114.0, 
+      "exitTime": 162.0, 
       "stationId": "off-shift"
      }, 
      {
       "entityId": "3.122.052.01.00-07", 
-      "entranceTime": 114.0, 
-      "exitTime": 117.5, 
+      "entranceTime": 162.0, 
+      "exitTime": 165.5, 
       "stationId": "MILL2", 
       "task_id": "ID-00046"
      }, 
      {
       "entityId": "3.122.052.01.00-04", 
-      "entranceTime": 118.75, 
-      "exitTime": 119.25, 
+      "entranceTime": 166.75, 
+      "exitTime": 167.25, 
       "stationId": "WORK3", 
       "task_id": "ID-00075"
      }, 
      {
-      "entranceTime": 124.0, 
-      "exitTime": 124.75, 
+      "entranceTime": 172.0, 
+      "exitTime": 172.75, 
       "stationId": "off-shift"
      }
     ], 
     "waiting_ratio": [
-     11.422845691382765
+     8.24891461649783
     ], 
     "working_ratio": [
-     31.86372745490982
+     23.01013024602026
     ]
    }
   }, 
@@ -4501,7 +4501,7 @@
    "id": "W3", 
    "results": {
     "off_shift_ratio": [
-     56.71342685370742
+     68.7409551374819
     ], 
     "on_break_ratio": [
      0.0
@@ -4620,41 +4620,41 @@
      }, 
      {
       "entranceTime": 100.0, 
-      "exitTime": 114.0, 
+      "exitTime": 162.0, 
       "stationId": "off-shift"
      }, 
      {
       "entityId": "3.122.052.01.00-06", 
-      "entranceTime": 114.0, 
-      "exitTime": 115.5, 
+      "entranceTime": 162.0, 
+      "exitTime": 163.5, 
       "stationId": "MILL1", 
       "task_id": "ID-00044"
      }, 
      {
       "entityId": "3.122.052.01.00-02", 
-      "entranceTime": 116.5, 
-      "exitTime": 117.0, 
+      "entranceTime": 164.5, 
+      "exitTime": 165.0, 
       "stationId": "EDM1", 
       "task_id": "ID-00064"
      }, 
      {
       "entityId": "3.122.052.01.00-07", 
-      "entranceTime": 117.75, 
-      "exitTime": 118.25, 
+      "entranceTime": 165.75, 
+      "exitTime": 166.25, 
       "stationId": "WORK2", 
       "task_id": "ID-00078"
      }, 
      {
-      "entranceTime": 124.0, 
-      "exitTime": 124.75, 
+      "entranceTime": 172.0, 
+      "exitTime": 172.75, 
       "stationId": "off-shift"
      }
     ], 
     "waiting_ratio": [
-     13.827655310621243
+     9.985528219971057
     ], 
     "working_ratio": [
-     29.45891783567135
+     21.273516642547037
     ]
    }
   }, 
@@ -4664,7 +4664,7 @@
    "id": "W4", 
    "results": {
     "off_shift_ratio": [
-     56.71342685370742
+     68.7409551374819
     ], 
     "on_break_ratio": [
      0.0
@@ -4755,48 +4755,48 @@
      }, 
      {
       "entranceTime": 100.0, 
-      "exitTime": 114.0, 
+      "exitTime": 162.0, 
       "stationId": "off-shift"
      }, 
      {
       "entityId": "3.122.052.01.00-03", 
-      "entranceTime": 114.0, 
-      "exitTime": 114.25, 
+      "entranceTime": 162.0, 
+      "exitTime": 162.25, 
       "stationId": "WORK3", 
       "task_id": "ID-00062"
      }, 
      {
       "entityId": "3.122.052.01.00-06", 
-      "entranceTime": 115.5, 
-      "exitTime": 115.75, 
+      "entranceTime": 163.5, 
+      "exitTime": 163.75, 
       "stationId": "WORK4", 
       "task_id": "ID-00058"
      }, 
      {
       "entityId": "3.122.052.01.00-02", 
-      "entranceTime": 117.5, 
-      "exitTime": 117.75, 
+      "entranceTime": 165.5, 
+      "exitTime": 165.75, 
       "stationId": "WORK3", 
       "task_id": "ID-00065"
      }, 
      {
       "entityId": "3.122.052.01.00-04", 
-      "entranceTime": 119.25, 
-      "exitTime": 121.25, 
+      "entranceTime": 167.25, 
+      "exitTime": 169.25, 
       "stationId": "ASSM3", 
       "task_id": "ID-00081"
      }, 
      {
-      "entranceTime": 124.0, 
-      "exitTime": 124.75, 
+      "entranceTime": 172.0, 
+      "exitTime": 172.75, 
       "stationId": "off-shift"
      }
     ], 
     "waiting_ratio": [
-     36.87374749498998
+     26.62807525325615
     ], 
     "working_ratio": [
-     6.4128256513026
+     4.6309696092619355
     ]
    }
   }, 
@@ -4806,7 +4806,7 @@
    "id": "W5", 
    "results": {
     "off_shift_ratio": [
-     56.71342685370742
+     68.7409551374819
     ], 
     "on_break_ratio": [
      0.0
@@ -4869,41 +4869,41 @@
      }, 
      {
       "entranceTime": 100.0, 
-      "exitTime": 114.0, 
+      "exitTime": 162.0, 
       "stationId": "off-shift"
      }, 
      {
       "entityId": "3.122.052.01.00-05", 
-      "entranceTime": 114.0, 
-      "exitTime": 114.25, 
+      "entranceTime": 162.0, 
+      "exitTime": 162.25, 
       "stationId": "WORK2", 
       "task_id": "ID-00076"
      }, 
      {
       "entityId": "3.122.052.01.00-06", 
-      "entranceTime": 115.75, 
-      "exitTime": 116.25, 
+      "entranceTime": 163.75, 
+      "exitTime": 164.25, 
       "stationId": "WORK2", 
       "task_id": "ID-00077"
      }, 
      {
       "entityId": "3.122.052.01.00-02", 
-      "entranceTime": 117.75, 
-      "exitTime": 118.75, 
+      "entranceTime": 165.75, 
+      "exitTime": 166.75, 
       "stationId": "WORK4", 
       "task_id": "ID-00073"
      }, 
      {
-      "entranceTime": 124.0, 
-      "exitTime": 124.75, 
+      "entranceTime": 172.0, 
+      "exitTime": 172.75, 
       "stationId": "off-shift"
      }
     ], 
     "waiting_ratio": [
-     37.274549098196395
+     26.917510853835022
     ], 
     "working_ratio": [
-     6.012024048096192
+     4.341534008683068
     ]
    }
   }, 
@@ -4913,7 +4913,7 @@
    "id": "W6", 
    "results": {
     "off_shift_ratio": [
-     56.71342685370742
+     68.7409551374819
     ], 
     "on_break_ratio": [
      0.0
@@ -4941,17 +4941,17 @@
      }, 
      {
       "entranceTime": 100.0, 
-      "exitTime": 114.0, 
+      "exitTime": 162.0, 
       "stationId": "off-shift"
      }, 
      {
-      "entranceTime": 124.0, 
-      "exitTime": 124.75, 
+      "entranceTime": 172.0, 
+      "exitTime": 172.75, 
       "stationId": "off-shift"
      }
     ], 
     "waiting_ratio": [
-     43.28657314629258
+     31.25904486251809
     ], 
     "working_ratio": [
      0.0
@@ -4964,7 +4964,7 @@
    "id": "W7", 
    "results": {
     "off_shift_ratio": [
-     56.71342685370742
+     68.7409551374819
     ], 
     "on_break_ratio": [
      0.0
@@ -4992,17 +4992,17 @@
      }, 
      {
       "entranceTime": 100.0, 
-      "exitTime": 114.0, 
+      "exitTime": 162.0, 
       "stationId": "off-shift"
      }, 
      {
-      "entranceTime": 124.0, 
-      "exitTime": 124.75, 
+      "entranceTime": 172.0, 
+      "exitTime": 172.75, 
       "stationId": "off-shift"
      }
     ], 
     "waiting_ratio": [
-     43.28657314629258
+     31.25904486251809
     ], 
     "working_ratio": [
      0.0
@@ -5033,10 +5033,10 @@
      0.0
     ], 
     "waiting_ratio": [
-     96.99398797595191
+     97.82923299565847
     ], 
     "working_ratio": [
-     3.006012024048096
+     2.170767004341534
     ]
    }
   }, 
@@ -5064,10 +5064,10 @@
      0.0
     ], 
     "waiting_ratio": [
-     96.7935871743487
+     97.68451519536903
     ], 
     "working_ratio": [
-     3.206412825651297
+     2.3154848046309655
     ]
    }
   }, 
@@ -5095,10 +5095,10 @@
      0.0
     ], 
     "waiting_ratio": [
-     98.59719438877755
+     98.98697539797395
     ], 
     "working_ratio": [
-     1.402805611222445
+     1.0130246020260492
     ]
    }
   }, 
@@ -5126,10 +5126,10 @@
      0.0
     ], 
     "waiting_ratio": [
-     97.79559118236473
+     98.40810419681621
     ], 
     "working_ratio": [
-     2.2044088176352705
+     1.5918958031837915
     ]
    }
   }
@@ -5345,68 +5345,68 @@
    }, 
    {
     "color": "grey", 
-    "duration": 14.0, 
+    "duration": 62.0, 
     "entranceTime": 100.0, 
     "id": "W1off-shift16", 
     "open": false, 
     "parent": "W1", 
     "start_date": "27-02-2015 18:00", 
-    "stop_date": "28-02-2015 08:00", 
+    "stop_date": "02-03-2015 08:00", 
     "text": "off-shift"
    }, 
    {
     "color": "transparent", 
     "duration": 0.5, 
-    "entranceTime": 114.25, 
+    "entranceTime": 162.25, 
     "id": "W1ID-0007417", 
     "open": false, 
     "parent": "W1", 
-    "start_date": "28-02-2015 08:15", 
-    "stop_date": "28-02-2015 08:45", 
+    "start_date": "02-03-2015 08:15", 
+    "stop_date": "02-03-2015 08:45", 
     "text": "ID-00074 WORK1 3.122.052.01.00-03"
    }, 
    {
     "color": "transparent", 
     "duration": 1.0, 
-    "entranceTime": 115.5, 
+    "entranceTime": 163.5, 
     "id": "W1ID-0005218", 
     "open": false, 
     "parent": "W1", 
-    "start_date": "28-02-2015 09:30", 
-    "stop_date": "28-02-2015 10:30", 
+    "start_date": "02-03-2015 09:30", 
+    "stop_date": "02-03-2015 10:30", 
     "text": "ID-00052 MILL1 3.122.052.01.00-E02"
    }, 
    {
     "color": "transparent", 
     "duration": 0.25, 
-    "entranceTime": 117.5, 
+    "entranceTime": 165.5, 
     "id": "W1ID-0005919", 
     "open": false, 
     "parent": "W1", 
-    "start_date": "28-02-2015 11:30", 
-    "stop_date": "28-02-2015 11:45", 
+    "start_date": "02-03-2015 11:30", 
+    "stop_date": "02-03-2015 11:45", 
     "text": "ID-00059 WORK1 3.122.052.01.00-07"
    }, 
    {
     "color": "transparent", 
     "duration": 1.0, 
-    "entranceTime": 121.25, 
+    "entranceTime": 169.25, 
     "id": "W1ID-0008320", 
     "open": false, 
     "parent": "W1", 
-    "start_date": "28-02-2015 15:15", 
-    "stop_date": "28-02-2015 16:15", 
+    "start_date": "02-03-2015 15:15", 
+    "stop_date": "02-03-2015 16:15", 
     "text": "ID-00083 INJM1 3.122.052.01.00"
    }, 
    {
     "color": "grey", 
     "duration": 0.75, 
-    "entranceTime": 124.0, 
+    "entranceTime": 172.0, 
     "id": "W1off-shift21", 
     "open": false, 
     "parent": "W1", 
-    "start_date": "28-02-2015 18:00", 
-    "stop_date": "28-02-2015 18:45", 
+    "start_date": "02-03-2015 18:00", 
+    "stop_date": "02-03-2015 18:45", 
     "text": "off-shift"
    }, 
    {
@@ -5664,46 +5664,46 @@
    }, 
    {
     "color": "grey", 
-    "duration": 14.0, 
+    "duration": 62.0, 
     "entranceTime": 100.0, 
     "id": "W2off-shift25", 
     "open": false, 
     "parent": "W2", 
     "start_date": "27-02-2015 18:00", 
-    "stop_date": "28-02-2015 08:00", 
+    "stop_date": "02-03-2015 08:00", 
     "text": "off-shift"
    }, 
    {
     "color": "transparent", 
     "duration": 3.5, 
-    "entranceTime": 114.0, 
+    "entranceTime": 162.0, 
     "id": "W2ID-0004626", 
     "open": false, 
     "parent": "W2", 
-    "start_date": "28-02-2015 08:00", 
-    "stop_date": "28-02-2015 11:30", 
+    "start_date": "02-03-2015 08:00", 
+    "stop_date": "02-03-2015 11:30", 
     "text": "ID-00046 MILL2 3.122.052.01.00-07"
    }, 
    {
     "color": "transparent", 
     "duration": 0.5, 
-    "entranceTime": 118.75, 
+    "entranceTime": 166.75, 
     "id": "W2ID-0007527", 
     "open": false, 
     "parent": "W2", 
-    "start_date": "28-02-2015 12:45", 
-    "stop_date": "28-02-2015 13:15", 
+    "start_date": "02-03-2015 12:45", 
+    "stop_date": "02-03-2015 13:15", 
     "text": "ID-00075 WORK3 3.122.052.01.00-04"
    }, 
    {
     "color": "grey", 
     "duration": 0.75, 
-    "entranceTime": 124.0, 
+    "entranceTime": 172.0, 
     "id": "W2off-shift28", 
     "open": false, 
     "parent": "W2", 
-    "start_date": "28-02-2015 18:00", 
-    "stop_date": "28-02-2015 18:45", 
+    "start_date": "02-03-2015 18:00", 
+    "stop_date": "02-03-2015 18:45", 
     "text": "off-shift"
    }, 
    {
@@ -5895,57 +5895,57 @@
    }, 
    {
     "color": "grey", 
-    "duration": 14.0, 
+    "duration": 62.0, 
     "entranceTime": 100.0, 
     "id": "W3off-shift19", 
     "open": false, 
     "parent": "W3", 
     "start_date": "27-02-2015 18:00", 
-    "stop_date": "28-02-2015 08:00", 
+    "stop_date": "02-03-2015 08:00", 
     "text": "off-shift"
    }, 
    {
     "color": "transparent", 
     "duration": 1.5, 
-    "entranceTime": 114.0, 
+    "entranceTime": 162.0, 
     "id": "W3ID-0004420", 
     "open": false, 
     "parent": "W3", 
-    "start_date": "28-02-2015 08:00", 
-    "stop_date": "28-02-2015 09:30", 
+    "start_date": "02-03-2015 08:00", 
+    "stop_date": "02-03-2015 09:30", 
     "text": "ID-00044 MILL1 3.122.052.01.00-06"
    }, 
    {
     "color": "transparent", 
     "duration": 0.5, 
-    "entranceTime": 116.5, 
+    "entranceTime": 164.5, 
     "id": "W3ID-0006421", 
     "open": false, 
     "parent": "W3", 
-    "start_date": "28-02-2015 10:30", 
-    "stop_date": "28-02-2015 11:00", 
+    "start_date": "02-03-2015 10:30", 
+    "stop_date": "02-03-2015 11:00", 
     "text": "ID-00064 EDM1 3.122.052.01.00-02"
    }, 
    {
     "color": "transparent", 
     "duration": 0.5, 
-    "entranceTime": 117.75, 
+    "entranceTime": 165.75, 
     "id": "W3ID-0007822", 
     "open": false, 
     "parent": "W3", 
-    "start_date": "28-02-2015 11:45", 
-    "stop_date": "28-02-2015 12:15", 
+    "start_date": "02-03-2015 11:45", 
+    "stop_date": "02-03-2015 12:15", 
     "text": "ID-00078 WORK2 3.122.052.01.00-07"
    }, 
    {
     "color": "grey", 
     "duration": 0.75, 
-    "entranceTime": 124.0, 
+    "entranceTime": 172.0, 
     "id": "W3off-shift23", 
     "open": false, 
     "parent": "W3", 
-    "start_date": "28-02-2015 18:00", 
-    "stop_date": "28-02-2015 18:45", 
+    "start_date": "02-03-2015 18:00", 
+    "stop_date": "02-03-2015 18:45", 
     "text": "off-shift"
    }, 
    {
@@ -6093,68 +6093,68 @@
    }, 
    {
     "color": "grey", 
-    "duration": 14.0, 
+    "duration": 62.0, 
     "entranceTime": 100.0, 
     "id": "W4off-shift15", 
     "open": false, 
     "parent": "W4", 
     "start_date": "27-02-2015 18:00", 
-    "stop_date": "28-02-2015 08:00", 
+    "stop_date": "02-03-2015 08:00", 
     "text": "off-shift"
    }, 
    {
     "color": "transparent", 
     "duration": 0.25, 
-    "entranceTime": 114.0, 
+    "entranceTime": 162.0, 
     "id": "W4ID-0006216", 
     "open": false, 
     "parent": "W4", 
-    "start_date": "28-02-2015 08:00", 
-    "stop_date": "28-02-2015 08:15", 
+    "start_date": "02-03-2015 08:00", 
+    "stop_date": "02-03-2015 08:15", 
     "text": "ID-00062 WORK3 3.122.052.01.00-03"
    }, 
    {
     "color": "transparent", 
     "duration": 0.25, 
-    "entranceTime": 115.5, 
+    "entranceTime": 163.5, 
     "id": "W4ID-0005817", 
     "open": false, 
     "parent": "W4", 
-    "start_date": "28-02-2015 09:30", 
-    "stop_date": "28-02-2015 09:45", 
+    "start_date": "02-03-2015 09:30", 
+    "stop_date": "02-03-2015 09:45", 
     "text": "ID-00058 WORK4 3.122.052.01.00-06"
    }, 
    {
     "color": "transparent", 
     "duration": 0.25, 
-    "entranceTime": 117.5, 
+    "entranceTime": 165.5, 
     "id": "W4ID-0006518", 
     "open": false, 
     "parent": "W4", 
-    "start_date": "28-02-2015 11:30", 
-    "stop_date": "28-02-2015 11:45", 
+    "start_date": "02-03-2015 11:30", 
+    "stop_date": "02-03-2015 11:45", 
     "text": "ID-00065 WORK3 3.122.052.01.00-02"
    }, 
    {
     "color": "transparent", 
     "duration": 2.0, 
-    "entranceTime": 119.25, 
+    "entranceTime": 167.25, 
     "id": "W4ID-0008119", 
     "open": false, 
     "parent": "W4", 
-    "start_date": "28-02-2015 13:15", 
-    "stop_date": "28-02-2015 15:15", 
+    "start_date": "02-03-2015 13:15", 
+    "stop_date": "02-03-2015 15:15", 
     "text": "ID-00081 ASSM3 3.122.052.01.00-04"
    }, 
    {
     "color": "grey", 
     "duration": 0.75, 
-    "entranceTime": 124.0, 
+    "entranceTime": 172.0, 
     "id": "W4off-shift20", 
     "open": false, 
     "parent": "W4", 
-    "start_date": "28-02-2015 18:00", 
-    "stop_date": "28-02-2015 18:45", 
+    "start_date": "02-03-2015 18:00", 
+    "stop_date": "02-03-2015 18:45", 
     "text": "off-shift"
    }, 
    {
@@ -6258,57 +6258,57 @@
    }, 
    {
     "color": "grey", 
-    "duration": 14.0, 
+    "duration": 62.0, 
     "entranceTime": 100.0, 
     "id": "W5off-shift11", 
     "open": false, 
     "parent": "W5", 
     "start_date": "27-02-2015 18:00", 
-    "stop_date": "28-02-2015 08:00", 
+    "stop_date": "02-03-2015 08:00", 
     "text": "off-shift"
    }, 
    {
     "color": "transparent", 
     "duration": 0.25, 
-    "entranceTime": 114.0, 
+    "entranceTime": 162.0, 
     "id": "W5ID-0007612", 
     "open": false, 
     "parent": "W5", 
-    "start_date": "28-02-2015 08:00", 
-    "stop_date": "28-02-2015 08:15", 
+    "start_date": "02-03-2015 08:00", 
+    "stop_date": "02-03-2015 08:15", 
     "text": "ID-00076 WORK2 3.122.052.01.00-05"
    }, 
    {
     "color": "transparent", 
     "duration": 0.5, 
-    "entranceTime": 115.75, 
+    "entranceTime": 163.75, 
     "id": "W5ID-0007713", 
     "open": false, 
     "parent": "W5", 
-    "start_date": "28-02-2015 09:45", 
-    "stop_date": "28-02-2015 10:15", 
+    "start_date": "02-03-2015 09:45", 
+    "stop_date": "02-03-2015 10:15", 
     "text": "ID-00077 WORK2 3.122.052.01.00-06"
    }, 
    {
     "color": "transparent", 
     "duration": 1.0, 
-    "entranceTime": 117.75, 
+    "entranceTime": 165.75, 
     "id": "W5ID-0007314", 
     "open": false, 
     "parent": "W5", 
-    "start_date": "28-02-2015 11:45", 
-    "stop_date": "28-02-2015 12:45", 
+    "start_date": "02-03-2015 11:45", 
+    "stop_date": "02-03-2015 12:45", 
     "text": "ID-00073 WORK4 3.122.052.01.00-02"
    }, 
    {
     "color": "grey", 
     "duration": 0.75, 
-    "entranceTime": 124.0, 
+    "entranceTime": 172.0, 
     "id": "W5off-shift15", 
     "open": false, 
     "parent": "W5", 
-    "start_date": "28-02-2015 18:00", 
-    "stop_date": "28-02-2015 18:45", 
+    "start_date": "02-03-2015 18:00", 
+    "stop_date": "02-03-2015 18:45", 
     "text": "off-shift"
    }, 
    {
@@ -6357,24 +6357,24 @@
    }, 
    {
     "color": "grey", 
-    "duration": 14.0, 
+    "duration": 62.0, 
     "entranceTime": 100.0, 
     "id": "W6off-shift6", 
     "open": false, 
     "parent": "W6", 
     "start_date": "27-02-2015 18:00", 
-    "stop_date": "28-02-2015 08:00", 
+    "stop_date": "02-03-2015 08:00", 
     "text": "off-shift"
    }, 
    {
     "color": "grey", 
     "duration": 0.75, 
-    "entranceTime": 124.0, 
+    "entranceTime": 172.0, 
     "id": "W6off-shift7", 
     "open": false, 
     "parent": "W6", 
-    "start_date": "28-02-2015 18:00", 
-    "stop_date": "28-02-2015 18:45", 
+    "start_date": "02-03-2015 18:00", 
+    "stop_date": "02-03-2015 18:45", 
     "text": "off-shift"
    }, 
    {
@@ -6423,24 +6423,24 @@
    }, 
    {
     "color": "grey", 
-    "duration": 14.0, 
+    "duration": 62.0, 
     "entranceTime": 100.0, 
     "id": "W7off-shift6", 
     "open": false, 
     "parent": "W7", 
     "start_date": "27-02-2015 18:00", 
-    "stop_date": "28-02-2015 08:00", 
+    "stop_date": "02-03-2015 08:00", 
     "text": "off-shift"
    }, 
    {
     "color": "grey", 
     "duration": 0.75, 
-    "entranceTime": 124.0, 
+    "entranceTime": 172.0, 
     "id": "W7off-shift7", 
     "open": false, 
     "parent": "W7", 
-    "start_date": "28-02-2015 18:00", 
-    "stop_date": "28-02-2015 18:45", 
+    "start_date": "02-03-2015 18:00", 
+    "stop_date": "02-03-2015 18:45", 
     "text": "off-shift"
    }
   ], 
@@ -6506,23 +6506,23 @@
      ], 
      [
       2, 
-      6.012024048096192
+      4.341534008683068
      ], 
      [
       3, 
-      6.4128256513026
+      4.6309696092619355
      ], 
      [
       4, 
-      29.45891783567135
+      21.273516642547037
      ], 
      [
       5, 
-      31.86372745490982
+      23.01013024602026
      ], 
      [
       6, 
-      24.248496993987978
+      17.510853835021706
      ]
     ], 
     "label": "Working"
@@ -6531,31 +6531,31 @@
     "data": [
      [
       0, 
-      43.28657314629258
+      31.25904486251809
      ], 
      [
       1, 
-      43.28657314629258
+      31.25904486251809
      ], 
      [
       2, 
-      37.274549098196395
+      26.917510853835022
      ], 
      [
       3, 
-      36.87374749498998
+      26.62807525325615
      ], 
      [
       4, 
-      13.827655310621243
+      9.985528219971057
      ], 
      [
       5, 
-      11.422845691382765
+      8.24891461649783
      ], 
      [
       6, 
-      16.63326653306613
+      12.011577424023155
      ]
     ], 
     "label": "Waiting"
@@ -6564,31 +6564,31 @@
     "data": [
      [
       0, 
-      56.71342685370742
+      68.7409551374819
      ], 
      [
       1, 
-      56.71342685370742
+      68.7409551374819
      ], 
      [
       2, 
-      56.71342685370742
+      68.7409551374819
      ], 
      [
       3, 
-      56.71342685370742
+      68.7409551374819
      ], 
      [
       4, 
-      56.71342685370742
+      68.7409551374819
      ], 
      [
       5, 
-      56.71342685370742
+      68.7409551374819
      ], 
      [
       6, 
-      59.11823647294589
+      70.47756874095514
      ]
     ], 
     "label": "off_shift"
@@ -6692,11 +6692,11 @@
     "data": [
      [
       0, 
-      2.404809619238477
+      1.7366136034732271
      ], 
      [
       1, 
-      1.6032064128256514
+      1.1577424023154848
      ], 
      [
       2, 
@@ -6708,59 +6708,59 @@
      ], 
      [
       4, 
-      20.841683366733466
+      15.050651230101302
      ], 
      [
       5, 
-      18.43687374749499
+      13.314037626628075
      ], 
      [
       6, 
-      8.016032064128263
+      5.788712011577428
      ], 
      [
       7, 
-      2.004008016032064
+      1.447178002894356
      ], 
      [
       8, 
-      8.016032064128256
+      5.788712011577424
      ], 
      [
       9, 
-      7.214428857715431
+      5.209840810419681
      ], 
      [
       10, 
-      3.2064128256513027
+      2.3154848046309695
      ], 
      [
       11, 
-      9.619238476953909
+      6.9464544138929085
      ], 
      [
       12, 
-      4.008016032064128
+      2.894356005788712
      ], 
      [
       13, 
-      2.404809619238477
+      1.7366136034732271
      ], 
      [
       14, 
-      3.006012024048096
+      2.170767004341534
      ], 
      [
       15, 
-      3.206412825651297
+      2.3154848046309655
      ], 
      [
       16, 
-      1.402805611222445
+      1.0130246020260492
      ], 
      [
       17, 
-      2.2044088176352705
+      1.5918958031837915
      ]
     ], 
     "label": "Working"
@@ -6769,11 +6769,11 @@
     "data": [
      [
       0, 
-      97.59519038076152
+      98.26338639652677
      ], 
      [
       1, 
-      98.39679358717434
+      98.84225759768451
      ], 
      [
       2, 
@@ -6785,59 +6785,59 @@
      ], 
      [
       4, 
-      72.34468937875752
+      80.02894356005788
      ], 
      [
       5, 
-      76.35270541082164
+      82.9232995658466
      ], 
      [
       6, 
-      91.18236472945891
+      93.63241678726483
      ], 
      [
       7, 
-      97.1943887775551
+      97.9739507959479
      ], 
      [
       8, 
-      91.98396793587175
+      94.21128798842257
      ], 
      [
       9, 
-      92.78557114228457
+      94.79015918958032
      ], 
      [
       10, 
-      96.7935871743487
+      97.68451519536903
      ], 
      [
       11, 
-      90.38076152304609
+      93.05354558610709
      ], 
      [
       12, 
-      95.99198396793587
+      97.10564399421129
      ], 
      [
       13, 
-      96.7935871743487
+      97.68451519536903
      ], 
      [
       14, 
-      96.99398797595191
+      97.82923299565847
      ], 
      [
       15, 
-      96.7935871743487
+      97.68451519536903
      ], 
      [
       16, 
-      98.59719438877755
+      98.98697539797395
      ], 
      [
       17, 
-      97.79559118236473
+      98.40810419681621
      ]
     ], 
     "label": "Waiting"
