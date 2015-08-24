@@ -54,6 +54,7 @@ class ReadJSShifts(plugin.InputPreparationPlugin, TimeSupportMixin):
     if shiftData:
       shiftData.pop(0)
       #iteration through the raw data to structure it into ManPy config
+      lastrec=None
       for line in shiftData:
         # if all the records of that line are none then continue
         toContinue = False
@@ -105,7 +106,7 @@ class ReadJSShifts(plugin.InputPreparationPlugin, TimeSupportMixin):
         if line[0]:
           entityID = line[0].split("-")[0]
         else:
-          entityID = ""
+          entityID = ""  
         if str(entityID) == '': 
           #take it as a continuation for the last entered resource
           for index, start in enumerate(timeStartList):
@@ -145,7 +146,12 @@ class ReadJSShifts(plugin.InputPreparationPlugin, TimeSupportMixin):
       #create default pattern for all operators (10 days long)
       timeStartList = []
       timeEndList = []
+
       for dayNumber in range(0,20):
+        # check the day, if it is weekend do not create shift entry
+        dayDate=now+datetime.timedelta(days=dayNumber)
+        if dayDate.weekday() in [5,6]:
+            continue
         startTime = "08:00"
         endTime = "18:00"
         upDate = now.date()+datetime.timedelta(days=dayNumber)
