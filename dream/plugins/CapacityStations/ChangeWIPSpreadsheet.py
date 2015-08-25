@@ -14,7 +14,6 @@ class ChangeWIPSpreadsheet(plugin.InputPreparationPlugin):
                 wipColumn=i
                 break
             i+=1
-        from pprint import pprint
         if projectData:
             alreadyConsideredProjects=[]
             for row in range(1, len(projectData)):
@@ -40,33 +39,38 @@ class ChangeWIPSpreadsheet(plugin.InputPreparationPlugin):
                         requiredCapacity=float(projectData[row+stationRecord][5])
                         completedCapacityDict[stationId]=completedCapacity
                         requiredCapacityDict[stationId]=requiredCapacity
-#                     print '------------',projectId
-#                     pprint(completedCapacityDict)  
                     wipDict=self.calculateWIPDict(data, completedCapacityDict,requiredCapacityDict)
-                    print '------------',projectId
                     for stationRecord in range(numberOfOperations):
                         stationId=projectData[row+stationRecord][4]
                         projectData[row+stationRecord][wipColumn]=wipDict[stationId]
-                        
-                    pprint(wipDict)                             
         return data
     
     # gets the dict that shows the completed capacities and returns the one with the actual wip
     def calculateWIPDict(self,data,completedCapacityDict,requiredCapacityDict):
         wipDict={}
         for stationId, completedCapacity in completedCapacityDict.iteritems():
-            if self.checkIfStationIsFirst(data, stationId):
-                wipDict[stationId]=requiredCapacityDict[stationId]-completedCapacityDict[stationId]
+            previous=self.getPredecessors(data, stationId)
+            if previous:
+                # if the station is assembly
+                if len(previous)>1:
+                    if completedCapacityDict[stationId]:
+                        wipDict[stationId]=requiredCapacityDict[stationId]-completedCapacityDict[stationId]
+                    else:
+                        readyForAssembly=True
+                        for previousId in previous:
+                            if requiredCapacityDict[previousId]>completedCapacityDict[previousId]:
+                                 readyForAssembly=False            
+                        wipDict[stationId]=0
+                        if readyForAssembly:
+                            wipDict[stationId]=requiredCapacityDict[stationId]
+                else:
+                    previousId=previous[0]
+                    completedFromPrevious=completedCapacityDict[previousId]
+                    transferRate=requiredCapacityDict[stationId]/float(requiredCapacityDict[previousId])
+                    wipDict[stationId]=(transferRate*completedFromPrevious)-completedCapacityDict[stationId] 
             else:
-                wipDict[stationId]=0
+                wipDict[stationId]=requiredCapacityDict[stationId]-completedCapacityDict[stationId]                
         return wipDict
-
-    # returns True if the station has no predecessors
-    def checkIfStationIsFirst(self,data,stationId):
-        previous=self.getPredecessors(data, stationId)
-        if previous:
-            return False
-        return True
         
     
     
