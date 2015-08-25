@@ -20,7 +20,6 @@ class ChangeWIPSpreadsheet(plugin.InputPreparationPlugin):
                 if projectData[row][0] and not (projectData[row][0] in alreadyConsideredProjects):
                     projectId=projectData[row][0]
                     alreadyConsideredProjects.append(projectData[row][0])
-
                     numberOfOperations=1
                     i=1
                     # if the id changes or is empty it means there is no more data on the project
@@ -30,8 +29,9 @@ class ChangeWIPSpreadsheet(plugin.InputPreparationPlugin):
                             break
                         numberOfOperations+=1
                         i+=1
-                    # for every operation get the wip and define it
+                    # for every project create a dict to keep what is completed
                     completedCapacityDict={}
+                    # for every project create a dict to keep what is requested
                     requiredCapacityDict={}
                     for stationRecord in range(numberOfOperations):
                         stationId=projectData[row+stationRecord][4]
@@ -39,22 +39,26 @@ class ChangeWIPSpreadsheet(plugin.InputPreparationPlugin):
                         requiredCapacity=float(projectData[row+stationRecord][5])
                         completedCapacityDict[stationId]=completedCapacity
                         requiredCapacityDict[stationId]=requiredCapacity
-                    wipDict=self.calculateWIPDict(data, completedCapacityDict,requiredCapacityDict)
+                    # create the wip dictionart
+                    wipDict=self.calculateWIPDict(data, completedCapacityDict,requiredCapacityDict,projectId)
+                    # change the completed data with the wip data in the spreadsheet
                     for stationRecord in range(numberOfOperations):
                         stationId=projectData[row+stationRecord][4]
                         projectData[row+stationRecord][wipColumn]=wipDict[stationId]
         return data
     
     # gets the dict that shows the completed capacities and returns the one with the actual wip
-    def calculateWIPDict(self,data,completedCapacityDict,requiredCapacityDict):
+    def calculateWIPDict(self,data,completedCapacityDict,requiredCapacityDict,projectId):
         wipDict={}
         for stationId, completedCapacity in completedCapacityDict.iteritems():
             previous=self.getPredecessors(data, stationId)
             if previous:
                 # if the station is assembly
                 if len(previous)>1:
+                    # if there is capacity completed, then the project was assembled. So set the remaining capacity (if any) as WIP
                     if completedCapacityDict[stationId]:
                         wipDict[stationId]=requiredCapacityDict[stationId]-completedCapacityDict[stationId]
+                    # else, set wip ONLY if all the pre-decessors have finished this project
                     else:
                         readyForAssembly=True
                         for previousId in previous:
@@ -63,13 +67,17 @@ class ChangeWIPSpreadsheet(plugin.InputPreparationPlugin):
                         wipDict[stationId]=0
                         if readyForAssembly:
                             wipDict[stationId]=requiredCapacityDict[stationId]
+                # if the station is not assembly but has predecessor
+                # check what the predecessor has finished and what workload comes to station. 
+                # if the station has already finished some of the workload reduce it from the wip
                 else:
                     previousId=previous[0]
                     completedFromPrevious=completedCapacityDict[previousId]
                     transferRate=requiredCapacityDict[stationId]/float(requiredCapacityDict[previousId])
                     wipDict[stationId]=(transferRate*completedFromPrevious)-completedCapacityDict[stationId] 
             else:
-                wipDict[stationId]=requiredCapacityDict[stationId]-completedCapacityDict[stationId]                
+                wipDict[stationId]=requiredCapacityDict[stationId]-completedCapacityDict[stationId]     
+            assert not (wipDict[stationId]<0), 'invalid WIP definition for '+projectId+' in '+stationId       
         return wipDict
         
     
