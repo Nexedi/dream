@@ -259,6 +259,10 @@
     "pre_processing": {
       "plugin_list": [
         {
+          "_class": "dream.plugins.GetCurrentTime.GetCurrentTime", 
+          "input_id": "batchStations"
+        }, 
+        {
           "_class": "dream.plugins.CapacityStations.CapacityStationsSetAssemblySpace.CapacityStationsSetAssemblySpace", 
           "input_id": "assemblySpace"
         }, 

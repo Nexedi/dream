@@ -374,6 +374,10 @@
       "description": "", 
       "plugin_list": [
         {
+          "_class": "dream.plugins.GetCurrentTime.GetCurrentTime", 
+          "input_id": "batchStations"
+        }, 
+        {
           "_class": "dream.plugins.Batches.AddBatchStations.AddBatchStations", 
           "input_id": "batchStations"
         }, 
