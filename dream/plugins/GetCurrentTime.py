@@ -8,7 +8,6 @@ class GetCurrentTime(plugin.InputPreparationPlugin):
 
     def preprocess(self, data):
         currentTime=data['general'].get('currentDate',None)
-        print '----',currentTime
         if not currentTime:
             currentTime=datetime.datetime.now()
             year=currentTime.year
