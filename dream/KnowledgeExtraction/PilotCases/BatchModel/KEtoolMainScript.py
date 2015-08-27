@@ -29,11 +29,10 @@ from dream.KnowledgeExtraction.DistributionFitting import DistFittest
 from dream.KnowledgeExtraction.ReplaceMissingValues import ReplaceMissingValues
 from dream.KnowledgeExtraction.ImportDatabase import ConnectionData
 from dream.KnowledgeExtraction.DetectOutliers import DetectOutliers
-from JSONOutput import JSONOutput
-from dream.KnowledgeExtraction.CMSDOutput import CMSDOutput
-from xml.etree import ElementTree as et
-# from WIP_Identifier import currentWIP
+from dream.KnowledgeExtraction.JSONOutput import JSONOutput
+import dream.simulation.LineGenerationJSON as ManPyMain
 import xlrd
+import json
 from dateutil.parser import *
 import datetime
 from time import mktime
@@ -334,25 +333,75 @@ dictProc['PaA']= D.ks_test(PaA_Proc)
 dictProc['Pb']= D.ks_test(Pb_Proc)
 
 #Call the Distributions object and fit (using the Maximum Likelihood Estimation) the lists with the scrap quantity into a discrete statistical distribution, i.e. Geometric distribution 
-D=Distributions()
+E=Distributions()
 dictScrap={} #Create a dictionary that holds the Geometric, which is a discrete statistical distribution of the processing times of each station
-dictScrap['MA']= D.Geometric_distrfit(MA_Scrap)
-dictScrap['M1A']= D.Geometric_distrfit(M1A_Scrap)
-dictScrap['M1B']= D.Geometric_distrfit(M1B_Scrap)
-dictScrap['M2A']= D.Geometric_distrfit(M2A_Scrap)
-dictScrap['M2B']= D.Geometric_distrfit(M2B_Scrap)
-dictScrap['M3A']= D.Geometric_distrfit(M3A_Scrap)
-dictScrap['M3B']= D.Geometric_distrfit(M3B_Scrap)
-dictScrap['CB']= D.Geometric_distrfit(CB_Scrap)
-dictScrap['MM']= D.Geometric_distrfit(MM_Scrap)
-dictScrap['FL']= D.Geometric_distrfit(FL_Scrap)
-dictScrap['PrA']= D.Geometric_distrfit(PrA_Scrap)
-dictScrap['PrB']= D.Geometric_distrfit(PrB_Scrap)
-dictScrap['PaA']= D.Geometric_distrfit(PaA_Scrap)
-dictScrap['Pb']= D.Geometric_distrfit(Pb_Scrap)
+dictScrap['MA']= E.Geometric_distrfit(MA_Scrap)
+dictScrap['M1A']= E.Geometric_distrfit(M1A_Scrap)
+dictScrap['M1B']= E.Geometric_distrfit(M1B_Scrap)
+dictScrap['M2A']= E.Geometric_distrfit(M2A_Scrap)
+dictScrap['M2B']= E.Geometric_distrfit(M2B_Scrap)
+dictScrap['M3A']= E.Geometric_distrfit(M3A_Scrap)
+dictScrap['M3B']= E.Geometric_distrfit(M3B_Scrap)
+dictScrap['CB']= E.Geometric_distrfit(CB_Scrap)
+dictScrap['MM']= E.Geometric_distrfit(MM_Scrap)
+dictScrap['FL']= E.Geometric_distrfit(FL_Scrap)
+dictScrap['PrA']= E.Geometric_distrfit(PrA_Scrap)
+dictScrap['PrB']= E.Geometric_distrfit(PrB_Scrap)
+dictScrap['PaA']= E.Geometric_distrfit(PaA_Scrap)
+dictScrap['Pb']= E.Geometric_distrfit(Pb_Scrap)
 
+jsonFile = open('JSON_DBBatchModel.json','r')      #It opens the JSON file 
+data = json.load(jsonFile)             #It loads the file
+jsonFile.close()
 
+exportJSON=JSONOutput()
+FL= D.ks_test(FL_Proc)
 
+data=exportJSON.ProcessingTimes(data, "Dream.BatchSource1", dictProc['MA'])
+data1=exportJSON.ProcessingTimes(data, "1_RO_E_M_A_A", dictProc['M1A'])
+data2=exportJSON.ProcessingTimes(data1, "2_P_B_A_A", dictProc['M2A'])
+data3=exportJSON.ProcessingTimes(data2, "3_D_B_A_A", dictProc['M3A'])
+data4=exportJSON.ProcessingTimes(data3, "1_RO_E_M_A_B", dictProc['M1B'])
+data5=exportJSON.ProcessingTimes(data4, "2_P_B_A_B", dictProc['M2B'])
+data6=exportJSON.ProcessingTimes(data5, "3_D_B_A_B", dictProc['M3B'])
+data7=exportJSON.ProcessingTimes(data6, "4_Cut & Bend", dictProc['CB'])
+data8=exportJSON.ProcessingTimes(data7, "5_Moulding", dictProc['MM'])
+data9=exportJSON.ProcessingTimes(data8,  "6_Flag Labelling A", dictProc['FL'])
+data10=exportJSON.ProcessingTimes(data9,  "6_Flag Labelling B", D.ks_test(FL_Proc))
+data11=exportJSON.ProcessingTimes(data10, "7_Pressure A", dictProc['PrA'])
+data12=exportJSON.ProcessingTimes(data11, "7_Pressure B", dictProc['PrB'])
+data13=exportJSON.ProcessingTimes(data12, "8_Carding", dictProc['Pb'])
+data14=exportJSON.ProcessingTimes(data13, "9_Packaging A", dictProc['PaA'])
+data15=exportJSON.ProcessingTimes(data14, "9_Packaging B", D.ks_test(PaA_Proc))
+
+data16=exportJSON.scrapping(data15, "1_RO_E_M_A_A", dictScrap['M1A'])
+data17=exportJSON.scrapping(data16, "2_P_B_A_A", dictScrap['M2A'])
+data18=exportJSON.scrapping(data17, "3_D_B_A_A", dictScrap['M3A'])
+data19=exportJSON.scrapping(data18, "1_RO_E_M_A_B", dictScrap['M1B'])
+data20=exportJSON.scrapping(data19, "2_P_B_A_B", dictScrap['M2B'])
+data21=exportJSON.scrapping(data20, "3_D_B_A_B", dictScrap['M3B'])
+data22=exportJSON.scrapping(data21, "4_Cut & Bend", dictScrap['CB'])
+data23=exportJSON.scrapping(data22, "5_Moulding", dictScrap['MM'])
+data24=exportJSON.scrapping(data23, "6_Flag Labelling A", dictScrap['FL'])
+data25=exportJSON.scrapping(data24,  "6_Flag Labelling B", E.Geometric_distrfit(FL_Scrap))
+data26=exportJSON.scrapping(data25,  "7_Pressure A", dictScrap['PrA'])
+data27=exportJSON.scrapping(data26, "7_Pressure B", dictScrap['PrB'])
+data28=exportJSON.scrapping(data27, "8_Carding", dictScrap['Pb'])
+data29=exportJSON.scrapping(data28, "9_Packaging A", dictScrap['PaA'])
+data30=exportJSON.scrapping(data29, "9_Packaging B", E.Geometric_distrfit(PaA_Scrap))
+
+jsonFile = open('JSON_DBBatchModel_Output.json',"w")     #It opens the JSON file
+jsonFile.write(json.dumps(data30, indent=True))                                           #It writes the updated data to the JSON file 
+jsonFile.close()                                                                        #It closes the file
+
+#================================ Call ManPy and run the simulation model =============================================#
+#calls ManPy main script with the input
+simulationOutput=ManPyMain.main(input_data=json.dumps(data30))
+# save the simulation output
+jsonFile = open('ManPyOutput.json',"w")     #It opens the JSON file
+jsonFile.write(simulationOutput)           #It writes the updated data to the JSON file 
+jsonFile.close()                         #It closes the file
+    
 
 
 
