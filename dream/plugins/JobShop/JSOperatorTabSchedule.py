@@ -55,7 +55,7 @@ class JSOperatorTabSchedule(plugin.OutputPreparationPlugin, TimeSupportMixin):
                                                                                  task_id,
                                                                                  stationId,
                                                                                  self.convertToFormattedRealWorldTime(entranceTime),
-                                                                                 self.convertToFormattedRealWorldTime(entranceTime)
+                                                                                 self.convertToFormattedRealWorldTime(exitTime)
                                                                         ])
         
         return data
