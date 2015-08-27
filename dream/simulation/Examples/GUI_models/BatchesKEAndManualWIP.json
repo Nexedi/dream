@@ -268,28 +268,16 @@
         "configuration": {
           "columns": [
             {
-              "name": "ID", 
+              "name": "Station", 
               "type": "string"
             }, 
             {
-              "name": "StationID", 
-              "type": "string"
-            }, 
-            {
-              "name": "Number of Units", 
+              "name": "# units awaiting processing", 
               "type": "number"
             }, 
             {
-              "name": "Remaining Units", 
+              "name": "# units complete but not passed on", 
               "type": "number"
-            }, 
-            {
-              "name": "Type", 
-              "type": "string"
-            }, 
-            {
-              "name": "Batch ID", 
-              "type": "string"
             }
           ]
         }, 
