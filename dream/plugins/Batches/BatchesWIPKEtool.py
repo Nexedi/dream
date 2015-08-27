@@ -28,7 +28,10 @@ class BatchesWIPKEtool(plugin.InputPreparationPlugin):
             node['wip']=[]
             
         data_uri_encoded_input_data = data['input'].get(self.configuration_dict['input_id'], {})
-        wipData=KEtoolWIP(data_uri_encoded_input_data)
+        try:
+            wipData=KEtoolWIP(data_uri_encoded_input_data)
+        except TypeError:
+            return data
         for batchId,stationId in wipData.iteritems():
             nextBufferId=self.getNextBuffer(data, stationId)      
             if not nextBufferId:

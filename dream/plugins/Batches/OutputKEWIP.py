@@ -7,9 +7,17 @@ class OutputKEWIP(plugin.OutputPreparationPlugin):
     def postprocess(self, data):
         if data['general'].get('wipSource',None)=='Manually':
             data['result']['result_list'][0][self.configuration_dict['output_id']]=[[
-                                                                                     'WIP Was defined Manually. No KE tool Input!'
+                                        'WIP Was defined Manually. No KE tool Input!'
                                                                                    ]]
             return data
+        if not data['input'].get('wip_report',{}):
+            data['result']['result_list'][0][self.configuration_dict['output_id']]=[[
+                                        'Warning! No WIP Report was provided. KE could not be run and no WIP was defined in the model!'
+                                                                                   ]]
+            return data
+            
+        
+        
         outPutSpreadsheet=[['Station','# units awaiting processing','# units complete but not passed on']]
         nodes=data['graph']['node']
         
@@ -21,15 +29,12 @@ class OutputKEWIP(plugin.OutputPreparationPlugin):
             if 'Queue' in node['_class'] or 'Clearance' in node['_class']:
                 wip=node.get('wip',[])
                 stationId=self.getNextStation(data, node_id)
-                print node_id,stationId
                 totalUnits=0
                 for element in wip:
                     numberOfUnits=element.get('numberOfUnits',0)
                     totalUnits+=numberOfUnits
                 for record in outPutSpreadsheet:
-                    print record
                     if record[0]==stationId:
-                        print 'appending',totalUnits
                         record[1]=(totalUnits)
         data['result']['result_list'][0][self.configuration_dict['output_id']]=outPutSpreadsheet
         return data
