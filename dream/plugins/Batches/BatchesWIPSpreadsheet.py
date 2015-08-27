@@ -15,6 +15,9 @@ class BatchesWIPSpreadsheet(plugin.InputPreparationPlugin):
   def preprocess(self, data):
     """ Set the WIP in queue from spreadsheet data.
     """
+    if data['general'].get('wipSource',None)=='By KE':
+        return data
+    
     wipData=data['input'].get('wip_spreadsheet', None)
     nodes=data['graph']['node']
 

@@ -15,6 +15,9 @@ class BatchesWIPKEtool(plugin.InputPreparationPlugin):
     """
 
     def preprocess(self, data):
+        if data['general'].get('wipSource',None)=='Manually':
+            return data
+    
         nodes=data['graph']['node']
         
         # get the number of units for a standard batch

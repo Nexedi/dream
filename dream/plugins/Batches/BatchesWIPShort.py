@@ -13,12 +13,12 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
     """
 
     def preprocess(self, data):
+        if data['general'].get('wipSource',None)=='By KE':
+            return data
+        
         nodes=data['graph']['node']
         WIPData=data['input'].get(self.configuration_dict['input_id'], {})
         batchCounter=0
-        
-        from pprint import pprint
-               
         # get the number of units for a standard batch
         standardBatchUnits=0
         for node_id, node in nodes.iteritems():
