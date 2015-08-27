@@ -15,6 +15,7 @@ class BatchesWIPSpreadsheet(plugin.InputPreparationPlugin):
   def preprocess(self, data):
     """ Set the WIP in queue from spreadsheet data.
     """
+    # if the WIP data is to be read by KE tool just return
     if data['general'].get('wipSource',None)=='By KE':
         return data
     

@@ -15,6 +15,7 @@ class BatchesWIPKEtool(plugin.InputPreparationPlugin):
     """
 
     def preprocess(self, data):
+        # if the WIP data is to be defined manually just return
         if data['general'].get('wipSource',None)=='Manually':
             return data
     

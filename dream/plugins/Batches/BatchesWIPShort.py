@@ -13,6 +13,7 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
     """
 
     def preprocess(self, data):
+        # if the WIP data is to be read by KE tool just return
         if data['general'].get('wipSource',None)=='KE tool':
             return data
         
