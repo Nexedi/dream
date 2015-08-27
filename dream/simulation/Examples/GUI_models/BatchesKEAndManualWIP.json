@@ -25,10 +25,10 @@
         "wipSource": {
           "default": "Manually", 
 		  "priority": 8.5, 
-          "description": "Would the WIP be inputted by KE or Manually", 
+          "description": "Would the WIP be inputted by KE tool or Manually", 
           "enum": [
             "Manually",
-            "By KE"
+            "KE tool"
           ], 
           "name": "WIP Source. Would the WIP be inputted by KE or Manually?", 
           "type": "string"

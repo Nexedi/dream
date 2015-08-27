@@ -13,7 +13,7 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
     """
 
     def preprocess(self, data):
-        if data['general'].get('wipSource',None)=='By KE':
+        if data['general'].get('wipSource',None)=='KE tool':
             return data
         
         nodes=data['graph']['node']
