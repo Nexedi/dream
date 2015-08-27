@@ -40,6 +40,13 @@ class JSONOutput(object):
                 nodes[stationId]['processingTime']=self.Distributions(distDict)          
         return data
     
+    def scrapping(self,data,stationId,distDict):
+        nodes = data['graph']['node']    #It creates a variable that holds the 'nodes' dictionary
+        for element in nodes:
+            if element==stationId:                #It checks using if syntax if the element is the provided as argument stationId
+                nodes[stationId]['scrapping']=self.Distributions(distDict)          
+        return data
+    
     def TTF(self,data,stationId,distDict):
         nodes = data['graph']['node']    #It creates a variable that holds the 'nodes' dictionary
         for element in nodes:
