@@ -39,7 +39,6 @@ class JSOperatorTabSchedule(plugin.OutputPreparationPlugin, TimeSupportMixin):
             for element in resultElements:
                 if element.get("_class",None) == 'Dream.Operator':
                     operatorId=element.get('id',None)
-                    print operatorId
                     results = element.get("results", {})
                     schedule = results.get("schedule", [])
                     for step in schedule:
