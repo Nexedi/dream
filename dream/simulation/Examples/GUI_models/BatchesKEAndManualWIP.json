@@ -307,6 +307,16 @@
         "title": "PB Schedule Spreadsheet", 
         "type": "object_view"
       }, 
+      "view_output_wip_spreadsheet": {
+        "configuration": {
+          "handsontable_options": {}, 
+          "output_id": "output_wip_spreadsheet"
+        }, 
+        "gadget": "Output_viewSpreadsheet", 
+        "priority": -5, 
+        "title": "WIP KE tool returned", 
+        "type": "object_view"
+      },
       "view_exit_results": {
         "configuration": {
           "handsontable_options": {}, 
@@ -385,6 +395,10 @@
         {
           "_class": "dream.plugins.Batches.BatchesOperatorSpreadsheet.BatchesOperatorSpreadsheet", 
           "output_id": "operator_spreadsheet"
+        },
+        {
+          "_class": "dream.plugins.Batches.OutputKEWIP.OutputKEWIP", 
+          "output_id": "output_wip_spreadsheet"
         }
       ]
     }, 
