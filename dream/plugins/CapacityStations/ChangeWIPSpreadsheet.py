@@ -10,8 +10,9 @@ class ChangeWIPSpreadsheet(plugin.InputPreparationPlugin):
         # find the column where the WIP is given
         i=0
         for element in projectData[0]:
-            if element=='WIP':
+            if element=='Completed':
                 wipColumn=i
+                projectData[0][i]='WIP'
                 break
             i+=1
         if projectData:
@@ -39,7 +40,7 @@ class ChangeWIPSpreadsheet(plugin.InputPreparationPlugin):
                         requiredCapacity=float(projectData[row+stationRecord][5])
                         completedCapacityDict[stationId]=completedCapacity
                         requiredCapacityDict[stationId]=requiredCapacity
-                    # create the wip dictionart
+                    # create the wip dictionary
                     wipDict=self.calculateWIPDict(data, completedCapacityDict,requiredCapacityDict,projectId)
                     # change the completed data with the wip data in the spreadsheet
                     for stationRecord in range(numberOfOperations):

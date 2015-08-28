@@ -151,7 +151,7 @@
               "type": "number"
             }, 
             {
-              "name": "WIP", 
+              "name": "Completed", 
               "type": "number"
             }, 
             {
@@ -226,7 +226,7 @@
       "plugin_list": [
         {
           "_class": "dream.plugins.CapacityStations.ChangeWIPSpreadsheet.ChangeWIPSpreadsheet", 
-          "input_id": "createCapacityStationWIP"
+          "input_id": "projects_spreadsheet"
         }, 
         {
           "_class": "dream.plugins.CapacityStations.CapacityStationsSetAssemblySpace.CapacityStationsSetAssemblySpace", 
@@ -960,7 +960,7 @@
         "Assembly Space", 
         "Operation", 
         "Capacity Requirement", 
-        "WIP", 
+        "Completed", 
         "Earliest Start Date"
       ], 
       [
