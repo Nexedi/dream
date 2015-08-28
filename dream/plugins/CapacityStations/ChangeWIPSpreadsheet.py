@@ -8,6 +8,7 @@ class ChangeWIPSpreadsheet(plugin.InputPreparationPlugin):
     def preprocess(self, data):
         projectData=data['input'].get('projects_spreadsheet', None)
         # find the column where the WIP is given
+        wipColumn=6 #default
         i=0
         for element in projectData[0]:
             if element=='Completed':
@@ -15,6 +16,7 @@ class ChangeWIPSpreadsheet(plugin.InputPreparationPlugin):
                 projectData[0][i]='WIP'
                 break
             i+=1
+       
         if projectData:
             alreadyConsideredProjects=[]
             for row in range(1, len(projectData)):

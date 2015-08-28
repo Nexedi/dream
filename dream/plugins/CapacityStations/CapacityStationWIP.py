@@ -17,6 +17,7 @@ class CapacityStationWIP(plugin.InputPreparationPlugin):
         """
         projectData=data['input'].get('projects_spreadsheet', None)
         # find the column where the WIP is given
+        wipColumn=6 #default
         i=0
         for element in projectData[0]:
             if element=='WIP':
