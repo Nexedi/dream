@@ -2,15 +2,20 @@ from dream.simulation.imports import Machine, Exit, Queue, Globals, Part, ExcelH
 from dream.simulation.imports import G 
 from dream.simulation.Globals import runSimulation
 
+# models the behaviour of the buffers in the compound machine
 class InternalQueue(Queue):
     def canAccept(self, callerObject=None):
+        # if the next machine holds a part return false
         if len(self.next[0].getActiveObjectQueue()):
             return False
+        # else use the default Queue logic
         return Queue.canAccept(self, callerObject)
 
+# models the behaviour of the processes in the compound machine
 class InternalProcess(Machine):
     def canAccept(self, callerObject=None):
-        # do not start processing unless there are 3 parts in the internal server
+        # do not start processing unless there are enough parts 
+        # (i.e. equal to the number of processes) in the compound machine
         if not self.countInternalParts()==len(G.InternalProcessList):
             return False
         return Machine.canAccept(self, callerObject)  
@@ -20,31 +25,32 @@ class InternalProcess(Machine):
         activeEntity=Machine.getEntity(self)
         for queue in G.InternalQueueList:
             station=queue.next[0]
-            # do not send if it is not already triggered
+            # do not send the signal if it is already triggered
             if not queue.canDispose.triggered:
                 self.sendSignal(receiver=queue, signal=queue.canDispose, sender=station)
         return activeEntity
 
-    # if there is one machine that is processing do not return true
+    # do not allow parts to proceed until all the processes are over
     def haveToDispose(self, callerObject=None):
         for object in G.InternalProcessList:
             # if there is one other machine processing return False
-            if (len(object.getActiveObjectQueue()) ) and (not object.isBlocked):
+            if object.isProcessing:
                 return False
-            # if there is one other machine that got signal to dispose return false
-            if object.canDispose.triggered:
-                return False
+#             # if there is one other machine that got signal to dispose return false
+#             if object.canDispose.triggered:
+#                 return False
         return Machine.haveToDispose(self, callerObject)  
     
     # check if all the machines got empty and send signal to QB
     def removeEntity(self,entity=None):
         activeEntity=Machine.removeEntity(self, entity)          # run the default method     
-        # count the number of parts in the server
+        # count the number of parts in the server. 
+        # If it is empty have one internal queue to signal the queue before the compound object
         if not self.countInternalParts():
             self.sendSignal(receiver=QB, signal=QB.canDispose, sender=Q1)
         return activeEntity
 
-    # returns the total number of internal parts in the server
+    # returns the number of internal parts in the server
     def countInternalParts(self):
         totalParts=0
         for object in G.InternalProcessList+G.InternalQueueList:
