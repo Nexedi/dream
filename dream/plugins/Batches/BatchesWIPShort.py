@@ -171,29 +171,31 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
     def createSubBatch(self,data,stationId,parentBatchId,parentBatchName,subBatchId,numberOfUnits,
                         unitsToProcess=0,receiver=None):
 #         print 'creating sub-batch',stationId,parentBatchId,receiver
-        data['graph']['node'][stationId]['wip'].insert(0,{
-              "_class": 'Dream.SubBatch',
-              "id": parentBatchId+'_SB_'+str(subBatchId)+'_wip', 
-              "name":parentBatchName+'_SB_'+str(subBatchId)+'_wip', 
-              "numberOfUnits":numberOfUnits,
-              "unitsToProcess": unitsToProcess,   
-              "parentBatchId":parentBatchId,
-              "parentBatchName":parentBatchName,
-              "receiver":receiver                                               
-              }
-        )   
+        if stationId:
+            data['graph']['node'][stationId]['wip'].insert(0,{
+                  "_class": 'Dream.SubBatch',
+                  "id": parentBatchId+'_SB_'+str(subBatchId)+'_wip', 
+                  "name":parentBatchName+'_SB_'+str(subBatchId)+'_wip', 
+                  "numberOfUnits":numberOfUnits,
+                  "unitsToProcess": unitsToProcess,   
+                  "parentBatchId":parentBatchId,
+                  "parentBatchName":parentBatchName,
+                  "receiver":receiver                                               
+                  }
+            )   
         
     # creates a batch in a station
     def createBatch(self,data,stationId,batchId,batchName,numberOfUnits,unitsToProcess=0):
 #         print 'creating batch',stationId,batchId,numberOfUnits
-        data['graph']['node'][stationId]['wip'].insert(0,{
-              "_class": 'Dream.Batch',
-              "id": batchId+'_wip',
-              "name":batchName+'_wip', 
-              "numberOfUnits":numberOfUnits,
-              "unitsToProcess": unitsToProcess,                                            
-              }
-        )   
+        if stationId:
+            data['graph']['node'][stationId]['wip'].insert(0,{
+                  "_class": 'Dream.Batch',
+                  "id": batchId+'_wip',
+                  "name":batchName+'_wip', 
+                  "numberOfUnits":numberOfUnits,
+                  "unitsToProcess": unitsToProcess,                                            
+                  }
+            )   
     
     # gets the data and a station id and returns a list with all the stations that the station may share batches
     def findSharingStations(self,data,stationId):
