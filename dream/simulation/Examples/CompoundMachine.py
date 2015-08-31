@@ -36,14 +36,12 @@ class InternalProcess(Machine):
             # if there is one other machine processing return False
             if object.isProcessing:
                 return False
-#             # if there is one other machine that got signal to dispose return false
-#             if object.canDispose.triggered:
-#                 return False
         return Machine.haveToDispose(self, callerObject)  
     
     # check if all the machines got empty and send signal to QB
     def removeEntity(self,entity=None):
-        activeEntity=Machine.removeEntity(self, entity)          # run the default method     
+        # run the default method  
+        activeEntity=Machine.removeEntity(self, entity)             
         # count the number of parts in the server. 
         # If it is empty have one internal queue to signal the queue before the compound object
         if not self.countInternalParts():
@@ -54,8 +52,7 @@ class InternalProcess(Machine):
     def countInternalParts(self):
         totalParts=0
         for object in G.InternalProcessList+G.InternalQueueList:
-            if len(object. getActiveObjectQueue()):
-                totalParts+=1
+            totalParts+=len(object.getActiveObjectQueue())
         return totalParts
 
 QB=Queue('QB','QueueBefore', capacity=float("inf"))
@@ -96,7 +93,9 @@ def main(test=0):
     
     #output the trace of the simulation
     ExcelHandler.outputTrace('CompoundMachine')
-    print 1
+    print G.maxSimTime
+    if test:
+        return G.maxSimTime
 
 if __name__ == '__main__':
     main()    
