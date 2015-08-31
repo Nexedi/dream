@@ -93,7 +93,6 @@ def main(test=0):
     
     #output the trace of the simulation
     ExcelHandler.outputTrace('CompoundMachine')
-    print G.maxSimTime
     if test:
         return G.maxSimTime
 

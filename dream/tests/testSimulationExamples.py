@@ -215,3 +215,9 @@ class SimulationExamples(TestCase):
       result = main(test=1)
       self.assertEquals(result['batches'], 4)
       self.assertEquals(result["working_ratio"], 100)
+      
+    def testCompoundMachine(self):
+      from dream.simulation.Examples.CompoundMachine import main
+      result = main(test=1)
+      self.assertTrue(5.8 < result < 5.9)
+      
