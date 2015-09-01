@@ -221,3 +221,8 @@ class SimulationExamples(TestCase):
       result = main(test=1)
       self.assertTrue(5.8 < result < 5.9)
       
+    def testJobShop2ScenarioAnalysis(self):
+      from dream.simulation.Examples.JobShop2ScenarioAnalysis import main
+      result = main(test=1)
+      self.assertEquals(result, 2)
+      
