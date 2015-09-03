@@ -47,6 +47,12 @@ class Distributions(object):
             return None                             #If it doesn't fit Return None
         myDict = {'distributionType':'Normal','mean':self.Normal[0][0],'stdev': self.Normal[0][1],'min':0, 'max':(self.Normal[0][0]+3*self.Normal[0][1])}      #Create a dictionary with keys distribution's and distribution's parameters  names and the parameters' values                      
         return myDict                      #If there is no Error return the dictionary with the Normal distribution parameters for the given data sample
+    
+    def Fixed_distrfit(self,data):
+        data=robjects.FloatVector(data)     #The given data sample changes into float vector in order to be handled by RPy2
+        rmean = robjects.r['mean']                           
+        myDict = {'distributionType':'Fixed','mean':rmean(data)[0]}      
+        return myDict
         
     def Lognormal_distrfit(self,data):
         data=robjects.FloatVector(data)     #The given data sample changes into float vector in order to be handled by RPy2
