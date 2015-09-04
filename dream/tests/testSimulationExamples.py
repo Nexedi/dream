@@ -226,3 +226,8 @@ class SimulationExamples(TestCase):
       result = main(test=1)
       self.assertEquals(result, 2)
       
+    def testBufferAllocation(self):
+      from dream.simulation.Examples.BufferAllocation import main
+      result = main(test=1)
+      self.assertTrue(80 < result["parts"] < 1000)
+      
