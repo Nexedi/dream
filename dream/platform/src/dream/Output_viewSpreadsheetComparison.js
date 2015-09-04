@@ -34,6 +34,7 @@
             new_spreadsheet = JSON.parse(result_list[0]).result.result_list[options.result][options.action_definition.configuration.output_id];
 
           gadget.props.new_spreadsheet = new_spreadsheet;
+          gadget.props.options = options;
           return result_list[1].render(JSON.stringify([reference_spreadsheet, new_spreadsheet]));
         });
     })
@@ -55,6 +56,7 @@
           var object_data = JSON.parse(data);
           // XXX option for that
           object_data.input.reference_spreadsheet = gadget.props.new_spreadsheet;
+          object_data.input.reference_solution = gadget.props.options.id;
           return gadget.aq_putAttachment({
             "_id": gadget.props.jio_key,
            "_attachment": "body.json",
