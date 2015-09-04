@@ -24,6 +24,19 @@ class JobShopACO(ACO):
             # should not be considered better than being on time.
             totalDelay += max(delay, 0)
     return totalDelay
+  
+  def _calculateAntActualDelay(self, ant):
+    antActualDelay = 0 #used to further compare ants with the earliness if they all had zero delay
+    result, = ant['result']['result_list']  #read the result as JSON
+    #loop through the elements
+    for element in result['elementList']:
+        element_family = element.get('family', None)
+        #id the class is Job
+        if element_family == 'Job':
+            results=element['results']
+            delay = float(results.get('delay', "0"))
+            antActualDelay += delay
+    return antActualDelay
 
   # creates the collated scenarios, i.e. the list 
   # of options collated into a dictionary for ease of referencing in ManPy

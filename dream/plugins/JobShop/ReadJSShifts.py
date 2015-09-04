@@ -52,7 +52,12 @@ class ReadJSShifts(plugin.InputPreparationPlugin, TimeSupportMixin):
     exceptionShiftPattern = {} # exceptions for shift pattern dictionary as defined in the spreadsheet
     
     if shiftData:
-      shiftData.pop(0)
+      shiftData.pop(0)#remove headers from the shiftData
+      standardStartTime = shiftData[0][2]
+      standardEndTime = shiftData[0][3]
+      shiftData.pop(0) #remove standard times declared on the first line from the shiftData
+      #iteration through the raw data to structure it into ManPy config
+      lastrec=None
       #iteration through the raw data to structure it into ManPy config
       for line in shiftData:
         # if all the records of that line are none then continue
@@ -70,12 +75,12 @@ class ReadJSShifts(plugin.InputPreparationPlugin, TimeSupportMixin):
         #if no shift start was given, assume standard 8:00
         startTime = line[2]
         if startTime == '' or startTime == None:
-          startTime = "08:00"
+          startTime = standardStartTime
         shiftStart = self.convertToSimulationTime(strptime("%s %s" % (line[1], startTime), '%Y/%m/%d %H:%M'))
         #if no shift end was given, assume standard 18:00
         endTime = line[3]
         if endTime == '' or endTime == None:
-          endTime = "18:00"
+          endTime = standardEndTime
         shiftEnd = self.convertToSimulationTime(strptime("%s %s" % (line[1], endTime), '%Y/%m/%d %H:%M'))
         timePair = self.correctTimePair(shiftStart, shiftEnd)
         if not timePair:
@@ -146,8 +151,8 @@ class ReadJSShifts(plugin.InputPreparationPlugin, TimeSupportMixin):
       timeStartList = []
       timeEndList = []
       for dayNumber in range(0,20):
-        startTime = "08:00"
-        endTime = "18:00"
+        startTime = standardStartTime
+        endTime = standardEndTime
         upDate = now.date()+datetime.timedelta(days=dayNumber)
         shiftStart = self.convertToSimulationTime(strptime("%s %s" % (upDate, startTime), '%Y-%m-%d %H:%M'))
         shiftEnd = self.convertToSimulationTime(strptime("%s %s" % (upDate, endTime), '%Y-%m-%d %H:%M'))

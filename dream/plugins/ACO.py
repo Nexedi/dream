@@ -23,7 +23,12 @@ class ACO(plugin.ExecutionPlugin):
     """Calculate the score of this ant. Implemented in the Subclass, raises NotImplementedError
     """
     raise NotImplementedError("ACO subclass must define '_calculateAntScore' method")
-
+  
+  def _calculateAntActualDelay(self, ant):
+    """Calculate the score of this ant. Implemented in the Subclass, raises NotImplementedError
+    """
+    raise NotImplementedError("ACO subclass must define '_calculateAntActualDelay' method")
+  
   def createCollatedScenarios(self,data):
     """creates the collated scenarios, i.e. the list of options collated into a dictionary for ease of referencing in ManPy
     to be implemented in the subclass
@@ -51,14 +56,16 @@ class ACO(plugin.ExecutionPlugin):
     tested_ants = set()
     start = time.time()         # start counting execution time
 
-    collated=self.createCollatedScenarios(data)    
+    collated=self.createCollatedScenarios(data) 
+    resetCollated = deepcopy(collated)#starting pheromone level, use for reset after every generation
     assert collated 
 
     max_results = int(data['general'].get('numberOfSolutions',0))
     assert max_results >= 1
 
     ants = [] #list of ants for keeping track of their performance
-
+    solutionConvergence = [] #for monitoring solution convergence
+    
     # Number of times new ants are to be created, i.e. number of generations (a
     # generation can have more than 1 ant)
     seedPlus = 0
@@ -133,6 +140,7 @@ class ACO(plugin.ExecutionPlugin):
 
         for ant in scenario_list:
             ant['score'] = self._calculateAntScore(ant)
+            ant['actualDelays'] = self._calculateAntActualDelay(ant)
 
         ants.extend(scenario_list)
 
@@ -147,9 +155,14 @@ class ACO(plugin.ExecutionPlugin):
 
         # The ants in this generation are ranked based on their scores and the
         # best (max_results) are selected
-        ants = sorted(ants_without_duplicates.values(),
+        if max([ant['score'] for ant in ants]) == 0:#if all ants achieved zero delays, then use their earliness values
+            ants = sorted(ants_without_duplicates.values(),
+          key=operator.itemgetter('actualDelays'))[:max_results]
+        else:
+            ants = sorted(ants_without_duplicates.values(),
           key=operator.itemgetter('score'))[:max_results]
-
+        
+        collated = deepcopy(resetCollated)#reset previous pheromone updates
         for l in ants:
             # update the options list to ensure that good performing queue-rule
             # combinations have increased representation and good chance of
@@ -159,6 +172,13 @@ class ACO(plugin.ExecutionPlugin):
                 # 'EDD' is added to Q1 so there is a higher chance that it is
                 # selected by the next ants.
                 collated[m].append(l[m])
+        
+        #termination criterion: after four generations check if the solution has been improving
+        solutionConvergence.append(max([ant['actualDelays'] for ant in ants])) #add the worst solution after the last generation
+        solutionConvergence.sort()
+        del(solutionConvergence[int(data['general'].get('numberOfSolutions',0)):]) #extract the last 4 worst solutions among the best, if there has been no improvement, terminate the optimisation process
+        if len(solutionConvergence) == int(data['general'].get('numberOfSolutions',0)) and max(solutionConvergence) == min(solutionConvergence):
+            break
 
     data['result']['result_list'] = result_list = []
     for ant in ants:
