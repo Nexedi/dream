@@ -129,3 +129,77 @@ class BottleNeckByWeek(plugin.OutputPreparationPlugin, TimeSupportMixin):
         })
             
     return data
+
+class BottleNeckLoadByWeek(plugin.OutputPreparationPlugin, TimeSupportMixin):
+  """ Output the queue statistics in a format compatible with Output_viewGraph, for the second widget by week.
+  """
+
+  def postprocess(self, data):
+ 
+    from dream.simulation.applications.DemandPlanning.Globals import G
+    
+    result = data['result']['result_list'][-1]
+    bottleNeckUtilizationDict = result['bottleneck_load_by_week'] = {}
+
+    by_week = {}
+    # change {bottleneck: {ma: {week:data }}} in {(bottleneck, week): {ma: data}}
+    maxUtilisation = 0
+    for bottleneck, bottleNeckUtilization in G.Butilisation.iteritems():
+      for ma, record in bottleNeckUtilization.iteritems():
+          for week, value in record.iteritems():
+              by_week.setdefault((bottleneck, week), {})[ma] = value
+              if value > maxUtilisation:
+                maxUtilisation = value
+    #maxUtilisation += 10 - maxUtilisation%10
+    maList = []
+    for sp in G.SPs:
+        for ma in G.SPlist[sp]:
+            maList.append(ma)
+            
+    for Bweek, bottleneckData in by_week.items():
+      series = []
+      if len(maList)<=10:
+        ticks = list(enumerate(maList))
+      else:
+        ticks = list(enumerate(range(len(maList))))
+        
+      options = { 
+        "xaxis": {
+          "minTickSize": 1,
+          "ticks": ticks,
+          "axisLabel": "MAs"
+        },
+        "yaxis": {
+          "min": 0,
+          "max": round(maxUtilisation),
+          "axisLabel": "Utilisation %"
+        },
+        "legend": {
+            "backgroundOpacity": 0.1,
+            "position":"se",
+            },
+        "series": {
+          "bars": {
+            "show": True,
+            "barWidth": 0.70,
+            "order": 1,
+            "align": "center"
+          },
+          "stack": False
+        }
+      }
+      
+      weekLabel = "%s %s" % (str(Bweek[0]), str(Bweek[1]))
+      bottleNeckUtilizationDict[weekLabel] = {
+        "series": series,
+        "options": options
+      }
+      
+      # create the 3 bars
+      series.append({
+        "label": '',
+        "data": list(enumerate([bottleneckData[x] for x in maList])),
+        "color": "blue"
+        })
+            
+    return data
