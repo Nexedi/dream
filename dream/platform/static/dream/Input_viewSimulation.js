@@ -73,6 +73,11 @@
             });
         }).push(function() {
             return gadget.whoWantsToDisplayThisDocument(gadget.props.jio_key, "view_result");
+        }, function(reason) {
+            // Very likely, we exceeded the quota of the local storage.
+            // Let's handle it with a more informative message.
+            alert("Could not save simulation results.Please check the simulation parameters or try to delete some models.\n\nError was:" + reason);
+            return gadget.whoWantsToDisplayThisDocument(gadget.props.jio_key, "view");
         }).push(function(url) {
             return gadget.pleaseRedirectMyHash(url);
         });
