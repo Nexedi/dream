@@ -32,6 +32,6 @@ class AddOfferPhaseGenerator(plugin.InputPreparationPlugin):
             "stop": 0.5,
             "_class": "dream.simulation.EventGenerator.EventGenerator",
             "method": "dream.simulation.applications.FrozenSimulation.exeSim.exeSim",
-            "argumentDict": {'jsonInput':data_uri_encoded_input_data, 'workplanInput':data_uri_encoded_workplan_data}
+            "argumentDict": {'jsonInput':data_uri_encoded_input_data, 'workplanInput':data_uri_encoded_workplan_data, 'algorithmAttributes':algorithmAttributes}
         }
         return data

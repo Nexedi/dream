@@ -8,6 +8,7 @@ import json
 import tablib
 import datetime as dt
 import xlrd
+from operator import itemgetter
 from copy import deepcopy
 from shiftGeneration import shiftGenerator
 from timeCalculations import availableTime_Shift
@@ -76,25 +77,27 @@ def combSchedules(bothSchedList,combData):
         h.write(combData.xlsx)
 
 
-def importInput(jInput, excelInput):
+def importInput(jInput, excelInput, algorithmAttributes):
     #===========================================================
     # Import workstations and operators schedule from json file
     #===========================================================
     dataJSON = json.loads(jInput)
-    
-
-    print 'in import'
     wb = xlrd.open_workbook(file_contents = excelInput)
     
     frozen ={}
     takenPeriods = {}
     
     startSimDate = dateToOrdinal(dataJSON['general']['currentDate'], '%Y/%m/%d %H:%M')
+    startUserDate = dateToOrdinal(algorithmAttributes.get('currentDate',startSimDate), '%Y/%m/%d %H:%M')
     
     forzenOpsData=tablib.Dataset()
     forzenOpsData.headers = ['Date','Part','Order Name','WP-ID','Personnel','WorkStation','Time In','Time Out','Date Out','Frozen']
     
-    schedule = dataJSON['result']['result_list'][0]['component_schedule']
+    selSol = 0
+    if 'reference_solution' in dataJSON['input']:
+        selSol = dataJSON['input']['reference_solution']
+    
+    schedule = dataJSON['result']['result_list'][selSol]['component_schedule']
     
     for item in schedule:
         if "Job ID" in item:
@@ -121,7 +124,7 @@ def importInput(jInput, excelInput):
             
             takenPeriods[station][startDate] = {'endDate': dateOut, 'taskID':item[3]}
         
-    PMschedule = dataJSON['result']['result_list'][0]['operator_gantt']['task_list']
+    PMschedule = dataJSON['result']['result_list'][selSol]['operator_gantt']['task_list']
     
     
     for item in PMschedule:
@@ -131,7 +134,6 @@ def importInput(jInput, excelInput):
             stopDate = dateToOrdinal(item['stop_date'], "%d-%m-%Y %H:%M")
             ordinalOutDate = excel_date(stopDate.date())
             taskID = item['text'].split()[0]
-            print pm, taskID
             pt = float((stopDate-startDate).seconds)/3600
             
             if taskID == 'off-shift':
@@ -154,70 +156,61 @@ def importInput(jInput, excelInput):
     
     global numParts
     
-    #scenario = 'SIMPLE_2.xlsx'
     WorkPlan = wb.sheet_by_index(0)
     
     Projects = {}
     OrderDates = {}
-    DueDates = {}
-    Shift = {}
     seqPrjDone = {}
     
-    # FIXME: importare data riferimento
-    td = dt.datetime(2015,07,23)
-    xlreftime = excel_date(td)
     
     for i in range(WorkPlan.nrows):
         i += 1
         if i < WorkPlan.nrows: #for the first line of the project name
-            if WorkPlan.cell_value(i,2) != ''  and WorkPlan.cell_value(i,6) != '':
-                Projects[WorkPlan.cell_value(i,2)] = {}
-                print 'order date',  xlrd.xldate_as_tuple(WorkPlan.cell_value(i,3), wb.datemode)
-                oyear, omonth, oday, ohour, ominute, osecond = xlrd.xldate_as_tuple(WorkPlan.cell_value(i,3), wb.datemode)
+            if WorkPlan.cell_value(i,0) != ''  and WorkPlan.cell_value(i,2) != '':
+                Projects[WorkPlan.cell_value(i,0)] = {}
+                oyear, omonth, oday, ohour, ominute, osecond = xlrd.xldate_as_tuple(WorkPlan.cell_value(i,1), wb.datemode)
                 if ohour < 8:
                     ohour = 8                    
-                OrderDates[WorkPlan.cell_value(i,2)] = dt.datetime(oyear, omonth, oday, ohour, ominute, osecond)   #FIXME: perche cosi?
-                DueDates[WorkPlan.cell_value(i,2)] = (xlreftime + WorkPlan.cell_value(i,4))
+                OrderDates[WorkPlan.cell_value(i,0)] = dt.datetime(oyear, omonth, oday, ohour, ominute, osecond)   
                 header = i
-                current = WorkPlan.cell_value(header,2)
+                current = WorkPlan.cell_value(header,0)
                 seqPrjDone[current] = {}
             
             #for a part whose name is not in the first line
     
-            if str(WorkPlan.cell_value(i,13)).split(';'+' ')[0].upper() == 'ALL':
+            if str(WorkPlan.cell_value(i,6)).split(';'+' ')[0].upper() == 'ALL':
                 prerq = []
                 for wpid in range(header,i):
-                    prerq.append(str(WorkPlan.cell_value(wpid,14)))
+                    prerq.append(str(WorkPlan.cell_value(wpid,7)))
             else:
-                prerq = str(WorkPlan.cell_value(i,13)).split(';'+' ')
+                prerq = str(WorkPlan.cell_value(i,6)).split(';'+' ')
                 
             if len(prerq) == 1 and prerq[0]=='':
                 prerq=[]
     
-            if WorkPlan.cell_value(i,6) == '':
+            if WorkPlan.cell_value(i,2) == '':
                 continue
             
-            Projects[current].setdefault(WorkPlan.cell_value(i,6),[]).append({'id':str(WorkPlan.cell_value(i,14)), 'personnel':str(WorkPlan.cell_value(i,10)),
-                                                                              'pt': WorkPlan.cell_value(i,12), 'qty':WorkPlan.cell_value(i,11), 'preReq': prerq, 
-                                                                              'operation': str(WorkPlan.cell_value(i,8)), 'sequence':WorkPlan.cell_value(i,9), 
-                                                                              'project':current, 'part':WorkPlan.cell_value(i,6)})
-            seqPrjDone[current].setdefault(WorkPlan.cell_value(i,6),0)
+            Projects[current].setdefault(WorkPlan.cell_value(i,2),[]).append({'id':str(WorkPlan.cell_value(i,7)), 
+                                                                              'pt': WorkPlan.cell_value(i,5), 'qty':WorkPlan.cell_value(i,4), 'preReq': prerq, 
+                                                                              'operation': str(WorkPlan.cell_value(i,3)), 
+                                                                              'project':current, 'part':WorkPlan.cell_value(i,2)}) #'personnel':str(WorkPlan.cell_value(i,10)), 'sequence':WorkPlan.cell_value(i,9), 
+            seqPrjDone[current].setdefault(WorkPlan.cell_value(i,2),0)
     
-    print 'workplan', Projects            
-    print 'sequence', seqPrjDone
+    maxODate = max(OrderDates.iteritems(), key=itemgetter(1))[1]
+    
     #==================================
     # Import shift data from json file
     #==================================
     
     offShiftTimes = {}
     stRtstOp = {}
-    unitTime = 'Hours'
     
     # default shift times are hard coded as there is no correspondence with json file
-    # 7:00 - 18:00 are standard shift times
+    # 8:00 - 18:00 are standard shift times
     
-    defaultStartShift = 8.0/24
-    defaultEndShift = 18.0/24
+    defaultStartShift = dt.datetime(year=2014,month=1,day=1,hour=8,minute=0)
+    defaultEndShift = dt.datetime(year=2014,month=1,day=1,hour=18,minute=0)
     stRtstOp['Default'] = [defaultStartShift,defaultEndShift]
     
     shiftData = dataJSON['input']["shift_spreadsheet"]
@@ -229,10 +222,12 @@ def importInput(jInput, excelInput):
         if item[1] == '' or item[1]== None:
             continue
             
-        currDate = excel_date(dateToOrdinal(item[1], "%Y/%m/%d").date())
+        if item[0] != '':#the first line for an operator
+            currResc = item[0]
+            
         cDate = dateToOrdinal(item[1], "%Y/%m/%d").date()
         
-        print item[2], item[3]
+        # set shift exceptions
         if item[2] == '' or item[2]== None:
             shiftStart = defaultStartShift
         else:
@@ -241,54 +236,20 @@ def importInput(jInput, excelInput):
             shiftEnd = defaultEndShift
         else:
             shiftEnd = dt.datetime.strptime(item[3],'%H:%M')
+        
+        # read off-shift periods   
         if item[4] == '' or item[4]== None:
             offshiftPeriods = {}
         else:
             offshiftPeriods = offShiftFormat_2(item[4],cDate)
         
-        if item[0] != '':#the first line for an operator
-            currResc = item[0]
-            if currResc not in offShiftTimes:#no previous entry for the operator
-                offShiftTimes[currResc] = {}
-                offShiftTimes[currResc] = offshiftPeriods
-                stRtstOp[currResc] = {}
-                stRtstOp[currResc][cDate] = [shiftStart.time(),shiftEnd.time()]
-    
-            else:
-                offShiftTimes[currResc] = offshiftPeriods
-    
-        else:
-            offShiftTimes[currResc][cDate] = offshiftPeriods
-            stRtstOp[currResc][cDate] = [shiftStart,shiftEnd]
-            
-    print 'off shift time', offShiftTimes
-        
-    offShifts = dict((k,{}) for k in offShiftTimes.keys() + takenPeriods.keys())
-    
-    for rsce in offShifts.keys():
-        if rsce in takenPeriods:
-            offShifts[rsce] = takenPeriods[rsce] #directly copy everything from the extracted dict
-        if rsce in offShiftTimes:#if that resource is present in the directly specified
-            for dte in offShiftTimes[rsce]:
-                if dte not in offShifts[rsce]:#if this date was not originally specified
-                    offShifts[rsce][dte] = offShiftTimes[rsce][dte]
-                else:
-                    starts = offShifts[rsce][dte]['Start']
-                    stops = offShifts[rsce][dte]['Stop']
-                    starts.extend(offShiftTimes[rsce][dte]['Start'])
-                    stops.extend(offShiftTimes[rsce][dte]['Stop'])
-                    u = list(set(starts))
-                    v = list(set(stops))
-                    offShifts[rsce][dte]['Start'] = u
-                    offShifts[rsce][dte]['Stop'] = v
-                    offShifts[rsce][dte]['Start'].sort()
-                    offShifts[rsce][dte]['Stop'].sort()
-    
-    
-    print 'stRtstOp', stRtstOp
-    
-    print 'off shift', offShifts
-    
+
+        offShiftTimes.setdefault(currResc,{})
+        for offS in offshiftPeriods.keys():
+            offShiftTimes[currResc][offS] = offshiftPeriods[offS]
+        stRtstOp.setdefault(currResc,{})[cDate] = [shiftStart.time(),shiftEnd.time()]
+
+                
     #==================================================
     # Import machine and pm information from json file
     #==================================================
@@ -298,6 +259,7 @@ def importInput(jInput, excelInput):
     PMInfo = []
     PMPool = {}
     
+    # static information on applicable technologies
     stationTechnologies = {"CAD1": ["ENG", "CAD"],         # XXX CAD1 is considered different than CAD2, they are not equivalent
                 "CAD2": ["CAD"],
                 "CAM": ["CAM"],
@@ -309,6 +271,7 @@ def importInput(jInput, excelInput):
                 "ASSM": ["ASSM"],
                 "INJM": ["INJM"]}
     
+    # import machines information
     possMachines = dataJSON['graph']['node']
     
     for mach in possMachines.keys():
@@ -326,9 +289,7 @@ def importInput(jInput, excelInput):
             for tec in pool:
                 MachPool.setdefault(tec,[]).append(mach) 
     
-    print MachInfo
-    print 'mach pool', MachPool
-    
+    # import PM information
     PMskills = dataJSON['input']['operator_skills_spreadsheet']
     
     for item in range(1,len(PMskills)):
@@ -344,36 +305,44 @@ def importInput(jInput, excelInput):
         PMInfo.append({'name':PMskills[item][0], 'skills': skills, 'sched':'FIFO', 'status':''})
         for sk in skills:
             PMPool.setdefault(sk,[]).append(PMskills[item][0])
-    print PMInfo
-    print 'pm pool', PMPool
-        
     
-    print '======================',offShifts
-    
+    # set start simulation date as maximum betweeen the current date (json) and the order date 
+    G.xlreftime = max(startSimDate,maxODate,startUserDate)    
     shiftRes = {} 
     resAvailability = {}
+
+    # define shifts for PMs 
     for item in PMInfo:
         pm = item['name']
-        shiftRes[pm] = shiftGenerator(startSimDate,7)
+        if pm in stRtstOp:
+            exceptions = stRtstOp[pm]
+        else:
+            exceptions = {}            
+        shiftRes[pm] = shiftGenerator(G.xlreftime,30,exceptions)
         resAvailability[pm] = deepcopy(shiftRes[pm])
-        if pm in offShifts:
-            for unavailDate in offShifts[pm].keys():
-                print pm, unavailDate, offShifts[pm][unavailDate]['endDate']-unavailDate
-                resAvailability[pm] = availableTime_Shift(unavailDate,offShifts[pm][unavailDate]['endDate'],resAvailability[pm])
+        if pm in offShiftTimes:
+            for unavailDate in offShiftTimes[pm].keys():
+                resAvailability[pm] = availableTime_Shift(unavailDate,offShiftTimes[pm][unavailDate]['endDate'],resAvailability[pm])
+        if pm in takenPeriods:
+            for unavailDate in takenPeriods[pm].keys():
+                resAvailability[pm] = availableTime_Shift(unavailDate,takenPeriods[pm][unavailDate]['endDate'],resAvailability[pm])
                 
-        print 'shift', pm, shiftRes[pm]
-        print 'shift', pm, resAvailability[pm]
-        
+
+    # define shifts for machines
     for item in MachInfo:
         mach = item['name']
-        shiftRes[mach] = shiftGenerator(startSimDate,7)
+        if mach in stRtstOp:
+            exceptions = stRtstOp[mach]
+        else:
+            exceptions = {}            
+        shiftRes[mach] = shiftGenerator(G.xlreftime,30,exceptions)
         resAvailability[mach] = deepcopy(shiftRes[mach])
-        if mach in offShifts:
-            for unavailDate in offShifts[mach].keys():
-                print mach, unavailDate, offShifts[mach][unavailDate]['endDate']-unavailDate
-                resAvailability[mach] = availableTime_Shift(unavailDate,offShifts[mach][unavailDate]['endDate'],resAvailability[mach])
-        print 'shift', mach, shiftRes[mach]
-        print 'shift', mach, resAvailability[mach]
+        if mach in offShiftTimes:
+            for unavailDate in offShiftTimes[mach].keys():
+                resAvailability[mach] = availableTime_Shift(unavailDate,offShiftTimes[mach][unavailDate]['endDate'],resAvailability[mach])
+        if mach in takenPeriods:
+            for unavailDate in takenPeriods[mach].keys():
+                resAvailability[mach] = availableTime_Shift(unavailDate,takenPeriods[mach][unavailDate]['endDate'],resAvailability[mach])
     
     # set global variables
     G.resAvailability = deepcopy(resAvailability)
@@ -382,6 +351,5 @@ def importInput(jInput, excelInput):
     G.MachPool = deepcopy(MachPool)
     G.PMPool = deepcopy(PMPool)
     G.Projects = deepcopy(Projects)
-    G.xlreftime = td
     G.OrderDates = deepcopy(OrderDates)
     G.completionDate = deepcopy(OrderDates)

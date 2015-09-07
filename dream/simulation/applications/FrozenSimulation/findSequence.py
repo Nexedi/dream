@@ -46,11 +46,10 @@ def findSequence(Projects, seqPrjDone, idDone):
                     newOp['minStartTime'] = minStartTime
                     newOp['project'] = proj
                     newOp['part'] = part
-                    if newOp['personnel'].lower() != 'automatic':
+                    if newOp['operation'] not in ['INJM', 'MILL', 'EDM','INJM-MAN']:  #newOp['personnel'].lower() != 'automatic':
                         newOp['manualTime'] = newOp['pt'] * newOp['qty']
                     seqPrjDone[proj][part] += 1
-#                    newOp['manualTime']
-                    
+
                     # if it is a setup operation add the following operation
                     if 'SET' in newOp['operation']:
                         
@@ -78,7 +77,7 @@ def findSequence(Projects, seqPrjDone, idDone):
                         newOp['autoTime'] = 0
                         newOp['preID'] = None
                     
-                    if newOp['operation'] in ['INJM', 'MILL', 'EDM', 'TURN', 'DRILL']:
+                    if newOp['operation'] in ['INJM', 'MILL', 'EDM']: #, 'TURN', 'DRILL']:
                         newOp['mode'] = 'MA'
                         
                     elif newOp['operation'] == 'INJM-MAN':
@@ -88,6 +87,8 @@ def findSequence(Projects, seqPrjDone, idDone):
                     else:
                         newOp['mode'] = 'M'
                     
+                    newOp['sequence'] = seqPrjDone[proj][part]
+                    
                     opReady.append(newOp)
         
         print 'pre', opReady
@@ -96,17 +97,4 @@ def findSequence(Projects, seqPrjDone, idDone):
         print 'seq', seqPrjDone, G.seqPrjDone
         return opReady
                         
-    
-if __name__ == '__main__':
-    
-    import jsonReader as jR
-    
-    seq = jR.seqPrjDone
-    seq['Order 1']['Order 1 - Mould'] = 2
-    seq['Order 1']['Order 1 - Part 01'] = 3
-    seq['Order 1']['Order 1 - Part 02'] = 3
-    seq['Order 1']['Order 1 - Part 03'] = 1
-    
-    op = findSequence(jR.Projects, jR.seqPrjDone, ['ID-00001','ID-00002','ID-00003','ID-00004','ID-00005', 'ID-00006', 'ID-00007', 'ID-00008', 'ID-00009'])
-    print 'op', op
     

@@ -127,13 +127,11 @@ def availableTimeInterval_MA(manualTime, autoTime, tStart, availTime):
 #        print 'end manual', sortedTime[i]
         
         if autoTime:
-#            if availTime[sortedTime[i]]['end']- max(tStart,sortedTime[i]) <= (manualTime+autoTime):
             if availTime[sortedTime[i]]['end']- max(tManualEnd,sortedTime[i]) <= autoTime:
                 if  availTime[sortedTime[i]]['endMode'] == 'EOS': 
                     if i==len(sortedTime)-1:
                         break
                     
-#                    if availTime[sortedTime[i+1]]['startMode']=='SOS' and availTime[sortedTime[i+1]]['preDay'] == sortedTime[i].date() and availTime[sortedTime[i+1]]['end'] - max(tStart,sortedTime[i]) >= (manualTime+autoTime):
                     if availTime[sortedTime[i+1]]['startMode']=='SOS' and availTime[sortedTime[i+1]]['preDay'] == sortedTime[i].date() and availTime[sortedTime[i+1]]['end'] - max(tManualEnd,sortedTime[i]) >= autoTime:
                         break
                     else:
@@ -146,14 +144,12 @@ def availableTimeInterval_MA(manualTime, autoTime, tStart, availTime):
         else:
             break
     
-#    return sortedTime[i]
     return startSorted, tManualEnd - max(tStart,startSorted)
 
 def updateAvailTime(keyStart, reqTime, tStart, availTime):
     
     # tStart e` tempo effettivo di inizio calcolato in precedenza come max(tStart,keyStart)
-#    print 'update', keyStart, reqTime, tStart
-    
+
     if reqTime <= dt.timedelta(seconds=0):
         return availTime
     
@@ -166,8 +162,7 @@ def updateAvailTime(keyStart, reqTime, tStart, availTime):
         
         availTime[keyStart]['end'] = tStart
         availTime[keyStart]['endMode'] = 'IS'
-#        print 'inizio', keyStart, availTime[keyStart]
-    
+
     # case of interval ending before previous end
     if tStart+reqTime < tempSave['end']:
         availTime[tStart+reqTime] = {'end':tempSave['end'], 'startMode':'IS', 'endMode':tempSave['endMode'], 'preDay':tempSave['preDay']}
@@ -220,7 +215,7 @@ def availableTime_Shift(tStart, tEnd, availTime):
                 print 'WARNING: beyond last interval'
                 availTime= updateAvailTime(sortedTime[i], tEnd - max(tStart,sortedTime[i]), max(tStart,sortedTime[i]), availTime)
                     
-            if availTime[sortedTime[i+1]]['preDay'] == sortedTime[i].date() and sortedTime[i+1] >= tEnd:
+            elif availTime[sortedTime[i+1]]['preDay'] == sortedTime[i].date() and sortedTime[i+1] >= tEnd:
                 availTime = updateAvailTime(sortedTime[i], tEnd - max(tStart,sortedTime[i]), max(tStart,sortedTime[i]), availTime)
             
             elif availTime[sortedTime[i+1]]['startMode']=='SOS' and availTime[sortedTime[i+1]]['preDay'] == sortedTime[i].date() and availTime[sortedTime[i+1]]['end'] >= tEnd:
@@ -234,28 +229,3 @@ def availableTime_Shift(tStart, tEnd, availTime):
     
     return availTime
 
-if __name__ == '__main__':
-    
-    availTime = {dt.datetime(2015, 7, 23, 8, 0): {'end': dt.datetime(2015, 7, 23, 18, 0), 'startMode': 'SOS', 'endMode': 'EOS'}, 
-                 dt.datetime(2015, 7, 24, 8, 0): {'end': dt.datetime(2015, 7, 24, 18, 0), 'startMode': 'SOS', 'endMode': 'EOS'}, 
-                 dt.datetime(2015, 7, 25, 8, 0): {'end': dt.datetime(2015, 7, 27, 18, 0), 'startMode': 'SOS', 'endMode': 'EOS'}}
-    tStart = dt.datetime(2015,7,23,12,00)
-    tEnd = dt.datetime(2015,7,25,14,0)
-    autoTime = dt.timedelta(hours=20)
-    manualTime = dt.timedelta(hours=4)
-    print tStart
-    keyStart, pt = availableTimeInterval_MM(manualTime, autoTime, tStart, availTime)
-    print keyStart
-#    pt = manualTime + autoTime
-    print 'pt', pt
-    if keyStart:
-        availTime = updateAvailTime(keyStart, pt, max(tStart,keyStart), availTime)
-    else:
-        print 'WARNING: operation cannot be performed'
-    #availTime = availableTime_Shift(tStart, tEnd, availTime)
-    print 'updated time', availTime
-            
-                
-    
-                
-            

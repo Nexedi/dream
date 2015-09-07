@@ -3,7 +3,6 @@ Created on 4 Sep 2015
 
 @author: Anna
 '''
-
 from dream.plugins import plugin
 
 class projTabular(plugin.OutputPreparationPlugin):
@@ -17,3 +16,5 @@ class projTabular(plugin.OutputPreparationPlugin):
             data['result']['result_list'][0]['exit_output'].append([proj, G.completionDate[proj]])
             
         return data
+        
+

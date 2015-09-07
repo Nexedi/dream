@@ -179,7 +179,7 @@ def MAM_allocation(currentOp):
     print G.resAvailability[sorted_startTimeOp[0]['pm']]
 
 
-def exeSim(jsonInput, workplanInput):
+def exeSim(jsonInput, workplanInput, algorithmAttributes):
     
     mime_type, attachement_data = jsonInput[len('data:'):].split(';base64,', 1)
     attachement_data = attachement_data.decode('base64')
@@ -190,7 +190,7 @@ def exeSim(jsonInput, workplanInput):
     excelInput = attachement_data
     
     # read input data
-    importInput(jInput, excelInput)
+    importInput(jInput, excelInput, algorithmAttributes)
     
     # find initial operation
     opDone = []
