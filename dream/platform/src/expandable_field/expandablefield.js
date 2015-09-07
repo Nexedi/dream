@@ -60,7 +60,7 @@
       }
     }
     // un-hide the title of the field
-    gadget.props.element.children[1].style.display = '';
+    // gadget.props.element.children[1].style.display = '';
     // if the gadget has properties defined (is an object with properties)
     if (gadget.props.definition.property_def.properties) {
       properties_dict = gadget.props.definition.property_def.properties;
