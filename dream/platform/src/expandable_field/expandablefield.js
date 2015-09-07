@@ -24,7 +24,7 @@
     selected_option_template = Handlebars.compile(selected_option_source);
 
   function syncField(gadget) {
-    var i, properties_dict,
+    var i, properties_dict, sub_title_name,
       sub_title, sub_type, in_type, default_value, previous_value,
       labels = [], lbls, inps = [], inputs, j,
       index, corresponding_input, sub_gadget_list = [], old_title,
@@ -136,7 +136,8 @@
             previous_value = gadget.props.options.value[prop_name][sub_title];
           }
 		}
-
+   sub_title_name = properties_dict[sub_title].name || sub_title;
+    
         for (j = 0; j <= inps.length-1; j += 1) {
           // check if the input is one of a sub-gadget
           // do not proceed if yes
@@ -166,7 +167,7 @@
                   recent_occupied.push(inps[j]);
 				  // find the label for that input
                   inps[j].parentNode.parentNode
-                    .previousSibling.previousSibling.innerHTML = sub_title;
+                    .previousSibling.previousSibling.innerHTML = sub_title_name;
                   inps[j].parentNode.parentNode
                     .previousSibling.previousSibling
                     .setAttribute("for", sub_title);
