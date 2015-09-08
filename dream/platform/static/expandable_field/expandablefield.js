@@ -9,7 +9,7 @@
     // Precompile the templates while loading the first gadget instance
     var gadget_klass = rJS(window), label_source = gadget_klass.__template_element.getElementById("expand-label-template").innerHTML, label_template = Handlebars.compile(label_source), option_source = gadget_klass.__template_element.getElementById("expand-option-template").innerHTML, option_template = Handlebars.compile(option_source), selected_option_source = gadget_klass.__template_element.getElementById("selected-expand-option-template").innerHTML, selected_option_template = Handlebars.compile(selected_option_source);
     function syncField(gadget) {
-        var i, properties_dict, sub_title, sub_type, in_type, default_value, previous_value, labels = [], lbls, inps = [], inputs, j, index, corresponding_input, sub_gadget_list = [], old_title, recent_occupied = [], recent_occupied_labels = [], prop_name = gadget.props.definition.property_def.title;
+        var i, properties_dict, sub_title_name, sub_title, sub_type, in_type, default_value, previous_value, labels = [], lbls, inps = [], inputs, j, index, corresponding_input, sub_gadget_list = [], old_title, recent_occupied = [], recent_occupied_labels = [], prop_name = gadget.props.definition.property_def.title;
         console.log("for prop_name syncField");
         console.log(prop_name);
         // set the title of the field
@@ -32,7 +32,7 @@
             }
         }
         // un-hide the title of the field
-        gadget.props.element.children[1].style.display = "";
+        // gadget.props.element.children[1].style.display = '';
         // if the gadget has properties defined (is an object with properties)
         if (gadget.props.definition.property_def.properties) {
             properties_dict = gadget.props.definition.property_def.properties;
@@ -94,6 +94,7 @@
                         previous_value = gadget.props.options.value[prop_name][sub_title];
                     }
                 }
+                sub_title_name = properties_dict[sub_title].name || sub_title;
                 for (j = 0; j <= inps.length - 1; j += 1) {
                     // check if the input is one of a sub-gadget
                     // do not proceed if yes
@@ -116,7 +117,7 @@
                                     inps[j].setAttribute("value", previous_value === undefined ? default_value : previous_value);
                                     recent_occupied.push(inps[j]);
                                     // find the label for that input
-                                    inps[j].parentNode.parentNode.previousSibling.previousSibling.innerHTML = sub_title;
+                                    inps[j].parentNode.parentNode.previousSibling.previousSibling.innerHTML = sub_title_name;
                                     inps[j].parentNode.parentNode.previousSibling.previousSibling.setAttribute("for", sub_title);
                                     recent_occupied_labels.push(inps[j].parentNode.parentNode.previousSibling.previousSibling);
                                     // present them
