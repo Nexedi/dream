@@ -76,12 +76,12 @@ class ReadJSShifts(plugin.InputPreparationPlugin, TimeSupportMixin):
         #if no shift start was given, assume standard 8:00
         startTime = line[2]
         if startTime == '' or startTime == None:
-          startTime = standardStartTime
+          startTime = "08:00"
         shiftStart = self.convertToSimulationTime(strptime("%s %s" % (line[1], startTime), '%Y/%m/%d %H:%M'))
         #if no shift end was given, assume standard 18:00
         endTime = line[3]
         if endTime == '' or endTime == None:
-          endTime = standardEndTime
+           endTime = "18:00"
         shiftEnd = self.convertToSimulationTime(strptime("%s %s" % (line[1], endTime), '%Y/%m/%d %H:%M'))
         timePair = self.correctTimePair(shiftStart, shiftEnd)
         if not timePair:
