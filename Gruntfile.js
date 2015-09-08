@@ -311,6 +311,10 @@ module.exports = function (grunt) {
           hash: true
         },
         src: [
+          '**/*.html',
+          '**/*.gif',
+          '**/*.png',
+          '**/*.jpg',
           '**/*.js',
           '**/*.css'
         ],
