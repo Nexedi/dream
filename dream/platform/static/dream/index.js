@@ -12,7 +12,11 @@
     // Prompt user to reload after manifest update.
     // from http://www.html5rocks.com/en/tutorials/appcache/beginner/#toc-updating-cache
     window.addEventListener("load", function() {
+        var updating = false;
         if (window.applicationCache) {
+            window.applicationCache.addEventListener("downloading", function() {
+                updating = true;
+            }, false);
             window.applicationCache.addEventListener("updateready", function() {
                 if (window.applicationCache.status === window.applicationCache.UPDATEREADY) {
                     // Browser downloaded a new app cache.
@@ -24,8 +28,10 @@
                 }
             }, false);
             window.applicationCache.addEventListener("error", function() {
-                alert("Fatal error while updating, retrying");
-                window.location.reload();
+                if (updating) {
+                    alert("Fatal error while updating, retrying");
+                    window.location.reload();
+                }
             }, false);
         }
     }, false);
