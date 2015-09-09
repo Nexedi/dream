@@ -316,7 +316,8 @@ module.exports = function (grunt) {
           '**/*.png',
           '**/*.jpg',
           '**/*.js',
-          '**/*.css'
+          '**/*.css',
+          '**/*.json'
         ],
         dest: '<%= global_config.dest %>/manifest.appcache'
       }
