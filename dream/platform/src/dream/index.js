@@ -1,4 +1,4 @@
-/*global console, jQuery, rJS, RSVP, alert, Handlebars, initGadgetMixin, confirm */
+/*global console, jQuery, rJS, RSVP, alert, Handlebars, initGadgetMixin, confirm, alert */
 /*jslint nomen: true */
 (function (window, $, rJS, RSVP, Handlebars, initGadgetMixin) {
   "use strict";

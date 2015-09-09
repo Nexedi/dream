@@ -1,4 +1,4 @@
-/*global rJS, RSVP, jQuery, promiseEventListener, initGadgetMixin */
+/*global rJS, RSVP, jQuery, promiseEventListener, initGadgetMixin, alert */
 /*jslint nomen: true */
 (function (window, rJS, RSVP, $, promiseEventListener, initGadgetMixin) {
   "use strict";
