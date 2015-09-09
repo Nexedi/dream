@@ -95,8 +95,11 @@ def importInput(jInput, excelInput, algorithmAttributes):
     
     selSol = 0
     if 'reference_solution' in dataJSON['input']:
-        selSol = dataJSON['input']['reference_solution']
-    
+        try:
+          selSol = int(dataJSON['input']['reference_solution'])
+        except:
+          selSol = 0
+          
     schedule = dataJSON['result']['result_list'][selSol]['component_schedule']
     
     for item in schedule:
@@ -197,7 +200,7 @@ def importInput(jInput, excelInput, algorithmAttributes):
                                                                               'project':current, 'part':WorkPlan.cell_value(i,2)}) #'personnel':str(WorkPlan.cell_value(i,10)), 'sequence':WorkPlan.cell_value(i,9), 
             seqPrjDone[current].setdefault(WorkPlan.cell_value(i,2),0)
     
-    maxODate = max(OrderDates.iteritems(), key=itemgetter(1))[1]
+    maxODate = min(OrderDates.iteritems(), key=itemgetter(1))[1]
     
     #==================================
     # Import shift data from json file
@@ -307,7 +310,7 @@ def importInput(jInput, excelInput, algorithmAttributes):
             PMPool.setdefault(sk,[]).append(PMskills[item][0])
     
     # set start simulation date as maximum betweeen the current date (json) and the order date 
-    G.xlreftime = max(startSimDate,maxODate,startUserDate)    
+    G.xlreftime = max(maxODate,startUserDate)    #startSimDate,
     shiftRes = {} 
     resAvailability = {}
 
