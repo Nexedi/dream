@@ -14,8 +14,14 @@ class JobShopACO(ACO):
     totalDelay=0    #set the total delay to 0
     result, = ant['result']['result_list']  #read the result as JSON
     #loop through the elements
+    throughput=0
     for element in result['elementList']:
+        # find the throughput of the solution
         element_family = element.get('family', None)
+        if element_family=='Exit':
+            results=element['results']
+            throughput=results.get('throughput', "0")[0]
+        
         #id the class is Job
         if element_family == 'Job':
             results=element['results']
@@ -23,6 +29,17 @@ class JobShopACO(ACO):
             # A negative delay would mean we are ahead of schedule. This
             # should not be considered better than being on time.
             totalDelay += max(delay, 0)
+    production_orders_spreadsheet=ant['input']['input'].get('production_orders_spreadsheet',[])
+    # find the number of orders 
+    numberOfOrders=0
+    for row in production_orders_spreadsheet:
+        if row[0] and (not row[0]=="Order Id"):
+            numberOfOrders+=1
+            
+    # if in this solution not all orders finished give the total delay as infinite so that it want be considered positive
+    if not throughput==numberOfOrders:
+        totalDelay=float('inf')
+    
     return totalDelay
 
   # creates the collated scenarios, i.e. the list 
