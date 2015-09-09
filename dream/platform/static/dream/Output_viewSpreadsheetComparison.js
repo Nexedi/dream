@@ -30,11 +30,11 @@
             var object_data = JSON.parse(data);
             // XXX option for that
             object_data.input.reference_spreadsheet = gadget.props.new_spreadsheet;
-            object_data.input.reference_solution = gadget.props.options.id;
+            object_data.input.reference_solution = parseInt(gadget.props.options.result);
             return gadget.aq_putAttachment({
                 _id: gadget.props.jio_key,
                 _attachment: "body.json",
-                _data: JSON.stringify(object_data)
+                _data: JSON.stringify(object_data, null, " ")
             }).push(function() {
                 // XXX quick way to get a popup message
                 $.mobile.loading("show", {
