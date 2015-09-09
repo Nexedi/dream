@@ -1,5 +1,5 @@
 /*global rJS, RSVP, promiseEventListener, promiseReadAsText,
-         initGadgetMixin */
+         initGadgetMixin, prompt */
 (function(window, rJS, RSVP, promiseEventListener, promiseReadAsText, initGadgetMixin) {
     "use strict";
     function createDocument(gadget, name) {
@@ -38,12 +38,39 @@
             });
         });
     }
+    function waitForCreateNew(gadget) {
+        var json_data, name;
+        return new RSVP.Queue().push(function() {
+            return promiseEventListener(gadget.props.element.getElementsByClassName("create_new_form")[0], "submit", false);
+        }).push(function(evt) {
+            // Prevent double click
+            evt.target.getElementsByClassName("ui-btn")[0].disabled = true;
+            return gadget.aq_ajax({
+                url: "../DefaultConfiguration.json",
+                type: "GET"
+            });
+        }).push(function(evt) {
+            name = prompt("Name for this model");
+            var data = JSON.parse(evt.target.responseText);
+            data.general.name = name;
+            json_data = JSON.stringify(data);
+            return createDocument(gadget, name);
+        }).push(function(jio_document) {
+            // Add JSON as attachment
+            return gadget.aq_putAttachment({
+                _id: jio_document.id,
+                _attachment: "body.json",
+                _data: json_data,
+                _mimetype: "application/json"
+            });
+        });
+    }
     var gadget_klass = rJS(window);
     initGadgetMixin(gadget_klass);
-    gadget_klass.declareAcquiredMethod("aq_post", "jio_post").declareAcquiredMethod("aq_putAttachment", "jio_putAttachment").declareAcquiredMethod("pleaseRedirectMyHash", "pleaseRedirectMyHash").declareAcquiredMethod("whoWantsToDisplayThisDocument", "whoWantsToDisplayThisDocument").declareMethod("startService", function() {
+    gadget_klass.declareAcquiredMethod("aq_post", "jio_post").declareAcquiredMethod("aq_ajax", "jio_ajax").declareAcquiredMethod("aq_putAttachment", "jio_putAttachment").declareAcquiredMethod("pleaseRedirectMyHash", "pleaseRedirectMyHash").declareAcquiredMethod("whoWantsToDisplayThisDocument", "whoWantsToDisplayThisDocument").declareMethod("startService", function() {
         var gadget = this;
         return new RSVP.Queue().push(function() {
-            return waitForImport(gadget);
+            return RSVP.any([ waitForImport(gadget), waitForCreateNew(gadget) ]);
         }).push(function(result) {
             return gadget.whoWantsToDisplayThisDocument(result.id);
         }).push(function(url) {

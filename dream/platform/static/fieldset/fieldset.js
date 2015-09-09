@@ -72,7 +72,7 @@
                 // style only recursive fieldsets
                 gadget.props.fieldset_element.style["border-width"] = "1px";
                 gadget.props.fieldset_element.style["border-radius"] = "5px";
-                gadget.props.fieldset_element.style["padding"] = "1px";
+                gadget.props.fieldset_element.style.padding = "1px";
             }
             if (node_id) {
                 addField("id", options.property_definition.properties.id || {
