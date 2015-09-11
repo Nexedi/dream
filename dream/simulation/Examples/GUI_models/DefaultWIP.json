@@ -6,13 +6,15 @@
           "default": 0.95, 
           "description": "Confidence level for statistical analysis of stochastic experiments", 
           "title": "Confidence level", 
-          "type": "number"
+          "type": "number",
+		  "priority":6.5
         }, 
         "currentDate": {
           "default": "2014/10/01 09:00:00", 
           "description": "The day the experiment starts, in YYYY/MM/DD HH:MM:SS format", 
           "title": "SimulationStartTime", 
-          "type": "string"
+          "type": "string",
+		  "priority":10
         }, 
         "ke_url": {
           "default": "", 
@@ -24,13 +26,15 @@
           "default": 100, 
           "description": "Length of the simulation run", 
           "title": "Length of Experiment", 
-          "type": "number"
+          "type": "number",
+		  "priority":9
         }, 
         "numberOfReplications": {
           "default": 1, 
           "description": "Number of replications to run", 
           "title": "Number of replications", 
-          "type": "integer"
+          "type": "integer",
+		  "priority":8
         }, 
         "processTimeout": {
           "default": 10, 
@@ -42,7 +46,8 @@
           "default": 1, 
           "description": "The seed of random number generation. If empty the seed will be random", 
           "title": "Seed for random number generator", 
-          "type": "number"
+          "type": "number",
+		  "priority":7
         }, 
         "timeUnit": {
           "default": "minute", 
@@ -56,7 +61,8 @@
             "year"
           ], 
           "name": "Time unit", 
-          "type": "string"
+          "type": "string",
+		  "priority":6
         }, 
         "trace": {
           "default": "No", 
@@ -66,7 +72,8 @@
             "Yes"
           ], 
           "title": "OutputTrace", 
-          "type": "string"
+          "type": "string",
+		  "priority":5
         }
       }
     }, 
@@ -74,12 +81,14 @@
       "debug": {
         "gadget": "Input_viewDebugJson", 
         "title": "Edit Configuration", 
-        "type": "object_view"
+        "type": "object_view",
+		"priority":9
       }, 
       "view": {
         "gadget": "Input_viewProductionLine", 
         "title": "Production Line", 
-        "type": "object_view"
+        "type": "object_view",
+		"priority":10
       }, 
       "view_machine_shift_spreadsheet": {
         "configuration": {
@@ -105,22 +114,26 @@
         }, 
         "gadget": "Input_viewSpreadsheet", 
         "title": "Machine Shifts Spreadsheet", 
-        "type": "object_view"
+        "type": "object_view",
+		"priority":6
       }, 
       "view_management": {
         "gadget": "Input_viewDocumentManagement", 
         "title": "Manage document", 
-        "type": "object_view"
+        "type": "object_view",
+		"priority":4
       }, 
       "view_result": {
         "gadget": "Input_viewResultList", 
         "title": "Results", 
-        "type": "object_view"
+        "type": "object_view",
+		"priority":3
       }, 
       "view_run_simulation": {
         "gadget": "Input_viewSimulation", 
         "title": "Run Simulation", 
-        "type": "object_view"
+        "type": "object_view",
+		"priority":2
       }, 
       "view_wip_spreadsheet": {
         "configuration": {
@@ -141,7 +154,8 @@
         }, 
         "gadget": "Input_viewSpreadsheet", 
         "title": "WIP Spreadsheet", 
-        "type": "object_view"
+        "type": "object_view",
+		"priority":5
       }
     }, 
     "output": {
@@ -151,7 +165,8 @@
         }, 
         "gadget": "Output_viewDownloadFile", 
         "title": "Download Trace File", 
-        "type": "object_view"
+        "type": "object_view",
+		"priority":1
       }, 
       "view_queue_stats": {
         "configuration": {
@@ -159,7 +174,8 @@
         }, 
         "gadget": "Output_viewGraph", 
         "title": "Queue Statistics", 
-        "type": "object_view"
+        "type": "object_view",
+		"priority":2
       }, 
       "view_station_utilization": {
         "configuration": {
@@ -167,7 +183,8 @@
         }, 
         "gadget": "Output_viewGraph", 
         "title": "Station Utilization", 
-        "type": "object_view"
+        "type": "object_view",
+		"priority":3
       }, 
       "view_tabular_results": {
         "configuration": {
@@ -176,7 +193,8 @@
         }, 
         "gadget": "Output_viewSpreadsheet", 
         "title": "Exit Statistics", 
-        "type": "object_view"
+        "type": "object_view",
+		"priority":4
       }
     }, 
     "post_processing": {
