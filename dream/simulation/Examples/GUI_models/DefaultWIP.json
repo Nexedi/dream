@@ -289,61 +289,15 @@
               "required": true, 
               "type": "string"
             }, 
-            "interruption": {
-              "properties": {
-                "failure": {
-                  "$ref": "#/definitions/_failureDist", 
-                  "required": true
-                }
-              }, 
-              "type": "object"
-            }, 
-            "loadTime": {
-              "$ref": "#/definitions/_dist", 
-              "required": true
-            }, 
             "name": {
               "default": "Machine", 
               "type": "string"
             }, 
-            "operationType": {
-              "properties": {
-                "load": {
-                  "$ref": "#/definitions/_operationType", 
-                  "description": "Operation type for loading", 
-                  "name": "Load Operation type"
-                }, 
-                "processing": {
-                  "$ref": "#/definitions/_operationType", 
-                  "description": "Operation type for processing", 
-                  "name": "Processing Operation type"
-                }, 
-                "setup": {
-                  "$ref": "#/definitions/_operationType", 
-                  "description": "Operation type for setup", 
-                  "name": "Setup Operation type"
-                }
-              }, 
-              "required": [
-                "load", 
-                "setup", 
-                "processing"
-              ], 
-              "type": "object"
-            }, 
             "processingTime": {
               "$ref": "#/definitions/_dist", 
-              "default": {
-                "Fixed": {
-                  "mean": 1
-                }
-              }, 
-              "required": true
-            }, 
-            "setupTime": {
-              "$ref": "#/definitions/_dist", 
-              "required": true
-            }
+              "required": true,
+			  "default":{"Fixed":{"mean":1}}
+            }			
           }, 
           "type": "object"
         }
@@ -366,19 +320,23 @@
           "properties": {
             "capacity": {
               "$ref": "#/definitions/_capacity", 
-              "required": true
+              "required": true,
+			  "priority":8
             }, 
             "id": {
               "default": "Q", 
-              "type": "string"
+              "type": "string",
+			  "priority":10
             }, 
             "name": {
               "default": "Queue", 
-              "type": "string"
+              "type": "string",
+			  "priority":9
             }, 
             "schedulingRule": {
               "$ref": "#/definitions/_schedulingRule", 
-              "required": true
+              "required": true,
+			  "priority":7
             }
           }, 
           "type": "object"
@@ -408,12 +366,14 @@
               "default": "Dream.Part", 
               "description": "EntityClass", 
               "required": true, 
-              "type": "string"
+              "type": "string",
+			  "priority":7
             }, 
             "id": {
               "default": "S", 
               "required": true, 
-              "type": "string"
+              "type": "string",
+			  "priority":10
             }, 
             "interArrivalTime": {
               "$ref": "#/definitions/_dist", 
@@ -423,11 +383,13 @@
                 }
               }, 
               "description": "Inter-arrivaltime", 
-              "required": true
+              "required": true,
+			  "priority":5
             }, 
             "name": {
               "default": "Source", 
-              "type": "string"
+              "type": "string",
+			  "priority":8
             }
           }, 
           "type": "object"
@@ -842,7 +804,7 @@
           "left": 0.5243130907600309, 
           "top": 0.29820375702354956
         }, 
-        "name": "E1"
+        "name": "Stock"
       }, 
       "M1": {
         "_class": "Dream.Machine", 
@@ -874,7 +836,7 @@
           }, 
           "distribution": "Fixed"
         }, 
-        "name": "M1", 
+        "name": "Milling", 
         "operationType": {
           "load": "Automatic", 
           "processing": "Automatic", 
@@ -901,7 +863,7 @@
           "top": 0.3094840728804834
         }, 
         "id": "Q1", 
-        "name": "Q1", 
+        "name": "Milling Buffer", 
         "schedulingRule": "FIFO"
       }
     }
