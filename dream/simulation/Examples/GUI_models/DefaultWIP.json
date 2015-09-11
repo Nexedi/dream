@@ -112,32 +112,6 @@
         "title": "Manage document", 
         "type": "object_view"
       }, 
-      "view_repairman_shift_spreadsheet": {
-        "configuration": {
-          "columns": [
-            {
-              "format": "date-time", 
-              "name": "Date", 
-              "type": "string"
-            }, 
-            {
-              "name": "Repairman", 
-              "type": "string"
-            }, 
-            {
-              "name": "Start", 
-              "type": "string"
-            }, 
-            {
-              "name": "Stop", 
-              "type": "string"
-            }
-          ]
-        }, 
-        "gadget": "Input_viewSpreadsheet", 
-        "title": "Repairman Shifts Spreadsheet", 
-        "type": "object_view"
-      }, 
       "view_result": {
         "gadget": "Input_viewResultList", 
         "title": "Results", 
@@ -392,46 +366,17 @@
           "type": "object"
         }
       ], 
-      "css": {
+      "css": {	
         "backgroundColor": "#eff", 
         "backgroundImage": "linear-gradient(to bottom, #eff 0%, #dee 100%)", 
-        "border": "1px solid #bcc"
+        "border": "1px solid #bcc", 
+        "border-radius": "50px", 
+        "height": "80px", 
+        "line-height": "40px", 
+        "width": "80px"
       }, 
       "description": "A buffer where entites can be hold until the next station is ready to process them", 
       "name": "Queue"
-    }, 
-    "Dream.Repairman": {
-      "_class": "node", 
-      "allOf": [
-        {
-          "$ref": "#/node"
-        }, 
-        {
-          "properties": {
-            "capacity": {
-              "$ref": "#/definitions/_capacity", 
-              "required": true
-            }, 
-            "id": {
-              "default": "R", 
-              "required": true, 
-              "type": "string"
-            }, 
-            "name": {
-              "default": "Repairman", 
-              "type": "string"
-            }
-          }, 
-          "type": "object"
-        }
-      ], 
-      "css": {
-        "backgroundColor": "#fdd", 
-        "backgroundImage": "linear-gradient(to bottom, #fdd 0%, #dcc 100%)", 
-        "border": "1px solid #cbb"
-      }, 
-      "description": "A resource that repairs stations in failure", 
-      "name": "Repairman"
     }, 
     "Dream.Source": {
       "_class": "node", 
@@ -852,7 +797,7 @@
     "confidenceLevel": 0.95, 
     "currentDate": "2014/10/01 09:00:00", 
     "ke_url": "", 
-    "maxSimTime": 100, 
+    "maxSimTime": -1, 
     "numberOfReplications": 1, 
     "processTimeout": 10, 
     "seed": 1, 
