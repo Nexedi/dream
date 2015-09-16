@@ -62,13 +62,18 @@
       // We are notified by an included gadget that the data has changed.
       // Here we save automatically. We could mark a dirty flag to warn the
       // user if she leaves the page without saving.
-
+      return new RSVP.Queue()
+        .push(function() {
+          return RSVP.delay(100);
+        }).push(saveGraph.bind(this));
+        /*
       // Since we are notified quite often and saving is resource expensive, we
       // use this trick to prevent saving too many times
       if (this.timeout) {
         window.clearTimeout(this.timeout);
       }
       this.timeout = window.setTimeout(saveGraph.bind(this), 100);
+      */
     })
 
     .declareMethod("render", function (options) {
@@ -91,7 +96,7 @@
           return gadget.getDeclaredGadget("productionline_toolbox");
         })
         .push(function (toolbox_gadget) {
-          toolbox_gadget.render(data);
+          return toolbox_gadget.render(data);
         });
     })
 

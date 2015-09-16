@@ -145,7 +145,7 @@
       edge_data.destination = getNodeId(gadget, connection.targetId);
       gadget.props.data.graph.edge[connection.id] = edge_data;
     }
-    gadget.notifyDataChanged();
+    return gadget.notifyDataChanged();
   }
 
   function convertToAbsolutePosition(gadget, x, y) {
@@ -291,7 +291,7 @@
       }
     });
 
-    gadget.notifyDataChanged();
+    return gadget.notifyDataChanged();
   }
 
   function updateElementData(gadget, node_id, data) {
@@ -321,7 +321,7 @@
         }
       });
     }
-    gadget.notifyDataChanged();
+    return gadget.notifyDataChanged();
   }
 
   function addEdge(gadget, edge_id, edge_data) {
@@ -689,14 +689,14 @@
   function waitForConnection(gadget) {
     return loopJsplumbBind(gadget, 'connection',
                     function (info, originalEvent) {
-        updateConnectionData(gadget, info.connection, false);
+        return updateConnectionData(gadget, info.connection, false);
       });
   }
 
   function waitForConnectionDetached(gadget) {
     return loopJsplumbBind(gadget, 'connectionDetached',
                     function (info, originalEvent) {
-        updateConnectionData(gadget, info.connection, true);
+        return updateConnectionData(gadget, info.connection, true);
       });
   }
 
@@ -774,8 +774,7 @@
         { isTarget:true, maxConnections: -1 },
         { anchor: "LeftMiddle", uuid: node_id + ".flowChartLeftMiddle" });
 
-
-    gadget.notifyDataChanged();
+    return gadget.notifyDataChanged();
   }
 
   function waitForDrop(gadget) {
