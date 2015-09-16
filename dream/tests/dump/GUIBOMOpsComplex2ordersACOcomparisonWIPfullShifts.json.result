@@ -5063,16 +5063,18 @@
  }, 
  "order_lateness": {
   "W134188": {
+   "color": "green", 
    "completionDate": "2015/02/24 15:30", 
    "delay": -440.5, 
-   "delayText": "-18 Days", 
+   "delayText": "-19 Days", 
    "dueDate": "2015/03/15 00:00", 
    "manpy_delay": null
   }, 
   "W134239": {
+   "color": "green", 
    "completionDate": "2015/02/26 15:45", 
    "delay": -824.25, 
-   "delayText": "-34 Days", 
+   "delayText": "-35 Days", 
    "dueDate": "2015/04/02 00:00", 
    "manpy_delay": -824.25
   }
