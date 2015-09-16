@@ -91,6 +91,9 @@
               if (value.delay > 0.5) {
                 color = "red";
               }
+              if ( value.color ) { // if color passed in plugin, we use it as is.
+                color = value.color;
+              }
               $(td).text("").css({"background-color": color});
               a = $("<a>").attr("href", value.link)
                 .text(value.completionDate + "\n" + (value.delayText || (value.delay || 0).toFixed(0)))
