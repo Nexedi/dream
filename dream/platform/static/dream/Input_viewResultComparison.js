@@ -61,6 +61,10 @@
                     if (value.delay > .5) {
                         color = "red";
                     }
+                    if (value.color) {
+                        // if color passed in plugin, we use it as is.
+                        color = value.color;
+                    }
                     $(td).text("").css({
                         "background-color": color
                     });

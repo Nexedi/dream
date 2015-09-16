@@ -30,7 +30,7 @@
             var object_data = JSON.parse(data);
             // XXX option for that
             object_data.input.reference_spreadsheet = gadget.props.new_spreadsheet;
-            object_data.input.reference_solution = parseInt(gadget.props.options.result);
+            object_data.input.reference_solution = parseInt(gadget.props.options.result, 10);
             return gadget.aq_putAttachment({
                 _id: gadget.props.jio_key,
                 _attachment: "body.json",
