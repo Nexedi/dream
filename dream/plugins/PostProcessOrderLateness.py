@@ -1,3 +1,4 @@
+import math
 from dream.plugins import plugin
 from dream.plugins.TimeSupport import TimeSupportMixin
 
@@ -31,7 +32,21 @@ class PostProcessOrderLateness(plugin.OutputPreparationPlugin, TimeSupportMixin)
                 }
                 # XXX format delay as number of days.
                 if data['general']['timeUnit'] == 'hour' and completed:
-                  order_lateness_dict[order['id']]['delayText'] = "%d Days" % ((obj["results"]["completionTime"] - dueDate) / 24.)
+                  # XXX We round the number of days in the delay using the following approach:
+                  # If the order cannot be finished before 16:30 (which is assumed to be the end of shift), we consider this is an extra day of delay.
+                  # This is not generic, but looks good in the demo
+                  calculatedDelayinHours = (obj["results"]["completionTime"] - dueDate)
+                  calculatedDelayinDays = (calculatedDelayinHours//24) + math.floor((calculatedDelayinHours % 24.0/24) /(16.5/24) )
+                  order_lateness_dict[order['id']]['delayText'] = "%d Days" % calculatedDelayinDays
+                  self.logger.info("calculatedDelayinHours %f, calculatedDelayinDays %f" % (calculatedDelayinHours, calculatedDelayinDays))
+
+                  if calculatedDelayinHours < 0:
+                    color = "green"
+                  elif 0 <= calculatedDelayinHours <= 16.5:
+                    color = "yellow"
+                  else:
+                    color = "red"
+                  order_lateness_dict[order['id']]['color'] = color
               else:
                 # if order is not processed at all, it has no schedule.
                 order_lateness_dict[order['id']] = {
