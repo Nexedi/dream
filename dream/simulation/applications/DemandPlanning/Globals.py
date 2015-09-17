@@ -81,6 +81,8 @@ class G:
     reportResults = tablib.Databook()
     OrderResults = tablib.Dataset(title='OrderSummary')
     OrderResults.headers = ('OrderID', 'SP_NUMBER', 'MA_LIST', 'REQUEST_DATE', 'ORDERQTY', 'PRIORITY', 'CHOSEN_MA','ORDERED_MA_LIST', 'LATENESS', 'EARLINESS', 'ALLOCATION')
+    OrderResultsShort = tablib.Dataset(title='OrderResultsForDM')
+    OrderResultsShort.headers = ('OrderID', 'MA_LIST')
     forecastResults = tablib.Dataset(title='ForecastSummary')
     forecastResults.headers = ('PPOS', 'SP_NUMBER', 'MA_LIST', 'REQUEST_DATE', 'ORDERQTY', 'PRIORITY', 'CHOSEN_MA', 'LATENESS', 'EARLINESS', 'ALLOCATION')
     globalMAAllocation = {}
@@ -151,6 +153,8 @@ def initialiseVar():
     G.reportResults = tablib.Databook()
     G.OrderResults = tablib.Dataset(title='OrderSummary')
     G.OrderResults.headers = ('OrderID', 'SP_NUMBER', 'MA_LIST', 'REQUEST_DATE', 'ORDERQTY', 'PRIORITY', 'CHOSEN_MA','ORDERED_MA_LIST', 'LATENESS', 'EARLINESS', 'ALLOCATION')
+    G.OrderResultsShort = tablib.Dataset(title='OrderResultsForDM')
+    G.OrderResultsShort.headers = ('OrderID', 'MA_LIST')
     G.forecastResults = tablib.Dataset(title='ForecastSummary')
     G.forecastResults.headers = ('PPOS', 'SP_NUMBER', 'MA_LIST', 'REQUEST_DATE', 'ORDERQTY', 'PRIORITY', 'CHOSEN_MA', 'LATENESS', 'EARLINESS', 'ALLOCATION')
     G.CapacityResults = None

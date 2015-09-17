@@ -60,6 +60,7 @@ def outputResults():
     
     G.reportResults.add_sheet(resultsOverview)      
     G.reportResults.add_sheet(G.OrderResults)
+    G.reportResults.add_sheet(G.OrderResultsShort)
     G.reportResults.add_sheet(G.forecastResults)
     
     # report capacity results

@@ -151,8 +151,20 @@ def AllocationRoutine_Final(initialWeek, itemList, itemType, ant):
         if itemType == 'order':
             if chosenMA == None:                    
                 G.OrderResults.append((item['orderID'], item['sp'], item['MAlist'], item['Week'], item['Qty'], item['priority'], chosenMA, oMAlist2, 'NaN', 'NaN', 'None'))
+                mList = ''
+                for i in range(len(oMAlist2)):
+                    if i>0:
+                        mList += ', '
+                    mList += oMAlist2[i]                
+                G.OrderResultsShort.append((item['orderID'], mList))
             else:
                 G.OrderResults.append((item['orderID'], item['sp'], item['MAlist'], item['Week'], item['Qty'], item['priority'], chosenMA, oMAlist2, Results[chosenMA]['lateness'], Results[chosenMA]['earliness'], Results[chosenMA]['Allocation']))
+                mList = ''
+                for i in range(len(oMAlist2)):
+                    if i>0:
+                        mList += ', '
+                    mList += oMAlist2[i]                
+                G.OrderResultsShort.append((item['orderID'], mList))
                 
         if itemType == 'forecast':
             if chosenMA == None:                    
