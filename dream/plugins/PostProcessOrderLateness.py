@@ -34,9 +34,10 @@ class PostProcessOrderLateness(plugin.OutputPreparationPlugin, TimeSupportMixin)
                 if data['general']['timeUnit'] == 'hour' and completed:
                   # XXX We round the number of days in the delay using the following approach:
                   # If the order cannot be finished before 16:30 (which is assumed to be the end of shift), we consider this is an extra day of delay.
+                  # Note that we used 16.51 here so that if it is produced exactly at 16:30 it is considered as on time.
                   # This is not generic, but looks good in the demo
                   calculatedDelayinHours = (obj["results"]["completionTime"] - dueDate)
-                  calculatedDelayinDays = (calculatedDelayinHours//24) + math.floor((calculatedDelayinHours % 24.0/24) /(16.5/24) )
+                  calculatedDelayinDays = (calculatedDelayinHours//24) + math.floor((calculatedDelayinHours % 24.0/24) / (16.51/24) )
                   order_lateness_dict[order['id']]['delayText'] = "%d Days" % calculatedDelayinDays
 
                   if calculatedDelayinDays < 0:
