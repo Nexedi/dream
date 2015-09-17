@@ -10,10 +10,10 @@ class projTabular(plugin.OutputPreparationPlugin):
     """
 
     def postprocess(self, data):
-        data['result']['result_list'][0]['exit_output'] = [['Project', 'Earliest Completion Date']]
+        data['result']['result_list'][0]['exit_output'] = [['Project', 'Earliest Completion Date', 'Conservative estimate Completion Date']]
         from dream.simulation.applications.FrozenSimulation.Globals import G
-        for proj in G.completionDate.keys():
-            data['result']['result_list'][0]['exit_output'].append([proj, G.completionDate[proj]])
+        for proj in G.completionDate['Earliest'].keys():
+          data['result']['result_list'][0]['exit_output'].append([proj, G.completionDate['Earliest'][proj], G.completionDate['Latest'][proj]])
             
         return data
         

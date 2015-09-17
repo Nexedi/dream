@@ -12,8 +12,10 @@ def availableTimeInterval_Manual(manualTime, tStart, availTime):
     
     # suitable for manual operations...returns available time until the end 
     
+    # sort time intervals according to ascending start date
     sortedTime = sorted(availTime.keys())
     
+    # find the interval for which the start date is just above tStart
     i = 0
     while i<len(sortedTime) and sortedTime[i] <= tStart:
         i += 1
@@ -25,6 +27,7 @@ def availableTimeInterval_Manual(manualTime, tStart, availTime):
 #    if i == 0 and tStart + manualTime < sortedTime[i]:
 #        return None
     
+    # go to next interval if available time is null
     if availTime[sortedTime[i]]['end'] - max(tStart,sortedTime[i]) <= dt.timedelta(seconds=0):
         i += 1
 
@@ -59,6 +62,10 @@ def availableTimeInterval_MM(manualTime, autoTime, tStart, availTime):
         if availTime[sortedTime[i]]['endMode'] == 'EOS':
             if i+1 < len(sortedTime) and availTime[sortedTime[i+1]]['preDay'] == sortedTime[i].date() and availTime[sortedTime[i+1]]['startMode'] == 'SOS':
                 tCumulative += availTime[sortedTime[i]]['end'] - max(tStart,sortedTime[i])
+            else:
+                tCumulative = dt.timedelta(seconds=0)
+                if i+1 < len(sortedTime):
+                    startSorted = sortedTime[i+1]
         
         else:
             tCumulative = dt.timedelta(seconds=0)
@@ -79,8 +86,6 @@ def availableTimeInterval_MA(manualTime, autoTime, tStart, availTime):
     
     sortedTime = sorted(availTime.keys())
     
-    print sortedTime
-    
     i = 0
     while i<len(sortedTime) and sortedTime[i] <= tStart:
         i += 1
@@ -92,8 +97,6 @@ def availableTimeInterval_MA(manualTime, autoTime, tStart, availTime):
 #    if i == 0 and tStart + autoTime + manualTime < sortedTime[i]:
 #        return None
     
-    print 'start', sortedTime[i]
-    
     while True:
 
         tCumulative = dt.timedelta(seconds=0)
@@ -104,6 +107,10 @@ def availableTimeInterval_MA(manualTime, autoTime, tStart, availTime):
             if availTime[sortedTime[i]]['endMode'] == 'EOS':
                 if i+1 < len(sortedTime) and availTime[sortedTime[i+1]]['preDay'] == sortedTime[i].date() and availTime[sortedTime[i+1]]['startMode'] == 'SOS':
                     tCumulative += availTime[sortedTime[i]]['end'] - max(tStart,sortedTime[i])
+                else:
+                    tCumulative = dt.timedelta(seconds=0)
+                    if i+1 < len(sortedTime):
+                        startSorted = sortedTime[i+1]
             
             else:
                 tCumulative = dt.timedelta(seconds=0)
@@ -123,8 +130,6 @@ def availableTimeInterval_MA(manualTime, autoTime, tStart, availTime):
         
         if i>=len(sortedTime):
             return None
-        
-#        print 'end manual', sortedTime[i]
         
         if autoTime:
             if availTime[sortedTime[i]]['end']- max(tManualEnd,sortedTime[i]) <= autoTime:
@@ -181,7 +186,6 @@ def updateAvailTime(keyStart, reqTime, tStart, availTime):
             print 'WARNING: beyond planning horizon'
             return availTime
         
-#        print 'find next time', sortedTime[i], i
         if tStart+reqTime > sortedTime[i]:
             # repeat procedure                
             availTime = updateAvailTime(sortedTime[i], reqTime - (sortedTime[i]-tStart), sortedTime[i], availTime)
@@ -198,8 +202,6 @@ def availableTime_Shift(tStart, tEnd, availTime):
         i += 1
     
     
-#    print i, sortedTime[i], availTime[sortedTime[i]]['end'], tStart, tEnd
-
     if i>=len(sortedTime):
         print 'WARNING: time interval not found'
         return availTime
@@ -219,7 +221,6 @@ def availableTime_Shift(tStart, tEnd, availTime):
                 availTime = updateAvailTime(sortedTime[i], tEnd - max(tStart,sortedTime[i]), max(tStart,sortedTime[i]), availTime)
             
             elif availTime[sortedTime[i+1]]['startMode']=='SOS' and availTime[sortedTime[i+1]]['preDay'] == sortedTime[i].date() and availTime[sortedTime[i+1]]['end'] >= tEnd:
-                print 'beyond eos', max(tStart,sortedTime[i]), tEnd - max(tStart,sortedTime[i])
                 availTime = updateAvailTime(sortedTime[i], tEnd - max(tStart,sortedTime[i]), max(tStart,sortedTime[i]), availTime)
             else:
                 return availTime

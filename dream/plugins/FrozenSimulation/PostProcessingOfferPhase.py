@@ -18,6 +18,6 @@ class PostProcessingOfferPhase(plugin.OutputPreparationPlugin):
     data['result']['result_list'][-1][self.configuration_dict['output_id']] = {
       'name': 'Result.xlsx',
       'mime_type': 'application/vnd.ms-excel',
-      'data': G.tabSchedule.xlsx.encode('base64')
+      'data': G.reportResults.xlsx.encode('base64')
     }
     return data

@@ -4,7 +4,7 @@ Created on 20 Aug 2015
 @author: Anna
 '''
 
-from jsonReader import importInput
+from jsonReader import importInput, initGlobals
 from findSequence import findSequence
 from timeCalculations import availableTimeInterval_MA, updateAvailTime, availableTimeInterval_MM, availableTimeInterval_Manual
 from operator import itemgetter
@@ -18,8 +18,6 @@ def manual_allocation(currentOp):
     tStart = currentOp['minStartTime']  # earliest start date for current operation    
     remPT = dt.timedelta(hours=currentOp['manualTime']) 
     
-    print 'in manual allocation', currentOp['id']
-    print 'tStart manual', tStart, remPT
     while remPT > dt.timedelta(seconds=0):
         
         startTimeMach = []  # collects earliest keyDate for machines
@@ -42,30 +40,25 @@ def manual_allocation(currentOp):
         # sort available time
         sorted_startTimeOp = sorted(startTimeOp, key=itemgetter('start', 'avPT'))
         
-        print tStart
-        print 'sort mach', sorted_startTimeMach
-        print 'sort pm', sorted_startTimeOp
-        
         # calculate available PT
         if sorted_startTimeOp[0]['start'] <= tStart:
-            print 'first op'
+#            print 'first op'
             availablePT = min(sorted_startTimeMach[0]['avPT']*(-1), sorted_startTimeOp[0]['avPT']*(-1), remPT) 
         
         elif sorted_startTimeOp[0]['start'] < tStart + sorted_startTimeMach[0]['avPT']:
-            print 'sec op'
+#            print 'sec op'
             tEnd = min(tStart+sorted_startTimeMach[0]['avPT'], sorted_startTimeOp[0]['start']+sorted_startTimeOp[0]['avPT'])
             tStart = sorted_startTimeOp[0]['start']
             availablePT = min(tEnd - tStart, remPT)
         
         else:
-            print '3 op'
+#            print '3 op'
             availablePT = dt.timedelta(seconds=0)
             tStart = sorted_startTimeOp[0]['start']
         
         # update remaining PT
         remPT -= availablePT
-        print 'fine all', tStart, availablePT, remPT
-        
+
         
         if availablePT > dt.timedelta(seconds=0):
             # update machine and operator availability
@@ -74,28 +67,28 @@ def manual_allocation(currentOp):
             
             G.resAvailability[sorted_startTimeOp[0]['pm']] = updateAvailTime(sorted_startTimeOp[0]['start'], availablePT, tStart, 
                                                                              G.resAvailability[sorted_startTimeOp[0]['pm']])
-            # aggiorna schedule   
-            if currentOp['id'] not in G.Schedule.keys():                        
-                G.Schedule[currentOp['id']]={} 
-                G.Schedule[currentOp['id']]['startDate'] = tStart
+            # update schedule   
+            if currentOp['id'] not in G.Schedule[G.simMode].keys():                        
+                G.Schedule[G.simMode][currentOp['id']]={} 
+                G.Schedule[G.simMode][currentOp['id']]['startDate'] = tStart
             tEnd = tStart + availablePT
-            G.Schedule[currentOp['id']]['endDate'] = tEnd
-            G.Schedule[currentOp['id']].setdefault('rList',{})[(tStart,tEnd)] = {'mach':sorted_startTimeMach[0]['mach'],'operator':sorted_startTimeOp[0]['pm']}
-            G.tabSchedule.append([currentOp['project'], currentOp['part'], currentOp['id'],sorted_startTimeMach[0]['mach'],sorted_startTimeOp[0]['pm'],tStart,tEnd])
+            G.Schedule[G.simMode][currentOp['id']]['endDate'] = tEnd
+            G.Schedule[G.simMode][currentOp['id']].setdefault('rList',{})[(tStart,tEnd)] = {'mach':sorted_startTimeMach[0]['mach'],'operator':sorted_startTimeOp[0]['pm']}
+            G.tabSchedule[G.simMode].append([currentOp['project'], currentOp['part'], currentOp['id'],sorted_startTimeMach[0]['mach'],sorted_startTimeOp[0]['pm'],tStart,tEnd])
+            G.pmSchedule[G.simMode].append([sorted_startTimeOp[0]['pm'],tStart,tEnd,currentOp['id']])
             if currentOp['preID'] != None:
-                G.Schedule[currentOp['preID']] = G.Schedule[currentOp['id']]
-            if G.completionDate[currentOp['project']] < tEnd:
-                G.completionDate[currentOp['project']] = tEnd
+                G.Schedule[G.simMode][currentOp['preID']] = G.Schedule[G.simMode][currentOp['id']]
+            if G.completionDate[G.simMode][currentOp['project']] < tEnd:
+                G.completionDate[G.simMode][currentOp['project']] = tEnd
             tStart = tEnd
-    
-    print currentOp['id'], G.Schedule[currentOp['id']]
             
             
 def MAM_allocation(currentOp):
     
+    # set earliest start date for current operation
     tStart = currentOp['minStartTime']  # earliest start date for current operation    
     
-    print 'tStart', tStart   
+    # set processing time
     remPT = currentOp['manualTime'] + currentOp['autoTime']
     
     while remPT:
@@ -107,38 +100,31 @@ def MAM_allocation(currentOp):
         for mach in G.MachPool[currentOp['operation']]:
             
             # find available time (availableTimeInterval_MA)
-            print 'man', currentOp['manualTime']
             mTime = dt.timedelta(hours=currentOp['manualTime'])
             aTime = dt.timedelta(hours=currentOp['autoTime']) 
-            print 'mach av', mach, G.resAvailability[mach]
-            if currentOp['mode'] == 'MM':
+            if currentOp['mode'] == 'MM' or currentOp['mode'] == 'M':
                 res = availableTimeInterval_MM(mTime, aTime, tStart, G.resAvailability[mach])
                 startTimeMach.append({'mach':mach, 'start':res[0], 'eqPT':res[1]})
             else:
                 res = availableTimeInterval_MA(mTime, aTime, tStart, G.resAvailability[mach])
                 #startTimeMach.append({'mach':mach, 'start':res, 'eqPT':mTime+aTime})
                 startTimeMach.append({'mach':mach, 'start':res[0], 'eqPT':res[1]+aTime})
-            print 'start time mach', startTimeMach
-            
+
         # sort available time
         sorted_startTimeMach = sorted(startTimeMach, key=itemgetter('start', 'eqPT'))
         tStart = max(sorted_startTimeMach[0]['start'],tStart)
         
-        print 'mach tent', sorted_startTimeMach[0]['mach'], tStart
-        
-        # verify whether PM are available in the same time
+        # verify whether PM are available during the same time interval
         for pm in G.PMPool[currentOp['operation']]:
             
-            print 'operator', pm
             #find available time
-            if currentOp['mode'] == 'MM':
+            if currentOp['mode'] == 'MM' or currentOp['mode'] == 'M':
                 res = availableTimeInterval_MM(mTime, aTime, tStart, G.resAvailability[pm])
                 startTimeOp.append({'pm':pm, 'start':res[0], 'eqPT':res[1]}) 
             else:
                 res = availableTimeInterval_MA(mTime, dt.timedelta(hours=0), tStart, G.resAvailability[pm])
 #                startTimeOp.append({'pm':pm, 'start':res[0], 'eqPT':mTime}) 
-                startTimeOp.append({'pm':pm, 'start':res[0], 'eqPT':res[1]}) 
-                
+                startTimeOp.append({'pm':pm, 'start':res[0], 'eqPT':res[1]})                 
         # sort available time
         sorted_startTimeOp = sorted(startTimeOp, key=itemgetter('start', 'eqPT'))
         
@@ -148,11 +134,6 @@ def MAM_allocation(currentOp):
             tStart = sorted_startTimeOp[0]['start']
                 
     
-    print 'machine chosen', sorted_startTimeMach[0]['mach']
-    print 'operator chosen', sorted_startTimeOp[0]['pm'], sorted_startTimeOp
-    print G.resAvailability[sorted_startTimeMach[0]['mach']]
-    print G.resAvailability[sorted_startTimeOp[0]['pm']]
-    
     # update machine availability
     G.resAvailability[sorted_startTimeMach[0]['mach']] = updateAvailTime(sorted_startTimeMach[0]['start'], sorted_startTimeMach[0]['eqPT'], tStart, 
                                 G.resAvailability[sorted_startTimeMach[0]['mach']])
@@ -161,22 +142,23 @@ def MAM_allocation(currentOp):
     G.resAvailability[sorted_startTimeOp[0]['pm']] = updateAvailTime(sorted_startTimeOp[0]['start'], sorted_startTimeOp[0]['eqPT'], tStart, 
                                 G.resAvailability[sorted_startTimeOp[0]['pm']])
     
-    # aggiorna schedule   
-    G.Schedule.setdefault(currentOp['id'],{}) 
-    G.Schedule[currentOp['id']]['startDate'] = tStart
+    # update schedule   
+    G.Schedule[G.simMode].setdefault(currentOp['id'],{}) 
+    G.Schedule[G.simMode][currentOp['id']]['startDate'] = tStart
     tEnd = tStart + sorted_startTimeMach[0]['eqPT']
-    G.Schedule[currentOp['id']]['endDate'] = tEnd
-    G.Schedule[currentOp['id']].setdefault('rList',{})[(tStart,tEnd)] = {'mach':sorted_startTimeMach[0]['mach'],'operator':sorted_startTimeOp[0]['pm']}
+    G.Schedule[G.simMode][currentOp['id']]['endDate'] = tEnd
+    G.Schedule[G.simMode][currentOp['id']].setdefault('rList',{})[(tStart,tEnd)] = {'mach':sorted_startTimeMach[0]['mach'],'operator':sorted_startTimeOp[0]['pm']}
     if currentOp['preID'] != None:
-        G.Schedule[currentOp['preID']] = G.Schedule[currentOp['id']]
-    if G.completionDate[currentOp['project']] < tEnd:
-        G.completionDate[currentOp['project']] = tEnd
-    G.tabSchedule.append([currentOp['project'], currentOp['part'], currentOp['preID'],sorted_startTimeMach[0]['mach'],sorted_startTimeOp[0]['pm'],tStart,tEnd-aTime])
-    G.tabSchedule.append([currentOp['project'], currentOp['part'], currentOp['id'],sorted_startTimeMach[0]['mach'],'automatic',tEnd-aTime,tEnd])
-        
-    print 'schedule', G.Schedule
-    
-    print G.resAvailability[sorted_startTimeOp[0]['pm']]
+        G.Schedule[G.simMode][currentOp['preID']] = G.Schedule[G.simMode][currentOp['id']]
+    if G.completionDate[G.simMode][currentOp['project']] < tEnd:
+        G.completionDate[G.simMode][currentOp['project']] = tEnd
+    if currentOp['mode'] == 'MM' or currentOp['mode'] == 'MA':
+        G.tabSchedule[G.simMode].append([currentOp['project'], currentOp['part'], currentOp['preID'],sorted_startTimeMach[0]['mach'],sorted_startTimeOp[0]['pm'],tStart,tEnd-aTime])
+        G.tabSchedule[G.simMode].append([currentOp['project'], currentOp['part'], currentOp['id'],sorted_startTimeMach[0]['mach'],'automatic',tEnd-aTime,tEnd])
+        G.pmSchedule[G.simMode].append([sorted_startTimeOp[0]['pm'],tStart,tEnd-aTime,currentOp['id']])
+    else:
+        G.tabSchedule[G.simMode].append([currentOp['project'], currentOp['part'], currentOp['id'],sorted_startTimeMach[0]['mach'],sorted_startTimeOp[0]['pm'],tStart,tEnd])
+        G.pmSchedule[G.simMode].append([sorted_startTimeOp[0]['pm'],tStart,tEnd,currentOp['id']])
 
 
 def exeSim(jsonInput, workplanInput, algorithmAttributes):
@@ -190,7 +172,14 @@ def exeSim(jsonInput, workplanInput, algorithmAttributes):
     excelInput = attachement_data
     
     # read input data
+    G.simMode = 'Earliest'
     importInput(jInput, excelInput, algorithmAttributes)
+    
+    #==========================
+    # Earliest Completion Date
+    #==========================
+    
+    initGlobals()    
     
     # find initial operation
     opDone = []
@@ -198,45 +187,73 @@ def exeSim(jsonInput, workplanInput, algorithmAttributes):
     proj = deepcopy(G.Projects)
     opReady = findSequence(proj, seq, opDone)
     
-    print 'opready', opReady, G.seqPrjDone
-    
     while len(opReady):
         
         # set current operation
         currentOp = opReady[0]
-        print 'chosen operation', currentOp['id']
-        
-        # check op mode
+
+        # check op mode and allocate operation
         if currentOp['mode'] == 'MA' or currentOp['mode'] == 'MM':     
             MAM_allocation(currentOp)
         
         else:
             manual_allocation(currentOp)
-#        elif currentOp['mode'] == 'MM':
-#            print 'MM'
-#            MM_allocation(currentOp)
             
-        # save results
+        # save results and update sequence number
         opDone.append(currentOp['id'])
         G.seqPrjDone[currentOp['project']][currentOp['part']] += 1
-        print 'op', currentOp
         if currentOp['preID'] != None:
             opDone.append(currentOp['preID'])
             G.seqPrjDone[currentOp['project']][currentOp['part']] += 1
         
-        # aggiorna seqPrjDone
-        
-        
+        # find next operation
         seq = deepcopy(G.seqPrjDone)
         proj = deepcopy(G.Projects)
         opReady = findSequence(proj, seq, opDone)
-        print opDone
+
+    # add result sheets
+    G.reportResults.add_sheet(G.tabSchedule[G.simMode])
+    G.reportResults.add_sheet(G.pmSchedule[G.simMode])
+
+    #==========================
+    # Latest Completion Date
+    #==========================
     
-    print 'completion date', G.completionDate
+    G.simMode = 'Latest'
+    initGlobals()    
     
-    G.reportResults.add_sheet(G.tabSchedule)
-    with open('schedule.xlsx', 'wb') as f: #time level schedule info
-        f.write(G.reportResults.xlsx)
+    # find initial operation
+    opDone = []
+    seq = deepcopy(G.seqPrjDone)    
+    proj = deepcopy(G.Projects)
+    opReady = findSequence(proj, seq, opDone)
+    
+    while len(opReady):
+        
+        # set current operation
+        currentOp = opReady[0]
+
+        # allocate operation
+        MAM_allocation(currentOp)
+        
+        # save results
+        opDone.append(currentOp['id'])
+        G.seqPrjDone[currentOp['project']][currentOp['part']] += 1
+        if currentOp['preID'] != None:
+            opDone.append(currentOp['preID'])
+            G.seqPrjDone[currentOp['project']][currentOp['part']] += 1
+        
+        # find following operation
+        seq = deepcopy(G.seqPrjDone)
+        proj = deepcopy(G.Projects)
+        opReady = findSequence(proj, seq, opDone)
+
+    # report results
+    G.reportResults.add_sheet(G.tabSchedule[G.simMode])
+    G.reportResults.add_sheet(G.pmSchedule[G.simMode])
+    
+#    with open('schedule.xlsx', 'wb') as f: #time level schedule info
+#        f.write(G.reportResults.xlsx)
 
 
 if __name__ == '__main__':

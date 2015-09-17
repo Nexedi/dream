@@ -114,22 +114,18 @@ def importInput(jInput, excelInput, algorithmAttributes):
         part = item[0].encode('ascii', 'ignore')
         
         
-        #print 'startDate', startDate.date()
-        
         if pt.seconds > 0 or pt.days>0:
             forzenOpsData.append([startDate.date(), part, order, item[3], item[7], station, startDate.time(), dateOut.time(), ordinalOutDate, 'X'])
             frozen[item[3]] = 'X'
             
-            G.tabSchedule.append([order,part, item[3],station,item[7],startDate,dateOut])
+            G.tabScheduleOrig.append([order,part, item[3],station,item[7],startDate,dateOut])
              
-            if station not in takenPeriods:
-                takenPeriods[station] = {}
-            
-            takenPeriods[station][startDate] = {'endDate': dateOut, 'taskID':item[3]}
-        
+            takenPeriods.setdefault(station,{})[startDate] = {'endDate': dateOut, 'taskID':item[3]}
+    
+    # import PM schedule
     PMschedule = dataJSON['result']['result_list'][selSol]['operator_gantt']['task_list']
     
-    
+    # extract resource availability
     for item in PMschedule:
         if 'parent' in item.keys():
             pm = item['parent']
@@ -143,21 +139,16 @@ def importInput(jInput, excelInput, algorithmAttributes):
                 continue
             
             if pt:
-                print pm, taskID
                 if pm not in takenPeriods:
                     takenPeriods[pm] = {}
                 
                 takenPeriods[pm][startDate] = {'endDate': stopDate, 'taskID': taskID}
+                G.pmScheduleOrig.append([pm,startDate,stopDate,taskID])
         
-    print 'frozen operations', forzenOpsData
-    print 'taken periods', takenPeriods
-    
-    
+
     #=================================
     # Import Workplan from Excel file
     #=================================
-    
-    global numParts
     
     WorkPlan = wb.sheet_by_index(0)
     
@@ -304,6 +295,15 @@ def importInput(jInput, excelInput, algorithmAttributes):
         if 'INJM-MAN' in skills:
             skills.remove('INJM-MAN')
             skills.append('INJM')
+        if 'INJM-SET' in skills:
+            skills.remove('INJM-SET')
+            skills.append('INJM')
+        if 'EDM-SET' in skills:
+            skills.remove('EDM-SET')
+            skills.append('EDM')
+        if 'MILL-SET' in skills:
+            skills.remove('MILL-SET')
+            skills.append('MILL')
         
         PMInfo.append({'name':PMskills[item][0], 'skills': skills, 'sched':'FIFO', 'status':''})
         for sk in skills:
@@ -348,11 +348,25 @@ def importInput(jInput, excelInput, algorithmAttributes):
                 resAvailability[mach] = availableTime_Shift(unavailDate,takenPeriods[mach][unavailDate]['endDate'],resAvailability[mach])
     
     # set global variables
-    G.resAvailability = deepcopy(resAvailability)
-    G.seqPrjDone = deepcopy(seqPrjDone) 
-    G.resAvailability = deepcopy(resAvailability)
+    G.seqPrjDoneOrig = deepcopy(seqPrjDone) 
+    G.resAvailabilityOrig = deepcopy(resAvailability)
     G.MachPool = deepcopy(MachPool)
+    print 'mach pool',G.MachPool
     G.PMPool = deepcopy(PMPool)
     G.Projects = deepcopy(Projects)
     G.OrderDates = deepcopy(OrderDates)
-    G.completionDate = deepcopy(OrderDates)
+
+
+def initGlobals():
+    G.resAvailability = deepcopy(G.resAvailabilityOrig)
+    G.seqPrjDone = deepcopy(G.seqPrjDoneOrig)
+    G.Schedule[G.simMode] = {}
+    G.completionDate[G.simMode] = deepcopy(G.OrderDates)
+ 
+    G.tabSchedule[G.simMode] = tablib.Dataset(title='Schedule'+str(G.simMode))
+    G.tabSchedule[G.simMode].headers = (['Project', 'Part', 'Task ID', 'Station', 'Operator', 'Start Time', 'End Time'])
+    for item in G.tabScheduleOrig:
+        G.tabSchedule[G.simMode].append(item)
+    G.pmSchedule[G.simMode] = tablib.Dataset(title='PMschedule'+str(G.simMode))
+    for item in G.pmScheduleOrig:
+        G.pmSchedule[G.simMode].append(item)

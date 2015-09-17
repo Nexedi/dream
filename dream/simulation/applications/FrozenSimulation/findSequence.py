@@ -11,9 +11,6 @@ def findSequence(Projects, seqPrjDone, idDone):
     
     opReady = []
     
-    print 'find sequence', Projects
-    print 'find sequence', seqPrjDone
-    
     for proj in seqPrjDone.keys():
         
         for part in seqPrjDone[proj].keys():
@@ -22,12 +19,11 @@ def findSequence(Projects, seqPrjDone, idDone):
                 
                 possibleOp = True
                 
-                print 'part', part, Projects[proj][part][seqPrjDone[proj][part]]['id']
-                
-                if seqPrjDone[proj][part]==0 or Projects[proj][part][seqPrjDone[proj][part]-1]['id'] not in G.Schedule.keys():
+                # set minimum start time for operation
+                if seqPrjDone[proj][part]==0 or Projects[proj][part][seqPrjDone[proj][part]-1]['id'] not in G.Schedule[G.simMode].keys():
                     minStartTime = max(G.xlreftime, G.OrderDates[proj])
                 else:
-                    minStartTime = G.Schedule[Projects[proj][part][seqPrjDone[proj][part]-1]['id']]['endDate']
+                    minStartTime = G.Schedule[G.simMode][Projects[proj][part][seqPrjDone[proj][part]-1]['id']]['endDate']
                 
                 # verify whether the operation can be performed in terms of prerequisite operations
                 for preReq in Projects[proj][part][seqPrjDone[proj][part]]['preReq']:
@@ -37,12 +33,11 @@ def findSequence(Projects, seqPrjDone, idDone):
                         break 
                     
                     else:
-                        if minStartTime < G.Schedule[preReq]['endDate']:
-                            minStartTime = G.Schedule[preReq]['endDate']
+                        if minStartTime < G.Schedule[G.simMode][preReq]['endDate']:
+                            minStartTime = G.Schedule[G.simMode][preReq]['endDate']
                 
                 if possibleOp:
                     newOp = Projects[proj][part][seqPrjDone[proj][part]]
-                    print newOp['id'], 'possible'                
                     newOp['minStartTime'] = minStartTime
                     newOp['project'] = proj
                     newOp['part'] = part
@@ -59,7 +54,6 @@ def findSequence(Projects, seqPrjDone, idDone):
                         seqPrjDone[proj][part] += 1
                         
                         # verify that the operation is the same
-                        print followOp['operation'], newOp['operation']
                         assert (followOp['operation'].split('-')[0] in newOp['operation'])
                         
                         # update operation (erase set)
@@ -91,10 +85,8 @@ def findSequence(Projects, seqPrjDone, idDone):
                     
                     opReady.append(newOp)
         
-        print 'pre', opReady
         opReady = sorted(opReady, key=itemgetter('sequence', 'manualTime', 'autoTime'))
         
-        print 'seq', seqPrjDone, G.seqPrjDone
         return opReady
                         
     
