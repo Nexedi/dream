@@ -38,11 +38,10 @@ class PostProcessOrderLateness(plugin.OutputPreparationPlugin, TimeSupportMixin)
                   calculatedDelayinHours = (obj["results"]["completionTime"] - dueDate)
                   calculatedDelayinDays = (calculatedDelayinHours//24) + math.floor((calculatedDelayinHours % 24.0/24) /(16.5/24) )
                   order_lateness_dict[order['id']]['delayText'] = "%d Days" % calculatedDelayinDays
-                  self.logger.info("calculatedDelayinHours %f, calculatedDelayinDays %f" % (calculatedDelayinHours, calculatedDelayinDays))
 
-                  if calculatedDelayinHours < 0:
+                  if calculatedDelayinDays < 0:
                     color = "green"
-                  elif 0 <= calculatedDelayinHours <= 16.5:
+                  elif calculatedDelayinDays == 0:
                     color = "yellow"
                   else:
                     color = "red"
