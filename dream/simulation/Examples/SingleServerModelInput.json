@@ -1,0 +1,57 @@
+{
+    "general": {
+        "maxSimTime": 1440,
+        "numberOfReplications": 1,
+        "trace": "No"
+    },
+    "graph": {
+        "edge": {
+            "1": {
+                "_class": "Dream.Edge",
+                "destination": "Q1",
+                "source": "S1"
+            },
+            "2": {
+                "_class": "Dream.Edge",
+                "destination": "M1",
+                "source": "Q1"
+            },
+            "3": {
+                "_class": "Dream.Edge",
+                "destination": "E1",
+                "source": "M1"
+            }
+        },
+        "node": {
+            "E1": {
+                "_class": "Dream.Exit",
+                "name": "Exit"
+            },
+            "M1": {
+                "_class": "Dream.Machine",
+                "name": "Machine",
+                "processingTime": {
+                    "Fixed": {
+                        "mean": 0.25
+                    }
+                }
+            },
+            "Q1": {
+                "_class": "Dream.Queue",
+                "capacity": 1,
+                "name": "Queue"
+            },
+            "S1": {
+                "_class": "Dream.Source",
+                "entity": "Dream.Part",
+                "id": "S1",
+                "interArrivalTime": {
+                    "Fixed": {
+                        "mean": 0.5
+                    }
+                },
+                "name": "Source"
+            }
+        }
+    }
+}
