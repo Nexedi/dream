@@ -1,0 +1,471 @@
+{
+ "graph": {
+  "node": {
+   "M1A": {
+    "name": "M1A",  
+    "processingTime": {
+     "Gamma": {
+      "shape": 11.29570384628515, 
+      "rate": 10.206416837150321
+     }
+    }, 
+    "wip": [], 
+    "failures": {}, 
+    "element_id": "DreamNode_6", 
+    "_class": "Dream.BatchScrapMachine"
+   }, 
+   "Q2A": {
+    "capacity": "2", 
+    "name": "Q2A", 
+    "isDummy": "0", 
+    "wip": [], 
+    "element_id": "DreamNode_17", 
+    "_class": "Dream.LineClearance", 
+    "schedulingRule": "FIFO"
+   }, 
+   "Q2B": {
+    "capacity": "2", 
+    "name": "Q2B", 
+    "isDummy": "0", 
+    "wip": [], 
+    "element_id": "DreamNode_18", 
+    "_class": "Dream.LineClearance", 
+    "schedulingRule": "FIFO"
+   }, 
+   "M1B": {
+    "name": "M1B",  
+    "processingTime": {
+     "Lognormal": {
+      "logmean": 0.09067568513889442, 
+      "logsd": 0.30461705543525297
+     }
+    }, 
+    "wip": [], 
+    "failures": {}, 
+    "element_id": "DreamNode_7", 
+    "_class": "Dream.BatchScrapMachine"
+   }, 
+   "S1": {
+    "name": "Source", 
+    "entity": "Dream.Batch", 
+    "interarrivalTime": {
+     "distributionType": "Fixed", 
+     "mean": "0.5"
+    }, 
+    "batchNumberOfUnits": 1, 
+    "element_id": "DreamNode_25", 
+    "_class": "Dream.BatchSource"
+   }, 
+   "QPa": {
+    "capacity": "3", 
+    "name": "QPa", 
+    "isDummy": "0", 
+    "wip": [], 
+    "element_id": "DreamNode_22", 
+    "_class": "Dream.Queue", 
+    "schedulingRule": "FIFO"
+   }, 
+   "QPr": {
+    "capacity": "3", 
+    "name": "QPr", 
+    "isDummy": "0", 
+    "wip": [], 
+    "element_id": "DreamNode_23", 
+    "_class": "Dream.Queue", 
+    "schedulingRule": "FIFO"
+   }, 
+   "PrA": {
+    "name": "PrA",  
+    "processingTime": {
+     "Normal": {
+      "stdev": 0.38092512127973494, 
+      "mean": 1.2233599290780142
+     }
+    }, 
+    "wip": [], 
+    "failures": {}, 
+    "element_id": "DreamNode_15", 
+    "_class": "Dream.BatchScrapMachine"
+   }, 
+   "QStart": {
+    "capacity": "1", 
+    "name": "StartQueue", 
+    "isDummy": "0", 
+    "wip": [], 
+    "element_id": "DreamNode_24", 
+    "_class": "Dream.Queue", 
+    "schedulingRule": "FIFO"
+   }, 
+   "PrB": {
+    "name": "PrB",  
+    "processingTime": {
+     "Logistic": {
+      "scale": 0.18840836911846076, 
+      "location": 1.1387055462576128
+     }
+    }, 
+    "wip": [], 
+    "failures": {}, 
+    "element_id": "DreamNode_16", 
+    "_class": "Dream.BatchScrapMachine"
+   }, 
+   "PaA": {
+    "name": "PaA", 
+    "processingTime": {
+     "Weibull": {
+      "shape": 5.099270113344278, 
+      "scale": 1.5281761387726078
+     }
+    }, 
+    "wip": [], 
+    "failures": {}, 
+    "element_id": "DreamNode_13", 
+    "_class": "Dream.BatchScrapMachine"
+   }, 
+   "PaB": {
+    "name": "PaB",  
+    "processingTime": {
+     "Gamma": {
+      "shape": 18.715189491869822, 
+      "rate": 12.84936820932644
+     }
+    }, 
+    "wip": [], 
+    "failures": {}, 
+    "element_id": "DreamNode_14", 
+    "_class": "Dream.BatchScrapMachine"
+   }, 
+   "E1": {
+    "element_id": "DreamNode_5", 
+    "_class": "Dream.Exit", 
+    "name": "Stock"
+   }, 
+   "M2A": {
+    "name": "M2A",  
+    "processingTime": {
+     "Weibull": {
+      "shape": 3.4463150512174194, 
+      "scale": 1.342301040240394
+     }
+    }, 
+    "wip": [], 
+    "failures": {}, 
+    "element_id": "DreamNode_8", 
+    "_class": "Dream.BatchScrapMachine"
+   }, 
+   "M2B": {
+    "name": "M2B",  
+    "processingTime": {
+     "Lognormal": {
+      "logmean": 0.2140308882830326, 
+      "logsd": 0.2781487923924829
+     }
+    }, 
+    "wip": [], 
+    "failures": {}, 
+    "element_id": "DreamNode_9", 
+    "_class": "Dream.BatchScrapMachine"
+   }, 
+   "Q3B": {
+    "capacity": "2", 
+    "name": "Q3B", 
+    "isDummy": "0", 
+    "wip": [], 
+    "element_id": "DreamNode_20", 
+    "_class": "Dream.LineClearance", 
+    "schedulingRule": "FIFO"
+   }, 
+   "Q3A": {
+    "capacity": "2", 
+    "name": "Q3A", 
+    "isDummy": "0", 
+    "wip": [], 
+    "element_id": "DreamNode_19", 
+    "_class": "Dream.LineClearance", 
+    "schedulingRule": "FIFO"
+   }, 
+   "BDA": {
+    "processingTime": {
+     "Fixed": {
+      "distributionType": "Fixed", 
+      "mean": 0.0
+     }
+    }, 
+    "element_id": "DreamNode_1", 
+    "_class": "Dream.BatchDecompositionStartTime", 
+    "numberOfSubBatches": 1, 
+    "name": "Deco_A"
+   }, 
+   "BDB": {
+    "processingTime": {
+     "Fixed": {
+      "distributionType": "Fixed", 
+      "mean": 0.0
+     }
+    }, 
+    "element_id": "DreamNode_2", 
+    "_class": "Dream.BatchDecompositionStartTime", 
+    "numberOfSubBatches": 1, 
+    "name": "Deco_B"
+   }, 
+   "EV": {
+    "name": "attainment", 
+    "argumentDict": {}, 
+    "interval": "1440", 
+    "start": "1440", 
+    "_class": "Dream.EventGenerator", 
+    "method": "Dream.Globals.countIntervalThroughput"
+   }, 
+   "MM": {
+    "name": "MM",  
+    "processingTime": {
+     "Cauchy": {
+      "scale": 0.08664657403462417, 
+      "location": 0.44262741080081947
+     }
+    }, 
+    "wip": [], 
+    "failures": {}, 
+    "element_id": "DreamNode_12", 
+    "_class": "Dream.BatchScrapMachine"
+   }, 
+   "BRB": {
+    "processingTime": {
+     "Fixed": {
+      "distributionType": "Fixed", 
+      "mean": 0.0
+     }
+    }, 
+    "element_id": "DreamNode_4", 
+    "_class": "Dream.BatchReassembly", 
+    "numberOfSubBatches": 1, 
+    "name": "Assembly_B"
+   }, 
+   "BRA": {
+    "processingTime": {
+     "Fixed": {
+      "distributionType": "Fixed", 
+      "mean": 0.0
+     }
+    }, 
+    "element_id": "DreamNode_3", 
+    "_class": "Dream.BatchReassembly", 
+    "numberOfSubBatches": 1, 
+    "name": "Assembly_A"
+   }, 
+   "QM": {
+    "capacity": "3", 
+    "name": "QM", 
+    "isDummy": "0", 
+    "wip": [], 
+    "element_id": "DreamNode_21", 
+    "_class": "Dream.Queue", 
+    "schedulingRule": "FIFO"
+   }, 
+   "M3B": {
+    "name": "M3B", 
+    "processingTime": {
+     "Gamma": {
+      "shape": 11.988337665258637, 
+      "rate": 9.868475426755849
+     }
+    }, 
+    "wip": [], 
+    "failures": {}, 
+    "element_id": "DreamNode_11", 
+    "_class": "Dream.BatchScrapMachine"
+   }, 
+   "M3A": {
+    "name": "M3A", 
+    "processingTime": {
+     "Logistic": {
+      "scale": 0.2614287816354414, 
+      "location": 1.1954189574091665
+     }
+    }, 
+    "wip": [], 
+    "failures": {}, 
+    "element_id": "DreamNode_10", 
+    "_class": "Dream.BatchScrapMachine"
+   }
+  }, 
+  "edge": {
+   "24": {
+    "source": "QPa", 
+    "destination": "PaA", 
+    "data": {}, 
+    "_class": "Dream.Edge"
+   }, 
+   "25": {
+    "source": "QPa", 
+    "destination": "PaA", 
+    "data": {}, 
+    "_class": "Dream.Edge"
+   }, 
+   "26": {
+    "source": "QPa", 
+    "destination": "PaB", 
+    "data": {}, 
+    "_class": "Dream.Edge"
+   }, 
+   "27": {
+    "source": "PaA", 
+    "destination": "E1", 
+    "data": {}, 
+    "_class": "Dream.Edge"
+   }, 
+   "20": {
+    "source": "QPr", 
+    "destination": "PrA", 
+    "data": {}, 
+    "_class": "Dream.Edge"
+   }, 
+   "21": {
+    "source": "QPr", 
+    "destination": "PrB", 
+    "data": {}, 
+    "_class": "Dream.Edge"
+   }, 
+   "22": {
+    "source": "PrA", 
+    "destination": "QPa", 
+    "data": {}, 
+    "_class": "Dream.Edge"
+   }, 
+   "23": {
+    "source": "PrB", 
+    "destination": "QPa", 
+    "data": {}, 
+    "_class": "Dream.Edge"
+   }, 
+   "1": {
+    "source": "S1", 
+    "destination": "QStart", 
+    "data": {}, 
+    "_class": "Dream.Edge"
+   }, 
+   "3": {
+    "source": "QStart", 
+    "destination": "BDB", 
+    "data": {}, 
+    "_class": "Dream.Edge"
+   }, 
+   "50021": {
+    "source": "QStart", 
+    "destination": "BDA", 
+    "data": {}, 
+    "_class": "Dream.Edge"
+   }, 
+   "2": {
+    "source": "PaB", 
+    "destination": "E1", 
+    "data": {}, 
+    "_class": "Dream.Edge"
+   }, 
+   "5": {
+    "source": "M1A", 
+    "destination": "Q2A", 
+    "data": {}, 
+    "_class": "Dream.Edge"
+   }, 
+   "4": {
+    "source": "BDA", 
+    "destination": "M1A", 
+    "data": {}, 
+    "_class": "Dream.Edge"
+   }, 
+   "7": {
+    "source": "M2A", 
+    "destination": "Q3A", 
+    "data": {}, 
+    "_class": "Dream.Edge"
+   }, 
+   "6": {
+    "source": "Q2A", 
+    "destination": "M2A", 
+    "data": {}, 
+    "_class": "Dream.Edge"
+   }, 
+   "9": {
+    "source": "M3A", 
+    "destination": "BRA", 
+    "data": {}, 
+    "_class": "Dream.Edge"
+   }, 
+   "8": {
+    "source": "Q3A", 
+    "destination": "M3A", 
+    "data": {}, 
+    "_class": "Dream.Edge"
+   }, 
+   "11": {
+    "source": "BDB", 
+    "destination": "M1B", 
+    "data": {}, 
+    "_class": "Dream.Edge"
+   }, 
+   "10": {
+    "source": "BRA", 
+    "destination": "QM", 
+    "data": {}, 
+    "_class": "Dream.Edge"
+   }, 
+   "13": {
+    "source": "Q2B", 
+    "destination": "M2B", 
+    "data": {}, 
+    "_class": "Dream.Edge"
+   }, 
+   "12": {
+    "source": "M1B", 
+    "destination": "Q2B", 
+    "data": {}, 
+    "_class": "Dream.Edge"
+   }, 
+   "15": {
+    "source": "Q3B", 
+    "destination": "M3B", 
+    "data": {}, 
+    "_class": "Dream.Edge"
+   }, 
+   "14": {
+    "source": "M2B", 
+    "destination": "Q3B", 
+    "data": {}, 
+    "_class": "Dream.Edge"
+   }, 
+   "17": {
+    "source": "BRB", 
+    "destination": "QM", 
+    "data": {}, 
+    "_class": "Dream.Edge"
+   }, 
+   "16": {
+    "source": "M3B", 
+    "destination": "BRB", 
+    "data": {}, 
+    "_class": "Dream.Edge"
+   }, 
+   "19": {
+    "source": "MM", 
+    "destination": "QPr", 
+    "data": {}, 
+    "_class": "Dream.Edge"
+   }, 
+   "18": {
+    "source": "QM", 
+    "destination": "MM", 
+    "data": {}, 
+    "_class": "Dream.Edge"
+   }
+  }
+ }, 
+ "_class": "Dream.Simulation", 
+ "general": {
+  "trace": "No", 
+  "_class": "Dream.Configuration", 
+  "confidenceLevel": "0.95", 
+  "maxSimTime": "2880", 
+  "numberOfReplications": "1"
+ }
+}

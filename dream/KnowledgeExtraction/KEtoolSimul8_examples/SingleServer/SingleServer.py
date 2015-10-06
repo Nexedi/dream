@@ -25,6 +25,7 @@ Created on 3 Dec 2014
 from dream.KnowledgeExtraction.ImportExceldata import ImportExceldata
 from dream.KnowledgeExtraction.DistributionFitting import DistFittest
 from dream.KnowledgeExtraction.DistributionFitting import Distributions
+from dream.KnowledgeExtraction.ExcelOutput import ExcelOutput
 import xlrd
 from xml.etree import ElementTree as et
 from dream.KnowledgeExtraction.Simul8XML import Simul8Output
@@ -81,7 +82,7 @@ def main(test=0, ExcelFileName1='InterarrivalsData.xls',
     
     if test:
         output=et.parse('KEtool_SingleServer.xml')
-        return output    
+        return output      
 if __name__ == '__main__':
     main()
 
