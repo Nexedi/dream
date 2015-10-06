@@ -491,7 +491,7 @@
                     "data": {}, 
                     "_class": "Dream.Edge"
 				}, 
-				"2": {
+				"28": {
                     "source": "PaB", 
                     "destination": "E1", 
                     "data": {}, 
@@ -504,7 +504,7 @@
 		"confidenceLevel": "0.95",
 		"_class": "Dream.Configuration",
 		"maxSimTime": "2880",
-		"numberOfReplications": "1",
+		"numberOfReplications": "30",
 		"trace": "No"
 	}
 }
