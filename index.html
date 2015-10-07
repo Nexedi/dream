@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <!-- Yes, this website is "inspired" by scikit-learn website. Thank you -->
 
-<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <!--
   Questions George:
@@ -22,11 +24,11 @@
   <link rel="stylesheet" href="DREAM/nature.css" type="text/css">
   <link rel="stylesheet" href="DREAM/pygments.css" type="text/css">
   <link rel="stylesheet" href="DREAM/gallery.css" type="text/css">
-  
+
   <script type="text/javascript" src="DREAM/jquery.js"></script>
   <script type="text/javascript" src="DREAM/underscore.js"></script>
   <link rel="shortcut icon" href="DREAM/favicon.ico">
-  
+
   <link rel="top" title="DREAM" href="#">
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,22 +36,308 @@
 
   <script type="text/javascript">
     $("div.buttonNext, div.buttonPrevious").hover(
-       function () {
-           $(this).css('background-color', '#FF9C34');
-       },
-       function () {
-           $(this).css('background-color', '#A7D6E2');
-       }
+      function() {
+        $(this).css('background-color', '#FF9C34');
+      },
+      function() {
+        $(this).css('background-color', '#A7D6E2');
+      }
     );
     var bodywrapper = $('.bodywrapper');
     var sidebarbutton = $('#sidebarbutton');
-    sidebarbutton.css({'height': '900px'});
+    sidebarbutton.css({
+      'height': '900px'
+    });
   </script>
 
-  <style type="text/css">.gscb_a{display:inline-block;font:27px/13px arial,sans-serif}.gsst_a .gscb_a{color:#a1b9ed;cursor:pointer}.gsst_a:hover .gscb_a,.gsst_a:focus .gscb_a{color:#36c}.gsst_a{display:inline-block}.gsst_a{cursor:pointer;padding:0 4px}.gsst_a:hover{text-decoration:none!important}.gsst_b{font-size:16px;padding:0 2px;position:relative;user-select:none;-moz-user-select:none;white-space:nowrap}.gsst_e{opacity:0.55;}.gsst_a:hover .gsst_e,.gsst_a:focus .gsst_e{opacity:0.72;}.gsst_a:active .gsst_e{opacity:1;}.gsst_f{background:white;text-align:left}.gsst_g{background-color:white;border:1px solid #ccc;border-top-color:#d9d9d9;box-shadow:0 2px 4px rgba(0,0,0,0.2);-moz-box-shadow:0 2px 4px rgba(0,0,0,0.2);margin:-1px -3px;padding:0 6px}.gsst_h{background-color:white;height:1px;margin-bottom:-1px;position:relative;top:-1px}.gsib_a{width:100%;padding:4px 6px 0}.gsib_a,.gsib_b{vertical-align:top}.gssb_c{border:0;position:absolute;z-index:989}.gssb_e{border:1px solid #ccc;border-top-color:#d9d9d9;box-shadow:0 2px 4px rgba(0,0,0,0.2);-moz-box-shadow:0 2px 4px rgba(0,0,0,0.2);cursor:default}.gssb_f{visibility:hidden;white-space:nowrap}.gssb_k{border:0;display:block;position:absolute;top:0;z-index:988}.gsdd_a{border:none!important}.gsq_a{padding:0}.gscsep_a{display:none}.gssb_a{padding:0 7px}.gssb_a,.gssb_a td{white-space:nowrap;overflow:hidden;line-height:22px}#gssb_b{font-size:11px;color:#36c;text-decoration:none}#gssb_b:hover{font-size:11px;color:#36c;text-decoration:underline}.gssb_g{text-align:center;padding:8px 0 7px;position:relative}.gssb_h{font-size:15px;height:28px;margin:0.2em}.gssb_i{background:#eee}.gss_ifl{visibility:hidden;padding-left:5px}.gssb_i .gss_ifl{visibility:visible}a.gssb_j{font-size:13px;color:#36c;text-decoration:none;line-height:100%}a.gssb_j:hover{text-decoration:underline}.gssb_l{height:1px;background-color:#e5e5e5}.gssb_m{color:#000;background:#fff}.gsfe_a{border:1px solid #b9b9b9;border-top-color:#a0a0a0;box-shadow:inset 0px 1px 2px rgba(0,0,0,0.1);-moz-box-shadow:inset 0px 1px 2px rgba(0,0,0,0.1);-webkit-box-shadow:inset 0px 1px 2px rgba(0,0,0,0.1);}.gsfe_b{border:1px solid #4d90fe;outline:none;box-shadow:inset 0px 1px 2px rgba(0,0,0,0.3);-moz-box-shadow:inset 0px 1px 2px rgba(0,0,0,0.3);-webkit-box-shadow:inset 0px 1px 2px rgba(0,0,0,0.3);}.gssb_a{padding:0 7px}.gssb_e{border:0}.gssb_l{margin:5px 0}.gssb_c .gsc-completion-container{position:static}.gssb_c{z-index:5000}.gsc-completion-container table{background:transparent;font-size:inherit;font-family:inherit}.gssb_c > tbody > tr,.gssb_c > tbody > tr > td,.gssb_d,.gssb_d > tbody > tr,.gssb_d > tbody > tr > td,.gssb_e,.gssb_e > tbody > tr,.gssb_e > tbody > tr > td{padding:0;margin:0;border:0}.gssb_a table,.gssb_a table tr,.gssb_a table tr td{padding:0;margin:0;border:0}</style></head>
-  <body>
+  <style type="text/css">
+    .gscb_a {
+      display: inline-block;
+      font: 27px/13px arial, sans-serif
+    }
+    
+    .gsst_a .gscb_a {
+      color: #a1b9ed;
+      cursor: pointer
+    }
+    
+    .gsst_a:hover .gscb_a,
+    .gsst_a:focus .gscb_a {
+      color: #36c
+    }
+    
+    .gsst_a {
+      display: inline-block
+    }
+    
+    .gsst_a {
+      cursor: pointer;
+      padding: 0 4px
+    }
+    
+    .gsst_a:hover {
+      text-decoration: none!important
+    }
+    
+    .gsst_b {
+      font-size: 16px;
+      padding: 0 2px;
+      position: relative;
+      user-select: none;
+      -moz-user-select: none;
+      white-space: nowrap
+    }
+    
+    .gsst_e {
+      opacity: 0.55;
+    }
+    
+    .gsst_a:hover .gsst_e,
+    .gsst_a:focus .gsst_e {
+      opacity: 0.72;
+    }
+    
+    .gsst_a:active .gsst_e {
+      opacity: 1;
+    }
+    
+    .gsst_f {
+      background: white;
+      text-align: left
+    }
+    
+    .gsst_g {
+      background-color: white;
+      border: 1px solid #ccc;
+      border-top-color: #d9d9d9;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      -moz-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      margin: -1px -3px;
+      padding: 0 6px
+    }
+    
+    .gsst_h {
+      background-color: white;
+      height: 1px;
+      margin-bottom: -1px;
+      position: relative;
+      top: -1px
+    }
+    
+    .gsib_a {
+      width: 100%;
+      padding: 4px 6px 0
+    }
+    
+    .gsib_a,
+    .gsib_b {
+      vertical-align: top
+    }
+    
+    .gssb_c {
+      border: 0;
+      position: absolute;
+      z-index: 989
+    }
+    
+    .gssb_e {
+      border: 1px solid #ccc;
+      border-top-color: #d9d9d9;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      -moz-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      cursor: default
+    }
+    
+    .gssb_f {
+      visibility: hidden;
+      white-space: nowrap
+    }
+    
+    .gssb_k {
+      border: 0;
+      display: block;
+      position: absolute;
+      top: 0;
+      z-index: 988
+    }
+    
+    .gsdd_a {
+      border: none!important
+    }
+    
+    .gsq_a {
+      padding: 0
+    }
+    
+    .gscsep_a {
+      display: none
+    }
+    
+    .gssb_a {
+      padding: 0 7px
+    }
+    
+    .gssb_a,
+    .gssb_a td {
+      white-space: nowrap;
+      overflow: hidden;
+      line-height: 22px
+    }
+    
+    #gssb_b {
+      font-size: 11px;
+      color: #36c;
+      text-decoration: none
+    }
+    
+    #gssb_b:hover {
+      font-size: 11px;
+      color: #36c;
+      text-decoration: underline
+    }
+    
+    .gssb_g {
+      text-align: center;
+      padding: 8px 0 7px;
+      position: relative
+    }
+    
+    .gssb_h {
+      font-size: 15px;
+      height: 28px;
+      margin: 0.2em
+    }
+    
+    .gssb_i {
+      background: #eee
+    }
+    
+    .gss_ifl {
+      visibility: hidden;
+      padding-left: 5px
+    }
+    
+    .gssb_i .gss_ifl {
+      visibility: visible
+    }
+    
+    a.gssb_j {
+      font-size: 13px;
+      color: #36c;
+      text-decoration: none;
+      line-height: 100%
+    }
+    
+    a.gssb_j:hover {
+      text-decoration: underline
+    }
+    
+    .gssb_l {
+      height: 1px;
+      background-color: #e5e5e5
+    }
+    
+    .gssb_m {
+      color: #000;
+      background: #fff
+    }
+    
+    .gsfe_a {
+      border: 1px solid #b9b9b9;
+      border-top-color: #a0a0a0;
+      box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.1);
+      -moz-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.1);
+      -webkit-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    
+    .gsfe_b {
+      border: 1px solid #4d90fe;
+      outline: none;
+      box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.3);
+      -moz-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.3);
+      -webkit-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.3);
+    }
+    
+    .gssb_a {
+      padding: 0 7px
+    }
+    
+    .gssb_e {
+      border: 0
+    }
+    
+    .gssb_l {
+      margin: 5px 0
+    }
+    
+    .gssb_c .gsc-completion-container {
+      position: static
+    }
+    
+    .gssb_c {
+      z-index: 5000
+    }
+    
+    .gsc-completion-container table {
+      background: transparent;
+      font-size: inherit;
+      font-family: inherit
+    }
+    
+    .gssb_c > tbody > tr,
+    .gssb_c > tbody > tr > td,
+    .gssb_d,
+    .gssb_d > tbody > tr,
+    .gssb_d > tbody > tr > td,
+    .gssb_e,
+    .gssb_e > tbody > tr,
+    .gssb_e > tbody > tr > td {
+      padding: 0;
+      margin: 0;
+      border: 0
+    }
+    
+    .gssb_a table,
+    .gssb_a table tr,
+    .gssb_a table tr td {
+      padding: 0;
+      margin: 0;
+      border: 0
+    }
+    
+    /* more custom css */
+    .index-upper {
+      margin-top: 2em;
+    }
+    .custom-box {
+      -webkit-border-radius: .375em;
+      border-radius: .375em;
+      border: 1px solid #DDD;
+      background-color: #F8F8F8;
+      padding: .5em;
+      min-height: 18em;
+    }
+    .custom-link {
+      color: #000;
+    }
+    .custom-infobox {
+      padding-left: 2em;
+    }
+    html body .custom-box h2 {
+      margin: 0;
+      padding: .5em 0;
+      text-align: center;
+      color: #1EA3D7;
+    }
+    html body .custom-box li {
+      padding: .25em 0;
+    }
+  </style>
+</head>
 
-<!--
+<body>
+
+  <!--
 <div class="header-wrapper">
     <div class="header">
         <p class="logo"><a href="#">
@@ -65,209 +353,191 @@
             </div>
         </div> </div>
         -->
-<!-- Banner -->
-<div class="container banner-container">
-  <div class="row-fluid banner-inner">
-    <div class="hidden-phone">
-      <div class="span6">
-	<div class="row-fluid">
-          <div class="offset2 span8"><div id="index_carousel_tn" class="thumbnail">
-	      <div id="examples_carousel" class="carousel slide" data-interval="false">
-		<ol id="scikit_learn_index_indicators" class="carousel-indicators">
-		  <li data-target="#examples_carousel" data-slide-to="0" class="active"></li>
-		  <li data-target="#examples_carousel" data-slide-to="1"></li>
-		  <li data-target="#examples_carousel" data-slide-to="2"></li>
-		  <li data-target="#examples_carousel" data-slide-to="3"></li>
-		  <li data-target="#examples_carousel" data-slide-to="4"></li>
-		  <li data-target="#examples_carousel" data-slide-to="5"></li>
-		</ol>
-		<!-- Carousel items -->
-		<div class="carousel-inner">
+  <!-- Banner -->
+  <div class="container banner-container">
+    <div class="row-fluid banner-inner">
+      <div class="hidden-phone">
+        <div class="span6">
+          <div class="row-fluid">
+            <div class="offset2 span8">
+              <div id="index_carousel_tn" class="thumbnail">
+                <div id="examples_carousel" class="carousel slide" data-interval="false">
+                  <ol id="scikit_learn_index_indicators" class="carousel-indicators">
+                    <li data-target="#examples_carousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#examples_carousel" data-slide-to="1"></li>
+                    <li data-target="#examples_carousel" data-slide-to="2"></li>
+                    <li data-target="#examples_carousel" data-slide-to="3"></li>
+                    <li data-target="#examples_carousel" data-slide-to="4"></li>
+                    <li data-target="#examples_carousel" data-slide-to="5"></li>
+                  </ol>
+                  <!-- Carousel items -->
+                  <div class="carousel-inner">
 
-		  <div class="active item">
-		    <img src="DREAM/carousel_1.png">
-		  </div>
-		  <div class="item">
-		      <img src="DREAM/carousel_2.png">
-		  </div>
-		  <div class="item">
-		      <img src="DREAM/carousel_3.png">
-		  </div>
-		  <div class="item">
-		      <img src="DREAM/carousel_4.png">
-		  </div>
-		  <div class="item">
-		      <img src="DREAM/carousel_5.png">
-		  </div>
-		  <div class="item">
-		      <img src="DREAM/carousel_6.png">
-		  </div>
-		</div>
-		<!-- Carousel nav -->
-		<a class="carousel-control left" href="#examples_carousel" data-slide="prev">&lsaquo;</a>
-		<a class="carousel-control right" href="#examples_carousel" data-slide="next">&rsaquo;</a>
-	      </div>
-	  </div></div>
-	</div>
+                    <div class="active item">
+                      <img src="DREAM/carousel_1.png">
+                    </div>
+                    <div class="item">
+                      <img src="DREAM/carousel_2.png">
+                    </div>
+                    <div class="item">
+                      <img src="DREAM/carousel_3.png">
+                    </div>
+                    <div class="item">
+                      <img src="DREAM/carousel_4.png">
+                    </div>
+                    <div class="item">
+                      <img src="DREAM/carousel_5.png">
+                    </div>
+                    <div class="item">
+                      <img src="DREAM/carousel_6.png">
+                    </div>
+                  </div>
+                  <!-- Carousel nav -->
+                  <a class="carousel-control left" href="#examples_carousel" data-slide="prev">&lsaquo;</a>
+                  <a class="carousel-control right" href="#examples_carousel" data-slide="next">&rsaquo;</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="span6">
+        <h1>ManPy</h1>
+        <h2>Discrete event simulation in python</h2>
+        <ul>
+          <li>Discrete event utilities, with a focus on manufacturing</li>
+          <li>Built on 
+            <a class="custom-link" href="https://simpy.readthedocs.org/en/latest/" target="_blank">SimPy</a>,
+            <a class="custom-link" href="http://www.numpy.org/" target="_blank">NumPy</a>, and 
+            <a class="custom-link" href="http://www.scipy.org/" target="_blank">SciPy</a>
+          </li>
+          <li>Open source, commercially usable - LGPL license</li>
+        </ul>
       </div>
     </div>
-    
-    
-    <div class="span6">
-      <h1>ManPy</h1>
-      <h2>Discrete event simulation in python</h2>
-      <ul>
-        <li>Discrete event utilities, with a focus on manufacturing</li>
-        <li>Built on SimPy, NumPy, and SciPy</li>
-        <li>Open source, commercially usable - LGPL license</li>
-      </ul>
-    </div>
   </div>
-</div>
 
 
-<!-- Github "fork me" ribbon -->
-<a href="https://github.com//nexedi/dream">
-  <img style="position: absolute; top: 0; right: 0; border: 0;" src="DREAM/forkme.png" alt="Fork me on GitHub"/></a>
-<div class="content-wrapper">
+  <!-- Github "fork me" ribbon -->
+  <a href="https://github.com//nexedi/dream">
+    <img style="position: absolute; top: 0; right: 0; border: 0;" src="DREAM/forkme.png"
+    alt="Fork me on GitHub" /></a>
+  <div class="content-wrapper">
 
 
-      <div class="content">
-            
+    <div class="content">
+
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body">
-            
-<div class="container-index">
-<div class="container index-upper">
-<!--
+
+            <div class="container-index">
+              <div class="container index-upper">
+                <!--
     - Batches
     - JobShop
     - Project
 -->
 
-<div class="row-fluid">
-<div class="span4 box">
-<h2><p><a class="reference internal" href="#"><em>Task Allocation</em></a></p>
-</h2>
-<blockquote>
-<p>Allocate tasks to constraints resources such as workers or machines.</p>
-<p><strong>Applications:</strong> Manufacturing planning, Job Shop optimisation</p>
-<p><strong>Algorithms:</strong> Ant Colony Optimization</p>
-</blockquote>
-</div>
+                <div class="row-fluid">
+                  <div class="span4 box custom-box">
+                    <h2>Manufacturing Objects</h2>
+                    <ul>
+                      <li>Provision of simulation components for modelling manufacturing systems.</li>
+                      <li>Development of simulation models in simple Python Scripts</li>
+                      <li>Customization of new components</li>
+                      <li>Creation of domain specific object repositories</li>
+                    </ul>
+                  </div>
+                  
+                  <div class="span4 box custom-box">
+                    <h2>Applications</h2>
+                    <ul>
+                      <li>Workflow simulation: Simulate project dedicated manufacturing systems.</li>
+                      <li>Job Shop simulation: Allocate tasks to constraint resources such as workers or machines.</li>
+                      <li>Capacity Planning: Optimize utilization of constrained resources.</li>
+                    </ul>
+                  </div>
 
-<div class="span4 box">
-<h2><p><a class="reference internal" href="#"><em>Capacity Planning</em></a></p>
-</h2>
-<blockquote>
-<p>Optimize utilisation of constrained resources.</p>
-<p><strong>Applications:</strong> Manufacturing planning, Project optimisation</p>
-<p><strong>Algorithms:</strong> Ant Colony Optimization, Genetic Algorithms</p></blockquote>
-</div>
-
-
-<div class="span4 box">
-<h2><p><a class="reference internal" href="#"><em>Built-in Objects</em></a></p>
-</h2>
-<blockquote>
-<p>Comes with a set of existing ready to use objects to model industrial scenarios.</p>
-<p><strong>Applications:</strong> Manufacturing planning, Project optimisation</p>
-</blockquote>
-</div>
-
-</div>
-
-
-  
-<!-- old website content
-
-<div class="row-fluid">
-<div class="span4 box">
-<h2><p><a class="reference internal" href="#"><em>Simulation Engine</em></a></p>
-</h2>
-<blockquote>
-<p>ManPy, the open source simulation engine written in python on top of SimPy.</p>
-<div class="box-links">
-<small class="float-right box-example-links"><p><a class="reference internal" ><em>Full Documentation</em></a></p>
-</small>
-</div>
-</blockquote>
-</div>
-
-<div class="span4 box">
-<h2><p><a class="reference internal" href="#"><em>Knowledge Extraction</em></a></p>
-</h2>
-<blockquote>
-<p>Extracting knowledge from existing data to feed in the simulation engine</p>
-<div class="box-links">
-<small class="float-right box-example-links"><p><a class="reference internal" href="https://github.com/Nexedi/dream/raw/master/KE tool_documentation.pdf"><em>Full Documentation</em></a></p>
-</small>
-</div>
-</blockquote>
-</div>
+                  <div class="span4 box custom-box">
+                    <h2>Interface External Software</h2>
+                    <ul>
+                      <li>KE tool: Connect simulation to organisational data.</li>
+                      <li>DREAM GUI: Build and execute ManPy models in a drag&amp;drop UI.</li>
+                      <li>Interconnect simulation with scenario analysis and optimization.</li>
+                      <li>Interface with ERP5 coming soon</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
 
 
-<div class="span4 box">
-<h2><p><a class="reference internal" href="#"><em>Development Platform</em></a></p>
-</h2>
-<blockquote>
-<p>Learn how to easily use tailor the DREAM platform for your specific needs.</p>
-<div class="box-links">
-<small class="float-right example-links"><p><a class="reference internal" href="https://github.com/Nexedi/dream/raw/master/DREAM%20Platform%20Developer%20Tutorial.pdf"><em>Full Documentation</em></a></p>
-</small>
-</div>
-</blockquote>
-</div>
-
-</div>
--->
-
-</div> <!-- container -->
-
-
-<div class="container index-lower">
-    <div class="row-fluid">
-        <div>
-            <h4>More information</h4>
-            <li><em>Full documentation :</em> Read the <a href="https://github.com/Nexedi/dream/raw/master/ManPy_documentation.pdf">full documentation</a></li>
-            <li><em>Publications :</em> See our <a href="publications.html">list of publications (TODO)</a></li>
-            <li><em>Commercial support ?</em> Get support from <a href="commercial_support.html">experts</a></li>
-            <li><em>Community support ?</em> See <a href="http://stackoverflow.com/questions/tagged/manpy">stackoverflow</a> #manpy </li>
-        </div>
-
-    </div>
-</div>
-</div>
+              <div class="container index-lower">
+                <div class="row-fluid">
+                  <div class="span4 box">
+                    <h4>Getting Started</h4>
+                    <ul>
+                      <li><a href="server.html">ManPy Single Server Example</a></li>
+                      <li><a href="">ManPy JSON Web Service Example</a></li>
+                    </ul>
+                  </div>
+                  <div class="span8 box custom-infobox">
+                    <h4>More information</h4>
+                    <ul>
+                      <li><em>Full documentation :</em> Read the <a href="https://github.com/Nexedi/dream/raw/master/ManPy_documentation.pdf">full documentation</a></li>
+                      <!--<li><em>Publications :</em> See our <a href="publications.html">list of publications (TODO)</a></li>-->
+                      <li><em>Commercial :</em> Get support from <a href="http://www.nexedi.com/contact" title="Nexedi - Open Source Software | Contact Expert Ingeneers" target="_blank">experts</a></li>
+                      <li><em>Community support :</em> See <a href="http://stackoverflow.com/questions/tagged/manpy">stackoverflow</a> #manpy </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
 
 
           </div>
         </div>
       </div>
-        <div class="clearer"></div>
+      <div class="clearer"></div>
     </div>
 
     <!--Bottom of index page logos-->
-<div class="container index-upper" >
-    <div class="row-fluid">
-      <div class="footer">
+    <div class="container index-upper">
+      <div class="row-fluid">
+        <div class="footer">
           <div class="span4">
-          Created as part of the FP7 DREAM Project.
+            Created as part of the FP7 DREAM Project.
           </div>
           <div class="span4">
-               <img src="DREAM/DREAM_logo_small.png" title="DREAM">
-               <img src="DREAM/FP7_logo_small.png" title="DREAM">
+            <a href="http://dream-simulation.eu/" target="_blank" title="DREAM Website">
+              <img src="DREAM/DREAM_logo_small.png" alt="Logo DREAM | simulation based application Decision support in Real-time for Efficient Agile Manufacturing">
+            </a>
+            <a href="http://ec.europa.eu/research/fp7/index_en.cfm" target="_blank" title="EU Research &amp; Innovation">
+              <img src="DREAM/FP7_logo_small.png" alt="Logo FP7 | EU Research and Innovation">
+            </a>
           </div>
-         <div class="span4">
-            
-         </div>
+          <div class="span4">
+
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
-</div>
+  </div>
 
-     
-<table class="gstl_50 gssb_c" style="width: 192px; display: none; top: 38px; position: absolute; left: 859px;" cellpadding="0" cellspacing="0"><tbody><tr><td class="gssb_f"></td><td style="width: 100%;" class="gssb_e"></td></tr></tbody></table>
 
-</body></html>
+  <table class="gstl_50 gssb_c" style="width: 192px; display: none; top: 38px; position: absolute; left: 859px;"
+  cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="gssb_f"></td>
+        <td style="width: 100%;" class="gssb_e"></td>
+      </tr>
+    </tbody>
+  </table>
+
+</body>
+
+</html>
