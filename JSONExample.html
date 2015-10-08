@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<!-- Yes, this website is "inspired" by scikit-learn website. Thank you -->
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<HTML>
+
+   <head>
+      <TITLE>
+         JSON Single Server Example
+      </TITLE>
+   </head>
+	<BODY>
+		<H1>JSON Single Server Example</H1>
+		
+		<P>This example provides the same model as in <a href="server.html">ManPy Single Server Example</a>, 
+		but now the model is built in JSON and passed to ManPy as an argument.</P> 
+		
+		<P>The full JSON input of the model is given in \dream\simulation\Examples\SingleServerModelInput.json. 
+		Under node we have the simulation objects that correspond to Figure 2. For example, the Exit is defined as:</P> 
+
+		<pre><code>        
+			&quot;E1&quot;: {
+				&quot;_class&quot;: &quot;Dream.Exit&quot;,
+				&quot;name&quot;: &quot;Exit&quot;
+				}
+		</code></pre>
+		
+		<P>Every entry in node describes one object and the key (e.g. “E1”) is the id of 
+		the ManPy object that should be unique (no two nodes with the same id). The value is a JSON object that contains all the attributes. 
+		For E1 we have only two:</P> 
+		
+		<ul>
+		  <li>class points to the ManPy class of the object. “Dream” is used as a convention to point to dream\simulation where generic ManPy components are. Nonetheless, an absolute path can also be used, e.g. dream.simulation.Exit.Exit (since Exit class is in dream\simulation\Exit.py) </li>
+		  <li>name: contains the name of the object.</li>
+		</ul>
+		<P>In other elements we may have to input more parameters. For example in Queue we have the capacity:</P> 
+		
+		<pre><code>        
+			&quot;Q1&quot;: {
+				&quot;_class&quot;: &quot;Dream.Queue&quot;,
+				&quot;capacity&quot;: 1,
+				&quot;name&quot;: &quot;Queue&quot;
+				}
+		</code></pre>
+
+		<P>For the Machine we need to define the processing time. This is given below:</P> 
+		
+		<pre><code> 
+			&quot;M1&quot;: {
+				&quot;_class&quot;: &quot;Dream.Machine&quot;,
+				&quot;name&quot;: &quot;Machine&quot;,
+				&quot;processingTime&quot;: {
+					&quot;Fixed&quot;: {
+						&quot;mean&quot;: 0.25
+						}
+					}
+				}
+		</code></pre>
+		<P>Note that the distribution is defined similarly to the style of when defining distributions using ManPy through Python 
+		(see <a href="server.html">ManPy Single Server Example</a>).</P> 
+		<P>Similarly we define the inter-arrival time for the source:P> 
+		<pre><code> 
+			&quot;S1&quot;: {
+				&quot;_class&quot;: &quot;Dream.Source&quot;,
+				&quot;name&quot;: &quot;Source&quot;,
+				&quot;entity&quot;: &quot;Dream.Part&quot;,
+				&quot;interArrivalTime&quot;: {
+					&quot;Fixed&quot;: {
+						&quot;mean&quot;: 0.5
+						}
+					}
+				}
+		</code></pre>
+
+		<P>Under edge the connections between the object in the style of arrows are defined. Below we give example of an edge:</P> 
+		<pre><code> 
+			&quot;2&quot;: {
+				&quot;_class&quot;: &quot;Dream.Edge&quot;,
+				&quot;source&quot;: &quot;Q1&quot;,
+				&quot;destination&quot;: M1
+				}
+		</code></pre>
+
+		<P>Again, the key of the object is the id of the edge that should be unique (no two edges with the same id). 
+		_class defines the class of the node. The default value is Dream.Edge. 
+		source defines the object that the edge starts from and destination the object that it points to. </P> 
+
+		<P>Finally, generic information about the model is defined in general:</P> 
+		<pre><code> 
+			&quot;general&quot;: {
+				&quot;maxSimTime&quot;: 1440,
+				&quot;numberOfReplications&quot;: 1,
+				&quot;trace&quot;: &quot;No&quot;
+				}
+		</code></pre>
+		
+		<P>The above definition dictates that we have one replication of 1440 time units. No trace will be returned.</P> 
+		<P>Passing this JSON to dream\simulation\LineGenerationJSON.py, 
+		the ManPy model is run and the result is returned. 
+		The full result is in \dream\simulation\Examples\SingleServerModelReuslt.json.</P> 
+		
+		<P>In the elementList we can see results that all simulation components return. For the Exit for example it is:</P> 
+
+		<pre><code> 
+			{
+				&quot;_class&quot;: &quot;Dream.Exit&quot;,
+				&quot;id&quot;: &quot;E1&quot;,
+				&quot;family&quot;: &quot;Exit&quot;,
+				&quot;results&quot;: {
+					&quot;throughput&quot;: [
+						2880
+					],
+					&quot;takt_time&quot;: [
+						0.49991319444444443
+					],
+					&quot;lifespan&quot;: [
+						0.25
+					]
+				}
+			} 
+		</code></pre>
+		
+		<P>Note the family attribute. This can help if external software wants to group object types (
+		e.g. Exit and ExitJobShop) and process the results they return similarly.</P> 
+		<P>All results like throughput are given in a list so that if we have many replications the results of all runs are returned.</P> 
+		<P>Some objects can output specific stats only if the user sets a flag on. So for the Queue we can set gatherWipStat to 1 like below:</P> 
+
+		<pre><code>        
+			&quot;Q1&quot;: {
+				&quot;_class&quot;: &quot;Dream.Queue&quot;,
+				&quot;capacity&quot;: 1,
+				<font size="3" color="red">&quot;gatherWipStat&quot;: &quot;1&quot;,</font>
+				&quot;name&quot;: &quot;Queue&quot;
+				}
+		</code></pre>
+		<P>Then in the output the Queue will give a list like the below:</P> 
+
+		<pre><code>        
+			{
+				&quot;_class&quot;: &quot;Dream.Queue&quot;,
+				&quot;id&quot;: &quot;Q1&quot;,
+				&quot;family&quot;: &quot;Buffer&quot;,
+				&quot;results&quot;: {
+				&quot;wip_stat_list&quot;: [
+					[
+						[
+							0,
+							0
+						],
+						[
+							0,
+							1
+						],
+						[
+							0,
+							0
+						],
+						[
+							0.5,
+							1
+						],
+						[
+							0.5,
+							0
+						],
+						...
+						...
+		</code></pre>
+		
+		<P>The format of every entry is [simulation time, number of entities]. 
+		This way external software can collect the data and calculate statistics for the Queue, output graphs etc.       
+		</P> 
+
+
+	</BODY>
+
+</html>
