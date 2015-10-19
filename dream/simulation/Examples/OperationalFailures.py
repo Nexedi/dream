@@ -1,6 +1,8 @@
 from dream.simulation.imports import Machine, Queue, NonStarvingEntry, Exit, Part, EventGenerator,ExcelHandler, Part  
 from dream.simulation.Globals import runSimulation, G
 import random
+from random import Random
+Rnd = Random(3) 
 
 p=0.01
 g=0.01
@@ -111,7 +113,7 @@ def controllerMethod():
             break
 
 def createRandomNumber():
-    return random.uniform(0,1)
+    return Rnd.uniform(0,1)
 
 
 #define the objects of the model 
@@ -120,7 +122,7 @@ NS2=NonStarvingEntry('NS2','Entry2',entityData={'_class':'Dream.Part','status':'
 M1=OpMachine('M1','Machine1', processingTime={'Fixed':{'mean':0.1}})
 M2=OpMachine('M2','Machine2', processingTime={'Fixed':{'mean':0.1}})
 M3=OpMachine('M3','Machine3', processingTime={'Fixed':{'mean':0.1}})
-B123=OpQueue('B123','Queue', capacity=45)
+B123=OpQueue('B123','Queue', capacity=10)
 E=OpExit('E1','Exit')  
 Controller=EventGenerator('EV','Controller',start=0,interval=1,method=controllerMethod)
 
@@ -142,7 +144,7 @@ for obj in objectList:
 E.GoodExits=[]
     
 # call the runSimulation giving the objects and the length of the experiment
-runSimulation(objectList, 1000.01, numberOfReplications=50)
+runSimulation(objectList, 1000, numberOfReplications=50)
 
 #print the results
 PRt=sum(E.Exits)/float(len(E.Exits))
