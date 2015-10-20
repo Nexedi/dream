@@ -17,7 +17,7 @@ f=0.2
 maxSimTime=1000
 
 # the capacity of B123
-capacity=3
+capacity=45 # float('inf')
 
 class OpQueue(Queue):
     # allow to be locked between the time periods
@@ -25,6 +25,14 @@ class OpQueue(Queue):
         if self.locked:
             return False
         return Queue.canAccept(self, callerObject)
+    
+    #override so that it chooses first M1 and the M2
+    def selectGiver(self,possibleGivers=[]):
+        if len(M1.getActiveObjectQueue()):
+            return M1
+        if len(M2.getActiveObjectQueue()):
+            return M2
+        return None
     
 class OpExit(Exit):
     # set numGoodParts=0 at every replication
@@ -89,14 +97,18 @@ def controllerMethod():
         rn2=createRandomNumber()
         if M.state==1:
             if rn1<M.p:
+#                 print G.env.now, M.id,'to 0 (from 1)'
                 M.state=0
             elif rn2<M.g:
+#                 print G.env.now, M.id,'to -1'
                 M.state=-1    
         elif M.state==0:
             if rn1<M.r:
+#                 print G.env.now, M.id,'to 1'
                 M.state=1
         elif M.state==-1:
             if rn1<M.f:
+#                 print G.env.now, M.id,'to 0 (from -1)'
                 M.state=0        
     
     # unlock E and let part get from M3 to E        
@@ -114,7 +126,7 @@ def controllerMethod():
     M3.locked=True
     
     # unlock B123 and let parts get from M1 and M2 to B123        
-    B123.locked=False  
+    B123.locked=False     
     if ((len(M1.getActiveObjectQueue())) and (not M1.state==0) \
         or ((len(M2.getActiveObjectQueue())) and not M2.state==0))\
             and len(B123.getActiveObjectQueue())<B123.capacity:
@@ -195,7 +207,7 @@ M3.r=0.1
 M3.f=0.2
 
 # call the runSimulation giving the objects and the length of the experiment
-runSimulation(objectList, maxSimTime, numberOfReplications=5)
+runSimulation(objectList, maxSimTime, numberOfReplications=50,trace='No')
 
 #print the results
 PRt=sum(E.Exits)/float(len(E.Exits))
@@ -207,6 +219,7 @@ print 'PRg=',PRg/float(maxSimTime)
 for M in [M1,M2,M3]:
     G=sum(M.GoodExits)/float(len(M.GoodExits))
     print 'PRg'+M.id,'=',G/float(maxSimTime)
-
+    
+# ExcelHandler.outputTrace('OperationalFailures')
 print "running time=",time.time()-start
 
