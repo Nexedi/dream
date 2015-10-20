@@ -10,8 +10,11 @@ g=0.01
 r=0.1
 f=0.2
 
+# simulation time
+maxSimTime=1000
+
 # the capacity of B123
-capacity=35
+capacity=3
 
 class OpQueue(Queue):
     # allow to be locked between the time periods
@@ -41,7 +44,7 @@ class OpExit(Exit):
     
     # update the GoodExits list
     def postProcessing(self):
-        Exit.postProcessing(self, MaxSimtime=1000.1)
+        Exit.postProcessing(self, MaxSimtime=maxSimTime)
         self.GoodExits.append(self.numGoodParts)
 
 class OpMachine(Machine):
@@ -57,6 +60,7 @@ class OpMachine(Machine):
     # set state=1 at the start of each replication
     def initialize(self):
         Machine.initialize(self)
+        self.numGoodParts=0
         self.state=1
     
     # if the state is -1 set that the disposed Entity is 'Bad'
@@ -64,7 +68,14 @@ class OpMachine(Machine):
         activeEntity=Machine.removeEntity(self, entity)
         if self.state==-1:
             activeEntity.status='Bad'
+        else:
+            self.numGoodParts+=1
         return activeEntity
+    
+    # update the GoodParts list
+    def postProcessing(self):
+        Machine.postProcessing(self, MaxSimtime=maxSimTime)
+        self.GoodExits.append(self.numGoodParts)
 
 # method invoked by the generator at every time period     
 def controllerMethod():
@@ -74,15 +85,15 @@ def controllerMethod():
         rn1=createRandomNumber()
         rn2=createRandomNumber()
         if M.state==1:
-            if rn1<p:
+            if rn1<M.p:
                 M.state=0
-            elif rn2<g:
+            elif rn2<M.g:
                 M.state=-1    
         elif M.state==0:
-            if rn1<r:
+            if rn1<M.r:
                 M.state=1
         elif M.state==-1:
-            if rn1<f:
+            if rn1<M.f:
                 M.state=0        
     
     # unlock E and let part get from M3 to E        
@@ -108,7 +119,6 @@ def controllerMethod():
         i=0
         while (len(M1.getActiveObjectQueue()) and (not M1.state==0)) \
             or (len(M2.getActiveObjectQueue()) and (not M2.state==0)):
-            # print G.env.now, len(M1.getActiveObjectQueue()), M1.state, len(M2.getActiveObjectQueue()), M2.state, len(B123.getActiveObjectQueue())
             yield G.env.timeout(0)
             if len(B123.getActiveObjectQueue())==B123.capacity:
                 break    
@@ -162,14 +172,37 @@ for obj in objectList:
 
 # GoodExits will keep the number of good parts produced in every replication    
 E.GoodExits=[]
-    
+
+# GoodParts will keep the number of good parts a machine produced in every replication
+for M in [M1,M2,M3]:
+    M.GoodExits=[]
+
+# the transition probabilities for machines
+M1.p=0.01
+M1.g=0.01
+M1.r=0.1
+M1.f=0.2
+M2.p=0.01
+M2.g=0.01
+M2.r=0.1
+M2.f=0.2
+M3.p=0.01
+M3.g=0.01
+M3.r=0.1
+M3.f=0.2
+
 # call the runSimulation giving the objects and the length of the experiment
-runSimulation(objectList, 1000, numberOfReplications=50)
+runSimulation(objectList, maxSimTime, numberOfReplications=5)
 
 #print the results
 PRt=sum(E.Exits)/float(len(E.Exits))
 PRg=sum(E.GoodExits)/float(len(E.GoodExits))
 print E.Exits
 print E.GoodExits
-print 'PRt=',PRt/float(1000)
-print 'PRg=',PRg/float(1000)
+print 'PRt=',PRt/float(maxSimTime)
+print 'PRg=',PRg/float(maxSimTime)
+for M in [M1,M2,M3]:
+    G=sum(M.GoodExits)/float(len(M.GoodExits))
+    print 'PRg'+M.id,'=',G/float(maxSimTime)
+
+
