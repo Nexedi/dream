@@ -3,6 +3,9 @@ from dream.simulation.Globals import runSimulation, G
 import random
 from random import Random
 Rnd = Random(3) 
+import time
+
+start=time.time()
 
 # transition probabilities
 p=0.01
@@ -205,4 +208,5 @@ for M in [M1,M2,M3]:
     G=sum(M.GoodExits)/float(len(M.GoodExits))
     print 'PRg'+M.id,'=',G/float(maxSimTime)
 
+print "running time=",time.time()-start
 
