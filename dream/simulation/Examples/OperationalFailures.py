@@ -221,8 +221,8 @@ print E.GoodExits
 print 'PRt=',PRt/float(maxSimTime)
 print 'PRg=',PRg/float(maxSimTime)
 for M in [M1,M2,M3]:
-    G=sum(M.GoodExits)/float(len(M.GoodExits))
-    print 'PRg'+M.id,'=',G/float(maxSimTime)
+    GE=sum(M.GoodExits)/float(len(M.GoodExits))
+    print 'PRg'+M.id,'=',GE/float(maxSimTime)
     
 # ExcelHandler.outputTrace('OperationalFailures')
 print "running time=",time.time()-start
