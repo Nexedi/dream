@@ -2,7 +2,7 @@ from dream.simulation.imports import Machine, Queue, NonStarvingEntry, Exit, Par
 from dream.simulation.Globals import runSimulation, G
 import random
 from random import Random
-Rnd = Random(3) 
+Rnd = Random(20) 
 import time
 
 start=time.time()
@@ -17,7 +17,7 @@ f=0.2
 maxSimTime=1000
 
 # the capacity of B123
-capacity=3 # float('inf')
+capacity=42 # float('inf')
 
 class OpQueue(Queue):
     # allow to be locked between the time periods
@@ -136,6 +136,8 @@ def controllerMethod():
         i=0
         while (len(M1.getActiveObjectQueue()) and (not M1.state==0)) \
             or (len(M2.getActiveObjectQueue()) and (not M2.state==0)):
+            if (len(M1.getActiveObjectQueue()) and (not M1.state==0)):
+                B123.giver=M1
             yield G.env.timeout(0)
             if len(B123.getActiveObjectQueue())==B123.capacity:
                 break    
@@ -209,7 +211,7 @@ M3.r=0.1
 M3.f=0.2
 
 # call the runSimulation giving the objects and the length of the experiment
-runSimulation(objectList, maxSimTime, numberOfReplications=50,trace='No')
+runSimulation(objectList, maxSimTime, numberOfReplications=1,trace='Yes')
 
 #print the results
 PRt=sum(E.Exits)/float(len(E.Exits))
@@ -222,6 +224,6 @@ for M in [M1,M2,M3]:
     G=sum(M.GoodExits)/float(len(M.GoodExits))
     print 'PRg'+M.id,'=',G/float(maxSimTime)
     
-# ExcelHandler.outputTrace('OperationalFailures')
+ExcelHandler.outputTrace('OperationalFailures')
 print "running time=",time.time()-start
 
