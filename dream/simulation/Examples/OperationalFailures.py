@@ -7,17 +7,11 @@ import time
 
 start=time.time()
 
-# transition probabilities
-p=0.01
-g=0.01
-r=0.1
-f=0.2
-
 # simulation time
 maxSimTime=10000
 
 # the capacity of B123
-capacity=3 # float('inf')
+capacity=float('inf')
 
 class OpQueue(Queue):
     # allow to be locked between the time periods
