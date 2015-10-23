@@ -8,10 +8,10 @@ import time
 start=time.time()
 
 # simulation time
-maxSimTime=10
+maxSimTime=200
 
 # the capacity of B123
-capacity=3 #float('inf')
+capacity=42 #float('inf')
 
 class OpQueue(Queue):
     # allow to be locked between the time periods
@@ -239,4 +239,33 @@ for M in [M1,M2,M3]:
     
 # ExcelHandler.outputTrace('OperationalFailures')
 print "running time=",time.time()-start
+
+from rpy2 import robjects
+from rpy2.robjects.vectors import IntVector, FloatVector, StrVector
+from rpy2.robjects.packages import importr
+from rpy2.rinterface import NA_Real
+
+
+# to plot B123 if we want
+base = importr("base")
+stats = importr("stats")
+grdevices = importr("grDevices")
+graphics = importr("graphics")
+
+graphWipStatList=list(B123.wipStatList)
+index=0
+for i in range(len(B123.wipStatList)-1):
+    if B123.wipStatList[i][0]==B123.wipStatList[i+1][0]:
+        del graphWipStatList[index]
+    else:
+        index+=1
+     
+
+simTime = [x[0] for x in graphWipStatList]
+bufferLevel = [x[1] for x in graphWipStatList]
+
+grdevices.png("B123 Buffer Level.png")
+graphics.plot(simTime, bufferLevel, xlab="Simulation Time", ylab="Buffer Level", col="red", type="l", tck=1)
+graphics.title("Buffer level time series")
+grdevices.dev_off()
 
