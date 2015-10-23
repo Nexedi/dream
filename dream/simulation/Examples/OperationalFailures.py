@@ -8,7 +8,7 @@ import time
 start=time.time()
 
 # simulation time
-maxSimTime=10000
+maxSimTime=10
 
 # the capacity of B123
 capacity=3 #float('inf')
@@ -28,6 +28,17 @@ class OpQueue(Queue):
             return M2
         return None
     
+    # calculate average buffer level 
+    def postProcessing(self):
+        Queue.postProcessing(self, MaxSimtime=maxSimTime)
+        totalBufferLevel=0
+        for i in range(0,len(self.wipStatList)-1):
+            bufferLevel=self.wipStatList[i][1]
+            duration=self.wipStatList[i+1][0]-self.wipStatList[i][0]
+            totalBufferLevel+=bufferLevel*duration
+        averageBufferLevel=totalBufferLevel/maxSimTime
+        self.BufferLevel.append(averageBufferLevel)
+        
 class OpExit(Exit):
     # set numGoodParts=0 at every replication
     def initialize(self):
@@ -166,7 +177,7 @@ NS2=NonStarvingEntry('NS2','Entry2',entityData={'_class':'Dream.Part','status':'
 M1=OpMachine('M1','Machine1', processingTime={'Fixed':{'mean':0.1}})
 M2=OpMachine('M2','Machine2', processingTime={'Fixed':{'mean':0.1}})
 M3=OpMachine('M3','Machine3', processingTime={'Fixed':{'mean':0.1}})
-B123=OpQueue('B123','Queue', capacity=capacity)
+B123=OpQueue('B123','Queue', capacity=capacity,gatherWipStat=True)
 E=OpExit('E1','Exit')  
 Controller=EventGenerator('EV','Controller',start=0,interval=1,method=controllerMethod)
 
@@ -193,6 +204,9 @@ E.GoodExits=[]
 for M in [M1,M2,M3]:
     M.GoodExits=[]
 
+# BufferLevel will keep the average buffer level for each replication
+B123.BufferLevel=[]
+
 # the transition probabilities for machines
 M1.p=0.01
 M1.g=0.01
@@ -208,15 +222,17 @@ M3.r=0.1
 M3.f=0.2
 
 # call the runSimulation giving the objects and the length of the experiment
-runSimulation(objectList, maxSimTime, numberOfReplications=20,trace='No')
+runSimulation(objectList, maxSimTime, numberOfReplications=1,trace='No')
 
 #print the results
 PRt=sum(E.Exits)/float(len(E.Exits))
 PRg=sum(E.GoodExits)/float(len(E.GoodExits))
+B123ABF=sum(B123.BufferLevel)/float(len(B123.BufferLevel))
 print E.Exits
 print E.GoodExits
 print 'PRt=',PRt/float(maxSimTime)
 print 'PRg=',PRg/float(maxSimTime)
+print 'B123 average buffer level=',B123ABF
 for M in [M1,M2,M3]:
     GE=sum(M.GoodExits)/float(len(M.GoodExits))
     print 'PRg'+M.id,'=',GE/float(maxSimTime)
