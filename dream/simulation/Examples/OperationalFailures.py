@@ -11,7 +11,7 @@ start=time.time()
 maxSimTime=10000
 
 # the capacity of B123
-capacity=float('inf')
+capacity=3 #float('inf')
 
 class OpQueue(Queue):
     # allow to be locked between the time periods
@@ -130,8 +130,11 @@ def controllerMethod():
         i=0
         while (len(M1.getActiveObjectQueue()) and (not M1.state==0)) \
             or (len(M2.getActiveObjectQueue()) and (not M2.state==0)):
+            # define the giver based on the state of the machines also
             if (len(M1.getActiveObjectQueue()) and (not M1.state==0)):
                 B123.giver=M1
+            else:
+                B123.giver=M2
             yield G.env.timeout(0)
             if len(B123.getActiveObjectQueue())==B123.capacity:
                 break    
@@ -140,9 +143,9 @@ def controllerMethod():
     # unlock M1 and M2 and let parts get from NS1 to M1 and from NS2 to M2           
     M1.locked=False
     M2.locked=False    
-    if len(M1.getActiveObjectQueue())==0:
+    if (len(M1.getActiveObjectQueue())==0) and (not M1.state==0):
         Controller.sendSignal(sender=NS1, receiver=M1,signal=M1.isRequested)
-    if len(M2.getActiveObjectQueue())==0:
+    if (len(M2.getActiveObjectQueue())==0) and (not M2.state==0):
         Controller.sendSignal(sender=NS2, receiver=M2,signal=M2.isRequested)
     while 1:
         yield G.env.timeout(0) 
