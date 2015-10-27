@@ -8,7 +8,7 @@ import time
 start=time.time()
 
 # simulation time
-maxSimTime=200
+maxSimTime=10000
 
 # the capacity of B123
 capacity=42 #float('inf')
@@ -28,16 +28,16 @@ class OpQueue(Queue):
             return M2
         return None
     
-    # calculate average buffer level 
-    def postProcessing(self):
-        Queue.postProcessing(self, MaxSimtime=maxSimTime)
-        totalBufferLevel=0
-        for i in range(0,len(self.wipStatList)-1):
-            bufferLevel=self.wipStatList[i][1]
-            duration=self.wipStatList[i+1][0]-self.wipStatList[i][0]
-            totalBufferLevel+=bufferLevel*duration
-        averageBufferLevel=totalBufferLevel/maxSimTime
-        self.BufferLevel.append(averageBufferLevel)
+#     # calculate average buffer level 
+#     def postProcessing(self):
+#         Queue.postProcessing(self, MaxSimtime=maxSimTime)
+#         totalBufferLevel=0
+#         for i in range(0,len(self.wipStatList)-1):
+#             bufferLevel=self.wipStatList[i][1]
+#             duration=self.wipStatList[i+1][0]-self.wipStatList[i][0]
+#             totalBufferLevel+=bufferLevel*duration
+#         averageBufferLevel=totalBufferLevel/maxSimTime
+#         self.BufferLevel.append(averageBufferLevel)
         
 class OpExit(Exit):
     # set numGoodParts=0 at every replication
@@ -95,7 +95,9 @@ class OpMachine(Machine):
 
 # method invoked by the generator at every time period     
 def controllerMethod():
-    
+    # at the start of the simulation reset the G.totalWIP counter
+    if G.env.now==0:
+        G.totalWIP=0
     # for every machine calculate the state (based on transition probabilities)
     for M in [M1,M2,M3]:
         rn1=createRandomNumber()
@@ -165,6 +167,14 @@ def controllerMethod():
             M1.locked=True
             M2.locked=True
             break
+    
+    # count the total WIP for the machines and the Queue
+    for obj in [M1,M2,M3,B123]:
+        G.totalWIP+=len(obj.getActiveObjectQueue())
+    # at the end of the simulation append to the list that keeps for all replications
+    if G.env.now==G.maxSimTime-1:
+        G.AverageWIP.append(G.totalWIP/float(G.maxSimTime))
+    
 
 # returns a number from the uniform distribution (0,1)
 def createRandomNumber():
@@ -200,12 +210,15 @@ for obj in objectList:
 # GoodExits will keep the number of good parts produced in every replication    
 E.GoodExits=[]
 
+# variables to keep the WIP
+G.totalWIP=0
+G.AverageWIP=[]
+
 # GoodParts will keep the number of good parts a machine produced in every replication
 for M in [M1,M2,M3]:
     M.GoodExits=[]
 
-# BufferLevel will keep the average buffer level for each replication
-B123.BufferLevel=[]
+
 
 # the transition probabilities for machines
 M1.p=0.01
@@ -222,20 +235,24 @@ M3.r=0.1
 M3.f=0.2
 
 # call the runSimulation giving the objects and the length of the experiment
-runSimulation(objectList, maxSimTime, numberOfReplications=1,trace='No')
+runSimulation(objectList, maxSimTime, numberOfReplications=20,trace='No')
 
 #print the results
 PRt=sum(E.Exits)/float(len(E.Exits))
 PRg=sum(E.GoodExits)/float(len(E.GoodExits))
-B123ABF=sum(B123.BufferLevel)/float(len(B123.BufferLevel))
+# B123ABF=sum(B123.BufferLevel)/float(len(B123.BufferLevel))
 print E.Exits
 print E.GoodExits
+print G.AverageWIP
 print 'PRt=',PRt/float(maxSimTime)
 print 'PRg=',PRg/float(maxSimTime)
-print 'B123 average buffer level=',B123ABF
+# print 'B123 average buffer level=',B123ABF
 for M in [M1,M2,M3]:
     GE=sum(M.GoodExits)/float(len(M.GoodExits))
     print 'PRg'+M.id,'=',GE/float(maxSimTime)
+    
+AVGWIP=sum(G.AverageWIP)/float(len(G.AverageWIP))
+print 'AVGWIP=',AVGWIP
     
 # ExcelHandler.outputTrace('OperationalFailures')
 print "running time=",time.time()-start
@@ -246,26 +263,26 @@ from rpy2.robjects.packages import importr
 from rpy2.rinterface import NA_Real
 
 
-# to plot B123 if we want
-base = importr("base")
-stats = importr("stats")
-grdevices = importr("grDevices")
-graphics = importr("graphics")
-
-graphWipStatList=list(B123.wipStatList)
-index=0
-for i in range(len(B123.wipStatList)-1):
-    if B123.wipStatList[i][0]==B123.wipStatList[i+1][0]:
-        del graphWipStatList[index]
-    else:
-        index+=1
-     
-
-simTime = [x[0] for x in graphWipStatList]
-bufferLevel = [x[1] for x in graphWipStatList]
-
-grdevices.png("B123 Buffer Level.png")
-graphics.plot(simTime, bufferLevel, xlab="Simulation Time", ylab="Buffer Level", col="red", type="l", tck=1)
-graphics.title("Buffer level time series")
-grdevices.dev_off()
+# # to plot B123 if we want
+# base = importr("base")
+# stats = importr("stats")
+# grdevices = importr("grDevices")
+# graphics = importr("graphics")
+# 
+# graphWipStatList=list(B123.wipStatList)
+# index=0
+# for i in range(len(B123.wipStatList)-1):
+#     if B123.wipStatList[i][0]==B123.wipStatList[i+1][0]:
+#         del graphWipStatList[index]
+#     else:
+#         index+=1
+#      
+# 
+# simTime = [x[0] for x in graphWipStatList]
+# bufferLevel = [x[1] for x in graphWipStatList]
+# 
+# grdevices.png("B123 Buffer Level.png")
+# graphics.plot(simTime, bufferLevel, xlab="Simulation Time", ylab="Buffer Level", col="red", type="l", tck=1)
+# graphics.title("Buffer level time series")
+# grdevices.dev_off()
 
