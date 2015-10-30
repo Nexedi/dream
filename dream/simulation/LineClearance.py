@@ -40,6 +40,19 @@ class LineClearance(Queue):
     #            only to the potential giver that will give the entity.
     # =======================================================================  
     def canAccept(self, callerObject=None): 
+
+        requesting=None
+        current=None
+
+        if callerObject:
+            if len(callerObject.getActiveObjectQueue()):
+                requesting= callerObject.getActiveObjectQueue()[0]
+        if len(self.getActiveObjectQueue()):
+            current=self.getActiveObjectQueue()[0]
+        if requesting and current:
+            if requesting.parentBatch!=current.parentBatch:
+                return False
+
         # get active and giver objects
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
