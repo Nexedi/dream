@@ -81,21 +81,3 @@ class LineClearance(Queue):
                     and giverObjectQueue[0].type == 'SubBatch'\
                     and giverObjectQueue[0].batchId == activeObjectQueue[0].batchId
     
-    def canAcceptAndIsRequested(self,callerObject=None):
-        # get the active and the giver objects
-        activeObject=self.getActiveObject()
-        activeObjectQueue=self.getActiveObjectQueue()
-#         giverObject=self.getGiverObject()
-        giverObject=callerObject
-        assert giverObject, 'there must be a caller for canAcceptAndIsRequested'
-        giverObjectQueue = giverObject.getActiveObjectQueue()
-        
-        # check if there is a place available and the potential giver has an entity to dispose
-        if len(activeObjectQueue)==0:
-            return giverObject.haveToDispose(activeObject) and\
-                    giverObjectQueue[0].type == 'SubBatch'
-        else:
-            return len(activeObjectQueue)<self.capacity and \
-                    giverObject.haveToDispose(activeObject) and \
-                    giverObjectQueue[0].type == 'SubBatch' and \
-                    giverObjectQueue[0].batchId==activeObjectQueue[0].batchId
