@@ -115,50 +115,11 @@ class BatchesStochasticACO(BatchesACO):
                 ant['key'] = ant_key
                 ant['input'] = ant_data
                 scenario_list.append(ant)
-                       
-#         if distributor is None:
-#             if multiprocessorCount:
-#                 self.logger.info("running multiprocessing ACO with %s processes" % multiprocessorCount)
-#                 # We unset our signal handler to print traceback at the end
-#                 # otherwise logs are confusing. 
-#                 sigterm_handler = signal.getsignal(signal.SIGTERM)
-#                 pool = Pool(processes=multiprocessorCount)
-#                 try:
-#                     signal.signal(signal.SIGTERM, signal.SIG_DFL)
-#                     scenario_list = pool.map(runAntInSubProcess, scenario_list)
-#                     pool.close()
-#                     pool.join()
-#                 finally:
-#                     signal.signal(signal.SIGTERM, sigterm_handler)
-#             else:
-#                 # synchronous
+        
+        # run the deterministic ants               
         for ant in scenario_list:
             ant['result'] = self.runOneScenario(ant['input'])['result']
         
-#         else: # asynchronous
-#             self.logger.info("Registering a job for %s scenarios" % len(scenario_list))
-#             start_register = time.time()
-#             job_id = distributor.requestSimulationRun(
-#                 [json.dumps(x).encode('zlib').encode('base64') for x in scenario_list])
-#             self.logger.info("Job registered as %s (took %0.2fs)" % (job_id, time.time() - start_register ))
-# 
-#             while True:
-#                 time.sleep(1.)
-#                 result_list = distributor.getJobResult(job_id)
-#                 # The distributor returns None when calculation is still ongoing,
-#                 # or the list of result in the same order.
-#                 if result_list is not None:
-#                     self.logger.info("Job %s terminated" % job_id)
-#                     break
-# 
-#             for ant, result in zip(scenario_list, result_list):
-#                 result = json.loads(result)
-#                 if 'result' in result: # XXX is this still needed ???
-#                   result = result['result']
-#                   assert "result_list" in result
-#                 else:
-#                   result = {'result_list': [result]}
-#                 ant['result'] = result
 
         for ant in scenario_list:
             ant['score'] = self._calculateAntScore(ant)
