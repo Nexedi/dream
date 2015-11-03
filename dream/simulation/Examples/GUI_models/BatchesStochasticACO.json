@@ -400,6 +400,16 @@
         "priority": 6, 
         "title": "Station Utilization", 
         "type": "object_view"
+      },
+      "view_output_ACO_spreadsheet": {
+        "configuration": {
+          "handsontable_options": {}, 
+          "output_id": "output_ACO_spreadsheet"
+        }, 
+        "gadget": "Output_viewDownloadFile", 
+        "priority": 20, 
+        "title": "ACO Details", 
+        "type": "object_view"
       }
     }, 
     "post_processing": {

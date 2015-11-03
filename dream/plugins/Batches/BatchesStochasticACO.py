@@ -12,6 +12,10 @@ from dream.simulation.Operator import Operator
 from dream.simulation.Globals import getClassFromName
 from dream.plugins.Batches.BatchesACO import BatchesACO
 
+import xlwt
+import StringIO
+
+
 class BatchesStochasticACO(BatchesACO):
 
 #   def run(self, data):
@@ -67,8 +71,12 @@ class BatchesStochasticACO(BatchesACO):
   def run(self, data):
     """Preprocess the data.
     """
-    print 'I am IN'
-        
+    outputFile = xlwt.Workbook()
+    outputSheet = outputFile.add_sheet('ACO Results', cell_overwrite_ok=True)
+    rowIndex=0
+    columnIndex=0
+    outputSheet.write(rowIndex,columnIndex,'Test')
+
     distributor_url = data['general'].get('distributorURL')
     distributor = None
     if distributor_url:
@@ -230,6 +238,16 @@ class BatchesStochasticACO(BatchesACO):
       result['score'] = ant['score']
       result['key'] = ant['key']
       result_list.append(result)
+
+    # return the workbook as encoded
+    outputStringIO = StringIO.StringIO()
+    outputFile.save(outputStringIO)
+    encodedOutputFile=outputStringIO.getvalue().encode('base64') 
+    data['result']['result_list'][-1]['output_ACO_spreadsheet'] = {
+          'name': 'ACO details.xls',
+          'mime_type': 'application/vnd.ms-excel',
+          'data': encodedOutputFile
+        }
 
     self.logger.info("ACO finished, execution time %0.2fs" % (time.time() - start))
     return data
