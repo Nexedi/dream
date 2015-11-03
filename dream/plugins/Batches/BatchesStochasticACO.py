@@ -33,6 +33,24 @@ class BatchesStochasticACO(BatchesACO):
 #     data["result"]["result_list"][-1]["key"] = "Go To Results Page"
 #     return data
 
+  # changes all processing time distributions to stochastic
+  def createStochasticData(self, data):
+    nodes=data['graph']['node']
+    for node_id,node in nodes.iteritems():
+        processingTime=node.get('processingTime',{})
+        distribution=processingTime.get("Fixed",{})
+        if distribution:
+            mean=distribution['mean']
+            if mean:
+                print node['id']
+                processingTime.pop('Fixed',None)
+                processingTime['Triangular']={
+                        "mean":mean,
+                        "min":0.8*mean,
+                        "max":1.2*mean
+                }
+    return data
+
   def run(self, data):
     """Preprocess the data.
     """
@@ -41,6 +59,10 @@ class BatchesStochasticACO(BatchesACO):
     distributor = None
     if distributor_url:
         distributor = xmlrpclib.Server(distributor_url)
+        
+    # create a stochastic set of data
+    stochasticData=deepcopy(data)
+    stochasticData=self.createStochasticData(stochasticData)
 
     multiprocessorCount = data['general'].get('multiprocessorCount')
 
@@ -51,7 +73,14 @@ class BatchesStochasticACO(BatchesACO):
     assert collated 
 
     max_results = int(data['general'].get('numberOfSolutions',1))
+    # this is for how many ants should carry their pheromones in the next generation
     numberOfAntsForNextGeneration=int(data['general'].get('numberOfAntsForNextGeneration',1))
+    # this is for how many ants should be evaluated stochastically in every generation
+    numberOfAntsForStochasticEvaluationInGeneration=int(data['general'].get('numberOfAntsForStochasticEvaluationInGeneration',2))
+    # this is for how many ants should be evaluated stochastically in the end
+    numberOfAntsForStochasticEvaluationInTheEnd=int(data['general'].get('numberOfAntsForStochasticEvaluationInTheEnd',2))
+    
+    
     assert max_results >= 1
     assert numberOfAntsForNextGeneration>=1 \
                 and numberOfAntsForNextGeneration<=int(data["general"]["numberOfAntsPerGenerations"])
@@ -148,21 +177,27 @@ class BatchesStochasticACO(BatchesACO):
             ant_result = json.dumps(ant_result, sort_keys=True)
             uniqueAntsInThisGeneration[ant_result] = ant
             print ant_result
-         
+            
         # The ants in this generation are ranked based on their scores and the
-        # best (numberOfAntsForNextGeneration) are selected to carry their pheromones to next generation
-        antsForNextGeneration = sorted(uniqueAntsInThisGeneration.values(),
-          key=operator.itemgetter('score'))[:numberOfAntsForNextGeneration]
-
-        for l in antsForNextGeneration:
-            # update the options list to ensure that good performing queue-rule
-            # combinations have increased representation and good chance of
-            # being selected in the next generation
-            for m in collated.keys():
-                # e.g. if using EDD gave good performance for Q1, then another
-                # 'EDD' is added to Q1 so there is a higher chance that it is
-                # selected by the next ants.
-                collated[m].append(l[m])
+        # best (numberOfAntsForStochasticEvaluationInGeneration) are selected to 
+        # be evaluated stochastically
+        antsForStochasticEvaluationInGeneration = sorted(uniqueAntsInThisGeneration.values(),
+          key=operator.itemgetter('score'))[:numberOfAntsForStochasticEvaluationInGeneration]
+         
+#         # The ants in this generation are ranked based on their scores and the
+#         # best (numberOfAntsForNextGeneration) are selected to carry their pheromones to next generation
+#         antsForNextGeneration = sorted(uniqueAntsInThisGeneration.values(),
+#           key=operator.itemgetter('score'))[:numberOfAntsForNextGeneration]
+# 
+#         for l in antsForNextGeneration:
+#             # update the options list to ensure that good performing queue-rule
+#             # combinations have increased representation and good chance of
+#             # being selected in the next generation
+#             for m in collated.keys():
+#                 # e.g. if using EDD gave good performance for Q1, then another
+#                 # 'EDD' is added to Q1 so there is a higher chance that it is
+#                 # selected by the next ants.
+#                 collated[m].append(l[m])
 
     # from all the ants in the experiment remove ants that outputs the same schedules
     # XXX we in fact remove ants that produce the same output json
