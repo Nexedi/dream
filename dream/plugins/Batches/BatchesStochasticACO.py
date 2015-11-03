@@ -36,8 +36,7 @@ class BatchesStochasticACO(BatchesACO):
   def run(self, data):
     """Preprocess the data.
     """
-    print 'I am in'
-    
+    print 'I am IN'
     distributor_url = data['general'].get('distributorURL')
     distributor = None
     if distributor_url:
@@ -52,7 +51,10 @@ class BatchesStochasticACO(BatchesACO):
     assert collated 
 
     max_results = int(data['general'].get('numberOfSolutions',1))
+    numberOfAntsForNextGeneration=int(data['general'].get('numberOfAntsForNextGeneration',1))
     assert max_results >= 1
+    assert numberOfAntsForNextGeneration>=1 \
+                and numberOfAntsForNextGeneration<=int(data["general"]["numberOfAntsPerGenerations"])
 
     ants = [] #list of ants for keeping track of their performance
 
@@ -60,6 +62,7 @@ class BatchesStochasticACO(BatchesACO):
     # generation can have more than 1 ant)
     seedPlus = 0
     for i in range(int(data["general"]["numberOfGenerations"])):
+        antsInCurrentGeneration=[]
         scenario_list = [] # for the distributor
         # number of ants created per generation
         for j in range(int(data["general"]["numberOfAntsPerGenerations"])):
@@ -84,70 +87,71 @@ class BatchesStochasticACO(BatchesACO):
                 ant['input'] = ant_data
                 scenario_list.append(ant)
                        
-        if distributor is None:
-            if multiprocessorCount:
-                self.logger.info("running multiprocessing ACO with %s processes" % multiprocessorCount)
-                # We unset our signal handler to print traceback at the end
-                # otherwise logs are confusing. 
-                sigterm_handler = signal.getsignal(signal.SIGTERM)
-                pool = Pool(processes=multiprocessorCount)
-                try:
-                    signal.signal(signal.SIGTERM, signal.SIG_DFL)
-                    scenario_list = pool.map(runAntInSubProcess, scenario_list)
-                    pool.close()
-                    pool.join()
-                finally:
-                    signal.signal(signal.SIGTERM, sigterm_handler)
-            else:
-                # synchronous
-                for ant in scenario_list:
-                    ant['result'] = self.runOneScenario(ant['input'])['result']
+#         if distributor is None:
+#             if multiprocessorCount:
+#                 self.logger.info("running multiprocessing ACO with %s processes" % multiprocessorCount)
+#                 # We unset our signal handler to print traceback at the end
+#                 # otherwise logs are confusing. 
+#                 sigterm_handler = signal.getsignal(signal.SIGTERM)
+#                 pool = Pool(processes=multiprocessorCount)
+#                 try:
+#                     signal.signal(signal.SIGTERM, signal.SIG_DFL)
+#                     scenario_list = pool.map(runAntInSubProcess, scenario_list)
+#                     pool.close()
+#                     pool.join()
+#                 finally:
+#                     signal.signal(signal.SIGTERM, sigterm_handler)
+#             else:
+#                 # synchronous
+        for ant in scenario_list:
+            ant['result'] = self.runOneScenario(ant['input'])['result']
         
-        else: # asynchronous
-            self.logger.info("Registering a job for %s scenarios" % len(scenario_list))
-            start_register = time.time()
-            job_id = distributor.requestSimulationRun(
-                [json.dumps(x).encode('zlib').encode('base64') for x in scenario_list])
-            self.logger.info("Job registered as %s (took %0.2fs)" % (job_id, time.time() - start_register ))
-
-            while True:
-                time.sleep(1.)
-                result_list = distributor.getJobResult(job_id)
-                # The distributor returns None when calculation is still ongoing,
-                # or the list of result in the same order.
-                if result_list is not None:
-                    self.logger.info("Job %s terminated" % job_id)
-                    break
-
-            for ant, result in zip(scenario_list, result_list):
-                result = json.loads(result)
-                if 'result' in result: # XXX is this still needed ???
-                  result = result['result']
-                  assert "result_list" in result
-                else:
-                  result = {'result_list': [result]}
-                ant['result'] = result
+#         else: # asynchronous
+#             self.logger.info("Registering a job for %s scenarios" % len(scenario_list))
+#             start_register = time.time()
+#             job_id = distributor.requestSimulationRun(
+#                 [json.dumps(x).encode('zlib').encode('base64') for x in scenario_list])
+#             self.logger.info("Job registered as %s (took %0.2fs)" % (job_id, time.time() - start_register ))
+# 
+#             while True:
+#                 time.sleep(1.)
+#                 result_list = distributor.getJobResult(job_id)
+#                 # The distributor returns None when calculation is still ongoing,
+#                 # or the list of result in the same order.
+#                 if result_list is not None:
+#                     self.logger.info("Job %s terminated" % job_id)
+#                     break
+# 
+#             for ant, result in zip(scenario_list, result_list):
+#                 result = json.loads(result)
+#                 if 'result' in result: # XXX is this still needed ???
+#                   result = result['result']
+#                   assert "result_list" in result
+#                 else:
+#                   result = {'result_list': [result]}
+#                 ant['result'] = result
 
         for ant in scenario_list:
             ant['score'] = self._calculateAntScore(ant)
 
         ants.extend(scenario_list)
+        antsInCurrentGeneration.extend(scenario_list)
 
-        # remove ants that outputs the same schedules
+        # in this generation remove ants that outputs the same schedules
         # XXX we in fact remove ants that produce the same output json
-        ants_without_duplicates = dict()
-        for ant in ants:
+        uniqueAntsInThisGeneration = dict()
+        for ant in antsInCurrentGeneration:
             ant_result, = copy(ant['result']['result_list'])
             ant_result['general'].pop('totalExecutionTime', None)
             ant_result = json.dumps(ant_result, sort_keys=True)
-            ants_without_duplicates[ant_result] = ant
-
+            uniqueAntsInThisGeneration[ant_result] = ant
+         
         # The ants in this generation are ranked based on their scores and the
-        # best (max_results) are selected
-        ants = sorted(ants_without_duplicates.values(),
-          key=operator.itemgetter('score'))[:max_results]
+        # best (numberOfAntsForNextGeneration) are selected to carry their pheromones to next generation
+        antsForNextGeneration = sorted(uniqueAntsInThisGeneration.values(),
+          key=operator.itemgetter('score'))[:numberOfAntsForNextGeneration]
 
-        for l in ants:
+        for l in antsForNextGeneration:
             # update the options list to ensure that good performing queue-rule
             # combinations have increased representation and good chance of
             # being selected in the next generation
@@ -156,6 +160,20 @@ class BatchesStochasticACO(BatchesACO):
                 # 'EDD' is added to Q1 so there is a higher chance that it is
                 # selected by the next ants.
                 collated[m].append(l[m])
+
+    # from all the ants in the experiment remove ants that outputs the same schedules
+    # XXX we in fact remove ants that produce the same output json
+    uniqueAnts = dict()
+    for ant in ants:
+        ant_result, = copy(ant['result']['result_list'])
+        ant_result['general'].pop('totalExecutionTime', None)
+        ant_result = json.dumps(ant_result, sort_keys=True)
+        uniqueAnts[ant_result] = ant
+
+    # The ants in this generation are ranked based on their scores and the
+    # best (max_results) are selected
+    ants = sorted(uniqueAnts.values(),
+      key=operator.itemgetter('score'))[:max_results]
 
     data['result']['result_list'] = result_list = []
     for ant in ants:
