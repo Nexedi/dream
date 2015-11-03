@@ -1298,7 +1298,7 @@
     "numberOfAntsPerGenerations": 3, 
     "numberOfGenerations": 3, 
     "numberOfReplications": 1, 
-    "processTimeout": 1000, 
+    "processTimeout": 10000, 
     "seed": 1, 
     "throughputTarget": 1000, 
     "timeUnit": "minute", 
