@@ -139,12 +139,15 @@ class BatchesStochasticACO(BatchesACO):
 
         # in this generation remove ants that outputs the same schedules
         # XXX we in fact remove ants that produce the same output json
+        # XXX in the stochastic case maybe there is not benefit to remove ants. 
+        # XXX so I kept totalExecutionTime to have them all
         uniqueAntsInThisGeneration = dict()
         for ant in antsInCurrentGeneration:
             ant_result, = copy(ant['result']['result_list'])
-            ant_result['general'].pop('totalExecutionTime', None)
+            # ant_result['general'].pop('totalExecutionTime', None)
             ant_result = json.dumps(ant_result, sort_keys=True)
             uniqueAntsInThisGeneration[ant_result] = ant
+            print ant_result
          
         # The ants in this generation are ranked based on their scores and the
         # best (numberOfAntsForNextGeneration) are selected to carry their pheromones to next generation
