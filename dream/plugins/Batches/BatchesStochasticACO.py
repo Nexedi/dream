@@ -64,6 +64,12 @@ class BatchesStochasticACO(BatchesACO):
         #id the class is Exit get the unitsThroughput
         if element_family == 'Exit':
             unitsThroughput=element['results'].get('unitsThroughput',None)
+            self.outputSheet.write(self.rowIndex,2,'Units Throughput Per Replication')
+            col=3
+            for element in unitsThroughput:
+                self.outputSheet.write(self.rowIndex,col,element)          
+                col+=1
+            self.rowIndex+=1
             averageUnitsThroughput=sum(unitsThroughput)/float(len(unitsThroughput))
     # return the negative value since they are ranked this way. XXX discuss this
     return -averageUnitsThroughput
@@ -71,11 +77,10 @@ class BatchesStochasticACO(BatchesACO):
   def run(self, data):
     """Preprocess the data.
     """
-    outputFile = xlwt.Workbook()
-    outputSheet = outputFile.add_sheet('ACO Results', cell_overwrite_ok=True)
-    rowIndex=0
-    columnIndex=0
-    outputSheet.write(rowIndex,columnIndex,'Test')
+    self.outputFile = xlwt.Workbook()
+    self.outputSheet = self.outputFile.add_sheet('ACO Results', cell_overwrite_ok=True)
+    self.rowIndex=0
+    self.columnIndex=0
 
     distributor_url = data['general'].get('distributorURL')
     distributor = None
@@ -117,7 +122,8 @@ class BatchesStochasticACO(BatchesACO):
     # generation can have more than 1 ant)
     seedPlus = 0
     for i in range(int(data["general"]["numberOfGenerations"])):
-        print 'Generation',i+1
+        self.outputSheet.write(self.rowIndex,0,'Generation '+str(i+1))
+        self.rowIndex+=1
         antsInCurrentGeneration=[]
         scenario_list = [] # for the distributor
         # number of ants created per generation
@@ -136,24 +142,29 @@ class BatchesStochasticACO(BatchesACO):
             # TODO: function to calculate ant id. Store ant id in ant dict
             ant_key = repr(ant)
             # if the ant was not already tested, only then test it
-            print 'ants created'
             if ant_key not in tested_ants:
                 tested_ants.add(ant_key)
                 ant_data=deepcopy(self.createAntData(data, ant))
                 ant['key'] = ant_key
                 ant['input'] = ant_data
                 scenario_list.append(ant)
-                print ant['key']
         
         # run the deterministic ants               
         for ant in scenario_list:
-            print 'running deterministic'
-            print ant['key'] 
+            self.outputSheet.write(self.rowIndex,1,'running deterministic')
+            self.outputSheet.write(self.rowIndex,2,ant['key'])
+            self.rowIndex+=1
             ant['result'] = self.runOneScenario(ant['input'])['result']
-        
+            ant['score'] = self._calculateAntScore(ant)      
+            self.outputSheet.write(self.rowIndex,2,'Units Throughput')
+            self.outputSheet.write(self.rowIndex,3,-ant['score'])
+            self.rowIndex+=1
 
-        for ant in scenario_list:
-            ant['score'] = self._calculateAntScore(ant)
+#         for ant in scenario_list:
+#             ant['score'] = self._calculateAntScore(ant)      
+#             self.outputSheet.write(self.rowIndex,0,'Units Throughput')
+#             self.outputSheet.write(self.rowIndex,1,-ant['score'])
+#             self.rowIndex+=1
 
         ants.extend(scenario_list)
         antsInCurrentGeneration.extend(scenario_list)
@@ -177,10 +188,14 @@ class BatchesStochasticACO(BatchesACO):
         for ant in antsForStochasticEvaluationInGeneration:
             ant['input']=self.createStochasticData(ant['input'])
             ant['input']['general']['numberOfReplications']=numberOfReplicationsInGeneration
-            print 'running stochastic for',numberOfReplicationsInGeneration,'replications'
-            print ant['key']
+            self.outputSheet.write(self.rowIndex,1,'running stochastic for '+str(numberOfReplicationsInGeneration)+' replications')
+            self.outputSheet.write(self.rowIndex,2,ant['key'])
+            self.rowIndex+=1
             ant['result'] = self.runOneScenario(ant['input'])['result']
             ant['score'] = self.calculateStochasticAntScore(ant)
+            self.outputSheet.write(self.rowIndex,2,'Average Units Throughput')
+            self.outputSheet.write(self.rowIndex,3,-ant['score'])
+            self.rowIndex+=1
         
         # if we had stochastic evaluation keep only those ants in sorting
         if numberOfAntsForStochasticEvaluationInGeneration:
@@ -194,7 +209,9 @@ class BatchesStochasticACO(BatchesACO):
           key=operator.itemgetter('score'))[:numberOfAntsForNextGeneration]
            
         for l in antsForNextGeneration:
-            print l['key'], 'will carry pheromone next generation'
+            self.outputSheet.write(self.rowIndex,1,'Ant to carry pheromone to next generation')
+            self.outputSheet.write(self.rowIndex,2,ant['key'])
+            self.rowIndex+=1
             # update the options list to ensure that good performing queue-rule
             # combinations have increased representation and good chance of
             # being selected in the next generation
@@ -204,7 +221,10 @@ class BatchesStochasticACO(BatchesACO):
                 # selected by the next ants.
                 collated[m].append(l[m])
 
-    print 'ACO Ended, post processing to follow for ',numberOfAntsForStochasticEvaluationInTheEnd,'Ants'
+    self.rowIndex+=1
+    self.outputSheet.write(self.rowIndex,0,'ACO Ended, post processing to follow for '+str(numberOfAntsForStochasticEvaluationInTheEnd)+' Ants')
+    self.rowIndex+=1
+    
     # from all the ants in the experiment remove ants that outputs the same schedules
     # XXX we in fact remove ants that produce the same output json
     uniqueAnts = dict()
@@ -222,10 +242,14 @@ class BatchesStochasticACO(BatchesACO):
         for ant in ants:
             ant['input']=self.createStochasticData(ant['input'])
             ant['input']['general']['numberOfReplications']=numberOfReplicationsInTheEnd
-            print 'running stochastic for',numberOfReplicationsInTheEnd,'replications'
-            print ant['key']            
+            self.outputSheet.write(self.rowIndex,1,'running stochastic for '+str(numberOfReplicationsInTheEnd)+' replications')
+            self.outputSheet.write(self.rowIndex,2,ant['key']) 
+            self.rowIndex+=1
             ant['result'] = self.runOneScenario(ant['input'])['result']
             ant['score'] = self.calculateStochasticAntScore(ant)            
+            self.outputSheet.write(self.rowIndex,2,'Average Units Throughput')
+            self.outputSheet.write(self.rowIndex,3,-ant['score'])
+            self.rowIndex+=1
 
     # The ants are ranked based on their scores and the
     # best (max_results) are selected to be returned
@@ -239,9 +263,12 @@ class BatchesStochasticACO(BatchesACO):
       result['key'] = ant['key']
       result_list.append(result)
 
+    self.outputSheet.write(self.rowIndex,0,"Execution time %0.2fs" % (time.time() - start))
+    self.rowIndex+=1
+    
     # return the workbook as encoded
     outputStringIO = StringIO.StringIO()
-    outputFile.save(outputStringIO)
+    self.outputFile.save(outputStringIO)
     encodedOutputFile=outputStringIO.getvalue().encode('base64') 
     data['result']['result_list'][-1]['output_ACO_spreadsheet'] = {
           'name': 'ACO details.xls',
