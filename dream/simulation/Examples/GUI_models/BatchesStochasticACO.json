@@ -32,17 +32,52 @@
         "numberOfAntsPerGenerations": {
           "default": 3, 
           "description": "Number of scenarios per optimization generation", 
-          "priority": 2, 
+          "priority": 19, 
           "title": "Number of scenarios per optimization generation", 
           "type": "integer"
         }, 
         "numberOfGenerations": {
           "default": 3, 
           "description": "Number of optimization generations", 
-          "priority": 3, 
+          "priority": 20, 
           "title": "Number of optimization generations", 
           "type": "integer"
         }, 
+        "numberOfAntsForStochasticEvaluationInGeneration": {
+          "default": 2, 
+          "description": "Number of Ants to evaluate stochastically in generation", 
+          "priority": 18, 
+          "title": "Number of Ants to evaluate stochastically in generation", 
+          "type": "integer"
+        }, 
+        "numberOfReplicationsInGeneration": {
+          "default": 2, 
+          "description": "Number of replications for Ants that are evaluated stochastically in generation", 
+          "priority": 17, 
+          "title": "Number of replications for Ants that are evaluated stochastically in generation", 
+          "type": "integer"
+        }, 		
+        "numberOfAntsForStochasticEvaluationInTheEnd": {
+          "default": 2, 
+          "description": "Number of Ants to evaluate stochastically in the end of ACO", 
+          "priority": 16, 
+          "title": "Number of Ants to evaluate stochastically in the end of ACO", 
+          "type": "integer"
+        }, 
+        "numberOfReplicationsInTheEnd": {
+          "default": 5, 
+          "description": "Number of replications for Ants that are evaluated in the end of ACO", 
+          "priority": 15, 
+          "title": "Number of replications for Ants that are evaluated in the end of ACO", 
+          "type": "integer"
+        }, 
+        "numberOfAntsForNextGeneration": {
+          "default": 1, 
+          "description": "Number of Ants that carry their pheromone in the next generation", 
+          "priority": 14, 
+          "title": "Number of Ants that carry their pheromone in the next generation", 
+          "type": "integer"
+        }, 		
         "numberOfReplications": {
           "default": 10, 
           "description": "Number of replications to run", 
