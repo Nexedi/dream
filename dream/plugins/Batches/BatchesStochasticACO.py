@@ -42,7 +42,6 @@ class BatchesStochasticACO(BatchesACO):
         if distribution:
             mean=distribution['mean']
             if mean:
-                print node['id']
                 processingTime.pop('Fixed',None)
                 processingTime['Triangular']={
                         "mean":mean,
@@ -51,10 +50,25 @@ class BatchesStochasticACO(BatchesACO):
                 }
     return data
 
+  def calculateStochasticAntScore(self, ant):
+    """Calculate the score of this ant.
+    """
+    result, = ant['result']['result_list']  #read the result as JSON
+    #loop through the elements 
+    for element in result['elementList']:
+        element_family = element.get('family', None)
+        #id the class is Exit get the unitsThroughput
+        if element_family == 'Exit':
+            unitsThroughput=element['results'].get('unitsThroughput',None)
+            averageUnitsThroughput=sum(unitsThroughput)/float(len(unitsThroughput))
+    # return the negative value since they are ranked this way. XXX discuss this
+    return -averageUnitsThroughput
+
   def run(self, data):
     """Preprocess the data.
     """
     print 'I am IN'
+        
     distributor_url = data['general'].get('distributorURL')
     distributor = None
     if distributor_url:
@@ -77,8 +91,12 @@ class BatchesStochasticACO(BatchesACO):
     numberOfAntsForNextGeneration=int(data['general'].get('numberOfAntsForNextGeneration',1))
     # this is for how many ants should be evaluated stochastically in every generation
     numberOfAntsForStochasticEvaluationInGeneration=int(data['general'].get('numberOfAntsForStochasticEvaluationInGeneration',2))
+    # number of replications for stochastic ants inside the generation
+    numberOfReplicationsInGeneration=data['general'].get('numberOfReplicationsInGeneration',3)  
     # this is for how many ants should be evaluated stochastically in the end
     numberOfAntsForStochasticEvaluationInTheEnd=int(data['general'].get('numberOfAntsForStochasticEvaluationInTheEnd',2))
+    # number of replications for stochastic ants in the end
+    numberOfReplicationsInTheEnd=data['general'].get('numberOfReplicationsInTheEnd',6)
     
     
     assert max_results >= 1
@@ -91,6 +109,7 @@ class BatchesStochasticACO(BatchesACO):
     # generation can have more than 1 ant)
     seedPlus = 0
     for i in range(int(data["general"]["numberOfGenerations"])):
+        print 'Generation',i+1
         antsInCurrentGeneration=[]
         scenario_list = [] # for the distributor
         # number of ants created per generation
@@ -109,15 +128,19 @@ class BatchesStochasticACO(BatchesACO):
             # TODO: function to calculate ant id. Store ant id in ant dict
             ant_key = repr(ant)
             # if the ant was not already tested, only then test it
+            print 'ants created'
             if ant_key not in tested_ants:
                 tested_ants.add(ant_key)
                 ant_data=deepcopy(self.createAntData(data, ant))
                 ant['key'] = ant_key
                 ant['input'] = ant_data
                 scenario_list.append(ant)
+                print ant['key']
         
         # run the deterministic ants               
         for ant in scenario_list:
+            print 'running deterministic'
+            print ant['key'] 
             ant['result'] = self.runOneScenario(ant['input'])['result']
         
 
@@ -134,32 +157,46 @@ class BatchesStochasticACO(BatchesACO):
         uniqueAntsInThisGeneration = dict()
         for ant in antsInCurrentGeneration:
             ant_result, = copy(ant['result']['result_list'])
-            # ant_result['general'].pop('totalExecutionTime', None)
             ant_result = json.dumps(ant_result, sort_keys=True)
             uniqueAntsInThisGeneration[ant_result] = ant
-            print ant_result
             
         # The ants in this generation are ranked based on their scores and the
         # best (numberOfAntsForStochasticEvaluationInGeneration) are selected to 
         # be evaluated stochastically
         antsForStochasticEvaluationInGeneration = sorted(uniqueAntsInThisGeneration.values(),
           key=operator.itemgetter('score'))[:numberOfAntsForStochasticEvaluationInGeneration]
-         
-#         # The ants in this generation are ranked based on their scores and the
-#         # best (numberOfAntsForNextGeneration) are selected to carry their pheromones to next generation
-#         antsForNextGeneration = sorted(uniqueAntsInThisGeneration.values(),
-#           key=operator.itemgetter('score'))[:numberOfAntsForNextGeneration]
-# 
-#         for l in antsForNextGeneration:
-#             # update the options list to ensure that good performing queue-rule
-#             # combinations have increased representation and good chance of
-#             # being selected in the next generation
-#             for m in collated.keys():
-#                 # e.g. if using EDD gave good performance for Q1, then another
-#                 # 'EDD' is added to Q1 so there is a higher chance that it is
-#                 # selected by the next ants.
-#                 collated[m].append(l[m])
+        
+        for ant in antsForStochasticEvaluationInGeneration:
+            ant['input']=self.createStochasticData(ant['input'])
+            ant['input']['general']['numberOfReplications']=numberOfReplicationsInGeneration
+            print 'running stochastic for',numberOfReplicationsInGeneration,'replications'
+            print ant['key']
+            ant['result'] = self.runOneScenario(ant['input'])['result']
+            ant['score'] = self.calculateStochasticAntScore(ant)
+        
+        # if we had stochastic evaluation keep only those ants in sorting
+        if numberOfAntsForStochasticEvaluationInGeneration:
+            uniqueAntsInThisGeneration = dict()
+            for ant in antsForStochasticEvaluationInGeneration:
+                ant_result, = copy(ant['result']['result_list'])
+                ant_result = json.dumps(ant_result, sort_keys=True)
+                uniqueAntsInThisGeneration[ant_result] = ant
+        
+        antsForNextGeneration = sorted(uniqueAntsInThisGeneration.values(),
+          key=operator.itemgetter('score'))[:numberOfAntsForNextGeneration]
+           
+        for l in antsForNextGeneration:
+            print l['key'], 'will carry pheromone next generation'
+            # update the options list to ensure that good performing queue-rule
+            # combinations have increased representation and good chance of
+            # being selected in the next generation
+            for m in collated.keys():
+                # e.g. if using EDD gave good performance for Q1, then another
+                # 'EDD' is added to Q1 so there is a higher chance that it is
+                # selected by the next ants.
+                collated[m].append(l[m])
 
+    print 'ACO Ended, post processing to follow for ',numberOfAntsForStochasticEvaluationInTheEnd,'Ants'
     # from all the ants in the experiment remove ants that outputs the same schedules
     # XXX we in fact remove ants that produce the same output json
     uniqueAnts = dict()
@@ -168,9 +205,22 @@ class BatchesStochasticACO(BatchesACO):
         ant_result['general'].pop('totalExecutionTime', None)
         ant_result = json.dumps(ant_result, sort_keys=True)
         uniqueAnts[ant_result] = ant
+        
+    # The ants are ranked based on their scores and the
+    # best (max_results) are selected to be returned
+    if numberOfAntsForStochasticEvaluationInTheEnd > 0:
+        ants = sorted(uniqueAnts.values(),
+          key=operator.itemgetter('score'))[:numberOfAntsForStochasticEvaluationInTheEnd]
+        for ant in ants:
+            ant['input']=self.createStochasticData(ant['input'])
+            ant['input']['general']['numberOfReplications']=numberOfReplicationsInTheEnd
+            print 'running stochastic for',numberOfReplicationsInTheEnd,'replications'
+            print ant['key']            
+            ant['result'] = self.runOneScenario(ant['input'])['result']
+            ant['score'] = self.calculateStochasticAntScore(ant)            
 
-    # The ants in this generation are ranked based on their scores and the
-    # best (max_results) are selected
+    # The ants are ranked based on their scores and the
+    # best (max_results) are selected to be returned
     ants = sorted(uniqueAnts.values(),
       key=operator.itemgetter('score'))[:max_results]
 
