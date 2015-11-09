@@ -34,8 +34,7 @@ class MilkTank(QueueJobShop):
         QueueJobShop.__init__(self,id,name,capacity)       
         
     def haveToDispose(self, callerObject=None): 
-        
-        QueueJobShop.haveToDispose(self, callerObject)
+        return QueueJobShop.haveToDispose(self, callerObject)
         
         
     def getFat(self):
