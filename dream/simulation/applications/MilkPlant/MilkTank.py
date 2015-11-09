@@ -22,21 +22,20 @@ Created on 09 11 2015
 @author: George
 '''
 '''
-
+models a tank of packages of milk
 '''
 
 from dream.simulation.QueueJobShop import QueueJobShop
 
 class MilkTank(QueueJobShop):                                     
     family='Buffer'
-    
-    def __init__(self, id=None, name=None, capacity=1,**kw):
-        QueueJobShop.__init__(self,id,name,capacity)       
-        
+           
     def initialize(self):
+        # keep the ids of products that have already been gathered
         self.alreadyGatheredProductIds=[]
         QueueJobShop.initialize(self)
-        
+    
+    # extend so that the milk cannot proceed until the whole batch is collected
     def haveToDispose(self, callerObject=None): 
         if len(self.getActiveObjectQueue()):
             activeEntity=self.getActiveObjectQueue()[0]
@@ -49,16 +48,19 @@ class MilkTank(QueueJobShop):
 #                     print self.env.now, 'gathered', self.getTotalLiters(), 'liters with', self.getFat(), 'fat'
                     self.alreadyGatheredProductIds.append(activeEntity.productId)
         return QueueJobShop.haveToDispose(self, callerObject)
-                
+    
+    # returns the average fat of the milk that is in the tank
     def getFat(self):
         return self.getTotalFat()/float(self.getTotalLiters())
-        
+    
+    # returns the total liters of milk that is in the tank
     def getTotalLiters(self):
         totalLiters=0
         for pack in self.getActiveObjectQueue():
             totalLiters+=pack.liters        
         return totalLiters
-            
+
+    # returns the total fat is in the tank        
     def getTotalFat(self):
         totalFat=0       
         for pack in self.getActiveObjectQueue():

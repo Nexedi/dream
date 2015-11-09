@@ -22,7 +22,7 @@ Created on 09 11 2015
 @author: George
 '''
 '''
-
+models the transport of the milk
 '''
 
 from dream.simulation.MachineJobShop import MachineJobShop

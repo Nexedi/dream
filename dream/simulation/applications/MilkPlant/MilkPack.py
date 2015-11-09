@@ -22,12 +22,12 @@ Created on 09 11 2015
 @author: George
 '''
 '''
-
+models a pack of milk
 '''
 
 from dream.simulation.Job import Job
 
-class MilkPack(Job):                                  # inherits from the Entity class   
+class MilkPack(Job):  
     type='Job'
     family='Job'
     
