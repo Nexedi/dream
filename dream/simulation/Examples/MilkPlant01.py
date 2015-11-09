@@ -1,5 +1,5 @@
 from dream.simulation.applications.MilkPlant.imports import *
-from dream.simulation.imports import ExcelHandler, Exit
+from dream.simulation.imports import ExcelHandler, ExitJobShop
 from dream.simulation.Globals import runSimulation
 
 
@@ -11,18 +11,18 @@ Tr1=MilkTransport('Tr1','Tr1')
 Tr2=MilkTransport('Tr2','Tr2')
 Tr3=MilkTransport('Tr3','Tr3')
 
-E=Exit('E','Exit')
+E=ExitJobShop('E','Exit')
 
 route1=[{"stationIdsList": ["T1"]},
          {"stationIdsList": ["Tr1"],"processingTime":{'Fixed':{'mean':0.17341}}},
          {"stationIdsList": ["T2"]},
-         {"stationIdsList": ["Tr2"],"processingTime":{'Fixed':{'mean':1}},'volume':1000},
+         {"stationIdsList": ["Tr2"],"processingTime":{'Fixed':{'mean':0}},'volume':1000},
          {"stationIdsList": ["E"]}]
 
 route2=[{"stationIdsList": ["T3"]},
          {"stationIdsList": ["Tr3"],"processingTime":{'Fixed':{'mean':1.11111}}},
          {"stationIdsList": ["T2"]},
-         {"stationIdsList": ["Tr2"],"processingTime":{'Fixed':{'mean':1}},'volume':1000},
+         {"stationIdsList": ["Tr2"],"processingTime":{'Fixed':{'mean':0}},'volume':1000},
          {"stationIdsList": ["E"]}]
 
 MPList=[]       

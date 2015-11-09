@@ -33,12 +33,21 @@ class MilkTank(QueueJobShop):
     def __init__(self, id=None, name=None, capacity=1,**kw):
         QueueJobShop.__init__(self,id,name,capacity)       
         
+    def initialize(self):
+        self.alreadyGatheredProductIds=[]
+        QueueJobShop.initialize(self)
+        
     def haveToDispose(self, callerObject=None): 
         if len(self.getActiveObjectQueue()):
-            requestedVolume=self.getActiveObjectQueue()[0].remainingRoute[0].get('volume',-1)
-            totalLiters=self.getTotalLiters()
-            if totalLiters<requestedVolume:
-                return False
+            activeEntity=self.getActiveObjectQueue()[0]
+            if activeEntity.productId not in self.alreadyGatheredProductIds:
+                requestedVolume=activeEntity.remainingRoute[0].get('volume',-1)
+                totalLiters=self.getTotalLiters()
+                if totalLiters<requestedVolume:
+                    return False
+                else:
+#                     print self.env.now, 'gathered', self.getTotalLiters(), 'liters with', self.getFat(), 'fat'
+                    self.alreadyGatheredProductIds.append(activeEntity.productId)
         return QueueJobShop.haveToDispose(self, callerObject)
                 
     def getFat(self):
