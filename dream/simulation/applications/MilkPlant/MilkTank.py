@@ -34,21 +34,27 @@ class MilkTank(QueueJobShop):
         QueueJobShop.__init__(self,id,name,capacity)       
         
     def haveToDispose(self, callerObject=None): 
+        if len(self.getActiveObjectQueue()):
+            requestedVolume=self.getActiveObjectQueue()[0].remainingRoute[0].get('volume',-1)
+            totalLiters=self.getTotalLiters()
+            if totalLiters<requestedVolume:
+                return False
         return QueueJobShop.haveToDispose(self, callerObject)
-        
-        
+                
     def getFat(self):
+        return self.getTotalFat()/float(self.getTotalLiters())
+        
+    def getTotalLiters(self):
         totalLiters=0
+        for pack in self.getActiveObjectQueue():
+            totalLiters+=pack.liters        
+        return totalLiters
+            
+    def getTotalFat(self):
         totalFat=0       
         for pack in self.getActiveObjectQueue():
-            totalLiters+=pack.liters
-            totalFat+=pack.fat
-        return totalFat/float(totalLiters)
-        
-            
-            
-            
-            
+            totalFat+=pack.fat*pack.liters
+        return totalFat      
         
         
         

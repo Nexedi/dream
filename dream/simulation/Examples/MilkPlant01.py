@@ -14,15 +14,15 @@ Tr3=MilkTransport('Tr3','Tr3')
 E=Exit('E','Exit')
 
 route1=[{"stationIdsList": ["T1"]},
-         {"stationIdsList": ["Tr1"],"processingTime":{'Fixed':{'mean':1}}},
+         {"stationIdsList": ["Tr1"],"processingTime":{'Fixed':{'mean':0.17341}}},
          {"stationIdsList": ["T2"]},
-         {"stationIdsList": ["Tr2"],"processingTime":{'Fixed':{'mean':1}}},
+         {"stationIdsList": ["Tr2"],"processingTime":{'Fixed':{'mean':1}},'volume':1000},
          {"stationIdsList": ["E"]}]
 
 route2=[{"stationIdsList": ["T3"]},
-         {"stationIdsList": ["Tr3"],"processingTime":{'Fixed':{'mean':1}}},
+         {"stationIdsList": ["Tr3"],"processingTime":{'Fixed':{'mean':1.11111}}},
          {"stationIdsList": ["T2"]},
-         {"stationIdsList": ["Tr2"],"processingTime":{'Fixed':{'mean':1}}},
+         {"stationIdsList": ["Tr2"],"processingTime":{'Fixed':{'mean':1}},'volume':1000},
          {"stationIdsList": ["E"]}]
 
 MPList=[]       
