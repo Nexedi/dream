@@ -1,7 +1,9 @@
 from dream.simulation.applications.MilkPlant.imports import *
 from dream.simulation.imports import ExcelHandler, ExitJobShop
 from dream.simulation.Globals import runSimulation
+import time
 
+start=time.time()
 # how many liters is one milk pack
 milkUnit=1.0
 
@@ -18,7 +20,6 @@ Tr2=MilkTransport('Tr2','Tr2')
 Tr3=MilkTransport('Tr3','Tr3')
 Tr4=MilkTransport('Tr4','Tr4')
 Tr5=MilkTransport('Tr5','Tr5')
-
 
 M2=MilkProcess('M2','F')
 M3=MilkProcess('M3','W')
@@ -61,4 +62,4 @@ for i in range(int(135/float(milkUnit))):
 runSimulation([T1,T2,T3,TBM2,TAM2,TBM3,TAM3,Tr1,Tr2,Tr3,Tr4,Tr5,M2,M3,E]+MPList, 1000,trace='Yes')
 ExcelHandler.outputTrace('MilkPlant2')
 
-print 1
+print 'Execution Time=',time.time()-start
