@@ -27,20 +27,12 @@ M3=MilkProcess('M3','W')
 E=ExitJobShop('E','Exit')
 
 route1=[{"stationIdsList": ["T1"]},
-         {"stationIdsList": ["Tr1"],"processingTime":{'Fixed':{'mean':0.034682*milkUnit}}},
-         {"stationIdsList": ["T2"]},
-         {"stationIdsList": ["Tr2"],"processingTime":{'Fixed':{'mean':0.03*milkUnit}},'volume':1000},
-         {"stationIdsList": ["TBM2"]},
-         {"stationIdsList": ["M2"],"processingTime":{'Fixed':{'mean':180}},'volume':1000},
-         {"stationIdsList": ["TAM2"]},
-         {"stationIdsList": ["Tr4"],"processingTime":{'Fixed':{'mean':0.06*milkUnit}},'volume':1000},
-         {"stationIdsList": ["TBM3"]},
-         {"stationIdsList": ["M3"],"processingTime":{'Fixed':{'mean':20}},'volume':1000},
-         {"stationIdsList": ["E"]}]
+         {"stationIdsList": ["Tr1"],"processingTime":{'Fixed':{'mean':0.034682*milkUnit}}}]
 
 route2=[{"stationIdsList": ["T3"]},
-         {"stationIdsList": ["Tr3"],"processingTime":{'Fixed':{'mean':0.222222*milkUnit}}},
-         {"stationIdsList": ["T2"]},
+         {"stationIdsList": ["Tr3"],"processingTime":{'Fixed':{'mean':0.222222*milkUnit}}}]
+
+commonRoute=[{"stationIdsList": ["T2"]},
          {"stationIdsList": ["Tr2"],"processingTime":{'Fixed':{'mean':0.03*milkUnit}},'volume':1000},
          {"stationIdsList": ["TBM2"]},
          {"stationIdsList": ["M2"],"processingTime":{'Fixed':{'mean':180}},'volume':1000},
@@ -52,11 +44,11 @@ route2=[{"stationIdsList": ["T3"]},
 
 MPList=[]       
 for i in range(int(865/float(milkUnit))):
-    MP=MilkPack('MT_A'+str(i),'MT_A'+str(i),route=list(route1),liters=milkUnit,fat=3.8,productId=1)
+    MP=MilkPack('MT_A'+str(i),'MT_A'+str(i),route=route1+commonRoute,liters=milkUnit,fat=3.8,productId=1)
     MPList.append(MP)
      
 for i in range(int(135/float(milkUnit))):
-    MP=MilkPack('MT_B'+str(i),'MT_B'+str(i),route=route2,currentStation=T3,liters=milkUnit,fat=0.1,productId=1)
+    MP=MilkPack('MT_B'+str(i),'MT_B'+str(i),route=route2+commonRoute,currentStation=T3,liters=milkUnit,fat=0.1,productId=1)
     MPList.append(MP)
         
 runSimulation([T1,T2,T3,TBM2,TAM2,TBM3,TAM3,Tr1,Tr2,Tr3,Tr4,Tr5,M2,M3,E]+MPList, 1000,trace='Yes')
