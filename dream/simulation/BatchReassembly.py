@@ -45,7 +45,8 @@ class BatchReassembly(CoreObject):
     # =======================================================================
     #initialize the id, the capacity of the object and the distribution
     # =======================================================================        
-    def __init__(self, id, name, numberOfSubBatches=1, processingTime=None, operator='None', outputResults=False, **kw):
+    def __init__(self, id, name, numberOfSubBatches=1, processingTime=None, operator='None', outputResults=False, 
+                 outputFinalWIP=False,**kw):
         CoreObject.__init__(self,id, name)
         self.type="BatchRassembly"              #String that shows the type of object
         if not processingTime:
@@ -64,6 +65,8 @@ class BatchReassembly(CoreObject):
         G.BatchReassemblyList.append(self)
         # flag to show if the objects outputs results
         self.outputResults=bool(int(outputResults))
+        self.outputFinalWIP=bool(int(outputFinalWIP))
+        self.finalWIP=[]
 
     # =======================================================================
     #     initialize the internal resource of the object
@@ -329,7 +332,17 @@ class BatchReassembly(CoreObject):
                 and len(activeObjectQueue)<activeObject.numberOfSubBatches\
                 and activeObjectQueue[0].type!='Batch'\
                 and giverObjectQueue[0].batchId==activeObjectQueue[0].batchId
-                
+
+    # =======================================================================
+    # actions to be taken after the simulation ends
+    # =======================================================================
+    def postProcessing(self, MaxSimtime=None): 
+        CoreObject.postProcessing(self, MaxSimtime)
+        currentWIP=0
+        for subBatch in self.getActiveObjectQueue():
+            currentWIP+=subBatch.numberOfUnits
+        self.finalWIP.append(currentWIP)       
+
     # =======================================================================
     # outputs results to JSON File 
     # =======================================================================
@@ -345,7 +358,10 @@ class BatchReassembly(CoreObject):
             json['results']['blockage_ratio'] = self.Blockage
             json['results']['waiting_ratio'] = self.Waiting
             json['results']['off_shift_ratio'] = self.OffShift
+            if self.outputFinalWIP:
+                json['results']['final_WIP'] = self.finalWIP
             G.outputJSON['elementList'].append(json)
+
         
         
         

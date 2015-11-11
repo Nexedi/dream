@@ -2170,7 +2170,8 @@
           "top": 0.5350013587825962
         }, 
         "id": "St8RA", 
-        "numberOfSubBatches": 8
+        "numberOfSubBatches": 8,
+		"outputFinalWIP": 1
       }, 
       "St8RB": {
         "_class": "Dream.BatchReassembly", 
@@ -2178,7 +2179,8 @@
           "left": 0.9770689321903234, 
           "top": 0.960991679081057
         }, 
-        "numberOfSubBatches": 8
+        "numberOfSubBatches": 8,
+		"outputFinalWIP": 1
       }
     }
   }, 
