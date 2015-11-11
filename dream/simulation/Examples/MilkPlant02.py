@@ -44,11 +44,11 @@ commonRoute=[{"stationIdsList": ["T2"]},
 
 MPList=[]       
 for i in range(int(865/float(milkUnit))):
-    MP=MilkPack('MT_A'+str(i),'MT_A'+str(i),route=route1+commonRoute,liters=milkUnit,fat=3.8,productId='Product X')
+    MP=MilkPack('MT_A'+str(i),'MT_A'+str(i),route=route1+commonRoute,liters=milkUnit,fat=3.8*milkUnit,productId='Product X')
     MPList.append(MP)
      
 for i in range(int(135/float(milkUnit))):
-    MP=MilkPack('MT_B'+str(i),'MT_B'+str(i),route=route2+commonRoute,currentStation=T3,liters=milkUnit,fat=0.1,productId='Product X')
+    MP=MilkPack('MT_B'+str(i),'MT_B'+str(i),route=route2+commonRoute,liters=milkUnit,fat=0.1*milkUnit,productId='Product X')
     MPList.append(MP)
         
 runSimulation([T1,T2,T3,TBM2,TAM2,TBM3,TAM3,Tr1,Tr2,Tr3,Tr4,Tr5,M2,M3,E]+MPList, 1000,trace='Yes')
