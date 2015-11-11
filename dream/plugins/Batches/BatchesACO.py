@@ -28,6 +28,12 @@ class BatchesACO(ACO):
                 unitsThroughput=unitsThroughput[0]
             if not unitsThroughput:
                 unitsThroughput=element['results']['throughput'][0]
+            # below checking the predecessors of exit. If a predecessor is reassembly and 
+            # has WIP add this also in the throughput
+            for objectId in self.getPredecessors(ant['input'], element['id']):
+                for record in result['elementList']:
+                    if record['id']==objectId and 'Reassembly' in record['_class']:
+                        unitsThroughput+=record['results'].get('final_WIP',[0])[0]
     # return the negative value since they are ranked this way. XXX discuss this
     return -unitsThroughput
 

@@ -64,6 +64,14 @@ class BatchesStochasticACO(BatchesACO):
         #id the class is Exit get the unitsThroughput
         if element_family == 'Exit':
             unitsThroughput=element['results'].get('unitsThroughput',None)
+            # below checking the predecessors of exit. If a predecessor is reassembly and 
+            # has WIP add this also in the throughput
+            for objectId in self.getPredecessors(ant['input'], element['id']):
+                for record in result['elementList']:
+                    if record['id']==objectId and 'Reassembly' in record['_class']:
+                        finalWIPList=record['results'].get('final_WIP',[0])
+                        for i in range(len(finalWIPList)):
+                            unitsThroughput[i]+=finalWIPList[i]     
             self.outputSheet.write(self.rowIndex,2,'Units Throughput Per Replication')
             col=3
             for element in unitsThroughput:
