@@ -218,7 +218,7 @@ class BatchesStochasticACO(BatchesACO):
            
         for l in antsForNextGeneration:
             self.outputSheet.write(self.rowIndex,1,'Ant to carry pheromone to next generation')
-            self.outputSheet.write(self.rowIndex,2,ant['key'])
+            self.outputSheet.write(self.rowIndex,2,l['key'])
             self.rowIndex+=1
             # update the options list to ensure that good performing queue-rule
             # combinations have increased representation and good chance of
