@@ -250,7 +250,6 @@ class BatchesStochasticACO(BatchesACO):
     uniqueAnts = dict()
     for ant in ants:
         ant_result, = copy(ant['result']['result_list'])
-        ant_result['general'].pop('totalExecutionTime', None)
         ant_result = json.dumps(ant_result, sort_keys=True)
         uniqueAnts[ant_result] = ant
         
@@ -276,7 +275,6 @@ class BatchesStochasticACO(BatchesACO):
     uniqueAnts = dict()
     for ant in ants:
         ant_result, = copy(ant['result']['result_list'])
-        ant_result['general'].pop('totalExecutionTime', None)
         ant_result = json.dumps(ant_result, sort_keys=True)
         uniqueAnts[ant_result] = ant
 
