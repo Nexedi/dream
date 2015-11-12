@@ -18,25 +18,6 @@ import StringIO
 
 class BatchesStochasticACO(BatchesACO):
 
-#   def run(self, data):
-#     ant_data = copy(data)
-#     # if there are no operators act as default execution plugin
-#     if not self.checkIfThereAreOperators(data):
-#       data["result"]["result_list"] = self.runOneScenario(data)['result']['result_list']
-#       data["result"]["result_list"][-1]["score"] = ''
-#       data["result"]["result_list"][-1]["key"] = "Go To Results Page"
-#       return data
-#     # else run ACO
-#     data['general']['numberOfSolutions']=1  # default of 1 solution for this instance
-#     data["general"]["distributorURL"]=None  # no distributor currently, to be added in the GUI
-#     # use multiprocessing in the PC. This can be an option, but default for now
-#     import multiprocessing                  
-#     data["general"]["multiprocessorCount"] = None # multiprocessing.cpu_count()-1 or 1
-#     ACO.run(self, data)
-#     data["result"]["result_list"][-1]["score"] = ''
-#     data["result"]["result_list"][-1]["key"] = "Go To Results Page"
-#     return data
-
   # changes all processing time distributions to stochastic
   def createStochasticData(self, data):
     nodes=data['graph']['node']
