@@ -45,6 +45,8 @@ class BatchesStochasticACO(BatchesACO):
         #id the class is Exit get the unitsThroughput
         if element_family == 'Exit':
             unitsThroughput=element['results'].get('unitsThroughput',None)
+            if not unitsThroughput:
+                unitsThroughput=element['results']['throughput']
             # below checking the predecessors of exit. If a predecessor is reassembly and 
             # has WIP add this also in the throughput
             for objectId in self.getPredecessors(ant['input'], element['id']):
@@ -174,12 +176,6 @@ class BatchesStochasticACO(BatchesACO):
             self.outputSheet.write(self.rowIndex,2,'Units Throughput')
             self.outputSheet.write(self.rowIndex,3,-ant['score'])
             self.rowIndex+=1
-
-#         for ant in scenario_list:
-#             ant['score'] = self._calculateAntScore(ant)      
-#             self.outputSheet.write(self.rowIndex,0,'Units Throughput')
-#             self.outputSheet.write(self.rowIndex,1,-ant['score'])
-#             self.rowIndex+=1
 
         ants.extend(scenario_list)
         antsInCurrentGeneration.extend(scenario_list)
