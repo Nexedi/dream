@@ -100,7 +100,33 @@ class BatchesStochasticACO(BatchesACO):
     # number of replications for stochastic ants in the end
     numberOfReplicationsInTheEnd=data['general'].get('numberOfReplicationsInTheEnd',6)
     
+    self.outputSheet.write(self.rowIndex,0,'ACO attributes')    
+    self.rowIndex+=1
     
+    self.outputSheet.write(self.rowIndex,1,'Number Of Generations')
+    self.outputSheet.write(self.rowIndex,2,int(data["general"]["numberOfGenerations"]))
+    self.rowIndex+=1
+
+    self.outputSheet.write(self.rowIndex,1,'Number Of Ants Per Generation')
+    self.outputSheet.write(self.rowIndex,2,int(data["general"]["numberOfAntsPerGenerations"]))
+    self.rowIndex+=1   
+    
+    self.outputSheet.write(self.rowIndex,1,'Stochastic Ants in Generation')
+    self.outputSheet.write(self.rowIndex,2,numberOfAntsForStochasticEvaluationInGeneration)
+    self.rowIndex+=1
+    
+    self.outputSheet.write(self.rowIndex,1,'Number of replications inside generation')
+    self.outputSheet.write(self.rowIndex,2,numberOfReplicationsInGeneration)
+    self.rowIndex+=1
+    
+    self.outputSheet.write(self.rowIndex,1,'Stochastic Ants in the end')
+    self.outputSheet.write(self.rowIndex,2,numberOfAntsForStochasticEvaluationInTheEnd)
+    self.rowIndex+=1
+    
+    self.outputSheet.write(self.rowIndex,1,'Number of replications in the end')
+    self.outputSheet.write(self.rowIndex,2,numberOfReplicationsInTheEnd)
+    self.rowIndex+=1
+
     assert max_results >= 1
     assert numberOfAntsForNextGeneration>=1 \
                 and numberOfAntsForNextGeneration<=int(data["general"]["numberOfAntsPerGenerations"])
