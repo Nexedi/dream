@@ -212,11 +212,15 @@ class BatchesStochasticACO(BatchesACO):
             self.outputSheet.write(self.rowIndex,3,-ant['score'])
             self.rowIndex+=1
         
-#         # for the ants that were not evaluated stochastically set score = 0
-#         antsNotEvaluatedStochastically=[x for x in uniqueAntsInThisGeneration if x not in antsForStochasticEvaluationInGeneration]
-#         for ant in antsNotEvaluatedStochastically:
-#             ant['score']=0
-        
+        # for the ants that were not evaluated stochastically set score = 0
+        for ant in antsInCurrentGeneration:
+            antEvaluatedStochastically=False
+            for stochasticAnt in antsForStochasticEvaluationInGeneration:
+                if ant['key'] == stochasticAnt['key']:
+                    antEvaluatedStochastically=True
+            if not antEvaluatedStochastically:
+                ant['score']=0
+                  
         # if we had stochastic evaluation keep only those ants in sorting
         if numberOfAntsForStochasticEvaluationInGeneration:
             uniqueAntsInThisGeneration = dict()
