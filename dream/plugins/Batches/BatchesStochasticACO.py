@@ -199,7 +199,7 @@ class BatchesStochasticACO(BatchesACO):
         # be evaluated stochastically
         antsForStochasticEvaluationInGeneration = sorted(uniqueAntsInThisGeneration.values(),
           key=operator.itemgetter('score'))[:numberOfAntsForStochasticEvaluationInGeneration]
-        
+             
         for ant in antsForStochasticEvaluationInGeneration:
             ant['input']=self.createStochasticData(ant['input'])
             ant['input']['general']['numberOfReplications']=numberOfReplicationsInGeneration
@@ -211,6 +211,11 @@ class BatchesStochasticACO(BatchesACO):
             self.outputSheet.write(self.rowIndex,2,'Average Units Throughput')
             self.outputSheet.write(self.rowIndex,3,-ant['score'])
             self.rowIndex+=1
+        
+#         # for the ants that were not evaluated stochastically set score = 0
+#         antsNotEvaluatedStochastically=[x for x in uniqueAntsInThisGeneration if x not in antsForStochasticEvaluationInGeneration]
+#         for ant in antsNotEvaluatedStochastically:
+#             ant['score']=0
         
         # if we had stochastic evaluation keep only those ants in sorting
         if numberOfAntsForStochasticEvaluationInGeneration:
@@ -265,6 +270,15 @@ class BatchesStochasticACO(BatchesACO):
             self.outputSheet.write(self.rowIndex,2,'Average Units Throughput')
             self.outputSheet.write(self.rowIndex,3,-ant['score'])
             self.rowIndex+=1
+
+    # from all the ants in the experiment remove ants that outputs the same schedules
+    # XXX we in fact remove ants that produce the same output json
+    uniqueAnts = dict()
+    for ant in ants:
+        ant_result, = copy(ant['result']['result_list'])
+        ant_result['general'].pop('totalExecutionTime', None)
+        ant_result = json.dumps(ant_result, sort_keys=True)
+        uniqueAnts[ant_result] = ant
 
     # The ants are ranked based on their scores and the
     # best (max_results) are selected to be returned
