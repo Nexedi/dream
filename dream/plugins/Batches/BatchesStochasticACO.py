@@ -173,6 +173,7 @@ class BatchesStochasticACO(BatchesACO):
             self.rowIndex+=1
             ant['result'] = self.runOneScenario(ant['input'])['result']
             ant['score'] = self._calculateAntScore(ant)      
+            ant['evaluationType']='deterministic'
             self.outputSheet.write(self.rowIndex,2,'Units Throughput')
             self.outputSheet.write(self.rowIndex,3,-ant['score'])
             self.rowIndex+=1
@@ -203,6 +204,7 @@ class BatchesStochasticACO(BatchesACO):
             self.outputSheet.write(self.rowIndex,2,ant['key'])
             self.rowIndex+=1
             ant['result'] = self.runOneScenario(ant['input'])['result']
+            ant['evaluationType']='stochastic'
             ant['score'] = self.calculateStochasticAntScore(ant)
             self.outputSheet.write(self.rowIndex,2,'Average Units Throughput')
             self.outputSheet.write(self.rowIndex,3,-ant['score'])
@@ -210,11 +212,7 @@ class BatchesStochasticACO(BatchesACO):
         
         # for the ants that were not evaluated stochastically set score = 0
         for ant in antsInCurrentGeneration:
-            antEvaluatedStochastically=False
-            for stochasticAnt in antsForStochasticEvaluationInGeneration:
-                if ant['key'] == stochasticAnt['key']:
-                    antEvaluatedStochastically=True
-            if not antEvaluatedStochastically:
+            if ant['evaluationType']=='deterministic':
                 ant['score']=0
                   
         # if we had stochastic evaluation keep only those ants in sorting
