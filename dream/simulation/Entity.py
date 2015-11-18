@@ -36,7 +36,8 @@ class Entity(ManPyObject):
     type="Entity"
 
     def __init__(self, id=None, name=None, priority=0, dueDate=0, orderDate=0, 
-                 isCritical=False, remainingProcessingTime=0,remainingSetupTime=0,currentStation=None,**kw):
+                 isCritical=False, remainingProcessingTime=0,remainingSetupTime=0,currentStation=None,
+                 status='Good',**kw):
         ManPyObject.__init__(self,id,name)
         #         information on the object holding the entity
         #         initialized as None and updated every time an entity enters a new object
@@ -77,6 +78,7 @@ class Entity(ManPyObject):
         self.alias=None
         self.remainingProcessingTime=remainingProcessingTime
         self.remainingSetupTime=remainingSetupTime
+        self.status=status
         
     #===========================================================================
     # return the responsible operator for the current step, not implemented for entities

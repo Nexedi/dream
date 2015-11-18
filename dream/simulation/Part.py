@@ -35,5 +35,5 @@ class Part(Entity):
     type="Part"
     def __init__(self, id=None, name=None, remainingProcessingTime=0,currentStation=None,**kw):
         Entity.__init__(self, id, name, remainingProcessingTime=remainingProcessingTime,currentStation=currentStation) 
-        self.status='Good'
+        
 
