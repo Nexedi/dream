@@ -166,36 +166,53 @@ class BatchesStochasticACO(BatchesACO):
                 ant['input'] = ant_data
                 scenario_list.append(ant)
         
-        # run the deterministic ants               
-        for ant in scenario_list:
-            self.outputSheet.write(self.rowIndex,1,'running deterministic')
-            self.outputSheet.write(self.rowIndex,2,ant['key'])
-            self.rowIndex+=1
-            ant['result'] = self.runOneScenario(ant['input'])['result']
-            ant['score'] = self._calculateAntScore(ant)      
-            ant['evaluationType']='deterministic'
-            self.outputSheet.write(self.rowIndex,2,'Units Throughput')
-            self.outputSheet.write(self.rowIndex,3,-ant['score'])
-            self.rowIndex+=1
 
         ants.extend(scenario_list)
         antsInCurrentGeneration.extend(scenario_list)
+        
+        # if all the ants of the generation will be evaluated stochastically
+        # do not do deterministic runs
+        if numberOfAntsForStochasticEvaluationInGeneration == int(data["general"]["numberOfAntsPerGenerations"]):
+            uniqueAntsInThisGeneration = dict()
+            for ant in antsInCurrentGeneration:
+                ant['result']=dict()
+                ant['result']['result_list']=[ant['key']]
+                ant['score']=0
+                ant_result, = copy(ant['result']['result_list'])
+                ant_result = json.dumps(ant_result, sort_keys=True)
+                uniqueAntsInThisGeneration[ant_result] = ant
+                
+            antsForStochasticEvaluationInGeneration = sorted(uniqueAntsInThisGeneration.values(),
+              key=operator.itemgetter('score'))[:numberOfAntsForStochasticEvaluationInGeneration]
+        else:
+            # run the deterministic ants               
+            for ant in scenario_list:
+                self.outputSheet.write(self.rowIndex,1,'running deterministic')
+                self.outputSheet.write(self.rowIndex,2,ant['key'])
+                self.rowIndex+=1
+                ant['result'] = self.runOneScenario(ant['input'])['result']
+                ant['score'] = self._calculateAntScore(ant)      
+                ant['evaluationType']='deterministic'
+                self.outputSheet.write(self.rowIndex,2,'Units Throughput')
+                self.outputSheet.write(self.rowIndex,3,-ant['score'])
+                self.rowIndex+=1
 
-        # in this generation remove ants that outputs the same schedules
-        # XXX we in fact remove ants that produce the same output json
-        # XXX in the stochastic case maybe there is not benefit to remove ants. 
-        # XXX so I kept totalExecutionTime to have them all
-        uniqueAntsInThisGeneration = dict()
-        for ant in antsInCurrentGeneration:
-            ant_result, = copy(ant['result']['result_list'])
-            ant_result = json.dumps(ant_result, sort_keys=True)
-            uniqueAntsInThisGeneration[ant_result] = ant
-            
-        # The ants in this generation are ranked based on their scores and the
-        # best (numberOfAntsForStochasticEvaluationInGeneration) are selected to 
-        # be evaluated stochastically
-        antsForStochasticEvaluationInGeneration = sorted(uniqueAntsInThisGeneration.values(),
-          key=operator.itemgetter('score'))[:numberOfAntsForStochasticEvaluationInGeneration]
+            # in this generation remove ants that outputs the same schedules
+            # XXX we in fact remove ants that produce the same output json
+            # XXX in the stochastic case maybe there is not benefit to remove ants. 
+            # XXX so I kept totalExecutionTime to have them all
+            uniqueAntsInThisGeneration = dict()
+            for ant in antsInCurrentGeneration:
+                ant_result, = copy(ant['result']['result_list'])
+                ant_result = json.dumps(ant_result, sort_keys=True)
+                uniqueAntsInThisGeneration[ant_result] = ant
+                
+            # The ants in this generation are ranked based on their scores and the
+            # best (numberOfAntsForStochasticEvaluationInGeneration) are selected to 
+            # be evaluated stochastically
+            antsForStochasticEvaluationInGeneration = sorted(uniqueAntsInThisGeneration.values(),
+              key=operator.itemgetter('score'))[:numberOfAntsForStochasticEvaluationInGeneration]
+
              
         for ant in antsForStochasticEvaluationInGeneration:
             ant['input']=self.createStochasticData(ant['input'])
