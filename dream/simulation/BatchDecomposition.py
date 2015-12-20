@@ -138,13 +138,11 @@ class BatchDecomposition(CoreObject):
                       
             # TODO: add failure control
             # as long as there are sub-Batches in the internal Resource
-            numberOfSubBatches=int(len(self.getActiveObjectQueue()))
-            for i in range(numberOfSubBatches):
-                # added here temporarily, it is supposed to break when i==numberOfSubBatches
-                if not self.getActiveObjectQueue():
+            while len(self.getActiveObjectQueue()):
+                if len(self.getActiveObjectQueue()) == 1 and self.next[0].isRequested.triggered:
                     break
-                # if the loop is run for the first time (i=0)
-                if i==0:
+                # if the entity was just obtained
+                if self.timeLastEntityEntered == self.env.now:
                     # try to signal the receiver
                     signaling=self.signalReceiver()
                     if not signaling:
