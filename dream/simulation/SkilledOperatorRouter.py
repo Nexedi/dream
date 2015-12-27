@@ -29,6 +29,7 @@ import simpy
 
 from OperatorRouter import Router
 from opAss_LPmethod import opAss_LP
+import Globals
 
 # ===========================================================================
 #               Class that handles the Operator Behavior
@@ -43,7 +44,7 @@ class SkilledRouter(Router):
     #         chosen in case of multiple criteria for different Operators
     # ======================================================================= 
     def __init__(self,id='SkilledRouter01',name='SkilledRouter01',sorting=False,outputSolutions=True,
-                 weightFactors=[2, 1, 0, 2, 0, 1], tool={},checkCondition=False,**kw):
+                 weightFactors=[2, 1, 0, 2, 0, 1], tool={},checkCondition=False,twoPhaseSearch=False,**kw):
         Router.__init__(self)
         # Flag used to notify the need for re-allocation of skilled operators to operatorPools
         self.allocation=False
@@ -55,6 +56,7 @@ class SkilledRouter(Router):
         self.weightFactors=weightFactors
         self.tool=tool
         self.checkCondition=checkCondition
+        self.twoPhaseSearch=twoPhaseSearch
                 
     #===========================================================================
     #                         the initialize method
@@ -210,9 +212,41 @@ class SkilledRouter(Router):
                 import time
                 startLP=time.time()
                 if LPFlag:
-                    solution=opAss_LP(self.availableStationsDict, self.availableOperatorList, 
-                                      self.operators, previousAssignment=self.previousSolution,
-                                      weightFactors=self.weightFactors,Tool=self.tool)
+                    if self.twoPhaseSearch:
+                        # remove all the blocked machines from the available stations
+                        # and create another dict only with them
+                        machinesForSecondPhaseDict={}
+                        for stationId in self.availableStationsDict.keys():
+                            machine = Globals.findObjectById(stationId)
+                            if machine.isBlocked:
+                                machinesForSecondPhaseDict[stationId] = self.availableStationsDict[stationId]
+                                del self.availableStationsDict[stationId]
+                        # run the LP method only for the machines that are not blocked
+                        solution=opAss_LP(self.availableStationsDict, self.availableOperatorList, 
+                                          self.operators, previousAssignment=self.previousSolution,
+                                          weightFactors=self.weightFactors,Tool=self.tool)
+                        # create a list with the operators that were sent to the LP but did not get allocated
+                        operatorsForSecondPhaseList=[]
+                        for operatorId in self.availableOperatorList:
+                            if operatorId not in solution.keys():
+                                operatorsForSecondPhaseList.append(operatorId)
+                        # in case there is some station that did not get operator even if it was not blocked
+                        # add them alos for the second fail (XXX do not think there is such case)
+                        for stationId in self.availableStationsDict.keys():
+                            if stationId not in solution.values():
+                                machinesForSecondPhaseDict[stationId] = self.availableStationsDict[stationId]
+                        # if there are machines and operators for the second phase
+                        # run again the LP for machines and operators that are not in the former solution
+                        if machinesForSecondPhaseDict and operatorsForSecondPhaseList:
+                            secondPhaseSolution=opAss_LP(machinesForSecondPhaseDict, operatorsForSecondPhaseList, 
+                                              self.operators, previousAssignment=self.previousSolution,
+                                              weightFactors=self.weightFactors,Tool=self.tool)
+                            # update the solution with the new LP results
+                            solution.update(secondPhaseSolution)
+                    else:
+                        solution=opAss_LP(self.availableStationsDict, self.availableOperatorList, 
+                                          self.operators, previousAssignment=self.previousSolution,
+                                          weightFactors=self.weightFactors,Tool=self.tool)
                 else:
                     # if the LP is not called keep the previous solution
                     # if there are no available operators though, remove those

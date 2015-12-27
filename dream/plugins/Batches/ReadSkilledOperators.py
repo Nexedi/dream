@@ -65,13 +65,14 @@ class ReadSkilledOperators(plugin.InputPreparationPlugin):
                       "start": 0, 
                       "interruptions": {}, 
                       "_class": "Dream.EventGenerator", 
-                      "method": "Dream.ManPyObject.requestAllocation"      
+                      "method": "Dream.ManPyObject.requestAllocation"
               }
             # add EventGenerator for the allocation every 10 minutes
             node['SkilledRouter01']={   #(random id)
                     "_class": "dream.simulation.SkilledOperatorRouter.SkilledRouter", 
                     "name": "SkilledRouter01",
                     "outputSolutions":1,
+                    "twoPhaseSearch": int(data['general'].get('twoPhaseSearch',0)), 
                     "checkCondition":1    
               }
     return data
