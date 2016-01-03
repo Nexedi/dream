@@ -24,8 +24,8 @@ class BatchesWIPKEtool(plugin.InputPreparationPlugin):
         # get the number of units for a standard batch
         standardBatchUnits=0
         for node_id, node in nodes.iteritems():
-            if node['_class']=='Dream.BatchSource':
-                standardBatchUnits=int(node['batchNumberOfUnits']) 
+            if node['_class'] in ['Dream.BatchSource', 'Dream.NonStarvingEntry']:
+                standardBatchUnits=int(node['entityData']['numberOfUnits']) 
             node['wip']=[]
             
         data_uri_encoded_input_data = data['input'].get(self.configuration_dict['input_id'], {})

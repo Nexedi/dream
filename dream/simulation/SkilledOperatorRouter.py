@@ -455,7 +455,7 @@ class SkilledRouter(Router):
     def getPreviousQueue(self, machine):
         predecessor=machine.previous[0]
         while 1:
-            if "Source" in str(predecessor.__class__):
+            if "Source" in str(predecessor.__class__) or "NonStarvingEntry" in str(predecessor.__class__):
                 return None
             if "Queue" in str(predecessor.__class__) or "Clearance" in str(predecessor.__class__):
                 return predecessor

@@ -20,8 +20,8 @@ class AddBatchStations(plugin.InputPreparationPlugin):
         # get the number of units for a standard batch
         standardBatchUnits=0
         for node_id, node in nodes.iteritems():
-            if node['_class']=='Dream.BatchSource':
-                standardBatchUnits=int(node['batchNumberOfUnits'])    
+            if node['_class'] in ['Dream.BatchSource', 'Dream.NonStarvingEntry']:
+                standardBatchUnits=int(node['entityData']['numberOfUnits'])    
                 
         # loop through all the objects and set that the name will be equal to the id
         for node_id, node in nodes.iteritems():
@@ -69,7 +69,7 @@ class AddBatchStations(plugin.InputPreparationPlugin):
             if node['_class']=='Dream.BatchDecompositionBlocking':
                 predecessorId=self.getPredecessors(data, node_id)[0]
                 predecessorClass=nodes[predecessorId]['_class']
-                if predecessorClass=='Dream.BatchSource':
+                if predecessorClass in ['Dream.BatchSource', 'Dream.NonStarvingEntry']:
                     data['graph']['node'][node_id]['_class']='Dream.BatchDecompositionStartTime'
    
         # loop through the nodes
