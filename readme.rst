@@ -5,7 +5,7 @@ DREAM overview
 Scope
 ============
 
-DREAM an EU funded (FP7) project. Its main objective is to increase the competitiveness of the European Manufacturing Sector through targeting the advancement of discrete event simulation technology beyond the current state of the art to promote the embedding of simulation based decision support across the array of multi-level decisions faced by European Manufacturing Enterprises, from strategic (product/process development), tactical (ERP decision level support) and down to the MES level with the requirement of reactive real time decision support. More information can be found in http://dream-simulation.eu/.
+DREAM is an EU funded (FP7) project. Its main objective is to increase the competitiveness of the European Manufacturing Sector through targeting the advancement of discrete event simulation technology beyond the current state of the art to promote the embedding of simulation based decision support across the array of multi-level decisions faced by European Manufacturing Enterprises, from strategic (product/process development), tactical (ERP decision level support) and down to the MES level with the requirement of reactive real time decision support. More information can be found in http://dream-simulation.eu/.
 
 What's included
 =================
@@ -18,21 +18,13 @@ Currently in DREAM folder there are 4 sub-folders:
  + platform: contains code related to the platform and the GUI.
  + tests: contains code for unit-testing.
 
-Current Status
-=================
-
-DREAM is a project which kicked off in October of 2012 and finishes in September of 2015. 
-ManPy is an ongoing project and we do not claim that it is complete. The platform is being 
-expanded and validated through the industrial pilot cases of DREAM. 
-
-The first official versions of DREAM modules (ManPy, KE tool and GUI editor) will be released in September of 2015.
-
 How to get started
 ========================
 
-To install DREAM along with its dependencies run the setup.py in he root of the repository (python setup.py install).
+To install DREAM along with its dependencies, the recommended way is to use `SlapOS <http://www.slapos.org/>`_ as described in the `DREAM Developer Tutorial <DREAM%20Platform%20Developer%20Tutorial.pdf>`_.
 
-Then the user is referred to the documentation that is available in this repository.
+If you have the dependencies installed, you can use the setup.py in the root of the repository ( `python setup.py install` , `pip` or similar ).
+
 
 Dependencies
 =================
@@ -69,7 +61,7 @@ Acknowledgements
 =================
 
 ManPy is product of a research project funded from the European Union Seventh Framework 
-Programme (FP7-2012-NMP-ICT-FoF) under grant agreement n° 314364. The project name is 
+Programme (FP7-2012-NMP-ICT-FoF) under grant agreement nÂ° 314364. The project name is 
 DREAM and stands for "Simulation based application Decision support in Real-time for 
 Efficient Agile Manufacturing". More information about the scope of DREAM can be found in 
 http://dream-simulation.eu/. 
@@ -135,4 +127,4 @@ GUI editor
 
 The GUI editor has been developed with two ideas in mind: firstly it should help the user to develop a simulation model visually and it should also provide the user with straightforward and understandable results of simulation experiments that should help him understanding at a glance the output of the model by showing the results in formats such as bar charts, plots, Gantt diagrams or spreadsheets.
 
-The GUI editor is designed based on the Javascript language so as to be supported by web browsers like Firefox, Chrome, Opera, Apple Safari, etc. 
+The GUI editor is designed based on the Javascript language so as to be supported by web browsers like Firefox, Chrome, Opera, Apple Safari, etc.
