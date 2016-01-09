@@ -226,9 +226,30 @@ class SkilledRouter(Router):
                                     if nextObject.getActiveObjectQueue()[0].type == 'Batch': 
                                         reassemblyBlocksMachine = True
                             if machine.isBlocked or reassemblyBlocksMachine:
+                                if not len(machine.getActiveObjectQueue()) and (not reassemblyBlocksMachine):
+                                    raise ValueError('empty machine considered as blocked')
+                                if machine.timeLastEntityEnded < machine.timeLastEntityEntered:
+                                    raise ValueError('machine considered as blocked, while it has Entity that has not finished')
+                                if "Queue" in nextObjectClassName:
+                                    if len(nextObject.getActiveObjectQueue()) != nextObject.capacity:
+                                        raise ValueError('Machine considered as blocked while Queue has space') 
+                                if "Clearance" in nextObjectClassName:
+                                    if not nextObject.getActiveObjectQueue():
+                                        raise ValueError('Machine considered as blocked while Clearance is empty')
+                                    else:
+                                        subBatchMachineHolds = machine.getActiveObjectQueue()[0]
+                                        subBatchLineClearanceHolds = nextObject.getActiveObjectQueue()[0]
+                                        if subBatchMachineHolds.parentBatch == subBatchLineClearanceHolds.parentBatch and\
+                                                (len(nextObject.getActiveObjectQueue()) != nextObject.capacity):
+                                            raise ValueError('Machine considered as blocked while Line Clearance holds same batch and has space')
                                 machinesForSecondPhaseDict[stationId] = self.availableStationsDict[stationId]
                                 del self.availableStationsDict[stationId]
-
+                            else:
+                                if len(machine.getActiveObjectQueue()) and (not machine.isProcessing) and\
+                                         machine.onShift and machine.currentOperator:
+                                    raise ValueError('machine should be considered blocked')
+                                
+                        
                         # run the LP method only for the machines that are not blocked
                         solution=opAss_LP(self.availableStationsDict, self.availableOperatorList, 
                                           self.operators, previousAssignment=self.previousSolution,
