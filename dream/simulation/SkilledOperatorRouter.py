@@ -218,9 +218,17 @@ class SkilledRouter(Router):
                         machinesForSecondPhaseDict={}
                         for stationId in self.availableStationsDict.keys():
                             machine = Globals.findObjectById(stationId)
-                            if machine.isBlocked:
+                            nextObject = machine.next[0]
+                            nextObjectClassName = nextObject.__class__.__name__
+                            reassemblyBlocksMachine = False
+                            if 'Reassembly' in nextObjectClassName:
+                                if nextObject.getActiveObjectQueue():
+                                    if nextObject.getActiveObjectQueue()[0].type == 'Batch': 
+                                        reassemblyBlocksMachine = True
+                            if machine.isBlocked or reassemblyBlocksMachine:
                                 machinesForSecondPhaseDict[stationId] = self.availableStationsDict[stationId]
                                 del self.availableStationsDict[stationId]
+
                         # run the LP method only for the machines that are not blocked
                         solution=opAss_LP(self.availableStationsDict, self.availableOperatorList, 
                                           self.operators, previousAssignment=self.previousSolution,
