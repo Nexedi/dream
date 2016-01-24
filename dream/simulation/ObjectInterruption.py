@@ -125,6 +125,9 @@ class ObjectInterruption(ManPyObject):
             self.sendSignal(receiver=self.victim, signal=self.victim.interruptionStart)
             # ToDo following is needed for synching, check why
             self.victim.expectedSignals['interruptionEnd']=1
+        else:
+            self.victim.isBlocked = False
+            self.victim.isProcessing = False
         # if the machines are operated by dedicated operators
         if self.victim.dedicatedOperator:
             # request allocation
