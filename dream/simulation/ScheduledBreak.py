@@ -95,9 +95,10 @@ class ScheduledBreak(ObjectInterruption):
                     # if SkilledRouter waits for the station to finish, send this signal to this router
                     from Globals import G
                     from dream.simulation.SkilledOperatorRouter import SkilledRouter
-                    if G.RouterList[0].__class__ is SkilledRouter:
-                        if station.id in G.RouterList[0].expectedFinishSignalsDict.keys():
-                            self.sendSignal(receiver=G.RouterList[0], signal=G.RouterList[0].expectedFinishSignalsDict[station.id], 
+                    if G.RouterList[0].__class__ is SkilledRouter and \
+                            station.id in G.RouterList[0].expectedFinishSignalsDict.keys() and \
+                            not G.RouterList[0].expectedFinishSignalsDict[station.id].triggered:
+                        self.sendSignal(receiver=G.RouterList[0], signal=G.RouterList[0].expectedFinishSignalsDict[station.id],
                                             sender=station)
                 if self.victim.schedule:
                     if not self.victim.schedule[-1].get("exitTime", None):
