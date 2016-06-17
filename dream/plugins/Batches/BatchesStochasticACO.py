@@ -233,7 +233,8 @@ class BatchesStochasticACO(BatchesACO):
             for ant in antsInCurrentGeneration:
                 if ant['evaluationType']=='deterministic':
                     ant['score']=0
-                  
+                    # ants.remove(ant)
+
         # if we had stochastic evaluation keep only those ants in sorting
         if numberOfAntsForStochasticEvaluationInGeneration:
             uniqueAntsInThisGeneration = dict()
@@ -241,10 +242,15 @@ class BatchesStochasticACO(BatchesACO):
                 ant_result, = copy(ant['result']['result_list'])
                 ant_result = json.dumps(ant_result, sort_keys=True)
                 uniqueAntsInThisGeneration[ant_result] = ant
-        
+
         antsForNextGeneration = sorted(uniqueAntsInThisGeneration.values(),
           key=operator.itemgetter('score'))[:numberOfAntsForNextGeneration]
-           
+
+        # Keep only ants that carry pheromone at the ants list
+        for ant in antsInCurrentGeneration:
+            if not ant in antsForNextGeneration:
+                ants.remove(ant)
+
         for l in antsForNextGeneration:
             self.outputSheet.write(self.rowIndex,1,'Ant to carry pheromone to next generation')
             self.outputSheet.write(self.rowIndex,2,l['key'])

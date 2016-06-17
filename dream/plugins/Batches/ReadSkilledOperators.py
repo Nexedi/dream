@@ -71,7 +71,7 @@ class ReadSkilledOperators(plugin.InputPreparationPlugin):
             node['SkilledRouter01']={   #(random id)
                     "_class": "dream.simulation.SkilledOperatorRouter.SkilledRouter", 
                     "name": "SkilledRouter01",
-                    "outputSolutions":1,
+                    "outputSolutions":0,
                     "twoPhaseSearch": int(data['general'].get('twoPhaseSearch',0)), 
                     "checkCondition":1    
               }

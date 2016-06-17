@@ -60,7 +60,8 @@ class AddBatchStations(plugin.InputPreparationPlugin):
         for node_id, node in nodes.iteritems():
             if node['_class']=='Dream.BatchReassembly':
                 data['graph']['node'][node_id]['_class']='Dream.BatchReassemblyBlocking'
-                data['graph']['node'][node_id]['outputResults']=1
+                if node_id.startswith('St8R'):
+                    data['graph']['node'][node_id]['outputResults']=1
             
         # loop in BatchDecompositions to change the classes to BatchDecompositionStartTime for the ones that 
         # are just after the source   
@@ -113,7 +114,7 @@ class AddBatchStations(plugin.InputPreparationPlugin):
                           "mean": 0
                      }
                 }, 
-                "outputResults": 1, 
+                "outputResults": 0, 
                 "numberOfSubBatches": numberOfSubBatches, 
                 "wip": [],
                 "_class": "Dream.BatchReassemblyBlocking", 
@@ -133,7 +134,7 @@ class AddBatchStations(plugin.InputPreparationPlugin):
         # set all the Queue types to gether wip data
         for node in data["graph"]["node"].values():
             if node['_class'] in ['Dream.Queue', 'Dream.LineClearance', 'Dream.RoutingQueue']:
-                node['gatherWipStat'] = 1
+                node['gatherWipStat'] = 0
 
 
         return data
