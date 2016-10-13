@@ -514,7 +514,7 @@
           function resetTimer() {
             clearTimeout(idle_timer);
             idle_timer = setTimeout(function () { $(button).show() },
-                                                            idle_seconds*1000);
+                                                            idle_seconds*1); // XXX show immediatly
           }
           if (next_step_link !== false) {
             button.href = next_step_link;
