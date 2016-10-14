@@ -125,6 +125,15 @@
   }
   
   function getNextStepLink(gadget, portal_type, options) {
+    // We define `next_step_action` in the json
+    if (options.action_definition.next_step_action !== undefined) {
+      var forward_kw = {
+        action: options.action_definition.next_step_action,
+        id: options.id
+      };
+      return gadget.aq_pleasePublishMyState(forward_kw);
+    }
+    // in the first POC, we had this hardcoded
     if (options.action === "view_machine_shift_spreadsheet") {
       var forward_kw = {
         action: "view_run_simulation",
@@ -132,9 +141,7 @@
       };
       return gadget.aq_pleasePublishMyState(forward_kw);
     }
-    else {
-      return false;
-    }
+    return false;
   }
 
   function getTitle(gadget, portal_type, options) {
