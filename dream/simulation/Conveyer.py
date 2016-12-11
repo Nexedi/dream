@@ -99,11 +99,11 @@ class Conveyer(CoreObject):
         while 1:
             #calculate the time to reach end. If this is greater than 0 (we did not already have an entity at the end)
             #set it as the timeToWait of the conveyerMover and raise call=true so that it will be triggered 
-            if self.updateMoveTime():
+            if self.updateMoveTime() and self.conveyerMover.expectedSignals['canMove']: 
 #                 print self.id, 'time to move', self.conveyerMover.timeToWait
                 succeedTuple=(self,self.env.now)
                 self.conveyerMover.canMove.succeed(succeedTuple)
-            
+
             self.printTrace(self.id, waitEvent='')
             
             self.expectedSignals['isRequested']=1
@@ -369,8 +369,7 @@ class Conveyer(CoreObject):
 #             self.totalBlockageTime+=self.env.now-self.timeBlockageStarted
             self.wasFull=False
         #calculate the time that the conveyer will become available again and trigger the conveyerMover
-        if self.updateMoveTime():
-#             print self.id, 'time to move', self.conveyerMover.timeToWait
+        if self.updateMoveTime() and self.conveyerMover.expectedSignals['canMove']:
             succeedTuple=(self,self.env.now)
             self.conveyerMover.canMove.succeed(succeedTuple)
         # if there is anything to dispose of then signal a receiver
@@ -472,15 +471,18 @@ class ConveyerMover(object):
         self.timeToWait=0           #the time to wait every time. This is calculated by the conveyer and corresponds
                                     #either to the time that one entity reaches the end or the time that one space is freed
         self.canMove=self.env.event()
-    
+        self.expectedSignals={'canMove': 1}
+
     #===========================================================================
     # ConveyerMover generator
     #===========================================================================
     def run(self):
         while 1:
             self.conveyer.printTrace(self.conveyer.id, waitEvent='(canMove)')
+            self.expectedSignals['canMove']=1
             yield self.canMove      #wait until the conveyer triggers the mover
             transmitter, eventTime=self.canMove.value
+            self.expectedSignals['canMove']=0
             self.canMove=self.env.event()
             self.conveyer.printTrace(self.conveyer.id, received='(canMove)')
             
