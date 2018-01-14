@@ -73,7 +73,8 @@ class ReadSkilledOperators(plugin.InputPreparationPlugin):
                     "name": "SkilledRouter01",
                     "outputSolutions":1,
                     "twoPhaseSearch": int(data['general'].get('twoPhaseSearch',0)), 
-                    "checkCondition":1    
+                    "checkCondition":1,
+                    "whereToMaxWIP": data['general'].get('whereToMaxWIP',0) == 'Yes', 
               }
     return data
 

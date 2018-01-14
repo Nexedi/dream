@@ -30,6 +30,8 @@ import simpy
 from OperatorRouter import Router
 from opAss_LPmethod import opAss_LP
 import Globals
+import logging                                                                                 
+from copy import deepcopy
 
 # ===========================================================================
 #               Class that handles the Operator Behavior
@@ -57,7 +59,9 @@ class SkilledRouter(Router):
         self.tool=tool
         self.checkCondition=checkCondition
         self.twoPhaseSearch=twoPhaseSearch
-                
+        self.whereToMaxWIP = kw.get('whereToMaxWIP', False)
+        self.logger = logging.getLogger("dream.platform")
+   
     #===========================================================================
     #                         the initialize method
     #===========================================================================
@@ -212,70 +216,119 @@ class SkilledRouter(Router):
                 import time
                 startLP=time.time()
                 if LPFlag:
-                    if self.twoPhaseSearch:
-                        # remove all the blocked machines from the available stations
-                        # and create another dict only with them
-                        machinesForSecondPhaseDict={}
-                        for stationId in self.availableStationsDict.keys():
-                            machine = Globals.findObjectById(stationId)
-                            nextObject = machine.next[0]
-                            nextObjectClassName = nextObject.__class__.__name__
-                            reassemblyBlocksMachine = False
-                            if 'Reassembly' in nextObjectClassName:
-                                if nextObject.getActiveObjectQueue():
-                                    if nextObject.getActiveObjectQueue()[0].type == 'Batch': 
-                                        reassemblyBlocksMachine = True
-                            if machine.isBlocked or reassemblyBlocksMachine:
-                                if not len(machine.getActiveObjectQueue()) and (not reassemblyBlocksMachine):
-                                    raise ValueError('empty machine considered as blocked')
-                                if machine.timeLastEntityEnded < machine.timeLastEntityEntered:
-                                    raise ValueError('machine considered as blocked, while it has Entity that has not finished')
-                                if "Queue" in nextObjectClassName:
-                                    if len(nextObject.getActiveObjectQueue()) != nextObject.capacity:
-                                        raise ValueError('Machine considered as blocked while Queue has space') 
-                                if "Clearance" in nextObjectClassName:
-                                    if not nextObject.getActiveObjectQueue():
-                                        raise ValueError('Machine considered as blocked while Clearance is empty')
-                                    else:
-                                        subBatchMachineHolds = machine.getActiveObjectQueue()[0]
-                                        subBatchLineClearanceHolds = nextObject.getActiveObjectQueue()[0]
-                                        if subBatchMachineHolds.parentBatch == subBatchLineClearanceHolds.parentBatch and\
-                                                (len(nextObject.getActiveObjectQueue()) != nextObject.capacity):
-                                            raise ValueError('Machine considered as blocked while Line Clearance holds same batch and has space')
-                                machinesForSecondPhaseDict[stationId] = self.availableStationsDict[stationId]
-                                del self.availableStationsDict[stationId]
-                            else:
-                                if len(machine.getActiveObjectQueue()) and (not machine.isProcessing) and\
-                                         machine.onShift and machine.currentOperator:
-                                    raise ValueError('machine should be considered blocked')
-                                
-                        
-                        # run the LP method only for the machines that are not blocked
-                        solution=opAss_LP(self.availableStationsDict, self.availableOperatorList, 
-                                          self.operators, previousAssignment=self.previousSolution,
-                                          weightFactors=self.weightFactors,Tool=self.tool)
-                        # create a list with the operators that were sent to the LP but did not get allocated
-                        operatorsForSecondPhaseList=[]
-                        for operatorId in self.availableOperatorList:
-                            if operatorId not in solution.keys():
-                                operatorsForSecondPhaseList.append(operatorId)
-                        # in case there is some station that did not get operator even if it was not blocked
-                        # add them alos for the second fail (XXX do not think there is such case)
-                        for stationId in self.availableStationsDict.keys():
-                            if stationId not in solution.values():
-                                machinesForSecondPhaseDict[stationId] = self.availableStationsDict[stationId]
-                        # if there are machines and operators for the second phase
-                        # run again the LP for machines and operators that are not in the former solution
-                        if machinesForSecondPhaseDict and operatorsForSecondPhaseList:
-                            secondPhaseSolution=opAss_LP(machinesForSecondPhaseDict, operatorsForSecondPhaseList, 
-                                              self.operators, previousAssignment=self.previousSolution,
-                                              weightFactors=self.weightFactors,Tool=self.tool)
-                            # update the solution with the new LP results
-                            solution.update(secondPhaseSolution)
+                    # XXX if the solution is empty, how do we allocate?
+                    if self.whereToMaxWIP and self.previousSolution:
+                      self.logger.info('------> %s' % self.env.now)
+                      solution={}
+                      maxWIP=-1
+                      minWIP=float('inf')
+                      machineWithMaxWIP=None
+                      operatorToMove=None
+                      # first, find the machine with max wip
+                      for stationId, stationDict in self.availableStationsDict.iteritems():
+                        wip = stationDict['WIP']
+                        assignedOperatorList=[
+                          x for x in self.previousSolution \
+                            if self.previousSolution[x] == stationId \
+                              and x in self.availableOperatorList
+                        ]
+                        assert len(assignedOperatorList) in (0, 1), assignedOperatorList
+                        if wip > maxWIP and not assignedOperatorList:
+                          machineWithMaxWIP=stationId
+                      solution={}
+                      # First, search for an operator that was not
+                      # previously assigned, and can handle the maxWIP station
+                      for operatorId in self.availableOperatorList:
+                        if operatorId not in self.previousSolution \
+                            and self.availableStationsDict[machineWithMaxWIP]['stationID'] in self.operators.get('operatorId', []):
+                          operatorToMove = operatorId
+                      # Then, search for the machine with Min WIP that has skill for
+                      # maxWIP station
+                      if not operatorToMove:
+                        for stationId, stationDict in self.availableStationsDict.iteritems():
+                          wip = stationDict['WIP']
+                          assignedOperatorList=[
+                            x for x in self.previousSolution \
+                              if self.previousSolution[x] == stationId \
+                                and x in self.availableOperatorList
+                          ]
+                          if wip < minWIP and assignedOperatorList \
+                              and self.availableStationsDict[machineWithMaxWIP]['stationID']:
+                            operatorToMove=assignedOperatorList[0]
+                      # Copy previous solution for available operators
+                      for operatorId, stationId in self.previousSolution.iteritems():
+                        if operatorId in self.availableOperatorList:
+                          solution[operatorId]=self.previousSolution[operatorId]
+                      # move the operator that was identified to be moved to maxWIP
+                      if operatorToMove and machineWithMaxWIP:
+                        solution[operatorToMove]=machineWithMaxWIP
+                        self.logger.info('moved %s to %s' % (operatorToMove, machineWithMaxWIP))
+                      self.logger.info(solution)
                     else:
-                        solution=opAss_LP(self.availableStationsDict, self.availableOperatorList, 
-                                          self.operators, previousAssignment=self.previousSolution,
-                                          weightFactors=self.weightFactors,Tool=self.tool)
+                      if self.twoPhaseSearch:
+                          # remove all the blocked machines from the available stations
+                          # and create another dict only with them
+                          machinesForSecondPhaseDict={}
+                          for stationId in self.availableStationsDict.keys():
+                              machine = Globals.findObjectById(stationId)
+                              nextObject = machine.next[0]
+                              nextObjectClassName = nextObject.__class__.__name__
+                              reassemblyBlocksMachine = False
+                              if 'Reassembly' in nextObjectClassName:
+                                  if nextObject.getActiveObjectQueue():
+                                      if nextObject.getActiveObjectQueue()[0].type == 'Batch': 
+                                          reassemblyBlocksMachine = True
+                              if machine.isBlocked or reassemblyBlocksMachine:
+                                  if not len(machine.getActiveObjectQueue()) and (not reassemblyBlocksMachine):
+                                      raise ValueError('empty machine considered as blocked')
+                                  if machine.timeLastEntityEnded < machine.timeLastEntityEntered:
+                                      raise ValueError('machine considered as blocked, while it has Entity that has not finished')
+                                  if "Queue" in nextObjectClassName:
+                                      if len(nextObject.getActiveObjectQueue()) != nextObject.capacity:
+                                          raise ValueError('Machine considered as blocked while Queue has space') 
+                                  if "Clearance" in nextObjectClassName:
+                                      if not nextObject.getActiveObjectQueue():
+                                          raise ValueError('Machine considered as blocked while Clearance is empty')
+                                      else:
+                                          subBatchMachineHolds = machine.getActiveObjectQueue()[0]
+                                          subBatchLineClearanceHolds = nextObject.getActiveObjectQueue()[0]
+                                          if subBatchMachineHolds.parentBatch == subBatchLineClearanceHolds.parentBatch and\
+                                                  (len(nextObject.getActiveObjectQueue()) != nextObject.capacity):
+                                              raise ValueError('Machine considered as blocked while Line Clearance holds same batch and has space')
+                                  machinesForSecondPhaseDict[stationId] = self.availableStationsDict[stationId]
+                                  del self.availableStationsDict[stationId]
+                              else:
+                                  if len(machine.getActiveObjectQueue()) and (not machine.isProcessing) and\
+                                           machine.onShift and machine.currentOperator:
+                                      raise ValueError('machine should be considered blocked')
+                                  
+                          
+                          # run the LP method only for the machines that are not blocked
+                          solution=opAss_LP(self.availableStationsDict, self.availableOperatorList, 
+                                            self.operators, previousAssignment=self.previousSolution,
+                                            weightFactors=self.weightFactors,Tool=self.tool)
+                          # create a list with the operators that were sent to the LP but did not get allocated
+                          operatorsForSecondPhaseList=[]
+                          for operatorId in self.availableOperatorList:
+                              if operatorId not in solution.keys():
+                                  operatorsForSecondPhaseList.append(operatorId)
+                          # in case there is some station that did not get operator even if it was not blocked
+                          # add them alos for the second fail (XXX do not think there is such case)
+                          for stationId in self.availableStationsDict.keys():
+                              if stationId not in solution.values():
+                                  machinesForSecondPhaseDict[stationId] = self.availableStationsDict[stationId]
+                          # if there are machines and operators for the second phase
+                          # run again the LP for machines and operators that are not in the former solution
+                          if machinesForSecondPhaseDict and operatorsForSecondPhaseList:
+                              secondPhaseSolution=opAss_LP(machinesForSecondPhaseDict, operatorsForSecondPhaseList, 
+                                                self.operators, previousAssignment=self.previousSolution,
+                                                weightFactors=self.weightFactors,Tool=self.tool)
+                              # update the solution with the new LP results
+                              solution.update(secondPhaseSolution)
+                      else:
+                          solution=opAss_LP(self.availableStationsDict, self.availableOperatorList, 
+                                            self.operators, previousAssignment=self.previousSolution,
+                                            weightFactors=self.weightFactors,Tool=self.tool)
                 else:
                     # if the LP is not called keep the previous solution
                     # if there are no available operators though, remove those
