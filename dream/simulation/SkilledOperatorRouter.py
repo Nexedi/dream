@@ -216,16 +216,25 @@ class SkilledRouter(Router):
                 import time
                 startLP=time.time()
                 if LPFlag:
-                    # XXX if the solution is empty, how do we allocate?
                     if self.whereToMaxWIP and self.previousSolution:
-                      self.logger.info('------> %s' % self.env.now)
+                      self.logger.info('---> ' + str(self.env.now))
                       solution={}
                       maxWIP=-1
                       minWIP=float('inf')
                       machineWithMaxWIP=None
                       operatorToMove=None
+                      
+                      # Sort so that the ones closer to end win in ties
+                      sorted_station_id_list = sorted(
+                        self.availableStationsDict.keys(),
+                        key=lambda x: int(x[0]), reverse=True
+                      )
                       # first, find the machine with max wip
-                      for stationId, stationDict in self.availableStationsDict.iteritems():
+                      for stationId in sorted_station_id_list:
+                        stationDict = self.availableStationsDict.get(stationId, None)
+                        self.logger.info(stationDict)
+                        if not stationDict:
+                          continue
                         wip = stationDict['WIP']
                         assignedOperatorList=[
                           x for x in self.previousSolution \
@@ -233,14 +242,18 @@ class SkilledRouter(Router):
                               and x in self.availableOperatorList
                         ]
                         assert len(assignedOperatorList) in (0, 1), assignedOperatorList
+                        if not assignedOperatorList:
+                          self.logger.info('%s has no operator' % stationId)
                         if wip > maxWIP and not assignedOperatorList:
                           machineWithMaxWIP=stationId
+                          maxWIP = wip
+                      self.logger.info(machineWithMaxWIP)
                       solution={}
                       # First, search for an operator that was not
                       # previously assigned, and can handle the maxWIP station
                       for operatorId in self.availableOperatorList:
                         if operatorId not in self.previousSolution \
-                            and self.availableStationsDict[machineWithMaxWIP]['stationID'] in self.operators.get('operatorId', []):
+                            and self.availableStationsDict[machineWithMaxWIP]['stationID'] in self.operators.get(operatorId, []):
                           operatorToMove = operatorId
                       # Then, search for the machine with Min WIP that has skill for
                       # maxWIP station
@@ -252,18 +265,23 @@ class SkilledRouter(Router):
                               if self.previousSolution[x] == stationId \
                                 and x in self.availableOperatorList
                           ]
+                          assert len(assignedOperatorList) in (0, 1), assignedOperatorList
                           if wip < minWIP and assignedOperatorList \
-                              and self.availableStationsDict[machineWithMaxWIP]['stationID']:
+                              and self.availableStationsDict[machineWithMaxWIP]['stationID'] in self.operators.get(assignedOperatorList[0], []):
                             operatorToMove=assignedOperatorList[0]
+                            minWIP = wip
                       # Copy previous solution for available operators
                       for operatorId, stationId in self.previousSolution.iteritems():
                         if operatorId in self.availableOperatorList:
                           solution[operatorId]=self.previousSolution[operatorId]
                       # move the operator that was identified to be moved to maxWIP
-                      if operatorToMove and machineWithMaxWIP:
+                      if operatorToMove and machineWithMaxWIP and maxWIP >= minWIP:
                         solution[operatorToMove]=machineWithMaxWIP
-                        self.logger.info('moved %s to %s' % (operatorToMove, machineWithMaxWIP))
-                      self.logger.info(solution)
+                        self.logger.info('moved %s from %s to %s' % (
+                          operatorToMove,
+                          self.previousSolution.get(operatorToMove, 'idle'),
+                          machineWithMaxWIP
+                        ))
                     else:
                       if self.twoPhaseSearch:
                           # remove all the blocked machines from the available stations
