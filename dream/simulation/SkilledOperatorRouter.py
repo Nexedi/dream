@@ -139,12 +139,19 @@ class SkilledRouter(Router):
                 #===================================================================
                 for station in self.availableStations:
                     station.wip=1+(len(station.getActiveObjectQueue())/station.capacity)
-                    for predecessor in station.previous:
-                        try:
-                            station.wip+=float(len(predecessor.getActiveObjectQueue())/float(predecessor.capacity))
-                        except:
-                            # XXX what happens in the case of sources or infinite-capacity-queues
-                            pass
+                    current_object = station
+                    capacity = station.capacity
+                    while 1:
+                        # XXX this is assuming only one predecessor
+                        current_object = current_object.previous[0]
+                        class_name = current_object.__class__.__name__
+                        if class_name == 'BatchSource':
+                            break
+                        station.wip+=float(
+                          len(current_object.getActiveObjectQueue())/float(capacity)
+                        )
+                        if class_name in ('Queue', 'LineClearance', 'RoutingQueue'):
+                            break
 
                 #===================================================================
                 # # stations of the line and their corresponding WIP
