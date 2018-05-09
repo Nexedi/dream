@@ -444,7 +444,7 @@ class SkilledRouter(Router):
                                 station=findObjectById(solution[id])
                                 signal=True                                       
                                 # signal only the stations in the original list
-                                if station not in self.toBeSignalled:
+                                if station not in self.toBeSignalled or (not operator.onShift) or operator.onBreak:
                                     signal=False
                                 # signal only if the operator is free 
                                 if operator.workingStation:
@@ -454,8 +454,7 @@ class SkilledRouter(Router):
                                 if signal:
                                     # signal the station so that it gets the operator
                                     self.signalStation(station, operator)
-          
-            
+
             #===================================================================
             # default behaviour
             #===================================================================

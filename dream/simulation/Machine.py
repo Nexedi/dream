@@ -1226,14 +1226,15 @@ class Machine(CoreObject):
             operator.unAssign()     # set the flag operatorAssignedTo to None
             operator.workingStation=None
             self.outputTrace(operator.name, "released from "+ self.objName)
-            # if the Router is expecting for signal send it
-            from Globals import G
-            from SkilledOperatorRouter import SkilledRouter
             self.toBeOperated = False
-            if G.RouterList[0].__class__ is SkilledRouter:
-                if G.RouterList[0].expectedFinishSignals:
-                    if self.id in G.RouterList[0].expectedFinishSignalsDict:
-                        signal=G.RouterList[0].expectedFinishSignalsDict[self.id]
+        # if the Router is expecting for signal send it
+        from Globals import G
+        from SkilledOperatorRouter import SkilledRouter
+        if G.RouterList[0].__class__ is SkilledRouter:
+            if G.RouterList[0].expectedFinishSignals:
+                if self.id in G.RouterList[0].expectedFinishSignalsDict:
+                    signal=G.RouterList[0].expectedFinishSignalsDict[self.id]
+                    if not signal.triggered:
                         self.sendSignal(receiver=G.RouterList[0], signal=signal)
         self.broker.invokeType='release'
         self.broker.invoke()
