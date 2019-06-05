@@ -41,6 +41,7 @@ class ACO(plugin.ExecutionPlugin):
   def run(self, data):
     """Preprocess the data.
     """
+    self.logger.info("ACO")
     distributor_url = data['general'].get('distributorURL')
     distributor = None
     if distributor_url:
@@ -108,7 +109,12 @@ class ACO(plugin.ExecutionPlugin):
             else:
                 # synchronous
                 for ant in scenario_list:
-                    ant['result'] = self.runOneScenario(ant['input'])['result']
+                    self.logger.info("%s running" % ant['key'])
+                    try:
+                        ant['result'] = self.runOneScenario(ant['input'])['result']
+                    except:
+                        self.logger.info("%s failed" % ant['key'])
+                        ant['result'] = {'result_list': ['fail']}
         
         else: # asynchronous
             self.logger.info("Registering a job for %s scenarios" % len(scenario_list))

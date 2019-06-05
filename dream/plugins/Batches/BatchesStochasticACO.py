@@ -39,6 +39,8 @@ class BatchesStochasticACO(BatchesACO):
     """Calculate the score of this ant.
     """
     result, = ant['result']['result_list']  #read the result as JSON
+    if result == 'fail':
+        return 0
     #loop through the elements 
     for element in result['elementList']:
         element_family = element.get('family', None)
@@ -68,6 +70,7 @@ class BatchesStochasticACO(BatchesACO):
   def run(self, data):
     """Preprocess the data.
     """
+    self.logger.info("Stoch ACO")
     self.outputFile = xlwt.Workbook()
     self.outputSheet = self.outputFile.add_sheet('ACO Results', cell_overwrite_ok=True)
     self.rowIndex=0
@@ -141,6 +144,7 @@ class BatchesStochasticACO(BatchesACO):
     for i in range(int(data["general"]["numberOfGenerations"])):
         self.outputSheet.write(self.rowIndex,0,'Generation '+str(i+1))
         self.rowIndex+=1
+        self.logger.info("Generation %s" % self.rowIndex)
         antsInCurrentGeneration=[]
         scenario_list = [] # for the distributor
         # number of ants created per generation
@@ -190,8 +194,13 @@ class BatchesStochasticACO(BatchesACO):
                 self.outputSheet.write(self.rowIndex,1,'running deterministic')
                 self.outputSheet.write(self.rowIndex,2,ant['key'])
                 self.rowIndex+=1
-                ant['result'] = self.runOneScenario(ant['input'])['result']
-                ant['score'] = self._calculateAntScore(ant)      
+                try:
+                    ant['result'] = self.runOneScenario(ant['input'])['result']
+                    ant['score'] = self._calculateAntScore(ant)
+                except:
+                    self.logger.info("%s failed" % ant['key'])
+                    ant['result'] = {'result_list': ['fail']}
+                    ant['score'] = 0
                 ant['evaluationType']='deterministic'
                 self.outputSheet.write(self.rowIndex,2,'Units Throughput')
                 self.outputSheet.write(self.rowIndex,3,-ant['score'])
@@ -220,9 +229,14 @@ class BatchesStochasticACO(BatchesACO):
             self.outputSheet.write(self.rowIndex,1,'running stochastic for '+str(numberOfReplicationsInGeneration)+' replications')
             self.outputSheet.write(self.rowIndex,2,ant['key'])
             self.rowIndex+=1
-            ant['result'] = self.runOneScenario(ant['input'])['result']
+            try:
+                ant['result'] = self.runOneScenario(ant['input'])['result']
+                ant['score'] = self.calculateStochasticAntScore(ant)
+            except:
+                self.logger.info("%s failed" % ant['key'])
+                ant['result'] = {'result_list': ['fail']}
+                ant['score'] = 0
             ant['evaluationType']='stochastic'
-            ant['score'] = self.calculateStochasticAntScore(ant)
             self.outputSheet.write(self.rowIndex,2,'Average Units Throughput')
             self.outputSheet.write(self.rowIndex,3,-ant['score'])
             self.rowIndex+=1
@@ -281,8 +295,15 @@ class BatchesStochasticACO(BatchesACO):
             self.outputSheet.write(self.rowIndex,1,'running stochastic for '+str(numberOfReplicationsInTheEnd)+' replications')
             self.outputSheet.write(self.rowIndex,2,ant['key']) 
             self.rowIndex+=1
-            ant['result'] = self.runOneScenario(ant['input'])['result']
-            ant['score'] = self.calculateStochasticAntScore(ant)     
+            try:
+                ant['result'] = self.runOneScenario(ant['input'])['result']
+                ant['score'] = self.calculateStochasticAntScore(ant)
+            except:
+                self.logger.info("%s failed" % ant['key'])
+                ant['result'] = {'result_list': ['fail']}
+                ant['score'] = 0
+            # ant['result'] = self.runOneScenario(ant['input'])['result']
+            # ant['score'] = self.calculateStochasticAntScore(ant)     
             self.outputSheet.write(self.rowIndex,2,'Average Units Throughput')
             self.outputSheet.write(self.rowIndex,3,-ant['score'])
             self.rowIndex+=1

@@ -18,6 +18,8 @@ class BatchesACO(ACO):
     """Calculate the score of this ant.
     """
     result, = ant['result']['result_list']  #read the result as JSON
+    if result == 'fail':
+        return 0
     #loop through the elements 
     for element in result['elementList']:
         element_family = element.get('family', None)

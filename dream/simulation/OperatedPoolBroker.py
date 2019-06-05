@@ -30,6 +30,7 @@ Models an Interruption that handles the operating of a Station by an ObjectResou
 import simpy
 from ObjectInterruption import ObjectInterruption
 # from SimPy.Simulation import waituntil, now, hold, request, release, waitevent
+import logging                                                                                 
 
 # ===========================================================================
 #               Class that handles the Operator Behavior
@@ -52,7 +53,8 @@ class Broker(ObjectInterruption):
         # flag that shows if broker was called to request or release operator. 
         # Machine updates this before calling the broker
         self.invokeType='request'
-        
+        self.logger = logging.getLogger("dream.platform")
+
     #===========================================================================
     #                           the initialize method
     #===========================================================================
@@ -77,8 +79,9 @@ class Broker(ObjectInterruption):
             # TODO: add new broker event - brokerIsCalled
             
             self.expectedSignals['isCalled']=1
-            
+            self.logger.info("!--- %s %s Waiting isCalled1 ----!" % (self.env.now, self.id))
             yield self.isCalled
+            self.logger.info("!--- %s %s Got isCalled1 ----!" % (self.env.now, self.id))
             transmitter, eventTime=self.isCalled.value
             assert eventTime==self.env.now, 'the broker should be granted control instantly'
             self.isCalled=self.env.event()
@@ -106,8 +109,9 @@ class Broker(ObjectInterruption):
                         self.victim.printTrace(self.victim.id, waitEvent='(resourceIsAvailable broker)')
                         
                         self.expectedSignals['resourceAvailable']=1
-                        
+                        self.logger.info("!--- %s %s Waiting resourceAvailable ----!" % (self.env.now, self.id))
                         yield self.resourceAvailable
+                        self.logger.info("!--- %s %s Got resourceAvailable ----!" % (self.env.now, self.id))
 
                         transmitter, eventTime=self.resourceAvailable.value
                         self.resourceAvailable=self.env.event()
@@ -132,7 +136,10 @@ class Broker(ObjectInterruption):
                     
                     
                     with self.victim.operatorPool.getResource(self.victim.currentOperator).request() as request:
+                        self.logger.info("!--- %s %s Waiting request ----!" % (self.env.now, self.id))
                         yield request
+                        self.logger.info("!--- %s %s Got request ----!" % (self.env.now, self.id))
+
                         # update the operator workingStation
                         self.victim.currentOperator.workingStation=self.victim
                         self.victim.printTrace(self.victim.currentOperator.objName, startWork=self.victim.id)
@@ -165,8 +172,10 @@ class Broker(ObjectInterruption):
                         # wait till the processing is over
                         self.expectedSignals['isCalled']=1
                     
+                        self.logger.info("!--- %s %s Waiting isCalled2 ----!" % (self.env.now, self.id))
                         yield self.isCalled
-    
+                        self.logger.info("!--- %s %s Got isCalled2 ----!" % (self.env.now, self.id))
+
                         transmitter, eventTime=self.isCalled.value
                         assert eventTime==self.env.now, 'the broker should be granted control instantly'
                         self.isCalled=self.env.event()

@@ -347,6 +347,11 @@ class CoreObject(ManPyObject):
     # gets an entity from the giver 
     # =======================================================================   
     def getEntity(self):
+        import logging                                                                                 
+        self.logger = logging.getLogger("dream.platform")
+        self.logger.info(self.env.now, self.id, 'GETTING!')
+        # raise ValueError('FOO')
+
         # get active object and its queue, as well as the active (to be) entity 
         #(after the sorting of the entities in the queue of the giver object)
 #         activeObject=self.getActiveObject()

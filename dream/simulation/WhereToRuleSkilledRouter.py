@@ -30,13 +30,11 @@ import simpy
 from OperatorRouter import Router
 from opAss_LPmethod import opAss_LP
 import Globals
-import logging                                                                                 
-from copy import deepcopy
 
 # ===========================================================================
 #               Class that handles the Operator Behavior
 # ===========================================================================
-class SkilledRouter(Router):
+class WhereToSkilledRouter(Router):
     
     # =======================================================================
     #   according to this implementation one machine per broker is allowed
@@ -59,9 +57,7 @@ class SkilledRouter(Router):
         self.tool=tool
         self.checkCondition=checkCondition
         self.twoPhaseSearch=twoPhaseSearch
-        self.whereToMaxWIP = kw.get('whereToMaxWIP', False)
-        self.logger = logging.getLogger("dream.platform")
-   
+                
     #===========================================================================
     #                         the initialize method
     #===========================================================================
@@ -82,15 +78,16 @@ class SkilledRouter(Router):
     read the pendingEntities currentStations, these are the stations (queues) that may be signalled
     '''
     def run(self):
-        
+
         while 1:
             # wait until the router is called
             
             self.expectedSignals['isCalled']=1
-            self.logger.info("!--- %s %s WAITING isCalled ----!" % (self.env.now, self.id))
+            
             yield self.isCalled
-            self.logger.info("!--- %s %s GOT isCalled ----!" % (self.env.now, self.id))
-
+            import logging
+            logger = logging.getLogger("WhereToSkilledRouter") 
+            logger.info(self.env.now)
             transmitter, eventTime=self.isCalled.value
             self.isCalled=self.env.event()
             self.printTrace('','=-'*15)
@@ -140,19 +137,12 @@ class SkilledRouter(Router):
                 #===================================================================
                 for station in self.availableStations:
                     station.wip=1+(len(station.getActiveObjectQueue())/station.capacity)
-                    current_object = station
-                    capacity = station.capacity
-                    while 1:
-                        # XXX this is assuming only one predecessor
-                        current_object = current_object.previous[0]
-                        class_name = current_object.__class__.__name__
-                        if class_name == 'BatchSource':
-                            break
-                        station.wip+=float(
-                          len(current_object.getActiveObjectQueue())/float(capacity)
-                        )
-                        if class_name in ('Queue', 'LineClearance', 'RoutingQueue'):
-                            break
+                    for predecessor in station.previous:
+                        try:
+                            station.wip+=float(len(predecessor.getActiveObjectQueue())/float(predecessor.capacity))
+                        except:
+                            # XXX what happens in the case of sources or infinite-capacity-queues
+                            pass
 
                 #===================================================================
                 # # stations of the line and their corresponding WIP
@@ -224,141 +214,70 @@ class SkilledRouter(Router):
                 import time
                 startLP=time.time()
                 if LPFlag:
-                    self.logger.info('---> ' + str(self.env.now))
-                    self.logger.info(self.previousSolution)
-                    self.logger.info(self.availableOperatorList)
-                    if self.whereToMaxWIP and self.previousSolution:
-                      # self.logger.info('---> ' + str(self.env.now))
-                      solution={}
-                      maxWIP=-1
-                      minWIP=float('inf')
-                      machineWithMaxWIP=None
-                      operatorToMove=None
-                      
-                      # Sort so that the ones closer to end win in ties
-                      sorted_station_id_list = sorted(
-                        self.availableStationsDict.keys(),
-                        key=lambda x: int(x[0]), reverse=True
-                      )
-                      # first, find the machine with max wip
-                      for stationId in sorted_station_id_list:
-                        stationDict = self.availableStationsDict.get(stationId, None)
-                        # self.logger.info(stationDict)
-                        if not stationDict:
-                          continue
-                        wip = stationDict['WIP']
-                        assignedOperatorList=[
-                          x for x in self.previousSolution \
-                            if self.previousSolution[x] == stationId \
-                              and x in self.availableOperatorList
-                        ]
-                        assert len(assignedOperatorList) in (0, 1), assignedOperatorList
-                        if not assignedOperatorList:
-                          pass
-                          # self.logger.info('%s has no operator' % stationId)
-                        if wip > maxWIP and not assignedOperatorList:
-                          machineWithMaxWIP=stationId
-                          maxWIP = wip
-                      # self.logger.info(machineWithMaxWIP)
-                      solution={}
-                      # First, search for an operator that was not
-                      # previously assigned, and can handle the maxWIP station
-                      for operatorId in self.availableOperatorList:
-                        if operatorId not in self.previousSolution \
-                            and self.availableStationsDict[machineWithMaxWIP]['stationID'] in self.operators.get(operatorId, []):
-                          operatorToMove = operatorId
-                      # Then, search for the machine with Min WIP that has skill for
-                      # maxWIP station
-                      if not operatorToMove:
-                        for stationId, stationDict in self.availableStationsDict.iteritems():
-                          wip = stationDict['WIP']
-                          assignedOperatorList=[
-                            x for x in self.previousSolution \
-                              if self.previousSolution[x] == stationId \
-                                and x in self.availableOperatorList
-                          ]
-                          assert len(assignedOperatorList) in (0, 1), assignedOperatorList
-                          if wip < minWIP and assignedOperatorList \
-                              and self.availableStationsDict[machineWithMaxWIP]['stationID'] in self.operators.get(assignedOperatorList[0], []):
-                            operatorToMove=assignedOperatorList[0]
-                            minWIP = wip
-                      # Copy previous solution for available operators
-                      for operatorId, stationId in self.previousSolution.iteritems():
-                        if operatorId in self.availableOperatorList:
-                          solution[operatorId]=self.previousSolution[operatorId]
-                      # move the operator that was identified to be moved to maxWIP
-                      if operatorToMove and machineWithMaxWIP and maxWIP >= minWIP:
-                        solution[operatorToMove]=machineWithMaxWIP
-                        self.logger.info('moved %s from %s to %s' % (
-                          operatorToMove,
-                          self.previousSolution.get(operatorToMove, 'idle'),
-                          machineWithMaxWIP
-                        ))
+                    if self.twoPhaseSearch:
+                        # remove all the blocked machines from the available stations
+                        # and create another dict only with them
+                        machinesForSecondPhaseDict={}
+                        for stationId in self.availableStationsDict.keys():
+                            machine = Globals.findObjectById(stationId)
+                            nextObject = machine.next[0]
+                            nextObjectClassName = nextObject.__class__.__name__
+                            reassemblyBlocksMachine = False
+                            if 'Reassembly' in nextObjectClassName:
+                                if nextObject.getActiveObjectQueue():
+                                    if nextObject.getActiveObjectQueue()[0].type == 'Batch': 
+                                        reassemblyBlocksMachine = True
+                            if machine.isBlocked or reassemblyBlocksMachine:
+                                if not len(machine.getActiveObjectQueue()) and (not reassemblyBlocksMachine):
+                                    raise ValueError('empty machine considered as blocked')
+                                if machine.timeLastEntityEnded < machine.timeLastEntityEntered:
+                                    raise ValueError('machine considered as blocked, while it has Entity that has not finished')
+                                if "Queue" in nextObjectClassName:
+                                    if len(nextObject.getActiveObjectQueue()) != nextObject.capacity:
+                                        raise ValueError('Machine considered as blocked while Queue has space') 
+                                if "Clearance" in nextObjectClassName:
+                                    if not nextObject.getActiveObjectQueue():
+                                        raise ValueError('Machine considered as blocked while Clearance is empty')
+                                    else:
+                                        subBatchMachineHolds = machine.getActiveObjectQueue()[0]
+                                        subBatchLineClearanceHolds = nextObject.getActiveObjectQueue()[0]
+                                        if subBatchMachineHolds.parentBatch == subBatchLineClearanceHolds.parentBatch and\
+                                                (len(nextObject.getActiveObjectQueue()) != nextObject.capacity):
+                                            raise ValueError('Machine considered as blocked while Line Clearance holds same batch and has space')
+                                machinesForSecondPhaseDict[stationId] = self.availableStationsDict[stationId]
+                                del self.availableStationsDict[stationId]
+                            else:
+                                if len(machine.getActiveObjectQueue()) and (not machine.isProcessing) and\
+                                         machine.onShift and machine.currentOperator:
+                                    raise ValueError('machine should be considered blocked')
+                                
+                        
+                        # run the LP method only for the machines that are not blocked
+                        solution=opAss_LP(self.availableStationsDict, self.availableOperatorList, 
+                                          self.operators, previousAssignment=self.previousSolution,
+                                          weightFactors=self.weightFactors,Tool=self.tool)
+                        # create a list with the operators that were sent to the LP but did not get allocated
+                        operatorsForSecondPhaseList=[]
+                        for operatorId in self.availableOperatorList:
+                            if operatorId not in solution.keys():
+                                operatorsForSecondPhaseList.append(operatorId)
+                        # in case there is some station that did not get operator even if it was not blocked
+                        # add them alos for the second fail (XXX do not think there is such case)
+                        for stationId in self.availableStationsDict.keys():
+                            if stationId not in solution.values():
+                                machinesForSecondPhaseDict[stationId] = self.availableStationsDict[stationId]
+                        # if there are machines and operators for the second phase
+                        # run again the LP for machines and operators that are not in the former solution
+                        if machinesForSecondPhaseDict and operatorsForSecondPhaseList:
+                            secondPhaseSolution=opAss_LP(machinesForSecondPhaseDict, operatorsForSecondPhaseList, 
+                                              self.operators, previousAssignment=self.previousSolution,
+                                              weightFactors=self.weightFactors,Tool=self.tool)
+                            # update the solution with the new LP results
+                            solution.update(secondPhaseSolution)
                     else:
-                      if self.twoPhaseSearch:
-                          # remove all the blocked machines from the available stations
-                          # and create another dict only with them
-                          machinesForSecondPhaseDict={}
-                          for stationId in self.availableStationsDict.keys():
-                              machine = Globals.findObjectById(stationId)
-                              nextObject = machine.next[0]
-                              nextObjectClassName = nextObject.__class__.__name__
-                              reassemblyBlocksMachine = False
-                              if 'Reassembly' in nextObjectClassName:
-                                  if nextObject.getActiveObjectQueue():
-                                      if nextObject.getActiveObjectQueue()[0].type == 'Batch': 
-                                          reassemblyBlocksMachine = True
-                              if machine.isBlocked or reassemblyBlocksMachine:
-                                  if not len(machine.getActiveObjectQueue()) and (not reassemblyBlocksMachine):
-                                      raise ValueError('empty machine considered as blocked')
-                                  if machine.timeLastEntityEnded < machine.timeLastEntityEntered:
-                                      raise ValueError('machine considered as blocked, while it has Entity that has not finished')
-                                  if "Queue" in nextObjectClassName:
-                                      if len(nextObject.getActiveObjectQueue()) != nextObject.capacity:
-                                          raise ValueError('Machine considered as blocked while Queue has space') 
-                                  if "Clearance" in nextObjectClassName:
-                                      if not nextObject.getActiveObjectQueue():
-                                          raise ValueError('Machine considered as blocked while Clearance is empty')
-                                      else:
-                                          subBatchMachineHolds = machine.getActiveObjectQueue()[0]
-                                          subBatchLineClearanceHolds = nextObject.getActiveObjectQueue()[0]
-                                          if subBatchMachineHolds.parentBatch == subBatchLineClearanceHolds.parentBatch and\
-                                                  (len(nextObject.getActiveObjectQueue()) != nextObject.capacity):
-                                              raise ValueError('Machine considered as blocked while Line Clearance holds same batch and has space')
-                                  machinesForSecondPhaseDict[stationId] = self.availableStationsDict[stationId]
-                                  del self.availableStationsDict[stationId]
-                              else:
-                                  if len(machine.getActiveObjectQueue()) and (not machine.isProcessing) and\
-                                           machine.onShift and machine.currentOperator:
-                                      raise ValueError('machine should be considered blocked')
-                                  
-                          
-                          # run the LP method only for the machines that are not blocked
-                          solution=opAss_LP(self.availableStationsDict, self.availableOperatorList, 
-                                            self.operators, previousAssignment=self.previousSolution,
-                                            weightFactors=self.weightFactors,Tool=self.tool)
-                          # create a list with the operators that were sent to the LP but did not get allocated
-                          operatorsForSecondPhaseList=[]
-                          for operatorId in self.availableOperatorList:
-                              if operatorId not in solution.keys():
-                                  operatorsForSecondPhaseList.append(operatorId)
-                          # in case there is some station that did not get operator even if it was not blocked
-                          # add them alos for the second fail (XXX do not think there is such case)
-                          for stationId in self.availableStationsDict.keys():
-                              if stationId not in solution.values():
-                                  machinesForSecondPhaseDict[stationId] = self.availableStationsDict[stationId]
-                          # if there are machines and operators for the second phase
-                          # run again the LP for machines and operators that are not in the former solution
-                          if machinesForSecondPhaseDict and operatorsForSecondPhaseList:
-                              secondPhaseSolution=opAss_LP(machinesForSecondPhaseDict, operatorsForSecondPhaseList, 
-                                                self.operators, previousAssignment=self.previousSolution,
-                                                weightFactors=self.weightFactors,Tool=self.tool)
-                              # update the solution with the new LP results
-                              solution.update(secondPhaseSolution)
-                      else:
-                          solution=opAss_LP(self.availableStationsDict, self.availableOperatorList, 
-                                            self.operators, previousAssignment=self.previousSolution,
-                                            weightFactors=self.weightFactors,Tool=self.tool)
+                        solution=opAss_LP(self.availableStationsDict, self.availableOperatorList, 
+                                          self.operators, previousAssignment=self.previousSolution,
+                                          weightFactors=self.weightFactors,Tool=self.tool)
                 else:
                     # if the LP is not called keep the previous solution
                     # if there are no available operators though, remove those
@@ -381,7 +300,7 @@ class SkilledRouter(Router):
                 self.pendingStations=[]
                 from Globals import findObjectById
                 # apply the solution
-
+                
                 # loop through the stations. If there is a station that should change operator
                 # set the operator dedicated to None and also release operator
                 for station in G.MachineList:
@@ -403,7 +322,7 @@ class SkilledRouter(Router):
                     if operatorID in self.previousSolution:
                         # if the solution returned the operator that is already in the station
                         # then no signal is needed
-                        if not (self.previousSolution[operatorID] == solution[operatorID] and operator == station.currentOperator):
+                        if not self.previousSolution[operatorID] == solution[operatorID]:
                             self.toBeSignalled.append(station)
                     else:
                         self.toBeSignalled.append(station)
@@ -417,16 +336,13 @@ class SkilledRouter(Router):
                     station.operatorToGet=operator
                     # remove the operator id from availableOperatorList
                     self.availableOperatorList.remove(operatorID)
-
-
+                    
                 #===================================================================
                 # # XXX signal the stations that the assignment is complete
                 #===================================================================             
                 # if the operator is free the station can be signalled right away
                 stationsProcessingLast=[]
                 toBeSignalled=list(self.toBeSignalled)
-                self.logger.info("!--- %s toBeSignalled: %s ----!" % (self.env.now, len(toBeSignalled)))
-
                 for station in toBeSignalled:
                     # check if the operator that the station waits for is free
                     operator=station.operatorToGet
@@ -446,10 +362,7 @@ class SkilledRouter(Router):
                     self.expectedFinishSignalsDict[station.id]=signal
                     self.expectedFinishSignals.append(signal)
                 while self.expectedFinishSignals:
-                    self.logger.info("!--- %s %s WAITING expectedFinishSignals ----!" % (self.env.now, self.id))
-
                     receivedEvent = yield self.env.any_of(self.expectedFinishSignals)
-                    self.logger.info("!--- %s %s GOT expectedFinishSignals ----!" % (self.env.now, self.id))
                     for signal in self.expectedFinishSignals:
                         if signal in receivedEvent:
                             transmitter, eventTime=signal.value
@@ -462,7 +375,7 @@ class SkilledRouter(Router):
                                 station=findObjectById(solution[id])
                                 signal=True                                       
                                 # signal only the stations in the original list
-                                if station not in self.toBeSignalled or (not operator.onShift) or operator.onBreak:
+                                if station not in self.toBeSignalled:
                                     signal=False
                                 # signal only if the operator is free 
                                 if operator.workingStation:
@@ -472,7 +385,8 @@ class SkilledRouter(Router):
                                 if signal:
                                     # signal the station so that it gets the operator
                                     self.signalStation(station, operator)
-
+          
+            
             #===================================================================
             # default behaviour
             #===================================================================
@@ -499,8 +413,6 @@ class SkilledRouter(Router):
     # =======================================================================
     def signalStation(self, station, operator):
         # signal this station's broker that the resource is available
-        self.logger.info("!--- %s %s signalStation ----!" % (self.env.now, self.id))
-
         if station.broker.waitForOperator:
             if station.broker.expectedSignals['resourceAvailable']:
                 self.sendSignal(receiver=station.broker, signal=station.broker.resourceAvailable)
@@ -601,6 +513,3 @@ class SkilledRouter(Router):
                     break
                 nextObject=nextObject.next[0]
         return parallelMachinesList
-    
-    
-    

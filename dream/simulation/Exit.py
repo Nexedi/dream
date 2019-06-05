@@ -105,6 +105,10 @@ class Exit(CoreObject):
     #                    gets an entity from the predecessor     
     # =======================================================================
     def getEntity(self): 
+        import logging                                                                                 
+        self.logger = logging.getLogger("dream.platform")
+        self.logger.info("!--- %s ----!" % self.env.now)
+
         activeEntity = CoreObject.getEntity(self)           #run the default method
         # if the entity is in the G.pendingEntities list then remove it from there
         from Globals import G
