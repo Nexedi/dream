@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "description": "The Dream Project",
   "dependencies": {
-    "handlebars": "^2.0.0-alpha.4",
+    "handlebars": "^4.4.5",
     "jio": "git+http://git.erp5.org/repos/jio.git",
     "renderjs": "git+http://git.erp5.org/repos/renderjs.git",
     "rsvp": "git+http://git.erp5.org/repos/rsvp.js.git",
