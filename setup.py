@@ -1,4 +1,3 @@
-
 from setuptools import setup, find_packages
 
 setup(
@@ -20,7 +19,7 @@ setup(
         'rpy2',
         'pulp',
         'tablib',
-        'MySQL-python',
+        'mysqlclient',
     ],
     entry_points=("""
     [console_scripts]
