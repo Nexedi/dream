@@ -4,7 +4,7 @@ setup(
     name='dream',
     version='0.0.1',
     license='LGPL',
-    url='http://dream-simulation.eu/',
+    url='https://manpy-simulation.org/',
     packages=find_packages('.'),
     package_dir={'': '.', 'simulation': 'simulation'},
     install_requires=[
