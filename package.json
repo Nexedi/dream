@@ -5,10 +5,10 @@
   "description": "The Dream Project",
   "dependencies": {
     "handlebars": "^2.0.0-alpha.4",
-    "jio": "git+http://git.erp5.org/repos/jio.git",
-    "renderjs": "git+http://git.erp5.org/repos/renderjs.git",
-    "rsvp": "git+http://git.erp5.org/repos/rsvp.js.git",
-    "uritemplate": "git+http://git.erp5.org/repos/uritemplate-js.git"
+    "jio": "git+https://lab.nexedi.com/nexedi/jio.git#45be1eaffc185f04a91e7cc1bfd2a0cf463ea468",
+    "renderjs": "git+https://lab.nexedi.com/nexedi/renderjs.git#846e9ef2408157129208a20994863576405ccc0d",
+    "rsvp": "git+https://lab.nexedi.com/nexedi/rsvp.js.git#b0c4596df6a52d75705a59262bc992a166ff11a1",
+    "uritemplate": "git+https://lab.nexedi.com/nexedi/uritemplate-js.git#93dea6b5b522be7f327c86c7ad81411a94fc7f32"
   },
   "devDependencies": {
     "grunt": "~0.4.5",
