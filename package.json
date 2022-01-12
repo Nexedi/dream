@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "description": "The Dream Project",
   "dependencies": {
-    "handlebars": "^2.0.0-alpha.4",
+    "handlebars": "^4.7.7",
     "jio": "git+https://lab.nexedi.com/nexedi/jio.git#45be1eaffc185f04a91e7cc1bfd2a0cf463ea468",
     "renderjs": "git+https://lab.nexedi.com/nexedi/renderjs.git#846e9ef2408157129208a20994863576405ccc0d",
     "rsvp": "git+https://lab.nexedi.com/nexedi/rsvp.js.git#b0c4596df6a52d75705a59262bc992a166ff11a1",
