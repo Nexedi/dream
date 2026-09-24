@@ -25,7 +25,7 @@ Created on 15 Jan 2014
 Inherits from QueueManagedJob. Checks the condition of (a) component(s) before it can dispose them/it
 '''
 
-from QueueManagedJob import QueueManagedJob
+from .QueueManagedJob import QueueManagedJob
 
 # ===========================================================================
 # Error in the setting up of the WIP

@@ -30,12 +30,12 @@ BatchDecomposition is a Core Object that takes a batch and decomposes to sub-bat
 # from SimPy.Simulation import waituntil, now, hold, waitevent
 import simpy
 
-from Globals import G
-from CoreObject import CoreObject
-from RandomNumberGenerator import RandomNumberGenerator
+from .Globals import G
+from .CoreObject import CoreObject
+from .RandomNumberGenerator import RandomNumberGenerator
 
-from SubBatch import SubBatch
-from Batch import Batch
+from .SubBatch import SubBatch
+from .Batch import Batch
 
 
 # ===========================================================================
@@ -51,7 +51,7 @@ class BatchDecomposition(CoreObject):
 
         if not processingTime:
             processingTime = {'Fixed':{'mean': 0 }}
-        if 'Normal' in processingTime.keys() and\
+        if 'Normal' in list(processingTime.keys()) and\
                 processingTime['Normal'].get('max', None) is None:
             processingTime['Normal']['max'] = float(processingTime['Normal']['mean']) + 5 * float(processingTime['Normal']['stdev'])
         
@@ -61,14 +61,14 @@ class BatchDecomposition(CoreObject):
         self.operator=operator         
         # Sets the attributes of the processing (and failure) time(s)
         self.rng=RandomNumberGenerator(self, processingTime)
-        from Globals import G
+        from .Globals import G
         G.BatchDecompositionList.append(self)
 
     # =======================================================================
     #     initialize the internal resource of the object
     # =======================================================================
     def initialize(self):
-        from Globals import G
+        from .Globals import G
         G.BatchWaitingList = []                                     # batches waiting to be reassembled
         CoreObject.initialize(self)                                 # using the default CoreObject Functionality
         self.Res=simpy.Resource(self.env, self.numberOfSubBatches)  # initialize the Internal resource (Queue) functionality

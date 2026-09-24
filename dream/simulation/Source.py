@@ -28,10 +28,10 @@ models the source object that generates the entities
 
 # from SimPy.Simulation import now, Process, Resource, infinity, hold, SimEvent, activate, waitevent
 import simpy
-from RandomNumberGenerator import RandomNumberGenerator
-from CoreObject import CoreObject
-from Globals import G
-import Globals
+from .RandomNumberGenerator import RandomNumberGenerator
+from .CoreObject import CoreObject
+from .Globals import G
+from . import Globals
 
 
 #============================================================================
@@ -85,7 +85,7 @@ class Source(CoreObject):
         # Default values
         if not interArrivalTime:
           interArrivalTime = {'Fixed': {'mean': 1}}
-        if 'Normal' in interArrivalTime.keys() and\
+        if 'Normal' in list(interArrivalTime.keys()) and\
               interArrivalTime['Normal'].get('max', None) is None:
           interArrivalTime['Normal']['max'] = interArrivalTime['Normal']['mean'] + 5 * interArrivalTime['Normal']['stdev']
 
@@ -100,7 +100,7 @@ class Source(CoreObject):
         self.item=Globals.getClassFromName(entity)      #the type of object that the Source will generate
                
         self.scheduledEntities=[]       # list of creations that are scheduled. pattern is [timeOfCreation, EntityCounter]     
-        from Globals import G
+        from .Globals import G
         G.SourceList.append(self)  
     
     #===========================================================================
@@ -164,7 +164,7 @@ class Source(CoreObject):
     # add newly created entity to pendingEntities
     #===========================================================================
     def appendEntity(self, entity):
-        from Globals import G
+        from .Globals import G
         assert entity, 'cannot append None entity'
         activeEntity=entity
         if G.RouterList:

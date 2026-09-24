@@ -29,16 +29,16 @@ Models a machine that can also have failures
 # from SimPy.Simulation import activate, passivate, waituntil, now, hold, request, release, waitevent
 import simpy
 
-from Failure import Failure
-from CoreObject import CoreObject
+from .Failure import Failure
+from .CoreObject import CoreObject
 
-from OperatorRouter import Router
-from SkilledOperatorRouter import SkilledRouter
+from .OperatorRouter import Router
+from .SkilledOperatorRouter import SkilledRouter
 
-from OperatedPoolBroker import Broker
-from OperatorPool import OperatorPool
+from .OperatedPoolBroker import Broker
+from .OperatorPool import OperatorPool
 
-from RandomNumberGenerator import RandomNumberGenerator
+from .RandomNumberGenerator import RandomNumberGenerator
 
 # ===========================================================================
 # the Machine object
@@ -59,7 +59,7 @@ class Machine(CoreObject):
                   **kw):
         self.type="Machine"                         #String that shows the type of object
         CoreObject.__init__(self, id, name)
-        from Globals import G
+        from .Globals import G
 
         processingTime=self.getOperationTime(time=processingTime)
 
@@ -116,7 +116,7 @@ class Machine(CoreObject):
         #     there can be Setup/Processing operationType
         #     or the combination of both (MT-Load-Setup-Processing) 
         self.multOperationTypeList=[]   
-        if isinstance(self.operationType, basestring) and self.operationType.startswith("MT"):
+        if isinstance(self.operationType, str) and self.operationType.startswith("MT"):
             OTlist = operationType.split('-')
             self.operationType=OTlist.pop(0)
             self.multOperationTypeList = OTlist
@@ -207,7 +207,7 @@ class Machine(CoreObject):
         '''returns the dictionary updated'''
         if not time:
             time = {'Fixed':{'mean': 0 }}
-        if 'Normal' in time.keys() and\
+        if 'Normal' in list(time.keys()) and\
                 time['Normal'].get('max', None) is None:
             time['Normal']['max'] = float(time['Normal']['mean']) + 5 * float(time['Normal']['stdev'])
         return time
@@ -222,7 +222,7 @@ class Machine(CoreObject):
              the list of operators provided
             if the  list is empty create operator pool with empty list
         '''
-        from Globals import G
+        from .Globals import G
         # XXX operatorPool is not None ?
         # if a list of operators is provided as argument
         if (type(operatorPool) is list) and len(operatorPool)>0:
@@ -263,7 +263,7 @@ class Machine(CoreObject):
     def createRouter(self):
         # initiate the Broker and the router
         if (self.operatorPool!='None'):
-            from Globals import G
+            from .Globals import G
             # if there is no router
             if not G.RouterList:
                 # TODO if the dedicatedOperator flag is raised then create a SkilledRouter (temp)
@@ -340,7 +340,7 @@ class Machine(CoreObject):
         operationsNotRequired=[]
         opRequest=True
         if operationTypes:
-            for operationType, func in operationTypes.iteritems():
+            for operationType, func in list(operationTypes.items()):
                 tup=(operationType, func)
                 if bool(func):
                     operationsRequired.append(tup)
@@ -366,7 +366,7 @@ class Machine(CoreObject):
         methodsNotRequired=[]
         methodsRequest=True
         if methods:
-            for methodType, func in methods.iteritems():
+            for methodType, func in list(methods.items()):
                 tup=(methodType, func)
                 if bool(func):
                     methodsRequired.append(tup)
@@ -374,7 +374,7 @@ class Machine(CoreObject):
                     methodsNotRequired.append(tup)
             # methods that should return TRUE
             required = True
-            from Globals import getMethodFromName
+            from .Globals import getMethodFromName
             if methodsRequired:
                 for methodTup in methodsRequired:
                     method, func = methodTup
@@ -541,7 +541,7 @@ class Machine(CoreObject):
                 #===========================================================
                 self.currentOperator.totalWorkingTime+=self.env.now-self.currentOperator.timeLastOperationStarted 
                 yield self.env.process(self.release())                 
-                from Globals import G
+                from .Globals import G
                 # append the entity that was stopped to the pending ones
                 if G.RouterList:
                     G.pendingEntities.append(self.currentEntity)
@@ -581,7 +581,7 @@ class Machine(CoreObject):
     # =======================================================================
     def run(self):
         # request for allocation if needed
-        from Globals import G
+        from .Globals import G
         self.initialAllocationRequest()
         # execute all through simulation time
         while 1:
@@ -925,7 +925,7 @@ class Machine(CoreObject):
                 self.outputTrace(activeObjectQueue[0].name,"ended processing in "+self.objName)
             except IndexError:
                 pass
-            from Globals import G
+            from .Globals import G
             if G.RouterList:
                 # the just processed entity is added to the list of entities 
                 # pending for the next processing
@@ -982,7 +982,7 @@ class Machine(CoreObject):
             self.printTrace(activeEntity.name, interrupted=self.objName)                                    
             self.outputTrace(activeObjectQueue[0].name, "Interrupted at "+self.objName)
             # recalculate the processing time left tinM
-            if self.timeLastOperationStarted>=0:
+            if self.timeLastOperationStarted is not None and self.timeLastOperationStarted>=0:
                 self.tinM=self.tinM-(self.env.now-self.timeLastOperationStarted)
                 self.timeToEndCurrentOperation=self.env.now+self.tinM
                 if(self.tinM==0):       # sometimes the failure may happen exactly at the time that the processing would finish
@@ -1134,7 +1134,7 @@ class Machine(CoreObject):
         if self.currentOperator:
             self.currentOperator.schedule[-1]["entity"] = activeEntity
         # after the machine receives an entity, it must be removed from the pendingEntities list
-        from Globals import G
+        from .Globals import G
         if G.RouterList:
             if activeEntity in G.pendingEntities:
                 G.pendingEntities.remove(activeEntity)
@@ -1180,7 +1180,7 @@ class Machine(CoreObject):
         assert self.isInActiveQueue(entity), entity.id +' not in the internalQueue of'+ self.id
         activeEntity=entity
         
-        from Globals import G
+        from .Globals import G
         router = G.RouterList[0]
         # if the entity is in a machines who's broker waits for operator then
         if self in router.pendingMachines:
@@ -1227,8 +1227,8 @@ class Machine(CoreObject):
             operator.workingStation=None
             self.outputTrace(operator.name, "released from "+ self.objName)
             # if the Router is expecting for signal send it
-            from Globals import G
-            from SkilledOperatorRouter import SkilledRouter
+            from .Globals import G
+            from .SkilledOperatorRouter import SkilledRouter
             self.toBeOperated = False
             if G.RouterList[0].__class__ is SkilledRouter:
                 if G.RouterList[0].expectedFinishSignals:
@@ -1248,7 +1248,7 @@ class Machine(CoreObject):
     # outputs results to JSON File
     # =======================================================================
     def outputResultsJSON(self):
-        from Globals import G
+        from .Globals import G
         json = {'_class': 'Dream.%s' % self.__class__.__name__,
                 'id': self.id,
                 'family': self.family,

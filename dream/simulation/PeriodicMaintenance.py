@@ -29,8 +29,8 @@ i.e. if the victim is processing when it happens it would first end the processi
 
 import simpy
 import math
-from RandomNumberGenerator import RandomNumberGenerator
-from ObjectInterruption import ObjectInterruption
+from .RandomNumberGenerator import RandomNumberGenerator
+from .ObjectInterruption import ObjectInterruption
 
 class PeriodicMaintenance(ObjectInterruption):
     

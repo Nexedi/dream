@@ -28,7 +28,7 @@ if the level is reached Router object is signalled
 
 
 import simpy
-from Queue import Queue
+from .Queue import Queue
 # ===========================================================================
 #                            the Queue object
 # ===========================================================================
