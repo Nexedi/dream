@@ -27,10 +27,10 @@ allocates the forecast demand following the SP sequence order provided in input.
 
 
 from copy import deepcopy
-from Globals import G
-from AllocationForecast_IP import Allocation_IP
-from Allocation_3 import Allocation2
-from UtilisationCalculation import utilisationCalc1, utilisationCalc2
+from .Globals import G
+from .AllocationForecast_IP import Allocation_IP
+from .Allocation_3 import Allocation2
+from .UtilisationCalculation import utilisationCalc1, utilisationCalc2
 from math import ceil
 
 def AllocationRoutine_ForecastGA(initialWeek, itemList, itemType, chromo):
@@ -48,7 +48,7 @@ def AllocationRoutine_ForecastGA(initialWeek, itemList, itemType, chromo):
         
         item=itemList[order]
         
-        print 'item', item['orderID']
+        print('item', item['orderID'])
         
         #================================================
         # Allocation step 1...allocation at current Week
@@ -92,7 +92,7 @@ def AllocationRoutine_ForecastGA(initialWeek, itemList, itemType, chromo):
                                        
                     
                 # implement optimal MA solution to update temporary variables
-                for ma in spAllocation.keys():
+                for ma in list(spAllocation.keys()):
                     
                     if probStatus == 'Optimal':
                         allocatedQty = spAllocation[ma]

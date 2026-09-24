@@ -25,9 +25,9 @@ Created on 8 Dec 2014
 
 ''' implements ACO for the allocation of orders/forecast of a certain week/priority level '''
 
-from AllocationRoutine_ACO2 import AllocationRoutine_ACO
-from AllocationRoutine_Final2 import AllocationRoutine_Final
-from Globals import G
+from .AllocationRoutine_ACO2 import AllocationRoutine_ACO
+from .AllocationRoutine_Final2 import AllocationRoutine_Final
+from .Globals import G
 from random import choice
 from operator import itemgetter
 from math import ceil
@@ -135,7 +135,7 @@ def ranking(candidates,elg):
 #        termCriterion += 1
 
     if termCriterion == 2:
-        print 'Termination Criterion Reached'
+        print('Termination Criterion Reached')
         return fittest,'Terminate'
     else:
         return fittest,'Continue'
@@ -168,10 +168,10 @@ def Allocation_ACO(initialWeek, itemList, itemType,ACOresults):
     
     for gen in range(G.noGen):
         
-        print 'generation', gen
+        print('generation', gen)
         
         for rep in range(G.popSize):
-            print 'ant', rep
+            print('ant', rep)
             
             # create an ant
             ant = {}
@@ -206,12 +206,12 @@ def Allocation_ACO(initialWeek, itemList, itemType,ACOresults):
         
         # update weights
         for x in range(len(ants)):
-            for orderID in ants[x]['ant'].keys():
+            for orderID in list(ants[x]['ant'].keys()):
                 if orderID != 'antID':
                     antDictionary[orderID].append(ants[x]['ant'][orderID])
         
     # selection of final solution and results recording    
-    print 'final allocation'    
+    print('final allocation')    
     ant = finalRanking(ants)
     AllocationRoutine_Final(initialWeek, itemList, itemType, ant['ant'])
     ACOresults.append((initialWeek, gen, rep, ant['ant']['antID'], 'selected', '', '', '', ''))

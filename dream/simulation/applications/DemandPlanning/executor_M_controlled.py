@@ -24,10 +24,10 @@ Created on 22 Jun 2015
 @author: Anna
 '''
 
-from AllocManagement_Hybrid import AllocManagement_Hybrid2, AllocManagement_Hybrid2_Forecast
-from ImportInput import ImportInput
-from outputResults import outputResults
-from Globals import G, initialiseVar
+from .AllocManagement_Hybrid import AllocManagement_Hybrid2, AllocManagement_Hybrid2_Forecast
+from .ImportInput import ImportInput
+from .outputResults import outputResults
+from .Globals import G, initialiseVar
 import time
 from numpy import mean, std, array, absolute
 from operator import itemgetter
@@ -55,12 +55,12 @@ def main(input, algorithmAttributes):
             initialiseVar() 
             G.minDeltaUt = i
             G.ACO = j
-            print 'start ACO', G.ACO, 'minDelta', G.minDeltaUt
+            print('start ACO', G.ACO, 'minDelta', G.minDeltaUt)
             bestAnt = AllocManagement_Hybrid2(None)
             
             # salvare risultati
             G.Summary[(G.ACO,G.minDeltaUt)] = {'scenario':(G.ACO,G.minDeltaUt)}
-            for key in G.LateMeasures.keys():
+            for key in list(G.LateMeasures.keys()):
                 if key == 'lateness' or key == 'earliness':
                     if len(G.LateMeasures[key]):
                         G.Summary[(G.ACO,G.minDeltaUt)][key] = mean(G.LateMeasures[key])
@@ -87,8 +87,8 @@ def main(input, algorithmAttributes):
             
             
     # selection
-    listSummary = [G.Summary[item] for item in G.Summary.keys()]
-    print 'list summary', listSummary
+    listSummary = [G.Summary[item] for item in list(G.Summary.keys())]
+    print('list summary', listSummary)
     listSummary = sorted(listSummary, key=itemgetter('exUnits', 'lateness', 'targetM', 'targetStd', 'utilisation',  'earliness'))
     
     bestScenario = listSummary[0]['scenario']
@@ -107,7 +107,7 @@ def main(input, algorithmAttributes):
     AllocManagement_Hybrid2_Forecast()
     
     outputResults()
-    print 'calculation time', time.time()-startTime
+    print('calculation time', time.time()-startTime)
     
 if __name__ == '__main__':
     main()

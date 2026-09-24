@@ -38,7 +38,7 @@ def main(test=0):
     
     # print the results
     for record in J.schedule:
-        print J.name, "got into", record["station"].objName, "at", record["entranceTime"]
+        print(J.name, "got into", record["station"].objName, "at", record["entranceTime"])
 
 if __name__ == '__main__':
     main()              

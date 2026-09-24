@@ -23,7 +23,7 @@ Created on 12 Dec 2014
 @author: Anna
 '''
 
-from Globals import G
+from .Globals import G
 from pulp import *
 from os import remove 
 from glob import glob
@@ -36,7 +36,7 @@ def Allocation_IP(item, week, previousAss, capacity, weightFactor):
     
     # calculate number of units to be allocated
     allQty = item['Qty']
-    for ma in previousAss.keys():
+    for ma in list(previousAss.keys()):
         allQty -= previousAss[ma]
     assert(allQty>0)        
             
@@ -147,7 +147,7 @@ def Allocation_IP(item, week, previousAss, capacity, weightFactor):
     prob.writeLP("IPifx.lp") 
     prob.solve()
     
-    print 'lp results', item['sp'], allQty, LpStatus[prob.status], sum(MA_var[ma].varValue* G.BatchSize[ma][week] for ma in MAlist)
+    print('lp results', item['sp'], allQty, LpStatus[prob.status], sum(MA_var[ma].varValue* G.BatchSize[ma][week] for ma in MAlist))
     allocation = {}
     for ma in MAlist:
         allocation[ma] = MA_var[ma].varValue * G.BatchSize[ma][week]
@@ -155,7 +155,7 @@ def Allocation_IP(item, week, previousAss, capacity, weightFactor):
         
         
     if LpStatus[prob.status] != 'Optimal':
-        print 'WARNING: LP solution ', LpStatus[prob.status]
+        print('WARNING: LP solution ', LpStatus[prob.status])
         
     # remove lp files
     files = glob('*.mps')

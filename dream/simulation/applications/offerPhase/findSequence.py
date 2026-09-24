@@ -5,26 +5,26 @@ Created on 14 Aug 2015
 '''
 
 from operator import itemgetter
-from Globals import G
+from .Globals import G
 
 def findSequence(Projects, seqPrjDone, idDone):
     
     opReady = []
     
-    print 'find sequence', Projects
-    print 'find sequence', seqPrjDone
+    print('find sequence', Projects)
+    print('find sequence', seqPrjDone)
     
-    for proj in seqPrjDone.keys():
+    for proj in list(seqPrjDone.keys()):
         
-        for part in seqPrjDone[proj].keys():
+        for part in list(seqPrjDone[proj].keys()):
             
             if seqPrjDone[proj][part] < len(Projects[proj][part]):
                 
                 possibleOp = True
                 
-                print 'part', part, Projects[proj][part][seqPrjDone[proj][part]]['id']
+                print('part', part, Projects[proj][part][seqPrjDone[proj][part]]['id'])
                 
-                if seqPrjDone[proj][part]==0 or Projects[proj][part][seqPrjDone[proj][part]-1]['id'] not in G.Schedule.keys():
+                if seqPrjDone[proj][part]==0 or Projects[proj][part][seqPrjDone[proj][part]-1]['id'] not in list(G.Schedule.keys()):
                     minStartTime = max(G.xlreftime, G.OrderDates[proj])
                 else:
                     minStartTime = G.Schedule[Projects[proj][part][seqPrjDone[proj][part]-1]['id']]['endDate']
@@ -42,7 +42,7 @@ def findSequence(Projects, seqPrjDone, idDone):
                 
                 if possibleOp:
                     newOp = Projects[proj][part][seqPrjDone[proj][part]]
-                    print newOp['id'], 'possible'                
+                    print(newOp['id'], 'possible')                
                     newOp['minStartTime'] = minStartTime
                     newOp['project'] = proj
                     newOp['part'] = part
@@ -60,7 +60,7 @@ def findSequence(Projects, seqPrjDone, idDone):
                         seqPrjDone[proj][part] += 1
                         
                         # verify that the operation is the same
-                        print followOp['operation'], newOp['operation']
+                        print(followOp['operation'], newOp['operation'])
                         assert (followOp['operation'].split('-')[0] in newOp['operation'])
                         
                         # update operation (erase set)
@@ -90,16 +90,16 @@ def findSequence(Projects, seqPrjDone, idDone):
                     
                     opReady.append(newOp)
         
-        print 'pre', opReady
+        print('pre', opReady)
         opReady = sorted(opReady, key=itemgetter('sequence', 'manualTime', 'autoTime'))
         
-        print 'seq', seqPrjDone, G.seqPrjDone
+        print('seq', seqPrjDone, G.seqPrjDone)
         return opReady
                         
     
 if __name__ == '__main__':
     
-    import jsonReader as jR
+    from . import jsonReader as jR
     
     seq = jR.seqPrjDone
     seq['Order 1']['Order 1 - Mould'] = 2
@@ -108,5 +108,5 @@ if __name__ == '__main__':
     seq['Order 1']['Order 1 - Part 03'] = 1
     
     op = findSequence(jR.Projects, jR.seqPrjDone, ['ID-00001','ID-00002','ID-00003','ID-00004','ID-00005', 'ID-00006', 'ID-00007', 'ID-00008', 'ID-00009'])
-    print 'op', op
+    print('op', op)
     
