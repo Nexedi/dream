@@ -39,7 +39,7 @@ class KnowledgeExtractionExamples(TestCase):
         elementList=result_data.get('elementList',[])
         for element in elementList:
             if element['id']=='E1':
-                self.assertEquals(element['results']['throughput'][0], 86)
+                self.assertEqual(element['results']['throughput'][0], 86)
             if element['id']=='St1':
                 self.assertTrue(99.93<element['results']['working_ratio'][0]<99.94)
         jsonFile.close()
@@ -92,13 +92,13 @@ class KnowledgeExtractionExamples(TestCase):
         result_data = result
         result_data=result_data['graph']
         nodes=result_data.get('node',{})
-        for element_id,element in nodes.iteritems():
+        for element_id,element in list(nodes.items()):
             if element_id=='M1':
-                self.assertEquals(element['processingTime'].keys()[0],'Logistic')
+                self.assertEqual(list(element['processingTime'].keys())[0],'Logistic')
             if element_id=='M2':
-                self.assertEquals(element['processingTime'].keys()[0],'Logistic')
+                self.assertEqual(list(element['processingTime'].keys())[0],'Logistic')
             if element_id=='S1':
-                self.assertEquals(element['interarrivalTime'].keys()[0],'Exp')
+                self.assertEqual(list(element['interarrivalTime'].keys())[0],'Exp')
         jsonFile.close()
     
     def testConfidenceIntervals(self):
@@ -107,12 +107,12 @@ class KnowledgeExtractionExamples(TestCase):
                                                         "ConfidenceIntervals")
         csvFile= open(os.path.join(filepath, 'DataSet.csv'))    
         result1,result2,result3 = main(test=1,csvFile=csvFile)
-        self.assertEquals(result1[0],0.0)
-        self.assertEquals(result1[1],1.0)
-        self.assertEquals(result2[0],0.4719902587261917)
-        self.assertEquals(result2[1],0.5545222108338084)
-        self.assertEquals(result3[0],1.0)
-        self.assertEquals(result3[1],1.0)
+        self.assertEqual(result1[0],0.0)
+        self.assertEqual(result1[1],1.0)
+        self.assertEqual(result2[0],0.4719902587261917)
+        self.assertEqual(result2[1],0.5545222108338084)
+        self.assertEqual(result3[0],1.0)
+        self.assertEqual(result3[1],1.0)
         
     def testSingleServer(self):
         from dream.KnowledgeExtraction.KEtoolSimul8_examples.SingleServer.SingleServer import main 
@@ -127,15 +127,15 @@ class KnowledgeExtractionExamples(TestCase):
             if objects.attrib['Type'] == 'Work Entry Point' and objects.attrib['Name'] == 'Source':
                 procDist = objects.find('./InterArrivalTimeSampleData/DistribType')
                 procPar1 = objects.find('./InterArrivalTimeSampleData/DistParam1')
-                self.assertEquals(procDist.text,'7')
-                self.assertEquals(procPar1.text,'3.72710330863')
+                self.assertEqual(procDist.text,'7')
+                self.assertEqual(procPar1.text,'3.72710330863')
             if objects.attrib['Type'] == 'Work Center' and objects.attrib['Name'] == "Activity 1":
                 procDist = objects.find('./OperationTimeSampleData/DistribType')
                 procPar1 = objects.find('./OperationTimeSampleData/DistParam1')
                 procPar2 = objects.find('./OperationTimeSampleData/DistParam2')
-                self.assertEquals(procDist.text,'10')
-                self.assertEquals(procPar1.text,'14.4634502422')
-                self.assertEquals(procPar2.text,'1.03221368006')
+                self.assertEqual(procDist.text,'10')
+                self.assertEqual(procPar1.text,'14.4634502422')
+                self.assertEqual(procPar2.text,'1.03221368006')
     
     def testTopology1(self):
         from dream.KnowledgeExtraction.KEtoolSimul8_examples.Topology1.Topology1 import main 
@@ -150,22 +150,22 @@ class KnowledgeExtractionExamples(TestCase):
             if objects.attrib['Type'] == 'Work Entry Point' and objects.attrib['Name'] == 'Source':
                 procDist = objects.find('./InterArrivalTimeSampleData/DistribType')
                 procPar1 = objects.find('./InterArrivalTimeSampleData/DistParam1')
-                self.assertEquals(procDist.text,'7')
-                self.assertEquals(procPar1.text,'3.81461051661')
+                self.assertEqual(procDist.text,'7')
+                self.assertEqual(procPar1.text,'3.81461051661')
             if objects.attrib['Type'] == 'Work Center' and objects.attrib['Name'] == "Activity 1":
                 procDist = objects.find('./BreakDowns/MTBFSampleData/DistribType')
                 procPar1 = objects.find('./BreakDowns/MTBFSampleData/DistParam1')
                 procPar2 = objects.find('./BreakDowns/MTBFSampleData/DistParam2')
-                self.assertEquals(procDist.text,'3')
-                self.assertEquals(procPar1.text,'60.241674662')
-                self.assertEquals(procPar2.text,'13.6343562616')
+                self.assertEqual(procDist.text,'3')
+                self.assertEqual(procPar1.text,'60.241674662')
+                self.assertEqual(procPar2.text,'13.6343562616')
                 
                 procDist = objects.find('./BreakDowns/MTTRSampleData/DistribType')
                 procPar1 = objects.find('./BreakDowns/MTTRSampleData/DistParam1')
                 procPar2 = objects.find('./BreakDowns/MTTRSampleData/DistParam2')
-                self.assertEquals(procDist.text,'9')
-                self.assertEquals(procPar1.text,'2.49625391491')
-                self.assertEquals(procPar2.text,'0.0808226713028')
+                self.assertEqual(procDist.text,'9')
+                self.assertEqual(procPar1.text,'2.49625391491')
+                self.assertEqual(procPar2.text,'0.0808226713028')
             
 #     def testParallelStations(self):
 #         from dream.KnowledgeExtraction.KEtool_examples.ParallelStations_withfailures.ParallelStations_example import main 
