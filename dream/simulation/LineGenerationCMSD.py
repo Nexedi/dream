@@ -31,22 +31,22 @@ logger = logging.getLogger("dream.platform")
 
 
 from SimPy.Simulation import activate, initialize, simulate, now, infinity
-from Globals import G 
-from Source import Source
-from Machine import Machine
-from Exit import Exit
-from Queue import Queue
+from .Globals import G 
+from .Source import Source
+from .Machine import Machine
+from .Exit import Exit
+from .Queue import Queue
 from QueueLIFO import QueueLIFO
-from Repairman import Repairman
-from Part import Part
-from Frame import Frame
-from Assembly import Assembly
-from Dismantle import Dismantle
-from Conveyer import Conveyer
-from Job import Job
-from MachineJobShop import MachineJobShop
-from QueueJobShop import QueueJobShop
-from ExitJobShop import ExitJobShop
+from .Repairman import Repairman
+from .Part import Part
+from .Frame import Frame
+from .Assembly import Assembly
+from .Dismantle import Dismantle
+from .Conveyer import Conveyer
+from .Job import Job
+from .MachineJobShop import MachineJobShop
+from .QueueJobShop import QueueJobShop
+from .ExitJobShop import ExitJobShop
 import xlwt
 import xlrd
 import time
@@ -388,11 +388,11 @@ def main():
     G.ObjList=[]
     
     #user inputs the id of the JSON file
-    topologyId=raw_input("give the path to the CMSD file\n")
+    topologyId=eval(input("give the path to the CMSD file\n"))
     try:
         G.CMSDFile=open(str(topologyId), "r")
     except IOError:
-        print "no such file. The programm is terminated"
+        print("no such file. The programm is terminated")
         sys.exit()
 
     start=time.time()   #start counting execution time 
@@ -410,7 +410,7 @@ def main():
          
     #run the experiment (replications)          
     for i in range(G.numberOfReplications):
-        print "start run number "+str(i+1) 
+        print(("start run number "+str(i+1))) 
         G.seed+=1
         G.Rnd=Random(G.seed)             
         initialize()                        #initialize the simulation 
@@ -439,7 +439,7 @@ def main():
         G.ObjList[j].outputResultsXL(G.maxSimTime)            
 
     G.outputFile.save("output.xls")      
-    print "execution time="+str(time.time()-start) 
+    print(("execution time="+str(time.time()-start))) 
    
     
 if __name__ == '__main__': main()

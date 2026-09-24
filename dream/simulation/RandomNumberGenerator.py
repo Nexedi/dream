@@ -43,7 +43,7 @@ class RandomNumberGenerator(object):
             raise ValueError("distribution must be given as a dict")             
         # check in case an unknown distribution was given
         unknownDistribution=True
-        for key in distribution.keys():
+        for key in list(distribution.keys()):
             if key in ['Fixed', 'Normal','Exp','Gamma','Logistic','Erlang',
                            'Geometric','Lognormal','Weibull','Cauchy', 'Triangular']:
                 unknownDistribution=False
@@ -58,12 +58,12 @@ class RandomNumberGenerator(object):
                 raise ValueError("Unknown distribution %r used in %s %s" %
                             (distribution, obj.__class__, obj.id)) 
         # pop irrelevant keys
-        for key in distribution.keys():
+        for key in list(distribution.keys()):
             if key not in ['Fixed', 'Normal','Exp','Gamma','Logistic','Erlang',
                            'Geometric','Lognormal','Weibull','Cauchy', 'Triangular']:
                 distribution.pop(key, None)
         self.distribution=distribution
-        self.distributionType = distribution.keys()[0]
+        self.distributionType = list(distribution.keys())[0]
         parameters=distribution[self.distributionType]
         # if a parameter is passed as None or empty string set it to 0
         for key in parameters:
@@ -85,7 +85,7 @@ class RandomNumberGenerator(object):
         self.obj = obj
 
     def generateNumber(self):
-        from Globals import G
+        from .Globals import G
         if(self.distributionType=="Fixed"):     #if the distribution is Fixed 
             return self.mean
         elif(self.distributionType=="Exp"):     #if the distribution is Exponential

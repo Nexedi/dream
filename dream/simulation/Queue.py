@@ -27,7 +27,7 @@ Models a FIFO queue where entities can wait in order to get into a server
 
 
 import simpy
-from CoreObject import CoreObject
+from .CoreObject import CoreObject
 # ===========================================================================
 #                            the Queue object
 # ===========================================================================
@@ -66,7 +66,7 @@ class Queue(CoreObject):
         if level:
             assert level<=self.capacity, "the level cannot be bigger than the capacity of the queue"
         self.level=level
-        from Globals import G
+        from .Globals import G
         G.QueueList.append(self)
             
     @staticmethod
@@ -307,7 +307,7 @@ class Queue(CoreObject):
             activeObjectQ.sort(key=lambda x: (x.dueDate-x.totalRemainingProcessingTime))  
         #if the schedulingRule is to sort Entities based on the length of the following Queue
         elif criterion=="WINQ":
-            from Globals import G
+            from .Globals import G
             for entity in activeObjectQ:
                 if len(entity.remainingRoute)>1:
                     nextObjIds=entity.remainingRoute[1].get('stationIdsList',[])
@@ -322,7 +322,7 @@ class Queue(CoreObject):
             assert False, "Unknown scheduling criterion %r" % (criterion, )
 
     def outputResultsJSON(self):
-        from Globals import G
+        from .Globals import G
         json = {'_class': 'Dream.%s' % self.__class__.__name__,
                 'id': str(self.id), 
                 'family': self.family,

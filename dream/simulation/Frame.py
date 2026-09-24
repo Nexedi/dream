@@ -27,8 +27,8 @@ models a frame entity. This can flow through the system and carry parts
 '''
 
 from simpy import Resource
-from Globals import G
-from Entity import Entity
+from .Globals import G
+from .Entity import Entity
 
 #The entity object
 class Frame(Entity):    

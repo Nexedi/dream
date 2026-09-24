@@ -7,7 +7,7 @@ Created on 21 Aug 2013
 import math
 import numpy
 import random
-from Globals import G
+from .Globals import G
 
 class Allocation():
     def __init__(self, itemList, week, altRoutes, excBuffer):

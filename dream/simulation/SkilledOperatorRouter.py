@@ -27,9 +27,9 @@ Models an Interruption that schedules the operation of the machines by different
 '''
 import simpy
 
-from OperatorRouter import Router
-from opAss_LPmethod import opAss_LP
-import Globals
+from .OperatorRouter import Router
+from .opAss_LPmethod import opAss_LP
+from . import Globals
 
 # ===========================================================================
 #               Class that handles the Operator Behavior
@@ -100,7 +100,7 @@ class SkilledRouter(Router):
                     break
             self.printTrace('','=-'*15)
             
-            from Globals import G
+            from .Globals import G
             
             if self.allocation:
                 #===================================================================
@@ -157,7 +157,7 @@ class SkilledRouter(Router):
                 for station in self.availableStations:
                     lastAssignmentTime=0
                     for record in self.solutionList:
-                        if station.id in record["allocation"].values():
+                        if station.id in list(record["allocation"].values()):
                             lastAssignmentTime=record["time"]
                     
                     # normalise the lastAssignmentTime based on the maxLastAssignment. 
@@ -177,7 +177,7 @@ class SkilledRouter(Router):
                 # # operators and their skills set
                 #===================================================================
                 self.operators={}
-                import Globals
+                from . import Globals
                 for operator in G.OperatorsList:
                     newSkillsList=[]
                     for skill in operator.skillsList:
@@ -216,7 +216,7 @@ class SkilledRouter(Router):
                         # remove all the blocked machines from the available stations
                         # and create another dict only with them
                         machinesForSecondPhaseDict={}
-                        for stationId in self.availableStationsDict.keys():
+                        for stationId in list(self.availableStationsDict.keys()):
                             machine = Globals.findObjectById(stationId)
                             nextObject = machine.next[0]
                             nextObjectClassName = nextObject.__class__.__name__
@@ -257,12 +257,12 @@ class SkilledRouter(Router):
                         # create a list with the operators that were sent to the LP but did not get allocated
                         operatorsForSecondPhaseList=[]
                         for operatorId in self.availableOperatorList:
-                            if operatorId not in solution.keys():
+                            if operatorId not in list(solution.keys()):
                                 operatorsForSecondPhaseList.append(operatorId)
                         # in case there is some station that did not get operator even if it was not blocked
                         # add them alos for the second fail (XXX do not think there is such case)
-                        for stationId in self.availableStationsDict.keys():
-                            if stationId not in solution.values():
+                        for stationId in list(self.availableStationsDict.keys()):
+                            if stationId not in list(solution.values()):
                                 machinesForSecondPhaseDict[stationId] = self.availableStationsDict[stationId]
                         # if there are machines and operators for the second phase
                         # run again the LP for machines and operators that are not in the former solution
@@ -280,7 +280,7 @@ class SkilledRouter(Router):
                     # if the LP is not called keep the previous solution
                     # if there are no available operators though, remove those
                     solution=self.previousSolution
-                    for operatorID in solution.keys():
+                    for operatorID in list(solution.keys()):
                         if not operatorID in self.availableOperatorList:
                             del solution[operatorID]
                     
@@ -296,7 +296,7 @@ class SkilledRouter(Router):
                 # XXX assign the operators to operatorPools
                 # pendingStations/ available stations not yet given operator
                 self.pendingStations=[]
-                from Globals import findObjectById
+                from .Globals import findObjectById
                 # apply the solution
                 
                 # loop through the stations. If there is a station that should change operator
@@ -313,7 +313,7 @@ class SkilledRouter(Router):
                                 station.releaseOperator()
                 
                 # loop through the entries in the solution dictionary
-                for operatorID in solution.keys():
+                for operatorID in list(solution.keys()):
                     # obtain the operator and the station
                     operator=findObjectById(operatorID)
                     station=findObjectById(solution[operatorID])
@@ -368,7 +368,7 @@ class SkilledRouter(Router):
                             self.expectedFinishSignals.remove(signal)                   
                             del self.expectedFinishSignalsDict[transmitter.id]
                             # signal also the other stations that should be signalled
-                            for id in solution.keys():
+                            for id in list(solution.keys()):
                                 operator=findObjectById(id)
                                 station=findObjectById(solution[id])
                                 signal=True                                       
@@ -434,7 +434,7 @@ class SkilledRouter(Router):
         self.waitEndProcess=False
         
     def checkIfAllocationShouldBeCalled(self):
-        from Globals import G
+        from .Globals import G
         # loop through the operators and the machines. 
         # If for one the shift ended or started right now allocation is needed
         for obj in G.OperatorsList+G.MachineList:
@@ -462,7 +462,7 @@ class SkilledRouter(Router):
     
     def outputResultsJSON(self):
         if self.outputSolutions:
-            from Globals import G
+            from .Globals import G
             json = {'_class': 'Dream.%s' % self.__class__.__name__,
                     'id': self.id,
                     'results': {}}

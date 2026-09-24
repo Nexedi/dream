@@ -52,6 +52,19 @@ import os.path
 import dream.simulation.Globals as Globals
 import ast
 import cProfile
+import base64
+
+# ===========================================================================
+#                        runs the simulation environment
+# ===========================================================================
+def runSimulationUntil(simUntil):
+    # simpy <4 silently stopped when the event schedule drained before simUntil,
+    # simpy 4 raises an EmptySchedule / RuntimeError / AssertionError in that
+    # case. Reshape to the historical behaviour: stop and carry on.
+    try:
+        G.env.run(until=simUntil)
+    except (simpy.core.EmptySchedule, RuntimeError, AssertionError):
+        logger.info('simulation ended before %s' % simUntil)
 
 # ===========================================================================
 #                       reads general simulation inputs
@@ -88,7 +101,7 @@ def createObjectResourcesAndCoreObjects():
     def getSuccessorList(node_id, predicate=lambda source, destination, edge_class, edge_data: True):
       successor_list = []                           # dummy variable that holds the list to be returned
       
-      for edge in edges.values():
+      for edge in list(edges.values()):
           source = edge["source"]
           destination = edge["destination"]
           edge_class = edge["_class"]
@@ -145,7 +158,7 @@ def createObjectResourcesAndCoreObjects():
     read the data and create them
     '''
 
-    for (element_id, element) in nodes.iteritems():                 # use an iterator to go through all the nodes
+    for (element_id, element) in list(nodes.items()):                 # use an iterator to go through all the nodes
         element['id'] = element_id                                  # create a new entry for the element (dictionary)
         element = element.copy()
         for k in ('element_id', 'top', 'left'):
@@ -174,7 +187,7 @@ def createObjectResourcesAndCoreObjects():
     read the data and create them
     '''
     from dream.simulation.OperatorPool import OperatorPool
-    for (element_id, element) in nodes.iteritems():                 # use an iterator to go through all the nodes
+    for (element_id, element) in list(nodes.items()):                 # use an iterator to go through all the nodes
                                                                     # the key is the element_id and the second is the 
                                                                     # element itself 
         element = element.copy()
@@ -204,7 +217,7 @@ def createObjectResourcesAndCoreObjects():
     loop through all the elements    
     read the data and create them
     '''
-    for (element_id, element) in nodes.iteritems():
+    for (element_id, element) in list(nodes.items()):
         element = element.copy()
         element['id'] = element_id
         element.setdefault('name', element_id)
@@ -260,7 +273,7 @@ def createObjectInterruptions():
     #            search for Event Generator and create them
     #                   this is put last, since the EventGenerator 
     #                may take other objects as argument
-    for (element_id, element) in nodes.iteritems():                 # use an iterator to go through all the nodes
+    for (element_id, element) in list(nodes.items()):                 # use an iterator to go through all the nodes
                                                                     # the key is the element_id and the second is the 
                                                                     # element itself 
         element['id'] = element_id                                  # create a new entry for the element (dictionary)
@@ -289,7 +302,7 @@ def createObjectInterruptions():
     from dream.simulation.ShiftScheduler import ShiftScheduler
     from dream.simulation.ScheduledBreak import ScheduledBreak
     from dream.simulation.Break import Break
-    for (element_id, element) in nodes.iteritems():
+    for (element_id, element) in list(nodes.items()):
         element['id'] = element_id
         scheduledMaintenance=element.get('interruptions',{}).get('scheduledMaintenance', {})
         # if there is a scheduled maintenance initiate it and append it
@@ -421,7 +434,7 @@ def createWIP():
                 componentsList=prodOrder.get('componentsList', {})
                 # keep a reference of all extra properties passed to the job
                 extraPropertyDict = {}
-                for key, value in prodOrder.items():
+                for key, value in list(prodOrder.items()):
                   if key not in ('_class', 'id'):
                     extraPropertyDict[key] = value
                 # initiate the Order
@@ -441,7 +454,7 @@ def createWIP():
                 
     # read from the dictionary the dicts with key 'nodes'
     nodes = json_data["graph"]['node']
-    for (element_id, element) in nodes.iteritems():
+    for (element_id, element) in list(nodes.items()):
         element['id'] = element_id
         wip=element.get('wip', [])
         from dream.simulation.OrderDesign import OrderDesign
@@ -528,7 +541,7 @@ def createWIP():
                 
                 # keep a reference of all extra properties passed to the job
                 extraPropertyDict = {}
-                for key, value in entity.items():
+                for key, value in list(entity.items()):
                   if key not in ('_class', 'id'):
                     extraPropertyDict[key] = value
 
@@ -643,7 +656,7 @@ def main(argv=[], input_data=None):
       try:                                          # try to open the file with the inputs
           G.JSONFile=open(filename, "r")            # global variable holding the file to be opened
       except IOError:                               
-          print "%s could not be open" % filename
+          print(("%s could not be open" % filename))
           return "ERROR"
       G.InputData=G.JSONFile.read()                 # pass the contents of the input file to the global var InputData
     else:
@@ -658,7 +671,7 @@ def main(argv=[], input_data=None):
     setTopology()
 
     #run the experiment (replications)          
-    for i in xrange(G.numberOfReplications):
+    for i in range(G.numberOfReplications):
         G.env=simpy.Environment()                       # initialize the environment
         G.maxSimTime=float(G.JSONData['general'].get('maxSimTime', '100'))     # read the maxSimTime in each replication 
                                                                                # since it may be changed for infinite ones
@@ -677,12 +690,12 @@ def main(argv=[], input_data=None):
         Globals.setWIP(G.EntityList)        
         activateObjects()
         
-        # if the simulation is ran until no more events are scheduled, 
+# if the simulation is ran until no more events are scheduled, 
         # then we have to find the end time as the time the last entity ended.
         if G.maxSimTime==-1:
             # If someone does it for a model that has always events, then it will run forever!
-            G.env.run(until=float('inf'))
-                                         
+            runSimulationUntil(float('inf'))
+                                          
             # identify from the exits what is the time that the last entity has ended. 
             endList=[]
             for exit in G.ExitList:
@@ -692,11 +705,13 @@ def main(argv=[], input_data=None):
             if float(max(endList))!=0 and (G.env.now==float('inf') or G.env.now == max(endList)):    #do not let G.maxSimTime=0 so that there will be no crash
                 G.maxSimTime=float(max(endList))
             else:
-                print "simulation ran for 0 time, something may have gone wrong"
+                print("simulation ran for 0 time, something may have gone wrong")
                 logger.info("simulation ran for 0 time, something may have gone wrong")
         #else we simulate until the given maxSimTime
         else:
-            G.env.run(until=G.maxSimTime)
+            # simpy <4 silently stopped when the schedule drained before maxSimTime,
+            # simpy 4 raises EmptySchedule in that case, so we tolerate it
+            runSimulationUntil(G.maxSimTime)
         
         #carry on the post processing operations for every object in the topology       
         for element in G.ObjList+G.ObjectResourceList+G.RouterList:
@@ -708,10 +723,10 @@ def main(argv=[], input_data=None):
         #output trace to excel      
         if(G.trace=="Yes"):
             ExcelHandler.outputTrace('trace'+str(i))  
-            import StringIO
-            traceStringIO = StringIO.StringIO()
-            G.traceFile.save(traceStringIO)
-            encodedTrace=traceStringIO.getvalue().encode('base64')
+            import io
+            traceBytesIO = io.BytesIO()
+            G.traceFile.save(traceBytesIO)
+            encodedTrace=base64.b64encode(traceBytesIO.getvalue()).decode('ascii')
             ExcelHandler.resetTrace()
     
     G.outputJSON['_class'] = 'Dream.Simulation';
@@ -741,7 +756,7 @@ def main(argv=[], input_data=None):
       G.outputJSONFile.write(outputJSONString)
     if not input_data:
       # Output on stdout
-      print outputJSONString
+      print(outputJSONString)
       # XXX I am not sure we still need this case
       return
 
