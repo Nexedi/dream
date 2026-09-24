@@ -35,7 +35,7 @@ import os
 #================================= Extract data from the database ==========================================#
 def main(test=0, JSONFileName='JSON_example.json',
                 CMSDFileName='CMSD_ParallelStations.xml',
-                DBFilePath = 'C:\Users\Panos\Documents\KE tool_documentation',
+                DBFilePath = 'C:\\Users\Panos\Documents\KE tool_documentation',
                 file_path=None,
                 jsonFile=None, cmsdFile=None):
     if not file_path:

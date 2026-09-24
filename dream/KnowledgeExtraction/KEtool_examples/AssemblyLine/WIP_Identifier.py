@@ -29,13 +29,13 @@ import operator
 def currentWIP(processStory, stopTime):
     Stations={}
     LastStation={}
-    for key in processStory.keys():
+    for key in list(processStory.keys()):
         Stations[key]=[]
         LastStation[key]=[]
-        sorted_proc=sorted(processStory[key].iteritems(), key=operator.itemgetter(1))
+        sorted_proc=sorted(iter(list(processStory[key].items())), key=operator.itemgetter(1))
         for i in range(len(sorted_proc)):
             Stations[key].append(sorted_proc[i])
-        for key in Stations.keys():
+        for key in list(Stations.keys()):
             for elem in range(len(Stations[key])):
                 try:
                     if Stations[key][elem][1][0][0] > stopTime and Stations[key][elem][1][1][0] > stopTime: 
@@ -50,14 +50,14 @@ def currentWIP(processStory, stopTime):
                     LastStation[key]=Stations[key][-1]
                 except KeyError:
                     continue            
-    for key in LastStation.keys():  
+    for key in list(LastStation.keys()):  
         try:
             if (LastStation[key][0]=='PaA' or LastStation[key][0]=='PaB') and (stopTime - LastStation[key][1][0][0] > datetime.timedelta(0,500)):
                 del LastStation[key]
         except IndexError:
             continue           
     WIP={}
-    for key in LastStation.keys():
+    for key in list(LastStation.keys()):
         WIP[key]=[]
         try:
             if not LastStation[key][1][1]:
@@ -69,7 +69,7 @@ def currentWIP(processStory, stopTime):
                 WIP[key].append(dif)    
             except IndexError:
                 continue
-    for key in LastStation.keys():      
+    for key in list(LastStation.keys()):      
         try:
             if LastStation[key][0]=='MA' and LastStation[key][1][1]:
                 WIP[key].append('QStart')

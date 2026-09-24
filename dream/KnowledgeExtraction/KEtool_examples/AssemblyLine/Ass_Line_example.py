@@ -23,17 +23,17 @@ Created on 23 Sep 2014
 # ===========================================================================
 
 #================= Main script of KE tool  =====================================#
-from __future__ import division
+
 from dream.KnowledgeExtraction.StatisticalMeasures import StatisticalMeasures
 from dream.KnowledgeExtraction.DistributionFitting import Distributions
 from dream.KnowledgeExtraction.DistributionFitting import DistFittest
 from dream.KnowledgeExtraction.ReplaceMissingValues import ReplaceMissingValues
 from dream.KnowledgeExtraction.ImportExceldata import ImportExceldata
 from dream.KnowledgeExtraction.DetectOutliers import DetectOutliers
-from JSONOutput import JSONOutput
+from .JSONOutput import JSONOutput
 from dream.KnowledgeExtraction.CMSDOutput import CMSDOutput
 from xml.etree import ElementTree as et
-from WIP_Identifier import currentWIP
+from .WIP_Identifier import currentWIP
 import xlrd
 from dateutil.parser import *
 import datetime
@@ -151,8 +151,8 @@ PaB['ScrapQuant']=[]
 #Define the number of units for each batch
 batchSize= 80
 #With the following loop statement, the lists inside the dictionaries with the processing times and the scrap quantity for each station are created
-for key in processStory.keys():
-    for elem in processStory[key].keys():
+for key in list(processStory.keys()):
+    for elem in list(processStory[key].keys()):
         if elem=='MA':
             try: 
                 t1= (((mktime(processStory[key][elem][1][0].timetuple()) - mktime(processStory[key][elem][0][0].timetuple())) / batchSize) / 60)
@@ -310,7 +310,7 @@ meanPaB_Proc= E.mean(PaB_Proc)
 stopTime= datetime.datetime(2014,3,27,8,40,00)   #Give the stop time, based on this the WIP levels in the assembly line are identified calling the WIP method 
 WIP=currentWIP(processStory, stopTime) #Call the currentWIP method, giving as attributes the processStory dict and the stopTime
 #With the loop statement in the outcome of the currentWIP method, which is a dictionary with the name WIP, with a series of calculations the units to be processed are calculated by the WIP batches in the stations   
-for key in WIP.keys():
+for key in list(WIP.keys()):
     try:
         if WIP[key][0]=='MA':
             secs = WIP[key][1].total_seconds()

@@ -22,7 +22,7 @@ Created on 17 Apr 2015
 # along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
 # ===========================================================================
 
-from __future__ import division
+
 from dream.KnowledgeExtraction.StatisticalMeasures import StatisticalMeasures
 from dream.KnowledgeExtraction.DistributionFitting import Distributions
 from dream.KnowledgeExtraction.DistributionFitting import DistFittest
@@ -38,7 +38,7 @@ from dateutil.parser import *
 import datetime
 from time import mktime
 
-cnxn=ConnectionData(seekName='ServerData', file_path='C:\Users\Panos\Documents\DB_Approach\BatchModel', implicitExt='txt', number_of_cursors=3)
+cnxn=ConnectionData(seekName='ServerData', file_path='C:\\Users\Panos\Documents\DB_Approach\BatchModel', implicitExt='txt', number_of_cursors=3)
 cursors=cnxn.getCursors()
 
 mesExtract=cursors[0].execute("""
@@ -151,8 +151,8 @@ Pb['ScrapQuant']=[]
 #Define the number of units for each batch
 batchSize= 80
 #With the following loop statement, the lists inside the dictionaries with the processing times and the scrap quantity for each station are created
-for key in processStory.keys():
-    for elem in processStory[key].keys():
+for key in list(processStory.keys()):
+    for elem in list(processStory[key].keys()):
         if elem=='MA':
             try: 
                 t1= (((mktime(processStory[key][elem][1][0].timetuple()) - mktime(processStory[key][elem][0][0].timetuple())) / batchSize) / 60)
