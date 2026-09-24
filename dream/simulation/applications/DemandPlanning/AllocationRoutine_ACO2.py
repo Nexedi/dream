@@ -23,9 +23,9 @@ Created on 28 Jan 2015
 @author: Anna
 '''
 
-from Globals import G
-from Allocation_3 import Allocation2
-from UtilisationCalculation import utilisationCalc2, utilisationCalc1, utilisationCalc3
+from .Globals import G
+from .Allocation_3 import Allocation2
+from .UtilisationCalculation import utilisationCalc2, utilisationCalc1, utilisationCalc3
 from copy import deepcopy
 
 # allocates orders of a give week/priority level implementing the ant choice for MAs
