@@ -53,7 +53,7 @@ class PrepareExampleGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
     result = data['result']['result_list'][-1]
     result[self.configuration_dict['output_id']] = dict(
       time_unit=self.getTimeUnitText(),
-      task_list=sorted(task_dict.values(),
+      task_list=sorted(list(task_dict.values()),
         key=lambda task: (task.get('order_id'),
                           task.get('type') == 'project',
                           task.get('start_date'))))

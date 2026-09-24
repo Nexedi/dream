@@ -7,7 +7,7 @@ class GatherWIPStat(plugin.InputPreparationPlugin):
     """
     # by default we add an event generator if using queue stats
     if data["application_configuration"]["output"]["view_queue_stats"]:
-      for node in data["graph"]["node"].values():
+      for node in list(data["graph"]["node"].values()):
         if node['_class'] in ('Dream.Queue', ):
           node['gatherWipStat'] = 1
     return data

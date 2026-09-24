@@ -19,7 +19,7 @@ class CapacityStationWIPSpreadsheet(plugin.InputPreparationPlugin):
         if wipData:
             node=data['graph']['node']
             # create an empty wip list in all CapacityStationBuffers
-            for (node_id,node_data) in node.iteritems():
+            for (node_id,node_data) in list(node.items()):
                 if node_data['_class']=='dream.simulation.applications.CapacityStations.CapacityStationBuffer.CapacityStationBuffer':
                     node_data['wip']=[]
             # get the number of projects
@@ -32,7 +32,7 @@ class CapacityStationWIPSpreadsheet(plugin.InputPreparationPlugin):
                 # loop through all the rows>0
                 for row in range(1,numberOfOperations+1):
                     stationId=wipData[row][0]
-                    assert stationId in node.keys(), 'wip spreadsheet has station id that does not exist in production line'
+                    assert stationId in list(node.keys()), 'wip spreadsheet has station id that does not exist in production line'
                     requiredCapacity=float(wipData[row][col])
                     # if the cell has a requiredCapacity>0 create the entity
                     if requiredCapacity:
@@ -47,7 +47,7 @@ class CapacityStationWIPSpreadsheet(plugin.InputPreparationPlugin):
 
     # gets the data and the station id and returns the buffer id of this station    
     def getBuffer(self,data,stationId):
-        for (edge_id, edge) in data['graph']['edge'].iteritems():
+        for (edge_id, edge) in list(data['graph']['edge'].items()):
             if edge['destination']==stationId:
                 return edge['source']
     

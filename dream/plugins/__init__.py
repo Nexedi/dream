@@ -24,6 +24,6 @@ except ImportError:
     __path__ = extend_path(__path__, __name__)
 
 # BBB Add compatibility names for plugins that moved.
-from DemandPlanning import AddDemandPlannerGenerator
-from DemandPlanning import DemandPlanningLine
-from DemandPlanning import PostProcessDemandPlanning
+from .DemandPlanning import AddDemandPlannerGenerator
+from .DemandPlanning import DemandPlanningLine
+from .DemandPlanning import PostProcessDemandPlanning

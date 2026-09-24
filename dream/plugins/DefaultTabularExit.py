@@ -3,7 +3,7 @@ import json
 import time
 import random
 import operator
-import StringIO
+import io
 import xlrd
 
 from dream.plugins import plugin

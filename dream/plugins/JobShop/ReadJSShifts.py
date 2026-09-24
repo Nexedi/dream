@@ -162,7 +162,7 @@ class ReadJSShifts(plugin.InputPreparationPlugin, TimeSupportMixin):
         timeStartList.append(shiftStart)
         timeEndList.append(shiftEnd)
       #for every operator (can be also machine) create an entry on the defaultShiftPattern 
-      for node, node_data in nodes.iteritems():
+      for node, node_data in list(nodes.items()):
         #if the node is an operator
         if node_data.get('_class', None) == 'Dream.Operator':
           for index, start in enumerate(timeStartList):
@@ -175,7 +175,7 @@ class ReadJSShifts(plugin.InputPreparationPlugin, TimeSupportMixin):
               defaultShiftPattern[node].append([start, end])
       # ================================================================
       
-      for node, node_data in nodes.items():
+      for node, node_data in list(nodes.items()):
         if node_data.get('_class', None) == 'Dream.Operator':
           modifiedDefaultDays = [] # the days of the defaultShiftPattern that have been modified according to the exceptionShiftPattern
           if node in exceptionShiftPattern:

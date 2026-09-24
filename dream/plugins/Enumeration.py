@@ -5,7 +5,7 @@ import json
 import time
 import random
 import operator
-import xmlrpclib
+import xmlrpc.client
 import signal
 from multiprocessing import Pool
 

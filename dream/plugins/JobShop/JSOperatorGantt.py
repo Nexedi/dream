@@ -83,8 +83,8 @@ class JSOperatorGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
       # return the result to the gadget
       result[self.configuration_dict['output_id']] = dict(
         time_unit=self.getTimeUnitText(),
-        task_list=sorted(task_dict.values(),
-          key=lambda task: (task.get('parent'),
+        task_list=sorted(list(task_dict.values()),
+          key=lambda task: (task.get('parent') or '',
                             task.get('type') == 'project',
-                            task.get('entranceTime'),task.get('id'))))
+                            task.get('entranceTime') or 0, task.get('id') or '')))
     return data

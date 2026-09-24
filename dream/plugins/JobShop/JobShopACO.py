@@ -46,7 +46,7 @@ class JobShopACO(ACO):
   # of options collated into a dictionary for ease of referencing in ManPy
   def createCollatedScenarios(self,data):
     collated = dict()
-    for node_id, node in data['graph']['node'].items():
+    for node_id, node in list(data['graph']['node'].items()):
       node_class = getClassFromName(node['_class'])
       if issubclass(node_class, Queue) or issubclass(node_class, Operator):
         collated[node_id] = list(node_class.getSupportedSchedulingRules())
@@ -56,6 +56,6 @@ class JobShopACO(ACO):
   def createAntData(self,data,ant): 
     # set scheduling rule on queues based on ant data
     ant_data = copy(data)
-    for k, v in ant.items():
+    for k, v in list(ant.items()):
         ant_data["graph"]["node"][k]['schedulingRule'] = v
     return ant_data
