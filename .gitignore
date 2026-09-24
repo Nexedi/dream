@@ -10,6 +10,9 @@ eggs/**
 parts/**
 outputJSON.json
 trace*.xls
+CompoundMachine.xls
+CMSD_*_Output.xml
+KEtool_*.xml
 npm-debug.log
 node_modules/
 tmp/
