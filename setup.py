@@ -19,7 +19,7 @@ setup(
         'rpy2',
         'pulp',
         'tablib',
-        'mysqlclient',
+    #   'mysqlclient',
     ],
     entry_points=("""
     [console_scripts]
