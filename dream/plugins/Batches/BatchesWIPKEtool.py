@@ -23,7 +23,7 @@ class BatchesWIPKEtool(plugin.InputPreparationPlugin):
         
         # get the number of units for a standard batch
         standardBatchUnits=0
-        for node_id, node in nodes.iteritems():
+        for node_id, node in list(nodes.items()):
             if node['_class']=='Dream.BatchSource':
                 standardBatchUnits=int(node['batchNumberOfUnits']) 
             node['wip']=[]
@@ -33,7 +33,7 @@ class BatchesWIPKEtool(plugin.InputPreparationPlugin):
             wipData=KEtoolWIP(data_uri_encoded_input_data)
         except TypeError:
             return data
-        for batchId,stationId in wipData.iteritems():
+        for batchId,stationId in list(wipData.items()):
             nextBufferId=self.getNextBuffer(data, stationId)      
             if not nextBufferId:
                 continue     
@@ -42,7 +42,7 @@ class BatchesWIPKEtool(plugin.InputPreparationPlugin):
             # for stations that we have to create sub-batches
             if subline and (not self.checkIfNextStationIsReassembly(data, stationId)):
                 workingBatchSize=nodes[stationId]['workingBatchSize']
-                numberOfSubBatches=standardBatchUnits/workingBatchSize
+                numberOfSubBatches=standardBatchUnits//workingBatchSize
                 
                 for i in range(numberOfSubBatches):
                     data['graph']['node'][nextBufferId]['wip'].insert(0,{

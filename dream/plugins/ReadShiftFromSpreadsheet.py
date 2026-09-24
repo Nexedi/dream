@@ -66,7 +66,7 @@ class ReadShiftFromSpreadsheet(plugin.InputPreparationPlugin, TimeSupportMixin):
             shift_by_station.setdefault(station, []).append(
               (start_time, stop_time) )
 
-    for node, node_data in data['graph']['node'].items():
+    for node, node_data in list(data['graph']['node'].items()):
       if node in shift_by_station:
         interruptions=node_data.get('interruptions',{})
         if not interruptions:
