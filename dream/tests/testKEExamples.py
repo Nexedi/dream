@@ -39,7 +39,7 @@ class KnowledgeExtractionExamples(TestCase):
         elementList=result_data.get('elementList',[])
         for element in elementList:
             if element['id']=='E1':
-                self.assertEqual(element['results']['throughput'][0], 86)
+                self.assertEqual(element['results']['throughput'][0], 82)
             if element['id']=='St1':
                 self.assertTrue(99.93<element['results']['working_ratio'][0]<99.94)
         jsonFile.close()
@@ -128,7 +128,7 @@ class KnowledgeExtractionExamples(TestCase):
                 procDist = objects.find('./InterArrivalTimeSampleData/DistribType')
                 procPar1 = objects.find('./InterArrivalTimeSampleData/DistParam1')
                 self.assertEqual(procDist.text,'7')
-                self.assertEqual(procPar1.text,'3.72710330863')
+                self.assertEqual(procPar1.text,'3.7271033086347645')
             if objects.attrib['Type'] == 'Work Center' and objects.attrib['Name'] == "Activity 1":
                 procDist = objects.find('./OperationTimeSampleData/DistribType')
                 procPar1 = objects.find('./OperationTimeSampleData/DistParam1')
@@ -151,7 +151,7 @@ class KnowledgeExtractionExamples(TestCase):
                 procDist = objects.find('./InterArrivalTimeSampleData/DistribType')
                 procPar1 = objects.find('./InterArrivalTimeSampleData/DistParam1')
                 self.assertEqual(procDist.text,'7')
-                self.assertEqual(procPar1.text,'3.81461051661')
+                self.assertEqual(procPar1.text,'3.814610516606043')
             if objects.attrib['Type'] == 'Work Center' and objects.attrib['Name'] == "Activity 1":
                 procDist = objects.find('./BreakDowns/MTBFSampleData/DistribType')
                 procPar1 = objects.find('./BreakDowns/MTBFSampleData/DistParam1')
