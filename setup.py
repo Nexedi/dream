@@ -10,7 +10,7 @@ setup(
     install_requires=[
         'flask',
         'SimPy>=3',
-        'xlrd',
+        'xlrd<2',
         'xlwt',
         'pyparsing',
         'pydot',
