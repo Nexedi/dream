@@ -1,11 +1,11 @@
-import Globals
+from . import Globals
 import xlwt
-from Globals import G
+from .Globals import G
 
-import OrderComponent
-import Mould
-import Order
-import OrderDesign
+from . import OrderComponent
+from . import Mould
+from . import Order
+from . import OrderDesign
 
 JOB_SHOP_TECHNOLOGY_SEQ=['CAD','CAM','MILL','EDM','ASSM','MA','INJM','IM' ]
 ORDER_COMPONENT_TYPE_SET=set(['OrderComponent','Design','Mould'])
@@ -63,7 +63,7 @@ def outputRoute():
             sortMachines()  # sort the machines according to the priority specified in JOB_SHOP_TECHNOLOGY_SEQ
             # get the events list
             G.events_list=getEventsList(G.JobList+G.OperatorsList)
-            G.events_list.sort(cmp=None, key=None, reverse=False)     # sort the events
+            G.events_list.sort()                                       # sort the events
             number_of_events=len(G.events_list)                       # keep the total number of events 
             # create a table number_of_events X number_of_machines
             G.routeTraceSheet.write(0,0, 'Time/Machines')
@@ -72,7 +72,7 @@ def outputRoute():
                 G.routeTraceSheet.write(j+1,0,float(event))
             # XXX create 3 times as many columns as the number of machines
             for j, machine in enumerate(G.MachineList):
-                machine.station_col_inds=range(j*3+1,j*3+3)
+                machine.station_col_inds=list(range(j*3+1,j*3+3))
                 machine.op_col_indx=j*3+3
                 G.routeTraceSheet.write_merge(0,0,j*3+1,j*3+3,str(machine.id))
 

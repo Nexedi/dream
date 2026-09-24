@@ -32,7 +32,7 @@ def positionGraph(g):
   graph = pydot.Dot()
   for node in g['nodes']:
     graph.add_node(pydot.Node(node))
-  for edge, (source, destination, data) in g['edges'].items():
+  for edge, (source, destination, data) in list(g['edges'].items()):
     graph.add_edge(pydot.Edge(source, destination))
 
   new_graph = pydot.graph_from_dot_data(graph.create_dot())
@@ -56,7 +56,7 @@ def positionGraph(g):
   return preference_dict
 
 def format(m):
-  for node in m['nodes'].values():
+  for node in list(m['nodes'].values()):
     if 'setupTime' in node:
       setupTime = node['setupTime']
       if 'mean' in setupTime:
@@ -77,7 +77,7 @@ def format(m):
       for job in node['wip']:
         if 'route' in job:
           for r in job['route']:
-            print r
+            print(r)
             r.pop("stepNumber", None)
             if 'processingTime' in r:
               processingTime = r['processingTime']
@@ -100,7 +100,7 @@ def format(m):
 
 def migrate_to_new_format(graph):
   new_graph = {'graph': {'edge': {}}}
-  for node_id, node_data in graph['nodes'].items():
+  for node_id, node_data in list(graph['nodes'].items()):
     # some cleanups
     if node_data.get('capacity'):
       node_data['capacity'] = float(node_data['capacity'])
@@ -109,12 +109,12 @@ def migrate_to_new_format(graph):
     node_data.pop('element_id', None)
     coordinate = graph['preference']['coordinates'].get(node_id)
     node_data['coordinate'] = coordinate
-    print node_data['_class']
+    print((node_data['_class']))
     # TODO: discuss the new processing time data structure !
 
 
   new_graph['graph']['node'] = graph['nodes']
-  for edge_id, (source, destination, data) in graph['edges'].items():
+  for edge_id, (source, destination, data) in list(graph['edges'].items()):
     data['_class'] = 'Dream.Edge'
     data['source'] = source
     data['destination'] = destination

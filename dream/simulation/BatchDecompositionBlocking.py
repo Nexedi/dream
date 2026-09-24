@@ -25,7 +25,7 @@ Created on 09 10 2014
 Customization of BatchDecomposition so that it is blocked when the stations in front are (until it finds a buffer or an Exit)
 '''
 
-from BatchDecomposition import BatchDecomposition
+from .BatchDecomposition import BatchDecomposition
 
 class BatchDecompositionBlocking(BatchDecomposition):
 
@@ -34,8 +34,8 @@ class BatchDecompositionBlocking(BatchDecomposition):
     # =======================================================================
     def canAcceptAndIsRequested(self, callerObject=None):
         station=self
-        from Queue import Queue
-        from Exit import Exit
+        from .Queue import Queue
+        from .Exit import Exit
         # loop to next stations until a Queue or Exit is reached
         while 1:
             next=station.next[0]

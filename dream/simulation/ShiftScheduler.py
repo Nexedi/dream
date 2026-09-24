@@ -28,8 +28,8 @@ schedules the availability of an object according to its shift pattern
 
 # from SimPy.Simulation import now, Process, hold, request, release, infinity
 import simpy
-from RandomNumberGenerator import RandomNumberGenerator
-from ObjectInterruption import ObjectInterruption
+from .RandomNumberGenerator import RandomNumberGenerator
+from .ObjectInterruption import ObjectInterruption
 from copy import deepcopy
 
 # ===========================================================================
@@ -66,8 +66,8 @@ class ShiftScheduler(ObjectInterruption):
     #    The run method for the failure which has to served by a repairman
     # =======================================================================
     def run(self):
-        from CoreObject import CoreObject
-        from ObjectResource import ObjectResource
+        from .CoreObject import CoreObject
+        from .ObjectResource import ObjectResource
         
         # the victim should not be interrupted but the scheduler should wait for the processing to finish before the stations turns to off-shift mode
         self.victim.totalOffShiftTime=0

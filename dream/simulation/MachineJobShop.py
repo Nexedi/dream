@@ -26,8 +26,8 @@ extends the machine object so that it can act as a jobshop station. It reads the
 '''
 
 import simpy
-from Machine import Machine
-from RandomNumberGenerator import RandomNumberGenerator
+from .Machine import Machine
+from .RandomNumberGenerator import RandomNumberGenerator
 # ===========================================================================
 # the MachineJobShop object
 # ===========================================================================
@@ -36,7 +36,7 @@ class MachineJobShop(Machine):
     # set all the objects in previous and next
     # =======================================================================
     def initialize(self):
-        from Globals import G
+        from .Globals import G
         self.previous=G.ObjList
         self.next=[]
         Machine.initialize(self)    #run default behaviour
@@ -79,7 +79,7 @@ class MachineJobShop(Machine):
         activeObject = self.getActiveObject()
         activeEntity=entity
         # read the possible receivers - update the next list
-        import Globals
+        from . import Globals
         # XXX: in the case of MouldAssembler there is no next defined in the route of the entities that are received
         # the position activeEntity.remainingRoute[1] is out of bound. the next should be updated by the remaining route of the entity to be assembled
         if len(activeEntity.remainingRoute)>1:

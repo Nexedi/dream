@@ -27,7 +27,7 @@ In removeEntity, each time it falls below a specific level it creates new Entiti
 '''
 
 import simpy
-from Queue import Queue
+from .Queue import Queue
 # ===========================================================================
 #                            the Queue object
 # ===========================================================================
@@ -46,8 +46,8 @@ class NonStarvingEntry(Queue):
     # extend to create the initial WIP in the given level
     def initialize(self):
         Queue.initialize(self)
-        from Globals import G
-        import Globals
+        from .Globals import G
+        from . import Globals
         for i in range(self.initialWIPLevel):
             self.createEntity()
 
@@ -64,8 +64,8 @@ class NonStarvingEntry(Queue):
     # ToDo we could apply similar methodology to source.CreateEntity.
     # Source JSON schema may change though.
     def createEntity(self):
-        from Globals import G
-        import Globals
+        from .Globals import G
+        from . import Globals
         entityType=self.entityData.get('_class', None)
         extraArgs=dict(self.entityData)
         extraArgs.pop('_class')

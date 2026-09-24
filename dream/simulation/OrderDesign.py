@@ -26,8 +26,8 @@ OrderDesign is an Entity that is a component of a broader order,
 and is processed before it gets broken down into other components
 '''
 
-from Globals import G
-from Job import Job
+from .Globals import G
+from .Job import Job
 
 # ===========================================================================
 # The OrderComponent object

@@ -25,7 +25,7 @@ Created on 06 May 2013
 Entity that is the MA in the DemandPlanning case. Inherits from Job (TODO see if this offers anything)
 '''
 
-from Job import Job
+from .Job import Job
 
 class JobMA(Job):
     def __init__(self,orderID, MAid, SPid, PPOSid, qty, minQty, origWeek, future):

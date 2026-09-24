@@ -27,7 +27,7 @@ Models an Interruption that schedules the operation of the machines by different
 '''
 import simpy
 
-from ObjectInterruption import ObjectInterruption
+from .ObjectInterruption import ObjectInterruption
 
 # ===========================================================================
 #               Class that handles the Operator Behavior
@@ -54,7 +54,7 @@ class Router(ObjectInterruption):
         self.pending=[]                              # list of entities that require operators now
         self.id=id
         self.name=name
-        from Globals import G
+        from .Globals import G
         G.RouterList.append(self)
         
     #===========================================================================
@@ -178,7 +178,7 @@ class Router(ObjectInterruption):
     # entry actions 
     #===========================================================================
     def entryActions(self):
-        from Globals import G
+        from .Globals import G
         for operator in G.OperatorsList:
             operator.candidateEntity=None
     
@@ -186,7 +186,7 @@ class Router(ObjectInterruption):
     #                 return control to the Machine.run
     # =======================================================================
     def exitActions(self):
-        from Globals import G
+        from .Globals import G
         # reset the variables that are used from the Router
         for operator in self.candidateOperators:
             operator.candidateEntities=[]
@@ -210,7 +210,7 @@ class Router(ObjectInterruption):
     # signal stations that wait for load operators
     #===========================================================================
     def signalOperatedStations(self):
-        from Globals import G
+        from .Globals import G
         for operator in self.candidateOperators:
             station=operator.isAssignedTo()
             if station:
@@ -245,7 +245,7 @@ class Router(ObjectInterruption):
     # find the stations that can be signalled by the router and the entities that are requesting operators now
     #===========================================================================
     def findPending(self):
-        from Globals import G
+        from .Globals import G
         # first sort the queues according to their sorting rule
         for object in G.ObjList:
             object.sortEntities()

@@ -4,9 +4,9 @@ Created on 5 Sep 2013
 @author: Anna
 '''
 
-from Globals import G
-from Allocation import Allocation
-from JobMA import JobMA
+from .Globals import G
+from .Allocation import Allocation
+from .JobMA import JobMA
 
 class AllocationRoutine():
     def __init__(self, initialWeek, itemType):

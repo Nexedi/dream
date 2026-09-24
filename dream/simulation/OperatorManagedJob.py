@@ -28,7 +28,7 @@ models a entity/job assigned operator (manager)
 
 # from SimPy.Simulation import Resource, now
 import simpy
-from Operator import Operator
+from .Operator import Operator
 
 # ===========================================================================
 #                 the resource that operates the machines
@@ -37,7 +37,7 @@ class OperatorManagedJob(Operator):
     
     def __init__(self, id, name, capacity=1,schedulingRule="FIFO",**kw):
         Operator.__init__(self,id=id,name=name,capacity=capacity,schedulingRule=schedulingRule)
-        from Globals import G
+        from .Globals import G
         G.OperatorManagedJobsList.append(self) 
     
     # =======================================================================
@@ -83,7 +83,7 @@ class OperatorManagedJob(Operator):
     # recursive method that searches for entities with available receivers
     #===========================================================================
     def findAvailableEntity(self):
-        from Globals import G
+        from .Globals import G
         router=G.RouterList[0]
         # if the candidateEntities and the entitiesWithOccupiedReceivers lists are identical then return None 
         if len(set(self.candidateEntities).intersection(router.entitiesWithOccupiedReceivers))==len(self.candidateEntities):
@@ -105,7 +105,7 @@ class OperatorManagedJob(Operator):
     # method that finds a candidate entity for an operator
     #===========================================================================
     def findCandidateEntity(self):
-        from Globals import G
+        from .Globals import G
         router=G.RouterList[0]
         # pick a candidateEntity
         candidateEntity=self.findAvailableEntity()

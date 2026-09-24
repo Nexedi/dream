@@ -28,7 +28,7 @@ models a generator that runs a method at specified intervals
 
 # from SimPy.Simulation import now, hold, Process
 import simpy
-from ObjectInterruption import ObjectInterruption
+from .ObjectInterruption import ObjectInterruption
 
 class EventGenerator(ObjectInterruption):
     def __init__(self, id=id, name=None, start=0, stop=float('inf'), interval=1,
@@ -46,14 +46,14 @@ class EventGenerator(ObjectInterruption):
         self.method=method              #the method to be invoke       
         self.argumentDict=argumentDict
         # if the argumentDict is passed as string convert it to dict
-        if isinstance(self.argumentDict, basestring):
+        if isinstance(self.argumentDict, str):
             import ast
             self.argumentDict=ast.literal_eval(self.argumentDict)
-        from Globals import G
+        from .Globals import G
         G.EventGeneratorList.append(self)
         self.method=method
-        if isinstance(method, basestring):
-            import Globals
+        if isinstance(method, str):
+            from . import Globals
             self.method=Globals.getMethodFromName(method)
             
     def run(self):

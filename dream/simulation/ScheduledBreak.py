@@ -28,8 +28,8 @@ designed to work only with ObjectResource as victim
 '''
 
 import simpy
-from RandomNumberGenerator import RandomNumberGenerator
-from ObjectInterruption import ObjectInterruption
+from .RandomNumberGenerator import RandomNumberGenerator
+from .ObjectInterruption import ObjectInterruption
 from copy import deepcopy
 
 # ===========================================================================
@@ -93,10 +93,10 @@ class ScheduledBreak(ObjectInterruption):
                     if not self.endUnfinished and station.expectedSignals['processOperatorUnavailable']:
                         self.sendSignal(receiver=station, signal=station.processOperatorUnavailable)
                     # if SkilledRouter waits for the station to finish, send this signal to this router
-                    from Globals import G
+                    from .Globals import G
                     from dream.simulation.SkilledOperatorRouter import SkilledRouter
                     if G.RouterList[0].__class__ is SkilledRouter and \
-                            station.id in G.RouterList[0].expectedFinishSignalsDict.keys() and \
+                            station.id in list(G.RouterList[0].expectedFinishSignalsDict.keys()) and \
                             not G.RouterList[0].expectedFinishSignalsDict[station.id].triggered:
                         self.sendSignal(receiver=G.RouterList[0], signal=G.RouterList[0].expectedFinishSignalsDict[station.id],
                                             sender=station)

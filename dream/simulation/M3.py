@@ -27,7 +27,7 @@ Custom object, not too much of generic use. Maybe in the future there should be 
 BatchScrapMachine->BatchDecomposition
 '''
 
-from BatchScrapMachine import BatchScrapMachine
+from .BatchScrapMachine import BatchScrapMachine
 
 class M3(BatchScrapMachine):
     

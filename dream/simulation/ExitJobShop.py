@@ -28,7 +28,7 @@ extends the Exit object so that it can act as a jobshop station. Preceding stati
 # from SimPy.Simulation import Process, Resource
 # from SimPy.Simulation import activate, passivate, waituntil, now, hold
 import simpy
-from Exit import Exit
+from .Exit import Exit
 
 # ===========================================================================
 # the ExitJobShop object
@@ -39,7 +39,7 @@ class ExitJobShop(Exit):
     # set all the objects in previous
     # =======================================================================
     def initialize(self):
-        from Globals import G
+        from .Globals import G
         self.previous=G.ObjList
         Exit.initialize(self)   #run default behaviour
         
