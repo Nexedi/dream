@@ -12,7 +12,7 @@ class InsertWIP(plugin.InputPreparationPlugin):
     """ updates the Work in Process of each station according to the BOM
     """
     WIP = data["input"].get("BOM",{}).get("WIP", {})
-    for partID, work in WIP.iteritems():
+    for partID, work in list(WIP.items()):
       stationID = work.get("station", None).replace(' ','').split('-')[0]
       if not stationID:
         break
@@ -33,7 +33,7 @@ class InsertWIP(plugin.InputPreparationPlugin):
                 endOfRoute = True
             # find the Mould component of the order and see it is already in the WIP
             if component.get('_class', None) == 'Dream.Mould':
-              if component.get('id', None) in WIP.keys():
+              if component.get('id', None) in list(WIP.keys()):
                 mouldCreated = True
       # if the part reached the end of its route (an assembly buffer) and the mould is already created
       if endOfRoute and mouldCreated:

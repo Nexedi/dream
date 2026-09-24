@@ -47,27 +47,27 @@ except ImportError:
 # from SimPy.Simulation import activate, initialize, simulate, now, infinity
 import simpy
 
-from Globals import G 
-from Source import Source
-from Machine import Machine
-from Exit import Exit
-from Queue import Queue
-# from QueueLIFO import QueueLIFO
-from Repairman import Repairman
-from Part import Part
-from Frame import Frame
-from Assembly import Assembly
-from Dismantle import Dismantle
-from Conveyer import Conveyer
-from Job import Job
-from MachineJobShop import MachineJobShop
-from QueueJobShop import QueueJobShop
-from ExitJobShop import ExitJobShop
-from Batch import Batch
-from SubBatch import SubBatch
-from BatchSource import BatchSource
-from BatchDecomposition import BatchDecomposition
-from RandomNumberGenerator import RandomNumberGenerator
+from dream.simulation.Globals import G 
+from dream.simulation.Source import Source
+from dream.simulation.Machine import Machine
+from dream.simulation.Exit import Exit
+from dream.simulation.Queue import Queue
+# from dream.simulation.QueueLIFO import QueueLIFO
+from dream.simulation.Repairman import Repairman
+from dream.simulation.Part import Part
+from dream.simulation.Frame import Frame
+from dream.simulation.Assembly import Assembly
+from dream.simulation.Dismantle import Dismantle
+from dream.simulation.Conveyer import Conveyer
+from dream.simulation.Job import Job
+from dream.simulation.MachineJobShop import MachineJobShop
+from dream.simulation.QueueJobShop import QueueJobShop
+from dream.simulation.ExitJobShop import ExitJobShop
+from dream.simulation.Batch import Batch
+from dream.simulation.SubBatch import SubBatch
+from dream.simulation.BatchSource import BatchSource
+from dream.simulation.BatchDecomposition import BatchDecomposition
+from dream.simulation.RandomNumberGenerator import RandomNumberGenerator
 
 import xlwt
 import xlrd
@@ -437,7 +437,7 @@ def main(argv=[], input_data=None):
         try:                                          # try to open the file with the inputs
             G.CMSDFile=open(filename, "r")            # global variable holding the file to be opened
         except IOError:
-            print "%s could not be open" % filename
+            print(("%s could not be open" % filename))
             return "ERROR"
         G.InputData=G.CMSDFile.read()                 # pass the contents of the input file to the global var InputData
     else:
@@ -561,7 +561,7 @@ def main(argv=[], input_data=None):
     
     #run the experiment (replications)          
     for i in range(G.numberOfReplications):
-        print "start run number "+str(i+1) 
+        print(("start run number "+str(i+1))) 
         G.env=simpy.Environment()    
         G.seed+=1
         G.Rnd=Random(G.seed)         
@@ -590,12 +590,12 @@ def main(argv=[], input_data=None):
         
 #     #output data to excel for every object in the topology         
     for object in G.ObjList:
-        if object is not 'BatchSource':
+        if object != 'BatchSource':
             continue
         object.outputResultsXL(G.maxSimTime)    
 
     G.outputFile.save("output.xls")      
-    print "execution time="+str(time.time()-start) 
+    print(("execution time="+str(time.time()-start))) 
     
     G.outputJSONFile=open('outputJSONFromCMSD.json', mode='w')
     G.outputJSON['_class'] = 'Dream.Simulation';

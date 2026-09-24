@@ -23,15 +23,15 @@ Created on 7 May 2014
 @author: Panos
 '''
 
-from DistributionFitting import Distributions
-from ImportExceldata import Import_Excel
-from ReplaceMissingValues import HandleMissingValues
+from dream.KnowledgeExtraction.DistributionFitting import Distributions
+from dream.KnowledgeExtraction.ImportExceldata import ImportExceldata
+from dream.KnowledgeExtraction.ReplaceMissingValues import ReplaceMissingValues
 import rpy2.robjects as robjects
 from xlwt import Workbook
 import json
 import xlrd
 import random
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 def generateDemandPlanning(input_url, PPOSQuantity=1000, PlannedWeek=1, PPOSToBeDisaggregated='PPOS1', 
                            MinPackagingSize=10, planningHorizon=10):
@@ -43,13 +43,13 @@ def generateDemandPlanning(input_url, PPOSQuantity=1000, PlannedWeek=1, PPOSToBe
     
     # Read data from the exported Excel file from RapidMiner and call the Import_Excel object of the KE tool to import this data in the tool
 
-    demand_data = urllib.urlopen(input_url).read()
+    demand_data = urllib.request.urlopen(input_url).read()
     workbook = xlrd.open_workbook(file_contents=demand_data)
 
     worksheets = workbook.sheet_names()
     worksheet_RapidMiner = worksheets[0] 
 
-    A= Import_Excel()
+    A= ImportExceldata()
     Turnovers=A.Input_data(worksheet_RapidMiner, workbook) #Dictionary with the data from the Excel file
 
     #Create lists with the MAs' names and the Turnovers for the first twelve weeks of 2010 retrieving this data from the dictionary 
@@ -60,7 +60,7 @@ def generateDemandPlanning(input_url, PPOSQuantity=1000, PlannedWeek=1, PPOSToBe
 
     #Call the Distributions object and fit the data from the list in Normal distribution, so as to have info on Global demand (mean and standard deviation)
     D=Distributions()
-    E=HandleMissingValues()
+    E=ReplaceMissingValues()
     MA=E.DeleteMissingValue(MA)
     t=D.Normal_distrfit(GlobalDemand)
     avg=t.get('mean')
@@ -70,7 +70,7 @@ def generateDemandPlanning(input_url, PPOSQuantity=1000, PlannedWeek=1, PPOSToBe
         """Return a randomly chosen list of n positive integers summing to total.
         Each such list is equally likely to occur."""
      
-        dividers = sorted(random.sample(xrange(1, total), n - 1))
+        dividers = sorted(random.sample(list(range(1, total)), n - 1))
         return [a - b for a, b in zip(dividers + [total], [0] + dividers)]
 
     def constrained_sum_sample_nonneg(n, total):
@@ -119,7 +119,7 @@ def generateDemandPlanning(input_url, PPOSQuantity=1000, PlannedWeek=1, PPOSToBe
     book=Workbook()
     sheet1 = book.add_sheet('Future1', cell_overwrite_ok=True)
     aggrTable=[]
-    for key in DemandProfile.keys():
+    for key in list(DemandProfile.keys()):
         for elem in DemandProfile[key]:
             if DemandProfile[key].get(elem)[0]> 0:
                 MAkey=elem
@@ -170,7 +170,7 @@ def generateDemandPlanning(input_url, PPOSQuantity=1000, PlannedWeek=1, PPOSToBe
         dictPPOSMA.update({ind: mas})
 
     t=1
-    for key in dictPPOSMA.keys():
+    for key in list(dictPPOSMA.keys()):
         for elem in dictPPOSMA[key]:   
             if key==PPOSToBeDisaggregated:
                 c=constrained_sum_sample_nonneg(len(dictPPOSMA[key]),PPOSQuantity)
@@ -216,14 +216,14 @@ def generateDemandPlanning(input_url, PPOSQuantity=1000, PlannedWeek=1, PPOSToBe
     #write json file
     PPOSProfileFile.write(PPOSProfileString)
     
-    import StringIO
-    out = StringIO.StringIO()
+    import io
+    out = io.BytesIO()
     book.save(out)
     book.save('DP.xls')
     return out.getvalue()
 
 if __name__ == '__main__':
-   with open('DemandProfile.xls', 'w') as outputfile:
+   with open('DemandProfile.xls', 'wb') as outputfile:
      outputfile.write(generateDemandPlanning('Input8PPOS.xlsx'))
 
 

@@ -32,7 +32,7 @@ class CMSDOutput(object):
             del data['min']
             del data['max']
         for index in list(data.keys()):
-            if index is not 'distributionType':
+            if index != 'distributionType':
                 Parameters.append(index)
                 ParameterValue.append(data[index])
         return Parameters, ParameterValue
