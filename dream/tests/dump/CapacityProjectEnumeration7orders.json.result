@@ -2888,22 +2888,22 @@
      {
       "entranceTime": 0.0, 
       "exitTime": 1.0, 
+      "stationId": "CNC"
+     }, 
+     {
+      "entranceTime": 0.0, 
+      "exitTime": 1.0, 
       "stationId": "EEP"
      }, 
      {
       "entranceTime": 0.0, 
       "exitTime": 2.0, 
-      "stationId": "SMF"
-     }, 
-     {
-      "entranceTime": 0.0, 
-      "exitTime": 1.0, 
-      "stationId": "CNC"
+      "stationId": "MCH"
      }, 
      {
       "entranceTime": 0.0, 
       "exitTime": 2.0, 
-      "stationId": "MCH"
+      "stationId": "SMF"
      }, 
      {
       "entranceTime": 1.0, 
@@ -2937,22 +2937,22 @@
      {
       "entranceTime": 0.0, 
       "exitTime": 1.0, 
-      "stationId": "EEP"
+      "stationId": "CNC"
      }, 
      {
       "entranceTime": 0.0, 
       "exitTime": 1.0, 
-      "stationId": "CNC"
-     }, 
-     {
-      "entranceTime": 1.0, 
-      "exitTime": 2.0, 
-      "stationId": "SMF"
+      "stationId": "EEP"
      }, 
      {
       "entranceTime": 1.0, 
       "exitTime": 2.0, 
       "stationId": "MCH"
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "exitTime": 2.0, 
+      "stationId": "SMF"
      }, 
      {
       "entranceTime": 2.0, 
@@ -3034,23 +3034,23 @@
     "schedule": [
      {
       "entranceTime": 0.0, 
-      "exitTime": 1.0, 
-      "stationId": "EEP"
-     }, 
-     {
-      "entranceTime": 0.0, 
       "exitTime": 2.0, 
       "stationId": "CNC"
      }, 
      {
-      "entranceTime": 1.0, 
-      "exitTime": 4.0, 
-      "stationId": "SMF"
+      "entranceTime": 0.0, 
+      "exitTime": 1.0, 
+      "stationId": "EEP"
      }, 
      {
       "entranceTime": 1.0, 
       "exitTime": 3.0, 
       "stationId": "MCH"
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "exitTime": 4.0, 
+      "stationId": "SMF"
      }, 
      {
       "entranceTime": 3.0, 
@@ -3083,13 +3083,13 @@
     "schedule": [
      {
       "entranceTime": 1.0, 
-      "exitTime": 2.0, 
-      "stationId": "EEP"
+      "exitTime": 3.0, 
+      "stationId": "CNC"
      }, 
      {
       "entranceTime": 1.0, 
-      "exitTime": 3.0, 
-      "stationId": "CNC"
+      "exitTime": 2.0, 
+      "stationId": "EEP"
      }, 
      {
       "entranceTime": 2.0, 
@@ -3142,13 +3142,13 @@
      }, 
      {
       "entranceTime": 3.0, 
-      "exitTime": 8.0, 
-      "stationId": "SMF"
+      "exitTime": 4.0, 
+      "stationId": "MCH"
      }, 
      {
       "entranceTime": 3.0, 
-      "exitTime": 4.0, 
-      "stationId": "MCH"
+      "exitTime": 8.0, 
+      "stationId": "SMF"
      }, 
      {
       "entranceTime": 8.0, 
@@ -5060,35 +5060,35 @@
     "ticks": [
      [
       0, 
-      "Electrical and electronic parts"
-     ], 
-     [
-      1, 
-      "Pre-painting assembly"
-     ], 
-     [
-      2, 
-      "Sheet Metal Forming"
-     ], 
-     [
-      3, 
-      "Welding"
-     ], 
-     [
-      4, 
       "Assembly before testing"
      ], 
      [
-      5, 
-      "Painting"
-     ], 
-     [
-      6, 
+      1, 
       "CNC"
      ], 
      [
-      7, 
+      2, 
+      "Electrical and electronic parts"
+     ], 
+     [
+      3, 
       "Machining"
+     ], 
+     [
+      4, 
+      "Painting"
+     ], 
+     [
+      5, 
+      "Pre-painting assembly"
+     ], 
+     [
+      6, 
+      "Sheet Metal Forming"
+     ], 
+     [
+      7, 
+      "Welding"
      ]
     ]
    }, 
@@ -5101,35 +5101,35 @@
     "data": [
      [
       0, 
-      2.3571428571428568
-     ], 
-     [
-      1, 
-      50.22362698833288
-     ], 
-     [
-      2, 
-      11.31868131868132
-     ], 
-     [
-      3, 
-      10.016280016280016
-     ], 
-     [
-      4, 
       21.076160193807254
      ], 
      [
-      5, 
-      16.2421218487395
-     ], 
-     [
-      6, 
+      1, 
       3.9194139194139193
      ], 
      [
-      7, 
+      2, 
+      2.3571428571428568
+     ], 
+     [
+      3, 
       5.212355212355212
+     ], 
+     [
+      4, 
+      16.2421218487395
+     ], 
+     [
+      5, 
+      50.22362698833288
+     ], 
+     [
+      6, 
+      11.31868131868132
+     ], 
+     [
+      7, 
+      10.016280016280016
      ]
     ], 
     "label": "Utilized"
@@ -5138,35 +5138,35 @@
     "data": [
      [
       0, 
-      97.64285714285714
-     ], 
-     [
-      1, 
-      49.77637301166712
-     ], 
-     [
-      2, 
-      88.68131868131867
-     ], 
-     [
-      3, 
-      89.98371998372
-     ], 
-     [
-      4, 
       78.92383980619275
      ], 
      [
-      5, 
-      83.7578781512605
-     ], 
-     [
-      6, 
+      1, 
       96.08058608058609
      ], 
      [
-      7, 
+      2, 
+      97.64285714285714
+     ], 
+     [
+      3, 
       94.78764478764478
+     ], 
+     [
+      4, 
+      83.7578781512605
+     ], 
+     [
+      5, 
+      49.77637301166712
+     ], 
+     [
+      6, 
+      88.68131868131867
+     ], 
+     [
+      7, 
+      89.98371998372
      ]
     ], 
     "label": "Idle"
