@@ -22,7 +22,7 @@ class OldStylePartJobShopWIP(plugin.InputPreparationPlugin, TimeSupportMixin):
     if step_name is "CAM", it will return ["CAM1", "CAM2"]
     """
     machine_name_set = set()
-    for machine_name in self.data['graph']["node"].keys():
+    for machine_name in list(self.data['graph']["node"].keys()):
       if machine_name.startswith(step_name):
         machine_name_set.add(machine_name)
     if not machine_name_set:
@@ -36,7 +36,7 @@ class OldStylePartJobShopWIP(plugin.InputPreparationPlugin, TimeSupportMixin):
     """
     predecessor_list = []
     machine_name_set = self.getMachineNameSet(step_name)
-    for edge in self.data['graph']["edge"].values():
+    for edge in list(self.data['graph']["edge"].values()):
       if edge['destination'] in machine_name_set:
         predecessor_step = edge['source']
         if predecessor_step in predecessor_list:

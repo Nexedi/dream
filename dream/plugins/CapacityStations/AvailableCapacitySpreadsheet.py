@@ -20,9 +20,9 @@ class AvailableCapacitySpreadsheet(plugin.InputPreparationPlugin):
         now = strptime(data['general']['currentDate'], '%Y/%m/%d')
         if capacityData:           
             poolDict={}
-            for node_id, node in nodes.iteritems():
+            for node_id, node in list(nodes.items()):
                 pool=node.get('pool',None)
-                if pool and not pool in nodes.keys():
+                if pool and not pool in list(nodes.keys()):
                     if not poolDict.get(pool,None):
                         poolDict[pool]=[]                    
                     poolDict[pool].append(node_id)
@@ -31,7 +31,7 @@ class AvailableCapacitySpreadsheet(plugin.InputPreparationPlugin):
             columnsToErase=[]
             for col in range(len(copy(capacityData[0]))):
                 # if the column contains a pool create new columns with the actual station id
-                if capacityData[0][col] in poolDict.keys():
+                if capacityData[0][col] in list(poolDict.keys()):
                     pool=capacityData[0][col]
                     if pool in ['DAY',None,'']:
                         continue
@@ -54,7 +54,7 @@ class AvailableCapacitySpreadsheet(plugin.InputPreparationPlugin):
                 stationId=capacityData[0][col]
                 if stationId in ['DAY',None,'']:
                     continue
-                assert stationId in data['graph']['node'].keys(), ('available capacity spreadsheet has station id:',stationId, 
+                assert stationId in list(data['graph']['node'].keys()), ('available capacity spreadsheet has station id:',stationId, 
                                                             'that does not exist in production line')
                 # for every station read the interval capacity (Monday to Sunday)
                 intervalCapacity=[]

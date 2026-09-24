@@ -1,3 +1,5 @@
+import zlib
+import base64
 from dream.plugins import plugin
 from pprint import pformat
 from copy import copy, deepcopy
@@ -5,7 +7,7 @@ import json
 import time
 import random
 import operator
-import xmlrpclib
+import xmlrpc.client
 import signal
 from multiprocessing import Pool
 
@@ -44,7 +46,7 @@ class ACO(plugin.ExecutionPlugin):
     distributor_url = data['general'].get('distributorURL')
     distributor = None
     if distributor_url:
-        distributor = xmlrpclib.Server(distributor_url)
+        distributor = xmlrpc.client.Server(distributor_url)
 
     multiprocessorCount = data['general'].get('multiprocessorCount')
 
@@ -77,7 +79,7 @@ class ACO(plugin.ExecutionPlugin):
             seed = data['general'].get('seed', 10)
             if seed == '' or seed == ' ' or seed == None:
                 seed = 10
-            for k in collated.keys():
+            for k in list(collated.keys()):
                 random.seed(seed+seedPlus)
                 ant[k] = random.choice(collated[k])
                 seedPlus +=1
@@ -114,7 +116,7 @@ class ACO(plugin.ExecutionPlugin):
             self.logger.info("Registering a job for %s scenarios" % len(scenario_list))
             start_register = time.time()
             job_id = distributor.requestSimulationRun(
-                [json.dumps(x).encode('zlib').encode('base64') for x in scenario_list])
+                [base64.b64encode(zlib.compress(json.dumps(x).encode('utf-8'))).decode('ascii') for x in scenario_list])
             self.logger.info("Job registered as %s (took %0.2fs)" % (job_id, time.time() - start_register ))
 
             while True:
@@ -152,14 +154,14 @@ class ACO(plugin.ExecutionPlugin):
          
         # The ants in this generation are ranked based on their scores and the
         # best (numberOfAntsForNextGeneration) are selected to carry their pheromones to next generation
-        antsForNextGeneration = sorted(uniqueAntsInThisGeneration.values(),
+        antsForNextGeneration = sorted(list(uniqueAntsInThisGeneration.values()),
           key=operator.itemgetter('score'))[:numberOfAntsForNextGeneration]
 
         for l in antsForNextGeneration:
             # update the options list to ensure that good performing queue-rule
             # combinations have increased representation and good chance of
             # being selected in the next generation
-            for m in collated.keys():
+            for m in list(collated.keys()):
                 # e.g. if using EDD gave good performance for Q1, then another
                 # 'EDD' is added to Q1 so there is a higher chance that it is
                 # selected by the next ants.
@@ -176,7 +178,7 @@ class ACO(plugin.ExecutionPlugin):
 
     # The ants in this generation are ranked based on their scores and the
     # best (max_results) are selected
-    ants = sorted(uniqueAnts.values(),
+    ants = sorted(list(uniqueAnts.values()),
       key=operator.itemgetter('score'))[:max_results]
 
     data['result']['result_list'] = result_list = []
