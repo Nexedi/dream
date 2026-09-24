@@ -23,11 +23,11 @@ Created on 15 Dec 2014
 @author: Anna
 '''
 
-from AllocationRoutine_Final2 import AllocationRoutine_Final
-from AllocationRoutine_Forecast import AllocationRoutine_Forecast
-from Allocation_GA import Allocation_GA
-from Allocation_ACO import Allocation_ACO
-from Globals import G
+from .AllocationRoutine_Final2 import AllocationRoutine_Final
+from .AllocationRoutine_Forecast import AllocationRoutine_Forecast
+from .Allocation_GA import Allocation_GA
+from .Allocation_ACO import Allocation_ACO
+from .Globals import G
 import tablib
 from copy import deepcopy
 
@@ -35,7 +35,7 @@ def AllocManagement_Hybrid():
     
     # allocate items based on type and priority level
     
-    print G.priorityList 
+    print((G.priorityList)) 
     
     for priority in G.priorityList['order']:
         
@@ -46,19 +46,19 @@ def AllocManagement_Hybrid():
         for week in G.WeekList:  
             
             if week in G.sortedOrders['order'][priority]:
-                print 'order week', week 
+                print(('order week', week)) 
                 ACOresults = Allocation_ACO(week, G.sortedOrders['order'][priority][week],'order',ACOresults)          
         
         G.reportResults.add_sheet(ACOresults)
     
-    print 'prio forecast', G.priorityList['forecast']
+    print(('prio forecast', G.priorityList['forecast']))
     for priority in G.priorityList['forecast']:
         
-        print 'weeks', G.sortedOrders['forecast'][priority]
+        print(('weeks', G.sortedOrders['forecast'][priority]))
         for week in G.WeekList:    
             
             if  week in G.sortedOrders['forecast'][priority]:
-                print 'forecast week', week               
+                print(('forecast week', week))               
                 AllocationRoutine_Forecast(week, G.sortedOrders['forecast'][priority][week],'forecast')
             
                 
@@ -76,7 +76,7 @@ def AllocManagement_Hybrid2(bestAnt):
         for week in G.WeekList:  
             
             if week in G.sortedOrders['order'][priority]:
-                print 'order week', week 
+                print(('order week', week)) 
                 if G.ACO:
                     if G.ACOdefault:
                         G.popSize = int(0.75*len(G.sortedOrders['order'][priority][week]) - 0.75*len(G.sortedOrders['order'][priority][week])%2)
@@ -101,7 +101,7 @@ def AllocManagement_Hybrid2(bestAnt):
 
 def AllocManagement_Hybrid2_Forecast():     
     
-    print 'start forecast allocation'
+    print('start forecast allocation')
     for priority in G.priorityList['forecast']:
         
         GAresults = tablib.Dataset(title='GA_'+'order'+'_'+str(priority))
@@ -110,7 +110,7 @@ def AllocManagement_Hybrid2_Forecast():
         for week in G.WeekList:    
             
             if  week in G.sortedOrders['forecast'][priority]:
-                print 'forecast week', week   
+                print(('forecast week', week))   
                 
                 itemList = G.sortedOrders['forecast'][priority][week]
                 

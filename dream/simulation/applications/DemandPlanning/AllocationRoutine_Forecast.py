@@ -23,9 +23,9 @@ Created on 15 Dec 2014
 @author: Anna
 '''
 from copy import deepcopy
-from Globals import G
-from AllocationForecast_IP import Allocation_IP
-from Allocation_3 import Allocation2
+from .Globals import G
+from .AllocationForecast_IP import Allocation_IP
+from .Allocation_3 import Allocation2
 
 def AllocationRoutine_Forecast(initialWeek, itemList, itemType, seq):
     
@@ -92,7 +92,7 @@ def AllocationRoutine_Forecast(initialWeek, itemList, itemType, seq):
                 spAllocation, probStatus = Allocation_IP(item, week, previousAss, capacity,G.weightFactor)
 #                print 'all', spAllocation
                 # implement optimal MA solution
-                for ma in spAllocation.keys():
+                for ma in list(spAllocation.keys()):
                     if spAllocation[ma]:
                         Results = Allocation2(ma, spAllocation[ma], [week], capacity, incompleteBatches, earliness, lateness, Allocation, initialWeek)
                         assert (Results['remainingUnits'] == 0)

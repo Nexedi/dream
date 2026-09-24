@@ -32,7 +32,7 @@ def availableTimeInterval_Manual(manualTime, tStart, availTime):
         i += 1
 
     if i>=len(sortedTime):
-        print 'WARNING-not possible'
+        print('WARNING-not possible')
         return None, 0
     
     return sortedTime[i], availTime[sortedTime[i]]['end'] - max(tStart,sortedTime[i])
@@ -183,7 +183,7 @@ def updateAvailTime(keyStart, reqTime, tStart, availTime):
 #            i -= 1
         
         if i >= len(sortedTime):
-            print 'WARNING: beyond planning horizon'
+            print('WARNING: beyond planning horizon')
             return availTime
         
         if tStart+reqTime > sortedTime[i]:
@@ -203,7 +203,7 @@ def availableTime_Shift(tStart, tEnd, availTime):
     
     
     if i>=len(sortedTime):
-        print 'WARNING: time interval not found'
+        print('WARNING: time interval not found')
         return availTime
     
     if availTime[sortedTime[i]]['end'] >= tEnd:
@@ -214,7 +214,7 @@ def availableTime_Shift(tStart, tEnd, availTime):
         
         if  availTime[sortedTime[i]]['endMode'] == 'EOS': 
             if i==len(sortedTime)-1:
-                print 'WARNING: beyond last interval'
+                print('WARNING: beyond last interval')
                 availTime= updateAvailTime(sortedTime[i], tEnd - max(tStart,sortedTime[i]), max(tStart,sortedTime[i]), availTime)
                     
             elif availTime[sortedTime[i+1]]['preDay'] == sortedTime[i].date() and sortedTime[i+1] >= tEnd:

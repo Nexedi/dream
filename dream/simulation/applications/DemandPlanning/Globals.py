@@ -110,13 +110,13 @@ def initialiseVar():
     for week in G.WeekList:
         G.Lateness[week] = {}
         G.Earliness[week] = {}
-        for sp in G.SPlist.keys():
+        for sp in list(G.SPlist.keys()):
             for ma in G.SPlist[sp]:
                 G.Lateness[week][ma] = {'qty':[], 'lateness':[]}
                 G.Earliness[week][ma] = {'qty':[], 'earliness':[]}
 
     # set excess results
-    for sp in G.SPlist.keys():
+    for sp in list(G.SPlist.keys()):
         G.Excess[sp] = {}
         for week in G.WeekList:
             G.Excess[sp][week] = 0
@@ -124,7 +124,7 @@ def initialiseVar():
             G.incompleteBatches[ma] = 0
 
     # set 
-    for sp in G.SPlist.keys():
+    for sp in list(G.SPlist.keys()):
         G.globalMAAllocationIW[sp] = {}
         for week in G.WeekList:
             G.globalMAAllocationIW[sp][week] = {'order':{}, 'forecast':{}}

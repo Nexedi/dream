@@ -10,9 +10,9 @@ import datetime as dt
 import xlrd
 from operator import itemgetter
 from copy import deepcopy
-from shiftGeneration import shiftGenerator
-from timeCalculations import availableTime_Shift
-from Globals import G
+from .shiftGeneration import shiftGenerator
+from .timeCalculations import availableTime_Shift
+from .Globals import G
 
 def dateToOrdinal(entry, formatDate):
     rec = dt.datetime.strptime(entry,formatDate)
@@ -47,14 +47,14 @@ def offShiftFormat(colEntry):
 def offShiftFormat_2(colEntry, dateNow):
     periods = {}
     sprtdRec = colEntry.split(';'+' ')
-    print 'col entry', colEntry
-    print 'date', dateNow
+    print(('col entry', colEntry))
+    print(('date', dateNow))
     for startANDend in sprtdRec:
         splitstartANDend = str(startANDend).split('-')
-        print 'splitstartANDend', splitstartANDend
+        print(('splitstartANDend', splitstartANDend))
         
         for num,stAstP in enumerate(splitstartANDend):
-            print 'st ast', stAstP
+            print(('st ast', stAstP))
             falseTime = dt.datetime.strptime(stAstP,'%H:%M')
             if num == 0:
                 startTime = dt.datetime(year=dateNow.year, month=dateNow.month, day=dateNow.day, hour=falseTime.hour, minute=falseTime.minute)
@@ -71,7 +71,7 @@ def combSchedules(bothSchedList,combData):
                 cell = list(cell)
                 cell.extend(['Not Frozen'])
             combData.append(cell)
-    print combData['Date']
+    print((combData['Date']))
     combData = combData.sort('Date')
     with open('Results\\Combined Schedule.xlsx', 'wb') as h: #completion time, cycle time and delay info in json format
         h.write(combData.xlsx)
@@ -127,7 +127,7 @@ def importInput(jInput, excelInput, algorithmAttributes):
     
     # extract resource availability
     for item in PMschedule:
-        if 'parent' in item.keys():
+        if 'parent' in list(item.keys()):
             pm = item['parent']
             startDate = dateToOrdinal(item['start_date'], "%d-%m-%Y %H:%M")
             stopDate = dateToOrdinal(item['stop_date'], "%d-%m-%Y %H:%M")
@@ -191,7 +191,7 @@ def importInput(jInput, excelInput, algorithmAttributes):
                                                                               'project':current, 'part':WorkPlan.cell_value(i,2)}) #'personnel':str(WorkPlan.cell_value(i,10)), 'sequence':WorkPlan.cell_value(i,9), 
             seqPrjDone[current].setdefault(WorkPlan.cell_value(i,2),0)
     
-    maxODate = min(OrderDates.iteritems(), key=itemgetter(1))[1]
+    maxODate = min(iter(list(OrderDates.items())), key=itemgetter(1))[1]
     
     #==================================
     # Import shift data from json file
@@ -239,7 +239,7 @@ def importInput(jInput, excelInput, algorithmAttributes):
         
 
         offShiftTimes.setdefault(currResc,{})
-        for offS in offshiftPeriods.keys():
+        for offS in list(offshiftPeriods.keys()):
             offShiftTimes[currResc][offS] = offshiftPeriods[offS]
         stRtstOp.setdefault(currResc,{})[cDate] = [shiftStart.time(),shiftEnd.time()]
 
@@ -268,7 +268,7 @@ def importInput(jInput, excelInput, algorithmAttributes):
     # import machines information
     possMachines = dataJSON['graph']['node']
     
-    for mach in possMachines.keys():
+    for mach in list(possMachines.keys()):
         
         if 'machine' in possMachines[mach]['_class'].lower() or 'assembly' in possMachines[mach]['_class'].lower(): 
             
@@ -324,10 +324,10 @@ def importInput(jInput, excelInput, algorithmAttributes):
         shiftRes[pm] = shiftGenerator(G.xlreftime,30,exceptions)
         resAvailability[pm] = deepcopy(shiftRes[pm])
         if pm in offShiftTimes:
-            for unavailDate in offShiftTimes[pm].keys():
+            for unavailDate in list(offShiftTimes[pm].keys()):
                 resAvailability[pm] = availableTime_Shift(unavailDate,offShiftTimes[pm][unavailDate]['endDate'],resAvailability[pm])
         if pm in takenPeriods:
-            for unavailDate in takenPeriods[pm].keys():
+            for unavailDate in list(takenPeriods[pm].keys()):
                 resAvailability[pm] = availableTime_Shift(unavailDate,takenPeriods[pm][unavailDate]['endDate'],resAvailability[pm])
                 
 
@@ -341,17 +341,17 @@ def importInput(jInput, excelInput, algorithmAttributes):
         shiftRes[mach] = shiftGenerator(G.xlreftime,30,exceptions)
         resAvailability[mach] = deepcopy(shiftRes[mach])
         if mach in offShiftTimes:
-            for unavailDate in offShiftTimes[mach].keys():
+            for unavailDate in list(offShiftTimes[mach].keys()):
                 resAvailability[mach] = availableTime_Shift(unavailDate,offShiftTimes[mach][unavailDate]['endDate'],resAvailability[mach])
         if mach in takenPeriods:
-            for unavailDate in takenPeriods[mach].keys():
+            for unavailDate in list(takenPeriods[mach].keys()):
                 resAvailability[mach] = availableTime_Shift(unavailDate,takenPeriods[mach][unavailDate]['endDate'],resAvailability[mach])
     
     # set global variables
     G.seqPrjDoneOrig = deepcopy(seqPrjDone) 
     G.resAvailabilityOrig = deepcopy(resAvailability)
     G.MachPool = deepcopy(MachPool)
-    print 'mach pool',G.MachPool
+    print(('mach pool',G.MachPool))
     G.PMPool = deepcopy(PMPool)
     G.Projects = deepcopy(Projects)
     G.OrderDates = deepcopy(OrderDates)

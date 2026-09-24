@@ -22,7 +22,7 @@ Created on 28 Jan 2015
 
 @author: Anna
 '''
-from Globals import G
+from .Globals import G
 from math import ceil, fabs
 from copy import deepcopy
 

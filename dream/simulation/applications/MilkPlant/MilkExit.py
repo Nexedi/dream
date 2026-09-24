@@ -35,7 +35,7 @@ class MilkExit(ExitJobShop):
     def getEntity(self):
         activeEntity=ExitJobShop.getEntity(self)
         productId=activeEntity.productId
-        if productId in self.finishedProductDict.keys():
+        if productId in list(self.finishedProductDict.keys()):
             self.finishedProductDict[productId]['totalFat']+=activeEntity.fat
             self.finishedProductDict[productId]['volume']+=activeEntity.liters
             self.finishedProductDict[productId]['exitTime']=self.env.now
