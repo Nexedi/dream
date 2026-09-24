@@ -33,7 +33,7 @@ import os
 #The Import Database object is used to import the data, the user has to specify the path to the file containing the connection data
  
 def main(test=0, simul8XMLFileName='ParallelStations.xml',
-                DBFilePath = 'C:\Users\Panos\Documents\KE tool_documentation',
+                DBFilePath = 'C:\\Users\Panos\Documents\KE tool_documentation',
                 file_path=None, simul8XMLFile=None):
     if not file_path:
         cnxn=ConnectionData(seekName='ServerData', file_path=DBFilePath, implicitExt='txt', number_of_cursors=3)

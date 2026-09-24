@@ -23,10 +23,10 @@ Created on 23 March 2015
 @author: Panos
 '''
 
-import Tkinter as tk
-from Tkinter import *
+import tkinter as tk
+from tkinter import *
 import ImportDatabase
-import tkMessageBox
+import tkinter.messagebox
 from datetime import datetime
  
 class Demo1( Frame ):
@@ -135,16 +135,16 @@ class TIMEIN(Frame):
     
     def recordTimeIn(self):
         self.timeIN = str(datetime.now())
-        print self.timeIN
+        print((self.timeIN))
         return   
 
     def recordStartTime(self):
         self.startTime = str(datetime.now())
-        print self.startTime
+        print((self.startTime))
         return
     
     def checkInsertedWP(self):
-        cnxn=ImportDatabase.ConnectionData(seekName='ServerData', file_path='C:\Users\Panos\Documents\DB_Approach\JobShop', implicitExt='txt', number_of_cursors=6)
+        cnxn=ImportDatabase.ConnectionData(seekName='ServerData', file_path='C:\\Users\Panos\Documents\DB_Approach\JobShop', implicitExt='txt', number_of_cursors=6)
         cursor=cnxn.getCursors()
         
         a=cursor[0].execute("""
@@ -179,7 +179,7 @@ class TIMEIN(Frame):
         return availableWP
 
     def updateDatabase(self):
-        cnxn=ImportDatabase.ConnectionData(seekName='ServerData', file_path='C:\Users\Panos\Documents\DB_Approach\JobShop', implicitExt='txt', number_of_cursors=5)
+        cnxn=ImportDatabase.ConnectionData(seekName='ServerData', file_path='C:\\Users\Panos\Documents\DB_Approach\JobShop', implicitExt='txt', number_of_cursors=5)
         cursor=cnxn.getCursors()
         update_order= ("INSERT INTO prod_status(`status_id`, `WP_id`, `PersonnelCode`, `MachineName`, `TIMEIN`)  VALUES (?, ?, ?, ?, ?)")
         cursor[0].execute("SELECT @@IDENTITY AS ID")
@@ -266,16 +266,16 @@ class TIMEOUT(Frame):
 
     def recordTimeIn(self):
         self.timeIN = str(datetime.now())
-        print self.timeIN
+        print((self.timeIN))
         return   
     
     def recordStartTime(self):
         self.startTime = str(datetime.now())
-        print self.startTime
+        print((self.startTime))
         return
     
     def checkInsertedWP(self):
-        cnxn=ImportDatabase.ConnectionData(seekName='ServerData', file_path='C:\Users\Panos\Documents\DB_Approach\JobShop', implicitExt='txt', number_of_cursors=6)
+        cnxn=ImportDatabase.ConnectionData(seekName='ServerData', file_path='C:\\Users\Panos\Documents\DB_Approach\JobShop', implicitExt='txt', number_of_cursors=6)
         cursor=cnxn.getCursors()
         
         b=cursor[0].execute("""
@@ -313,7 +313,7 @@ class TIMEOUT(Frame):
         return insertedWP
     
     def updateDatabase(self):
-        cnxn=ImportDatabase.ConnectionData(seekName='ServerData', file_path='C:\Users\Panos\Documents\DB_Approach\JobShop', implicitExt='txt', number_of_cursors=7)
+        cnxn=ImportDatabase.ConnectionData(seekName='ServerData', file_path='C:\\Users\Panos\Documents\DB_Approach\JobShop', implicitExt='txt', number_of_cursors=7)
         cursor=cnxn.getCursors()
         a = cursor[0].execute("""
         select WP_id, Order_id

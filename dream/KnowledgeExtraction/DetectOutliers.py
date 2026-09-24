@@ -22,7 +22,7 @@ Created on 24 Sep 2014
 # along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
 # ===========================================================================
 
-from StatisticalMeasures import StatisticalMeasures 
+from .StatisticalMeasures import StatisticalMeasures 
 
 #The DetectOuliers object
 class DetectOutliers(StatisticalMeasures):

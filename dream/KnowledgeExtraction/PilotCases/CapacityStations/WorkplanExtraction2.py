@@ -71,7 +71,7 @@ def dataExtraction(File):
                     workplan[orderId][wpId].insert(3, capacityRequired)
                     workplan[orderId][wpId].insert(4, earliestStart)
 
-os.chdir("C:\Users\Panos\Documents\DB_Approach\CapacityStations\Workplans")
+os.chdir("C:\\Users\Panos\Documents\DB_Approach\CapacityStations\Workplans")
 #create a list that hold the already inserted orders
 alreadyInserted=[]
 #use of the KE tool object to connect to database
@@ -79,7 +79,7 @@ cnxn=pyodbc.connect("Driver={MySQL ODBC 3.51 Driver};SERVER=localhost; PORT=3306
 cursor = cnxn.cursor()
 #loop that searches the files in the given directory 
 for fileName in os.listdir("."):
-    print fileName
+    print(fileName)
     #using the xlrd python library, we open the documents
     xls_workbook = xlrd.open_workbook(fileName)
     #define Main the first sheet - sheet with the name 'Workplan'

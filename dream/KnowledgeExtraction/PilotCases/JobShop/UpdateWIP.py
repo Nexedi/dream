@@ -13,7 +13,7 @@ class UpdateWIP(SplitRoute.SplitRoute):
   def getWIPIds(self):
     """returns the ids of the parts that are in the WIP dictionary"""
     wipIDs = []
-    for key in self.data["input"]["BOM"].get("WIP", {}).keys():
+    for key in list(self.data["input"]["BOM"].get("WIP", {}).keys()):
       wipIDs.append(key)
     return wipIDs
 
@@ -81,7 +81,7 @@ class UpdateWIP(SplitRoute.SplitRoute):
             if not workStation in last_step.get("stationIdsList", []):
               if workStation == last_step.get("technology", None):
                 # try to find a not occupied station and set it as the workstation instead of the technology name given.
-                occupiedStations = [wipPart["station"] for wipPart in wip.values()]
+                occupiedStations = [wipPart["station"] for wipPart in list(wip.values())]
                 for nodeId in last_step['stationIdsList']:
                   if not nodeId in occupiedStations:
                     workStation = nodeId

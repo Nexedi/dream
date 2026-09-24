@@ -26,8 +26,8 @@ from dream.KnowledgeExtraction.StatisticalMeasures import StatisticalMeasures
 from dream.KnowledgeExtraction.DataManipulation import DataManipulation
 from dream.KnowledgeExtraction.DistributionFitting import DistFittest
 from dream.KnowledgeExtraction.DistributionFitting import Distributions
-from CMSD_Output import CMSD_example
-from JSON_Output import JSON_example
+from .CMSD_Output import CMSD_example
+from .JSON_Output import JSON_example
 from dream.KnowledgeExtraction.ExcelOutput import ExcelOutput
 from dream.KnowledgeExtraction.ReplaceMissingValues import ReplaceMissingValues
 from dream.KnowledgeExtraction.ImportExceldata import ImportExceldata

@@ -32,7 +32,7 @@ class UpdateStationList(plugin.InputPreparationPlugin):
   def getStationInitials(self,technology):
     '''get the stations that correspond to that technology'''
     initialsList = []
-    for initials, corresponding_tech_list in self.getStationTechnologies().iteritems():
+    for initials, corresponding_tech_list in list(self.getStationTechnologies().items()):
       for tech in corresponding_tech_list:
         if tech == technology and not initials in initialsList:
           initialsList.append(initials)
@@ -41,7 +41,7 @@ class UpdateStationList(plugin.InputPreparationPlugin):
   def getStationNames(self):
     node = self.data["graph"]["node"]
     stations = []
-    for nodeID in node.keys():
+    for nodeID in list(node.keys()):
       stations.append(nodeID)
     return stations
   
@@ -71,7 +71,7 @@ class UpdateStationList(plugin.InputPreparationPlugin):
               if station.startswith(initials)\
                  and data["graph"]["node"][station]["_class"] in self.STATION_CLASS_SET:
                 found = False # check that the id of the station provided by the db BOM exist in the nodes of the graph
-                for node in nodes.keys():
+                for node in list(nodes.keys()):
                   if node == station:
                     found = True
                     break

@@ -22,10 +22,10 @@ Created on 20 March 2015
 @author: Panos
 '''
 
-import Tkinter as tk
-from Tkinter import *
+import tkinter as tk
+from tkinter import *
 from dream.KnowledgeExtraction.ImportDatabase import ConnectionData
-import tkMessageBox
+import tkinter.messagebox
 from datetime import datetime 
 
 class Demo1(Frame):     
@@ -111,16 +111,16 @@ class Demo1(Frame):
         
     def recordStartDate(self):
         self.startdate = str(datetime.now())
-        print self.startdate
+        print((self.startdate))
         return
     
     def recordEndDate(self):
         self.endDate = str(datetime.now())
-        print self.endDate
+        print((self.endDate))
         return   
        
     def checkInsertedProject(self):
-        cnxn=ConnectionData(seekName='ServerData', file_path='C:\Users\Panos\Documents\DB_Approach\CapacityStations', implicitExt='txt', number_of_cursors=6)
+        cnxn=ConnectionData(seekName='ServerData', file_path='C:\\Users\Panos\Documents\DB_Approach\CapacityStations', implicitExt='txt', number_of_cursors=6)
         cursor=cnxn.getCursors()
         
         a=cursor[0].execute("""
@@ -138,7 +138,7 @@ class Demo1(Frame):
         return availableProject
     
     def alreadyInsertedWP(self):
-        cnxn=ConnectionData(seekName='ServerData', file_path='C:\Users\Panos\Documents\DB_Approach\CapacityStations', implicitExt='txt', number_of_cursors=6)
+        cnxn=ConnectionData(seekName='ServerData', file_path='C:\\Users\Panos\Documents\DB_Approach\CapacityStations', implicitExt='txt', number_of_cursors=6)
         cursor=cnxn.getCursors()
         
         c=cursor[0].execute("""
@@ -156,7 +156,7 @@ class Demo1(Frame):
     
 
     def updateDatabase(self):
-        cnxn=ConnectionData(seekName='ServerData', file_path='C:\Users\Panos\Documents\DB_Approach\CapacityStations', implicitExt='txt', number_of_cursors=13)
+        cnxn=ConnectionData(seekName='ServerData', file_path='C:\\Users\Panos\Documents\DB_Approach\CapacityStations', implicitExt='txt', number_of_cursors=13)
         cursor=cnxn.getCursors()
         
         if self.checkBoxVal2.get():
@@ -197,7 +197,7 @@ class Demo1(Frame):
             ind3=a.fetchone()
             WP=ind3.WP_id 
             row = cursor[7].fetchone()
-            print row
+            print(row)
             order_ref = row.ID
             status1 = 'in progress'
             cursor[10].execute(update_order, (order_ref, WP, self.operationOption.get(), str(datetime.now()), self.capacity.get(), self.comments.get()))
