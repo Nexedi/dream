@@ -38,7 +38,7 @@ from dateutil.parser import *
 import datetime
 from time import mktime
 
-cnxn=ConnectionData(seekName='ServerData', file_path='C:\\Users\Panos\Documents\DB_Approach\BatchModel', implicitExt='txt', number_of_cursors=3)
+cnxn=ConnectionData(seekName='ServerData', file_path=r'C:\Users\Panos\Documents\DB_Approach\BatchModel', implicitExt='txt', number_of_cursors=3)
 cursors=cnxn.getCursors()
 
 mesExtract=cursors[0].execute("""

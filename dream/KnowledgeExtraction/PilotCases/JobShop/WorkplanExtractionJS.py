@@ -72,7 +72,7 @@ def dataExtraction(File):
                     workplan[orderId][wpId].insert(6, procTime)
                     workplan[orderId][wpId].insert(7, partsNeeded)
 
-os.chdir("C:\\Users\Panos\Documents\DB_Approach\JobShop\Workplans")
+os.chdir(r"C:\Users\Panos\Documents\DB_Approach\JobShop\Workplans")
 #create a list that hold the already inserted orders
 alreadyInserted=[]
 #use of the KE tool object to connect to database

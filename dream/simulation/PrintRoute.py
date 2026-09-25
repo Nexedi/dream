@@ -37,7 +37,7 @@ def outputRoute():
         each job will move through the stations for a specific time
         e.g.
     
-    time\machines            M1        M2        M3        M4        M5
+    time\\machines            M1        M2        M3        M4        M5
                 
     t1                       J1
     t2                       J1                            J2

@@ -144,7 +144,7 @@ class TIMEIN(Frame):
         return
     
     def checkInsertedWP(self):
-        cnxn=ImportDatabase.ConnectionData(seekName='ServerData', file_path='C:\\Users\Panos\Documents\DB_Approach\JobShop', implicitExt='txt', number_of_cursors=6)
+        cnxn=ImportDatabase.ConnectionData(seekName='ServerData', file_path=r'C:\Users\Panos\Documents\DB_Approach\JobShop', implicitExt='txt', number_of_cursors=6)
         cursor=cnxn.getCursors()
         
         a=cursor[0].execute("""
@@ -179,7 +179,7 @@ class TIMEIN(Frame):
         return availableWP
 
     def updateDatabase(self):
-        cnxn=ImportDatabase.ConnectionData(seekName='ServerData', file_path='C:\\Users\Panos\Documents\DB_Approach\JobShop', implicitExt='txt', number_of_cursors=5)
+        cnxn=ImportDatabase.ConnectionData(seekName='ServerData', file_path=r'C:\Users\Panos\Documents\DB_Approach\JobShop', implicitExt='txt', number_of_cursors=5)
         cursor=cnxn.getCursors()
         update_order= ("INSERT INTO prod_status(`status_id`, `WP_id`, `PersonnelCode`, `MachineName`, `TIMEIN`)  VALUES (?, ?, ?, ?, ?)")
         cursor[0].execute("SELECT @@IDENTITY AS ID")
@@ -275,7 +275,7 @@ class TIMEOUT(Frame):
         return
     
     def checkInsertedWP(self):
-        cnxn=ImportDatabase.ConnectionData(seekName='ServerData', file_path='C:\\Users\Panos\Documents\DB_Approach\JobShop', implicitExt='txt', number_of_cursors=6)
+        cnxn=ImportDatabase.ConnectionData(seekName='ServerData', file_path=r'C:\Users\Panos\Documents\DB_Approach\JobShop', implicitExt='txt', number_of_cursors=6)
         cursor=cnxn.getCursors()
         
         b=cursor[0].execute("""
@@ -313,7 +313,7 @@ class TIMEOUT(Frame):
         return insertedWP
     
     def updateDatabase(self):
-        cnxn=ImportDatabase.ConnectionData(seekName='ServerData', file_path='C:\\Users\Panos\Documents\DB_Approach\JobShop', implicitExt='txt', number_of_cursors=7)
+        cnxn=ImportDatabase.ConnectionData(seekName='ServerData', file_path=r'C:\Users\Panos\Documents\DB_Approach\JobShop', implicitExt='txt', number_of_cursors=7)
         cursor=cnxn.getCursors()
         a = cursor[0].execute("""
         select WP_id, Order_id
