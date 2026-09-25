@@ -345,7 +345,7 @@ class CompoundObject(CoreObject,Queue):
                 # update the time the last entity left
                 self.timeLastEntityLeft = now()
             else:
-                raise ReceiverObjectError("""the receiver has not been defined, the composite object needs info on the receiver\ 
+                raise ReceiverObjectError("""the receiver has not been defined, the composite object needs info on the receiver\
                                             in order to decide where to deliver""")
         except ReceiverObjectError as receiverError:
             print(("Receiver object error: {0}".format(receiverError)))
