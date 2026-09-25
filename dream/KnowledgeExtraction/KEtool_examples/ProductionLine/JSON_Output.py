@@ -31,16 +31,16 @@ def JSON_example(list1,list2):
     jsonFile.close()
        
     nodes=data.get('nodes',{})        
-    for (element_id,element) in list(nodes.items()):
+    for (element_id,element) in nodes.items():
         name=element.get('name')
         scrapQuantity=element.get('scrapQuantity',{})
         processingTime=element.get('processingTime',{})
         
-        if name in list(list1.keys()): 
+        if name in list1.keys(): 
             element['processingTime']= list1[name]
         else:
             continue
-        if name in list(list2.keys()):
+        if name in list2.keys():
             element['scrapQuantity']= list2[name]
         else:
             continue

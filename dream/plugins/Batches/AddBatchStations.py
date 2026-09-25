@@ -19,16 +19,16 @@ class AddBatchStations(plugin.InputPreparationPlugin):
 
         # get the number of units for a standard batch
         standardBatchUnits=0
-        for node_id, node in list(nodes.items()):
+        for node_id, node in nodes.items():
             if node['_class']=='Dream.BatchSource':
                 standardBatchUnits=int(node['batchNumberOfUnits'])    
                 
         # loop through all the objects and set that the name will be equal to the id
-        for node_id, node in list(nodes.items()):
+        for node_id, node in nodes.items():
             node['name']=node_id
         
         # loop in BatchScrapMachines to change the classes if need be       
-        for node_id, node in list(nodes.items()):
+        for node_id, node in nodes.items():
             if node['_class']=='Dream.BatchScrapMachine':
                 # get the first successor. If it is BatchReassembly set the class to M3
                 successorIdList=self.getSuccessors(data, node_id)
@@ -47,17 +47,17 @@ class AddBatchStations(plugin.InputPreparationPlugin):
 
         # loop through the nodes to find the machines that do need addition
         machinesThatNeedAddition={}
-        for node_id, node in list(nodes.items()):
+        for node_id, node in nodes.items():
             if node['_class']=='Dream.BatchScrapMachine' and self.checkIfMachineNeedsAddition(data,node_id,standardBatchUnits):
                 machinesThatNeedAddition[node_id]=node
                
         # loop in BatchDecompositions to change the classes to BatchDecompositionBlocking   
-        for node_id, node in list(nodes.items()):
+        for node_id, node in nodes.items():
             if node['_class']=='Dream.BatchDecomposition':
                 data['graph']['node'][node_id]['_class']='Dream.BatchDecompositionBlocking'
                 
         # loop in BatchReassemblies to change the classes to BatchReassemblyBlocking   
-        for node_id, node in list(nodes.items()):
+        for node_id, node in nodes.items():
             if node['_class']=='Dream.BatchReassembly':
                 data['graph']['node'][node_id]['_class']='Dream.BatchReassemblyBlocking'
                 data['graph']['node'][node_id]['outputResults']=1
@@ -65,7 +65,7 @@ class AddBatchStations(plugin.InputPreparationPlugin):
         # loop in BatchDecompositions to change the classes to BatchDecompositionStartTime for the ones that 
         # are just after the source   
         # XXX this is not generic. In the future the user may have to define it  
-        for node_id, node in list(nodes.items()):
+        for node_id, node in nodes.items():
             if node['_class']=='Dream.BatchDecompositionBlocking':
                 predecessorId=self.getPredecessors(data, node_id)[0]
                 predecessorClass=nodes[predecessorId]['_class']
@@ -73,7 +73,7 @@ class AddBatchStations(plugin.InputPreparationPlugin):
                     data['graph']['node'][node_id]['_class']='Dream.BatchDecompositionStartTime'
    
         # loop through the nodes
-        for node_id, node in list(machinesThatNeedAddition.items()):
+        for node_id, node in machinesThatNeedAddition.items():
             # find BatchScrapMachines that process batches
             import math
             workingBatchSize=int((node.get('workingBatchSize')))
@@ -95,7 +95,7 @@ class AddBatchStations(plugin.InputPreparationPlugin):
                 "id": batchDecompositionId                                                            
             }
             #put the batchDecomposition between the predecessor and the node
-            for edge_id, edge in list(edges.items()):
+            for edge_id, edge in edges.items():
                 if edge['destination']==node_id:
                     source=edge['source']
                     # remove the edge
@@ -120,7 +120,7 @@ class AddBatchStations(plugin.InputPreparationPlugin):
                 "id": batchReassemblyId
             }
             #put the batchReassembly between the node and the successor
-            for edge_id, edge in list(edges.items()):
+            for edge_id, edge in edges.items():
                 if edge['source']==node_id:
                     destination=edge['destination']
                     # remove the edge
@@ -131,7 +131,7 @@ class AddBatchStations(plugin.InputPreparationPlugin):
                     self.addEdge(data, batchReassemblyId, destination)             
 
         # set all the Queue types to gether wip data
-        for node in list(data["graph"]["node"].values()):
+        for node in data["graph"]["node"].values():
             if node['_class'] in ['Dream.Queue', 'Dream.LineClearance', 'Dream.RoutingQueue']:
                 node['gatherWipStat'] = 1
 

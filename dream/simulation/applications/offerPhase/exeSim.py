@@ -75,7 +75,7 @@ def manual_allocation(currentOp):
             G.resAvailability[sorted_startTimeOp[0]['pm']] = updateAvailTime(sorted_startTimeOp[0]['start'], availablePT, tStart, 
                                                                              G.resAvailability[sorted_startTimeOp[0]['pm']])
             # aggiorna schedule   
-            if currentOp['id'] not in list(G.Schedule.keys()):                        
+            if currentOp['id'] not in G.Schedule.keys():                        
                 G.Schedule[currentOp['id']]={} 
                 G.Schedule[currentOp['id']]['startDate'] = tStart
             tEnd = tStart + availablePT

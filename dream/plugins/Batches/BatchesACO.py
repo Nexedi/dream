@@ -72,16 +72,16 @@ class BatchesACO(ACO):
     # set scheduling rule on queues based on ant data
     ant_data = copy(data)
     weightFactors=[1,1,1,1,1,1]
-    for k, v in list(ant.items()):
+    for k, v in ant.items():
         weightFactors[int(k)-1]=v
-    for node_id, node in list(ant_data["graph"]["node"].items()):
+    for node_id, node in ant_data["graph"]["node"].items():
         if node['_class']=="dream.simulation.SkilledOperatorRouter.SkilledRouter":
             node['weightFactors']=weightFactors
     return ant_data
 
   # checks if there are operators in the model. If not it is tactical model so no optimization, one scenario should be run
   def checkIfThereAreOperators(self,data):
-    for node_id,node in list(data['graph']['node'].items()):
+    for node_id,node in data['graph']['node'].items():
       if 'Operator' in node['_class']:
         return True
     return False

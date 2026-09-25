@@ -21,7 +21,7 @@ class InsertQueues(plugin.InputPreparationPlugin):
     For example, for stations with ids that starts with "CAM", it may return "QCAM"
     """
     predecessor_list = []
-    for edge in list(self.data["graph"]["edge"].values()):
+    for edge in self.data["graph"]["edge"].values():
       if edge["destination"] in stationIDs_list:
         predecessor_step = edge["source"]
         if predecessor_step in predecessor_list:
@@ -39,7 +39,7 @@ class InsertQueues(plugin.InputPreparationPlugin):
                  for stations of technology "INJM-MAN" or "INJM" it may return "Exit"
     """
     successor_list = []
-    for edge in list(self.data["graph"]["edge"].values()):
+    for edge in self.data["graph"]["edge"].values():
       if edge["source"] in stationIDs_list:
         successor_step = edge["destination"]
         if successor_step in successor_list:
@@ -54,7 +54,7 @@ class InsertQueues(plugin.InputPreparationPlugin):
     """returns the exits of the system"""
     nodes = self.data["graph"]["node"]
     exitList = []
-    for nodeID, node in list(nodes.items()):
+    for nodeID, node in nodes.items():
       if node["_class"] in EXIT_TYPE_SET:
         exitList.append(nodeID)
     return exitList
@@ -127,7 +127,7 @@ class InsertQueues(plugin.InputPreparationPlugin):
                       assembly_task_id = siblingStep["task_id"]
               # # add assemble buffers to the route
               assemblyBufferIDlist = []
-              for nodeID, node in list(nodes.items()):
+              for nodeID, node in nodes.items():
                 if node["_class"] == "Dream.MouldAssemblyBuffer":
                   assemblyBufferIDlist.append(str(nodeID))
               if assemblyBufferIDlist:
@@ -136,7 +136,7 @@ class InsertQueues(plugin.InputPreparationPlugin):
                               "task_id": assembly_task_id})
               # # add assemblers to the route
               assemblyIDlist = []
-              for nodeID, node in list(nodes.items()):
+              for nodeID, node in nodes.items():
                 if node["_class"] == "Dream.MouldAssembly":
                   assemblyIDlist.append(str(nodeID))
               if assemblyIDlist:

@@ -57,7 +57,7 @@ class CapacityStationWIP(plugin.InputPreparationPlugin):
 
     # gets the data and the station id and returns the buffer id of this station    
     def getBuffer(self,data,stationId):
-        for (edge_id, edge) in list(data['graph']['edge'].items()):
+        for (edge_id, edge) in data['graph']['edge'].items():
             if edge['destination']==stationId:
                 return edge['source']
     

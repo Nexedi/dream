@@ -70,7 +70,7 @@ def generateDemandPlanning(input_url, PPOSQuantity=1000, PlannedWeek=1, PPOSToBe
         """Return a randomly chosen list of n positive integers summing to total.
         Each such list is equally likely to occur."""
      
-        dividers = sorted(random.sample(list(range(1, total)), n - 1))
+        dividers = sorted(random.sample(range(1, total), n - 1))
         return [a - b for a, b in zip(dividers + [total], [0] + dividers)]
 
     def constrained_sum_sample_nonneg(n, total):
@@ -119,7 +119,7 @@ def generateDemandPlanning(input_url, PPOSQuantity=1000, PlannedWeek=1, PPOSToBe
     book=Workbook()
     sheet1 = book.add_sheet('Future1', cell_overwrite_ok=True)
     aggrTable=[]
-    for key in list(DemandProfile.keys()):
+    for key in DemandProfile.keys():
         for elem in DemandProfile[key]:
             if DemandProfile[key].get(elem)[0]> 0:
                 MAkey=elem
@@ -170,7 +170,7 @@ def generateDemandPlanning(input_url, PPOSQuantity=1000, PlannedWeek=1, PPOSToBe
         dictPPOSMA.update({ind: mas})
 
     t=1
-    for key in list(dictPPOSMA.keys()):
+    for key in dictPPOSMA.keys():
         for elem in dictPPOSMA[key]:   
             if key==PPOSToBeDisaggregated:
                 c=constrained_sum_sample_nonneg(len(dictPPOSMA[key]),PPOSQuantity)

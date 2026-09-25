@@ -79,7 +79,7 @@ class ACO(plugin.ExecutionPlugin):
             seed = data['general'].get('seed', 10)
             if seed == '' or seed == ' ' or seed == None:
                 seed = 10
-            for k in list(collated.keys()):
+            for k in collated.keys():
                 random.seed(seed+seedPlus)
                 ant[k] = random.choice(collated[k])
                 seedPlus +=1
@@ -154,14 +154,14 @@ class ACO(plugin.ExecutionPlugin):
          
         # The ants in this generation are ranked based on their scores and the
         # best (numberOfAntsForNextGeneration) are selected to carry their pheromones to next generation
-        antsForNextGeneration = sorted(list(uniqueAntsInThisGeneration.values()),
+        antsForNextGeneration = sorted(uniqueAntsInThisGeneration.values(),
           key=operator.itemgetter('score'))[:numberOfAntsForNextGeneration]
 
         for l in antsForNextGeneration:
             # update the options list to ensure that good performing queue-rule
             # combinations have increased representation and good chance of
             # being selected in the next generation
-            for m in list(collated.keys()):
+            for m in collated.keys():
                 # e.g. if using EDD gave good performance for Q1, then another
                 # 'EDD' is added to Q1 so there is a higher chance that it is
                 # selected by the next ants.
@@ -178,7 +178,7 @@ class ACO(plugin.ExecutionPlugin):
 
     # The ants in this generation are ranked based on their scores and the
     # best (max_results) are selected
-    ants = sorted(list(uniqueAnts.values()),
+    ants = sorted(uniqueAnts.values(),
       key=operator.itemgetter('score'))[:max_results]
 
     data['result']['result_list'] = result_list = []

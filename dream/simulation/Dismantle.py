@@ -68,7 +68,7 @@ class Dismantle(CoreObject):
         from .Globals import G
         if not processingTime:
             processingTime = {'Fixed':{'mean': 0 }}
-        if 'Normal' in list(processingTime.keys()) and\
+        if 'Normal' in processingTime.keys() and\
                 processingTime['Normal'].get('max', None) is None:
             processingTime['Normal']['max'] = float(processingTime['Normal']['mean']) + 5 * float(processingTime['Normal']['stdev'])
 

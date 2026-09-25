@@ -14,7 +14,7 @@ class SetTriangular(plugin.InputPreparationPlugin):
 
     def preprocess(self, data):
         nodes=data['graph']['node']
-        for node_id,node in list(nodes.items()):
+        for node_id,node in nodes.items():
             if node.get('_class',None)==self.configuration_dict['input_id']:
                 processingTime=node.get('processingTime',{})
                 distribution=processingTime.get("Fixed",{})

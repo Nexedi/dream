@@ -101,7 +101,7 @@ def createObjectResourcesAndCoreObjects():
     def getSuccessorList(node_id, predicate=lambda source, destination, edge_class, edge_data: True):
       successor_list = []                           # dummy variable that holds the list to be returned
       
-      for edge in list(edges.values()):
+      for edge in edges.values():
           source = edge["source"]
           destination = edge["destination"]
           edge_class = edge["_class"]
@@ -158,7 +158,7 @@ def createObjectResourcesAndCoreObjects():
     read the data and create them
     '''
 
-    for (element_id, element) in list(nodes.items()):                 # use an iterator to go through all the nodes
+    for (element_id, element) in nodes.items():                 # use an iterator to go through all the nodes
         element['id'] = element_id                                  # create a new entry for the element (dictionary)
         element = element.copy()
         for k in ('element_id', 'top', 'left'):
@@ -187,7 +187,7 @@ def createObjectResourcesAndCoreObjects():
     read the data and create them
     '''
     from dream.simulation.OperatorPool import OperatorPool
-    for (element_id, element) in list(nodes.items()):                 # use an iterator to go through all the nodes
+    for (element_id, element) in nodes.items():                 # use an iterator to go through all the nodes
                                                                     # the key is the element_id and the second is the 
                                                                     # element itself 
         element = element.copy()
@@ -217,7 +217,7 @@ def createObjectResourcesAndCoreObjects():
     loop through all the elements    
     read the data and create them
     '''
-    for (element_id, element) in list(nodes.items()):
+    for (element_id, element) in nodes.items():
         element = element.copy()
         element['id'] = element_id
         element.setdefault('name', element_id)
@@ -273,7 +273,7 @@ def createObjectInterruptions():
     #            search for Event Generator and create them
     #                   this is put last, since the EventGenerator 
     #                may take other objects as argument
-    for (element_id, element) in list(nodes.items()):                 # use an iterator to go through all the nodes
+    for (element_id, element) in nodes.items():                 # use an iterator to go through all the nodes
                                                                     # the key is the element_id and the second is the 
                                                                     # element itself 
         element['id'] = element_id                                  # create a new entry for the element (dictionary)
@@ -302,7 +302,7 @@ def createObjectInterruptions():
     from dream.simulation.ShiftScheduler import ShiftScheduler
     from dream.simulation.ScheduledBreak import ScheduledBreak
     from dream.simulation.Break import Break
-    for (element_id, element) in list(nodes.items()):
+    for (element_id, element) in nodes.items():
         element['id'] = element_id
         scheduledMaintenance=element.get('interruptions',{}).get('scheduledMaintenance', {})
         # if there is a scheduled maintenance initiate it and append it
@@ -434,7 +434,7 @@ def createWIP():
                 componentsList=prodOrder.get('componentsList', {})
                 # keep a reference of all extra properties passed to the job
                 extraPropertyDict = {}
-                for key, value in list(prodOrder.items()):
+                for key, value in prodOrder.items():
                   if key not in ('_class', 'id'):
                     extraPropertyDict[key] = value
                 # initiate the Order
@@ -454,7 +454,7 @@ def createWIP():
                 
     # read from the dictionary the dicts with key 'nodes'
     nodes = json_data["graph"]['node']
-    for (element_id, element) in list(nodes.items()):
+    for (element_id, element) in nodes.items():
         element['id'] = element_id
         wip=element.get('wip', [])
         from dream.simulation.OrderDesign import OrderDesign
@@ -541,7 +541,7 @@ def createWIP():
                 
                 # keep a reference of all extra properties passed to the job
                 extraPropertyDict = {}
-                for key, value in list(entity.items()):
+                for key, value in entity.items():
                   if key not in ('_class', 'id'):
                     extraPropertyDict[key] = value
 
