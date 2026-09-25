@@ -127,7 +127,7 @@ def importInput(jInput, excelInput, algorithmAttributes):
     
     # extract resource availability
     for item in PMschedule:
-        if 'parent' in list(item.keys()):
+        if 'parent' in item.keys():
             pm = item['parent']
             startDate = dateToOrdinal(item['start_date'], "%d-%m-%Y %H:%M")
             stopDate = dateToOrdinal(item['stop_date'], "%d-%m-%Y %H:%M")
@@ -239,7 +239,7 @@ def importInput(jInput, excelInput, algorithmAttributes):
         
 
         offShiftTimes.setdefault(currResc,{})
-        for offS in list(offshiftPeriods.keys()):
+        for offS in offshiftPeriods.keys():
             offShiftTimes[currResc][offS] = offshiftPeriods[offS]
         stRtstOp.setdefault(currResc,{})[cDate] = [shiftStart.time(),shiftEnd.time()]
 
@@ -268,7 +268,7 @@ def importInput(jInput, excelInput, algorithmAttributes):
     # import machines information
     possMachines = dataJSON['graph']['node']
     
-    for mach in list(possMachines.keys()):
+    for mach in possMachines.keys():
         
         if 'machine' in possMachines[mach]['_class'].lower() or 'assembly' in possMachines[mach]['_class'].lower(): 
             
@@ -324,10 +324,10 @@ def importInput(jInput, excelInput, algorithmAttributes):
         shiftRes[pm] = shiftGenerator(G.xlreftime,30,exceptions)
         resAvailability[pm] = deepcopy(shiftRes[pm])
         if pm in offShiftTimes:
-            for unavailDate in list(offShiftTimes[pm].keys()):
+            for unavailDate in offShiftTimes[pm].keys():
                 resAvailability[pm] = availableTime_Shift(unavailDate,offShiftTimes[pm][unavailDate]['endDate'],resAvailability[pm])
         if pm in takenPeriods:
-            for unavailDate in list(takenPeriods[pm].keys()):
+            for unavailDate in takenPeriods[pm].keys():
                 resAvailability[pm] = availableTime_Shift(unavailDate,takenPeriods[pm][unavailDate]['endDate'],resAvailability[pm])
                 
 
@@ -341,10 +341,10 @@ def importInput(jInput, excelInput, algorithmAttributes):
         shiftRes[mach] = shiftGenerator(G.xlreftime,30,exceptions)
         resAvailability[mach] = deepcopy(shiftRes[mach])
         if mach in offShiftTimes:
-            for unavailDate in list(offShiftTimes[mach].keys()):
+            for unavailDate in offShiftTimes[mach].keys():
                 resAvailability[mach] = availableTime_Shift(unavailDate,offShiftTimes[mach][unavailDate]['endDate'],resAvailability[mach])
         if mach in takenPeriods:
-            for unavailDate in list(takenPeriods[mach].keys()):
+            for unavailDate in takenPeriods[mach].keys():
                 resAvailability[mach] = availableTime_Shift(unavailDate,takenPeriods[mach][unavailDate]['endDate'],resAvailability[mach])
     
     # set global variables

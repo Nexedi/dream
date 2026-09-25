@@ -85,7 +85,7 @@ class Source(CoreObject):
         # Default values
         if not interArrivalTime:
           interArrivalTime = {'Fixed': {'mean': 1}}
-        if 'Normal' in list(interArrivalTime.keys()) and\
+        if 'Normal' in interArrivalTime.keys() and\
               interArrivalTime['Normal'].get('max', None) is None:
           interArrivalTime['Normal']['max'] = interArrivalTime['Normal']['mean'] + 5 * interArrivalTime['Normal']['stdev']
 

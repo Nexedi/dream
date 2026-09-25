@@ -20,7 +20,7 @@ def findSequence(Projects, seqPrjDone, idDone):
                 possibleOp = True
                 
                 # set minimum start time for operation
-                if seqPrjDone[proj][part]==0 or Projects[proj][part][seqPrjDone[proj][part]-1]['id'] not in list(G.Schedule[G.simMode].keys()):
+                if seqPrjDone[proj][part]==0 or Projects[proj][part][seqPrjDone[proj][part]-1]['id'] not in G.Schedule[G.simMode].keys():
                     minStartTime = max(G.xlreftime, G.OrderDates[proj])
                 else:
                     minStartTime = G.Schedule[G.simMode][Projects[proj][part][seqPrjDone[proj][part]-1]['id']]['endDate']

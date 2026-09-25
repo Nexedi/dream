@@ -66,9 +66,9 @@ def positionGraph():
 
   graph = pydot.Dot()
 
-  for node_id, node in list(request.json['nodes'].items()):
+  for node_id, node in request.json['nodes'].items():
     graph.add_node(pydot.Node(node_id))
-  for edge in list(request.json['edges'].values()):
+  for edge in request.json['edges'].values():
     graph.add_edge(pydot.Edge(edge[0], edge[1]))
 
   new_graph = pydot.graph_from_dot_data(graph.create_dot())
@@ -193,7 +193,7 @@ def _runKnowledgeExtraction(parameter_dict):
 #     nodes = data['nodes'] 
     nodes = data['graph']['node']
 
-    for station, values in list(ProcessingTimes.items()):             #This loop searches the elements of the Excel imported data and if these elements exist in json file append the distribution fitting results in a dictionary   
+    for station, values in ProcessingTimes.items():             #This loop searches the elements of the Excel imported data and if these elements exist in json file append the distribution fitting results in a dictionary   
       if station in nodes: 
         temp= B.ks_test(values)
         dist=temp['distributionType']

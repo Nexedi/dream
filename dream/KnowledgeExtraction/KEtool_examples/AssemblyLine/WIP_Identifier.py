@@ -29,10 +29,10 @@ import operator
 def currentWIP(processStory, stopTime):
     Stations={}
     LastStation={}
-    for key in list(processStory.keys()):
+    for key in processStory.keys():
         Stations[key]=[]
         LastStation[key]=[]
-        sorted_proc=sorted(iter(list(processStory[key].items())), key=operator.itemgetter(1))
+        sorted_proc=sorted(iter(processStory[key].items()), key=operator.itemgetter(1))
         for i in range(len(sorted_proc)):
             Stations[key].append(sorted_proc[i])
         for key in list(Stations.keys()):
@@ -57,7 +57,7 @@ def currentWIP(processStory, stopTime):
         except IndexError:
             continue           
     WIP={}
-    for key in list(LastStation.keys()):
+    for key in LastStation.keys():
         WIP[key]=[]
         try:
             if not LastStation[key][1][1]:
@@ -69,7 +69,7 @@ def currentWIP(processStory, stopTime):
                 WIP[key].append(dif)    
             except IndexError:
                 continue
-    for key in list(LastStation.keys()):      
+    for key in LastStation.keys():      
         try:
             if LastStation[key][0]=='MA' and LastStation[key][1][1]:
                 WIP[key].append('QStart')

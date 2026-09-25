@@ -157,7 +157,7 @@ class SkilledRouter(Router):
                 for station in self.availableStations:
                     lastAssignmentTime=0
                     for record in self.solutionList:
-                        if station.id in list(record["allocation"].values()):
+                        if station.id in record["allocation"].values():
                             lastAssignmentTime=record["time"]
                     
                     # normalise the lastAssignmentTime based on the maxLastAssignment. 
@@ -257,12 +257,12 @@ class SkilledRouter(Router):
                         # create a list with the operators that were sent to the LP but did not get allocated
                         operatorsForSecondPhaseList=[]
                         for operatorId in self.availableOperatorList:
-                            if operatorId not in list(solution.keys()):
+                            if operatorId not in solution.keys():
                                 operatorsForSecondPhaseList.append(operatorId)
                         # in case there is some station that did not get operator even if it was not blocked
                         # add them alos for the second fail (XXX do not think there is such case)
-                        for stationId in list(self.availableStationsDict.keys()):
-                            if stationId not in list(solution.values()):
+                        for stationId in self.availableStationsDict.keys():
+                            if stationId not in solution.values():
                                 machinesForSecondPhaseDict[stationId] = self.availableStationsDict[stationId]
                         # if there are machines and operators for the second phase
                         # run again the LP for machines and operators that are not in the former solution
@@ -313,7 +313,7 @@ class SkilledRouter(Router):
                                 station.releaseOperator()
                 
                 # loop through the entries in the solution dictionary
-                for operatorID in list(solution.keys()):
+                for operatorID in solution.keys():
                     # obtain the operator and the station
                     operator=findObjectById(operatorID)
                     station=findObjectById(solution[operatorID])
@@ -368,7 +368,7 @@ class SkilledRouter(Router):
                             self.expectedFinishSignals.remove(signal)                   
                             del self.expectedFinishSignalsDict[transmitter.id]
                             # signal also the other stations that should be signalled
-                            for id in list(solution.keys()):
+                            for id in solution.keys():
                                 operator=findObjectById(id)
                                 station=findObjectById(solution[id])
                                 signal=True                                       

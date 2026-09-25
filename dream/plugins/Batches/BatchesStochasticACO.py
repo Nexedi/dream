@@ -22,7 +22,7 @@ class BatchesStochasticACO(BatchesACO):
   # changes all processing time distributions to stochastic
   def createStochasticData(self, data):
     nodes=data['graph']['node']
-    for node_id,node in list(nodes.items()):
+    for node_id,node in nodes.items():
         processingTime=node.get('processingTime',{})
         distribution=processingTime.get("Fixed",{})
         if distribution:
@@ -153,7 +153,7 @@ class BatchesStochasticACO(BatchesACO):
             seed = data['general'].get('seed', 10)
             if seed == '' or seed == ' ' or seed == None:
                 seed = 10
-            for k in list(collated.keys()):
+            for k in collated.keys():
                 random.seed(seed+seedPlus)
                 ant[k] = random.choice(collated[k])
                 seedPlus +=1
@@ -183,7 +183,7 @@ class BatchesStochasticACO(BatchesACO):
                 ant_result = json.dumps(ant_result, sort_keys=True)
                 uniqueAntsInThisGeneration[ant_result] = ant
                 
-            antsForStochasticEvaluationInGeneration = sorted(list(uniqueAntsInThisGeneration.values()),
+            antsForStochasticEvaluationInGeneration = sorted(uniqueAntsInThisGeneration.values(),
               key=operator.itemgetter('score'))[:numberOfAntsForStochasticEvaluationInGeneration]
         else:
             # run the deterministic ants               
@@ -211,7 +211,7 @@ class BatchesStochasticACO(BatchesACO):
             # The ants in this generation are ranked based on their scores and the
             # best (numberOfAntsForStochasticEvaluationInGeneration) are selected to 
             # be evaluated stochastically
-            antsForStochasticEvaluationInGeneration = sorted(list(uniqueAntsInThisGeneration.values()),
+            antsForStochasticEvaluationInGeneration = sorted(uniqueAntsInThisGeneration.values(),
               key=operator.itemgetter('score'))[:numberOfAntsForStochasticEvaluationInGeneration]
 
              
@@ -243,7 +243,7 @@ class BatchesStochasticACO(BatchesACO):
                 ant_result = json.dumps(ant_result, sort_keys=True)
                 uniqueAntsInThisGeneration[ant_result] = ant
         
-        antsForNextGeneration = sorted(list(uniqueAntsInThisGeneration.values()),
+        antsForNextGeneration = sorted(uniqueAntsInThisGeneration.values(),
           key=operator.itemgetter('score'))[:numberOfAntsForNextGeneration]
            
         for l in antsForNextGeneration:
@@ -253,7 +253,7 @@ class BatchesStochasticACO(BatchesACO):
             # update the options list to ensure that good performing queue-rule
             # combinations have increased representation and good chance of
             # being selected in the next generation
-            for m in list(collated.keys()):
+            for m in collated.keys():
                 # e.g. if using EDD gave good performance for Q1, then another
                 # 'EDD' is added to Q1 so there is a higher chance that it is
                 # selected by the next ants.
@@ -274,7 +274,7 @@ class BatchesStochasticACO(BatchesACO):
     # The ants are ranked based on their scores and the
     # best (max_results) are selected to be returned
     if numberOfAntsForStochasticEvaluationInTheEnd > 0:
-        ants = sorted(list(uniqueAnts.values()),
+        ants = sorted(uniqueAnts.values(),
           key=operator.itemgetter('score'))[:numberOfAntsForStochasticEvaluationInTheEnd]
         for ant in ants:
             ant['input']=self.createStochasticData(ant['input'])
@@ -298,7 +298,7 @@ class BatchesStochasticACO(BatchesACO):
 
     # The ants are ranked based on their scores and the
     # best (max_results) are selected to be returned
-    ants = sorted(list(uniqueAnts.values()),
+    ants = sorted(uniqueAnts.values(),
       key=operator.itemgetter('score'))[:max_results]
 
     data['result']['result_list'] = result_list = []

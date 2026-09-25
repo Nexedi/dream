@@ -92,7 +92,7 @@ def AllocationRoutine_ForecastGA(initialWeek, itemList, itemType, chromo):
                                        
                     
                 # implement optimal MA solution to update temporary variables
-                for ma in list(spAllocation.keys()):
+                for ma in spAllocation.keys():
                     
                     if probStatus == 'Optimal':
                         allocatedQty = spAllocation[ma]

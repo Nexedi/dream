@@ -42,7 +42,7 @@ class BatchesOperatorSpreadsheet(plugin.OutputPreparationPlugin):
                 time=record['time']
                 allocation=record['allocation']
                 machineId=None
-                if operator in list(allocation.keys()):
+                if operator in allocation.keys():
                     machineId=allocation[operator]
                 operatorSchedule.append([time,machineId])
     
@@ -59,7 +59,7 @@ class BatchesOperatorSpreadsheet(plugin.OutputPreparationPlugin):
                 k+=1  
         
         # output the results in excel
-        for operator in list(normalizedSchedule.keys()):
+        for operator in normalizedSchedule.keys():
             scheduleSheet.write(rowIndex,0,operator,PBstyle)
             for record in normalizedSchedule[operator]:
                 # skip the records that have 'None'

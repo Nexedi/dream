@@ -22,7 +22,7 @@ from datetime import datetime
 
 # gets the data and the station id and returns the buffer id of this station    
 def getBuffer(data,stationId):
-    for (edge_id, edge) in list(data['graph']['edge'].items()):
+    for (edge_id, edge) in data['graph']['edge'].items():
         if edge['destination']==stationId:
             return edge['source']
 
@@ -74,10 +74,10 @@ def OutputPreparation(data,extractedData):
     if WIP:
         node=configurationJSON['graph']['node']
         #create an empty wip list in all CapacityStationBuffers
-        for (node_id,node_data) in list(node.items()):
+        for (node_id,node_data) in node.items():
             if node_data['_class']=='dream.simulation.applications.CapacityStations.CapacityStationBuffer.CapacityStationBuffer':
                 node_data['wip']=[]
-        for taskid, wip in list(WIP.items()):
+        for taskid, wip in WIP.items():
             oper=wip.get('operation',[])
             requiredCapacity=wip.get('Capacity required', 0)
             buffered=wip.get('buffered', 0)

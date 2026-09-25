@@ -151,8 +151,8 @@ Pb['ScrapQuant']=[]
 #Define the number of units for each batch
 batchSize= 80
 #With the following loop statement, the lists inside the dictionaries with the processing times and the scrap quantity for each station are created
-for key in list(processStory.keys()):
-    for elem in list(processStory[key].keys()):
+for key in processStory.keys():
+    for elem in processStory[key].keys():
         if elem=='MA':
             try: 
                 t1= (((mktime(processStory[key][elem][1][0].timetuple()) - mktime(processStory[key][elem][0][0].timetuple())) / batchSize) / 60)

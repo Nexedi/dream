@@ -207,7 +207,7 @@ class Machine(CoreObject):
         '''returns the dictionary updated'''
         if not time:
             time = {'Fixed':{'mean': 0 }}
-        if 'Normal' in list(time.keys()) and\
+        if 'Normal' in time.keys() and\
                 time['Normal'].get('max', None) is None:
             time['Normal']['max'] = float(time['Normal']['mean']) + 5 * float(time['Normal']['stdev'])
         return time
@@ -340,7 +340,7 @@ class Machine(CoreObject):
         operationsNotRequired=[]
         opRequest=True
         if operationTypes:
-            for operationType, func in list(operationTypes.items()):
+            for operationType, func in operationTypes.items():
                 tup=(operationType, func)
                 if bool(func):
                     operationsRequired.append(tup)
@@ -366,7 +366,7 @@ class Machine(CoreObject):
         methodsNotRequired=[]
         methodsRequest=True
         if methods:
-            for methodType, func in list(methods.items()):
+            for methodType, func in methods.items():
                 tup=(methodType, func)
                 if bool(func):
                     methodsRequired.append(tup)
