@@ -57,7 +57,7 @@ class BatchesStationUtilization(plugin.OutputPreparationPlugin):
     }
 
     i = 0
-    for obj in result['elementList']:
+    for obj in sorted(result['elementList'], key=lambda obj: obj['id']):
       if obj.get('_class').startswith('Dream.BatchScrapMachine') or obj.get('_class')=='Dream.M3':
         nextId=self.getSuccessors(data, obj['id'])[0]
         nextClass=data['graph']['node'][nextId]['_class']
