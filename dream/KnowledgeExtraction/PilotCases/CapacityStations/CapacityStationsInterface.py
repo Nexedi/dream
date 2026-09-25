@@ -120,7 +120,7 @@ class Demo1(Frame):
         return   
        
     def checkInsertedProject(self):
-        cnxn=ConnectionData(seekName='ServerData', file_path='C:\\Users\Panos\Documents\DB_Approach\CapacityStations', implicitExt='txt', number_of_cursors=6)
+        cnxn=ConnectionData(seekName='ServerData', file_path=r'C:\Users\Panos\Documents\DB_Approach\CapacityStations', implicitExt='txt', number_of_cursors=6)
         cursor=cnxn.getCursors()
         
         a=cursor[0].execute("""
@@ -138,7 +138,7 @@ class Demo1(Frame):
         return availableProject
     
     def alreadyInsertedWP(self):
-        cnxn=ConnectionData(seekName='ServerData', file_path='C:\\Users\Panos\Documents\DB_Approach\CapacityStations', implicitExt='txt', number_of_cursors=6)
+        cnxn=ConnectionData(seekName='ServerData', file_path=r'C:\Users\Panos\Documents\DB_Approach\CapacityStations', implicitExt='txt', number_of_cursors=6)
         cursor=cnxn.getCursors()
         
         c=cursor[0].execute("""
@@ -156,7 +156,7 @@ class Demo1(Frame):
     
 
     def updateDatabase(self):
-        cnxn=ConnectionData(seekName='ServerData', file_path='C:\\Users\Panos\Documents\DB_Approach\CapacityStations', implicitExt='txt', number_of_cursors=13)
+        cnxn=ConnectionData(seekName='ServerData', file_path=r'C:\Users\Panos\Documents\DB_Approach\CapacityStations', implicitExt='txt', number_of_cursors=13)
         cursor=cnxn.getCursors()
         
         if self.checkBoxVal2.get():
