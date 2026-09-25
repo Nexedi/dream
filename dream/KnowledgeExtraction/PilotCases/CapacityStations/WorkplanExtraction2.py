@@ -71,7 +71,7 @@ def dataExtraction(File):
                     workplan[orderId][wpId].insert(3, capacityRequired)
                     workplan[orderId][wpId].insert(4, earliestStart)
 
-os.chdir("C:\\Users\Panos\Documents\DB_Approach\CapacityStations\Workplans")
+os.chdir(r"C:\Users\Panos\Documents\DB_Approach\CapacityStations\Workplans")
 #create a list that hold the already inserted orders
 alreadyInserted=[]
 #use of the KE tool object to connect to database

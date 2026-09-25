@@ -28,7 +28,7 @@ auxiliary script to search for specific objects in topologies
 keyString=eval(input('give the string to find:'))
 numberFound=0
 import os
-for filename in os.listdir(os.getcwd()+'\JSONInputs'):
+for filename in os.listdir(os.getcwd()+'\\JSONInputs'):
     if filename.endswith('.json'):
         file=open(os.path.join('JSONInputs', filename), "r")
         content = file.readlines()
