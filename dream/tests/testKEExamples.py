@@ -92,7 +92,7 @@ class KnowledgeExtractionExamples(TestCase):
         result_data = result
         result_data=result_data['graph']
         nodes=result_data.get('node',{})
-        for element_id,element in list(nodes.items()):
+        for element_id,element in nodes.items():
             if element_id=='M1':
                 self.assertEqual(list(element['processingTime'].keys())[0],'Logistic')
             if element_id=='M2':

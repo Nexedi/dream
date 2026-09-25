@@ -206,7 +206,7 @@ def Allocation_ACO(initialWeek, itemList, itemType,ACOresults):
         
         # update weights
         for x in range(len(ants)):
-            for orderID in list(ants[x]['ant'].keys()):
+            for orderID in ants[x]['ant'].keys():
                 if orderID != 'antID':
                     antDictionary[orderID].append(ants[x]['ant'][orderID])
         

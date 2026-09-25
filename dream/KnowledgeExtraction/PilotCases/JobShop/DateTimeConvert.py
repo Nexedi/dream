@@ -32,7 +32,7 @@ class DateTimeConvert(plugin.InputPreparationPlugin, TimeSupportMixin):
         orders = BOM.get('productionOrders', [])
         wip = BOM.get('WIP', {})
         
-        for ent_key, entity in list(wip.items()):
+        for ent_key, entity in wip.items():
             task_id = entity.get('task_id', None)
             proc_time = 0;
             timeOut = entity.pop('timeOut', None)

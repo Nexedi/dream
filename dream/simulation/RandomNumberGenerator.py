@@ -43,7 +43,7 @@ class RandomNumberGenerator(object):
             raise ValueError("distribution must be given as a dict")             
         # check in case an unknown distribution was given
         unknownDistribution=True
-        for key in list(distribution.keys()):
+        for key in distribution.keys():
             if key in ['Fixed', 'Normal','Exp','Gamma','Logistic','Erlang',
                            'Geometric','Lognormal','Weibull','Cauchy', 'Triangular']:
                 unknownDistribution=False

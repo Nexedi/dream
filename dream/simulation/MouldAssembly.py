@@ -310,7 +310,7 @@ class MouldAssembly(MachineJobShop):
                     route.append({'stationIdsList':[str(exitId)],'processingTime':{}})
             # keep a reference of all extra properties passed to the job
             extraPropertyDict = {}
-            for key, value in list(component.items()):
+            for key, value in component.items():
                 if key not in ('_class', 'id'):
                     extraPropertyDict[key] = value
             # create and initiate the OrderComponent

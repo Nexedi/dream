@@ -124,7 +124,7 @@ def importInput():
     
     
     for item in PMschedule:
-        if 'parent' in list(item.keys()):
+        if 'parent' in item.keys():
             pm = item['parent']
             startDate = dateToOrdinal(item['start_date'], "%d-%m-%Y %H:%M")
             stopDate = dateToOrdinal(item['stop_date'], "%d-%m-%Y %H:%M")
@@ -312,7 +312,7 @@ def importInput():
     
     possMachines = data['graph']['node']
     
-    for mach in list(possMachines.keys()):
+    for mach in possMachines.keys():
         
         if 'machine' in possMachines[mach]['_class'].lower() or 'assembly' in possMachines[mach]['_class'].lower(): 
             
@@ -358,7 +358,7 @@ def importInput():
         shiftRes[pm] = shiftGenerator(startSimDate,7)
         resAvailability[pm] = deepcopy(shiftRes[pm])
         if pm in offShifts:
-            for unavailDate in list(offShifts[pm].keys()):
+            for unavailDate in offShifts[pm].keys():
                 print((pm, unavailDate, offShifts[pm][unavailDate]['endDate']-unavailDate))
                 resAvailability[pm] = availableTime_Shift(unavailDate,offShifts[pm][unavailDate]['endDate'],resAvailability[pm])
                 
@@ -370,7 +370,7 @@ def importInput():
         shiftRes[mach] = shiftGenerator(startSimDate,7)
         resAvailability[mach] = deepcopy(shiftRes[mach])
         if mach in offShifts:
-            for unavailDate in list(offShifts[mach].keys()):
+            for unavailDate in offShifts[mach].keys():
                 print((mach, unavailDate, offShifts[mach][unavailDate]['endDate']-unavailDate))
                 resAvailability[mach] = availableTime_Shift(unavailDate,offShifts[mach][unavailDate]['endDate'],resAvailability[mach])
         print(('shift', mach, shiftRes[mach]))

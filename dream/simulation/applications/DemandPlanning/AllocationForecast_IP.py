@@ -36,7 +36,7 @@ def Allocation_IP(item, week, previousAss, capacity, weightFactor):
     
     # calculate number of units to be allocated
     allQty = item['Qty']
-    for ma in list(previousAss.keys()):
+    for ma in previousAss.keys():
         allQty -= previousAss[ma]
     assert(allQty>0)        
             

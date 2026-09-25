@@ -20,7 +20,7 @@ class Plugin(object):
     predecessors=[]
     from copy import copy    
     edges=copy(data['graph']['edge'])
-    for edge_id,edge in list(edges.items()):
+    for edge_id,edge in edges.items():
         if edge['destination']==node_id:
             predecessors.append(edge['source'])
     return predecessors
@@ -30,7 +30,7 @@ class Plugin(object):
     successors=[]
     from copy import copy    
     edges=copy(data['graph']['edge'])
-    for edge_id,edge in list(edges.items()):
+    for edge_id,edge in edges.items():
         if edge['source']==node_id:
             successors.append(edge['destination'])
     return successors
@@ -149,7 +149,7 @@ class NewOrderExecutionPlugin(ExecutionPlugin):
     data = deepcopy(data)
     data['input']['BOM']['productionOrders'] = [order for order in 
       data['input']['BOM']['productionOrders'] if not "new" in order['id'].lower()]
-    for node in list(data['graph']['node'].values()):
+    for node in data['graph']['node'].values():
       if node.get('wip'):
         node['wip'] = [part for part in node['wip'] if not "new" in part['capacityProjectId'].lower()]
     return data

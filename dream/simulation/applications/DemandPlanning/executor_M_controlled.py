@@ -60,7 +60,7 @@ def main(input, algorithmAttributes):
             
             # salvare risultati
             G.Summary[(G.ACO,G.minDeltaUt)] = {'scenario':(G.ACO,G.minDeltaUt)}
-            for key in list(G.LateMeasures.keys()):
+            for key in G.LateMeasures.keys():
                 if key == 'lateness' or key == 'earliness':
                     if len(G.LateMeasures[key]):
                         G.Summary[(G.ACO,G.minDeltaUt)][key] = mean(G.LateMeasures[key])
@@ -87,7 +87,7 @@ def main(input, algorithmAttributes):
             
             
     # selection
-    listSummary = [G.Summary[item] for item in list(G.Summary.keys())]
+    listSummary = [G.Summary[item] for item in G.Summary.keys()]
     print(('list summary', listSummary))
     listSummary = sorted(listSummary, key=itemgetter('exUnits', 'lateness', 'targetM', 'targetStd', 'utilisation',  'earliness'))
     
