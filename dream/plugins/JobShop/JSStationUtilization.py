@@ -58,7 +58,7 @@ class JSStationUtilization(plugin.OutputPreparationPlugin):
       }
 
       i = 0
-      for obj in result['elementList']:
+      for obj in sorted(result['elementList'], key=lambda obj: obj['id']):
         if obj.get('_class') in self.JS_STATION_CLASS_SET:
           objResults=copy(obj['results'])
           if objResults['working_ratio']:
