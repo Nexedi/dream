@@ -436,7 +436,7 @@ def main(argv=[], input_data=None):
         filename = argv[0]
         try:                                          # try to open the file with the inputs
             G.CMSDFile=open(filename, "r")            # global variable holding the file to be opened
-        except IOError, IndexError:                               
+        except IOError:
             print "%s could not be open" % filename
             return "ERROR"
         G.InputData=G.CMSDFile.read()                 # pass the contents of the input file to the global var InputData
