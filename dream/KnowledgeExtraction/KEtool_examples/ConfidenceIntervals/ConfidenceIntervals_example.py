@@ -44,9 +44,9 @@ def main(test=0, CSVFileName='DataSet.csv',
     if test:
         return DM.round(CI.ConfidIntervals(ProcTime, 0.95)), CI.ConfidIntervals(MTTR, 0.95), DM.ceiling(CI.ConfidIntervals(MTTF, 0.90))
     #print the confidence intervals of the data sets applying either 90% or 95% probability
-    print DM.round(CI.ConfidIntervals(ProcTime, 0.95))
-    print DM.ceiling(CI.ConfidIntervals(MTTF, 0.90))
-    print CI.ConfidIntervals(MTTR, 0.95)
+    print((DM.round(CI.ConfidIntervals(ProcTime, 0.95))))
+    print((DM.ceiling(CI.ConfidIntervals(MTTF, 0.90))))
+    print((CI.ConfidIntervals(MTTR, 0.95)))
     
 if __name__ == '__main__':
     main()

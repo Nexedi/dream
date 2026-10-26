@@ -39,7 +39,7 @@ class BatchesOperatorGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
     colorDict={}
     nodes=data['graph']['node']
     i=0
-    for node_id, node in nodes.iteritems():
+    for node_id, node in nodes.items():
         if node['_class'].startswith('Dream.BatchScrapMachine') or node['_class']=='Dream.M3':
             colorDict[node_id]=colorList[i]
             i+=1
@@ -114,7 +114,7 @@ class BatchesOperatorGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
       time_unit=self.getTimeUnitText(),
       subscales=[dict(unit="hour", step=1, date="%H:%i")],
       task_list=sorted(task_dict.values(),
-        key=lambda task: (task.get('parent'),
+        key=lambda task: (task.get('parent') or '',
                           task.get('type') == 'project',
-                          task.get('entranceTime'),task.get('id'))))
+                          task.get('entranceTime') or 0, task.get('id') or '')))
     return data

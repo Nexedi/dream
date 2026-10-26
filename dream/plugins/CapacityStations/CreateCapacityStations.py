@@ -15,7 +15,7 @@ class CreateCapacityStations(plugin.InputPreparationPlugin):
     def preprocess(self, data):
         nodes=copy(data['graph']['node'])
         originalData=deepcopy(data)
-        for (stationId, node) in nodes.iteritems():
+        for (stationId, node) in nodes.items():
             _class=node['_class']
             if _class=='dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation':
                 nextCapacityStationBufferId=self.getNextCapacityStationBufferId(data,stationId)  
@@ -68,7 +68,7 @@ class CreateCapacityStations(plugin.InputPreparationPlugin):
                 if pool:
                     sharingStations=[]
                     priority=data['graph']['node'][stationId].get('priority',None)
-                    for other_id, other_node in originalData['graph']['node'].iteritems():
+                    for other_id, other_node in originalData['graph']['node'].items():
                         if other_id==stationId:
                             continue
                         otherPool=other_node.get('pool','')
@@ -97,7 +97,7 @@ class CreateCapacityStations(plugin.InputPreparationPlugin):
     def getNextCapacityStationBufferId(self,data,stationId):
         successorId=None
         edgeToErase=None
-        for (edgeId, edge) in data['graph']['edge'].iteritems():
+        for (edgeId, edge) in data['graph']['edge'].items():
             if data['graph']['edge'][edgeId]['source']==stationId:
                 successorId=data['graph']['edge'][edgeId]['destination']   
                 edgeToErase=edgeId
@@ -110,8 +110,8 @@ class CreateCapacityStations(plugin.InputPreparationPlugin):
     def findNotRequiredOperations(self,data,stationId):
         requiredOperations=[]
         nodes=data['graph']['node']
-        notRequiredOperations=nodes.keys()
-        for node_id, node in nodes.iteritems():
+        notRequiredOperations=list(nodes.keys())
+        for node_id, node in nodes.items():
             currentId=node_id
             while 1:
                 successorList = self.getSuccessors(data, currentId)

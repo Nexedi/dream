@@ -26,7 +26,7 @@ Core object that inherits from Queue. It takes SubBatches,
 only if all its contents are from the same Batch
 '''
 
-from Queue import Queue
+from .Queue import Queue
 # from SimPy.Simulation import now
 import simpy
 

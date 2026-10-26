@@ -26,7 +26,10 @@ Created on 19 Feb 2014
 import rpy2.robjects as robjects
 from rpy2.robjects.packages import importr
 import rpy2.rinterface
-from rpy2.rinterface import RRuntimeError
+try:
+    from rpy2.rinterface import RRuntimeError
+except ImportError:
+    from rpy2.rinterface_lib.embedded import RRuntimeError
 
 MASS= importr('MASS')
 #=============================================== Distribution Fitting  ============================================#

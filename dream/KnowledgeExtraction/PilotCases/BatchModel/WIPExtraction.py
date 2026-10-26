@@ -4,6 +4,7 @@ Created on 24 Aug 2015
 @author: Panos
 '''
 import xlrd
+import base64
 
 # columns that are used (static)
 CONTAINERNAME=0
@@ -11,7 +12,7 @@ STATIONNAME=16
 WORKCELL=17
 
 def findStation(dictStory):
-    for key,value in dictStory.iteritems():
+    for key,value in list(dictStory.items()):
         if value[0]=="Proximal Balloon Attach-CREFW" and value[1]=="CRE FW FRONT END LINE 1":
             dictStory[key]="2_P_B_A_A"
         elif value[0]=="Proximal Balloon Attach-CREFW" and value[1]=="CRE FW FRONT END LINE 2":
@@ -49,7 +50,7 @@ def main(input):
     # workbook = xlrd.open_workbook('WIP_test report.xls')
     
     mime_type, attachement_data = input[len('data:'):].split(';base64,', 1)
-    attachement_data = attachement_data.decode('base64')
+    attachement_data = attachement_data=base64.b64decode(attachement_data)
     workbook = xlrd.open_workbook(file_contents=attachement_data)
     
     worksheets = workbook.sheet_names()

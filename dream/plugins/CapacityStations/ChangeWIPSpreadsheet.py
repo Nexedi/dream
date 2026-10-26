@@ -53,7 +53,7 @@ class ChangeWIPSpreadsheet(plugin.InputPreparationPlugin):
     # gets the dict that shows the completed capacities and returns the one with the actual wip
     def calculateWIPDict(self,data,completedCapacityDict,requiredCapacityDict,projectId):
         wipDict={}
-        for stationId, completedCapacity in completedCapacityDict.iteritems():
+        for stationId, completedCapacity in completedCapacityDict.items():
             previous=self.getPredecessors(data, stationId)
             if previous:
                 # if the station is assembly

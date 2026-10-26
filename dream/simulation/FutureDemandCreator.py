@@ -27,10 +27,10 @@ module that creates the future demand and appends it to buffers
 
 import xlrd
 import json
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
-from Globals import G
-from JobMA import JobMA
+from .Globals import G
+from .JobMA import JobMA
 
 class FutureDemandCreator(): 
         

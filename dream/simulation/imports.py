@@ -85,8 +85,8 @@ from dream.simulation.PeriodicMaintenance import PeriodicMaintenance
 #Auxiliary
 from dream.simulation.Globals import G
 from dream.simulation.RandomNumberGenerator import RandomNumberGenerator
-import ExcelHandler
-import Globals
+from . import ExcelHandler
+from . import Globals
 
 # CapacityStation
 from dream.simulation.applications.CapacityStations.CapacityEntity import CapacityEntity

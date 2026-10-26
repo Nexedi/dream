@@ -1,3 +1,5 @@
+import zlib
+import base64
 from dream.plugins import plugin
 from pprint import pformat
 from copy import copy, deepcopy
@@ -5,7 +7,7 @@ import json
 import time
 import random
 import operator
-import xmlrpclib
+import xmlrpc.client
 import signal
 from multiprocessing import Pool
 
@@ -44,7 +46,7 @@ class ACO(plugin.ExecutionPlugin):
     distributor_url = data['general'].get('distributorURL')
     distributor = None
     if distributor_url:
-        distributor = xmlrpclib.Server(distributor_url)
+        distributor = xmlrpc.client.Server(distributor_url)
 
     multiprocessorCount = data['general'].get('multiprocessorCount')
 
@@ -114,7 +116,7 @@ class ACO(plugin.ExecutionPlugin):
             self.logger.info("Registering a job for %s scenarios" % len(scenario_list))
             start_register = time.time()
             job_id = distributor.requestSimulationRun(
-                [json.dumps(x).encode('zlib').encode('base64') for x in scenario_list])
+                [base64.b64encode(zlib.compress(json.dumps(x).encode('utf-8'))).decode('ascii') for x in scenario_list])
             self.logger.info("Job registered as %s (took %0.2fs)" % (job_id, time.time() - start_register ))
 
             while True:

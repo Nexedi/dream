@@ -5,7 +5,7 @@ import json
 import time
 import random
 import operator
-import xmlrpclib
+import xmlrpc.client
 
 from dream.simulation.Queue import Queue
 from dream.simulation.Operator import Operator
@@ -74,14 +74,14 @@ class BatchesACO(ACO):
     weightFactors=[1,1,1,1,1,1]
     for k, v in ant.items():
         weightFactors[int(k)-1]=v
-    for node_id, node in ant_data["graph"]["node"].iteritems():
+    for node_id, node in ant_data["graph"]["node"].items():
         if node['_class']=="dream.simulation.SkilledOperatorRouter.SkilledRouter":
             node['weightFactors']=weightFactors
     return ant_data
 
   # checks if there are operators in the model. If not it is tactical model so no optimization, one scenario should be run
   def checkIfThereAreOperators(self,data):
-    for node_id,node in data['graph']['node'].iteritems():
+    for node_id,node in data['graph']['node'].items():
       if 'Operator' in node['_class']:
         return True
     return False

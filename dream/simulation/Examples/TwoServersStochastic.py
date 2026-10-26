@@ -28,18 +28,18 @@ def main():
     # call the runSimulation giving the objects and the length of the experiment
     runSimulation(objectList, maxSimTime, numberOfReplications=10, seed=1)
         
-    print 'The exit of each replication is:'
-    print E.Exits
+    print('The exit of each replication is:')
+    print((E.Exits))
     
     # calculate confidence interval using the Knowledge Extraction tool
     from dream.KnowledgeExtraction.ConfidenceIntervals import Intervals
     from dream.KnowledgeExtraction.StatisticalMeasures import BasicStatisticalMeasures
     BSM=BasicStatisticalMeasures()
     lb, ub = Intervals().ConfidIntervals(E.Exits, 0.95)
-    print 'the 95% confidence interval for the throughput is:'
-    print 'lower bound:', lb 
-    print 'mean:', BSM.mean(E.Exits)
-    print 'upper bound:', ub       
+    print('the 95% confidence interval for the throughput is:')
+    print(('lower bound:', lb)) 
+    print(('mean:', BSM.mean(E.Exits)))
+    print(('upper bound:', ub))       
 
 if __name__ == '__main__':
     main()

@@ -22,7 +22,7 @@ Created on 8 Dec 2014
 
 @author: Anna
 '''
-from Globals import G
+from .Globals import G
 import tablib
 from numpy import mean
 
@@ -40,7 +40,7 @@ def outputResults():
             head.append(dictHead[aco]+str(minDelta))
     resultsOverview = tablib.Dataset(title='Overview')
     resultsOverview.headers = (head)
-    print G.Summary.keys(), G.acoRange[0], G.minRange[G.acoRange[0]]
+    print((G.Summary.keys(), G.acoRange[0], G.minRange[G.acoRange[0]]))
     oMetric = ['noExcess', 'exUnits', 'noLateOrders', 'lateness', 'noEarlyOrders', 'earliness', 'targetM', 'targetStd', 'utilisation']
     for metric in oMetric:
         if metric!='scenario' and metric != 'ant':

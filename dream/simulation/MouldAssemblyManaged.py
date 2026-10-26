@@ -61,10 +61,10 @@ as a dictionary with the following layout if the mould is not already in WIP
 There is no need to assign an exit, exit is assigned automatically by the createMould method
 TODOs: check the case when a mould is already in the WIP by the beginning of the simulation
 '''
-from MachineManagedJob import MachineManagedJob
+from .MachineManagedJob import MachineManagedJob
 # from SimPy.Simulation import Resource, reactivate, now
 import simpy
-from Globals import G
+from .Globals import G
 
 # =======================================================================
 # Error in the assembling of the mould
@@ -140,7 +140,7 @@ class MouldAssemblyManaged(MachineManagedJob):
                     raise AssembleMouldError('The orderComponents received by the assembler must have the\
                                                 same parent order')
             except AssembleMouldError as mouldError:
-                print 'Mould Assembly Error: {0}'.format(mouldError)
+                print(('Mould Assembly Error: {0}'.format(mouldError)))
                 return False
         # perform the assembly-action and return the assembled mould
         activeEntity = activeObject.assemble()
@@ -197,7 +197,7 @@ class MouldAssemblyManaged(MachineManagedJob):
                 # create the mould
                 self.createMould(self.mouldToBeCreated)
                 # set the created mould as WIP
-                import Globals
+                from . import Globals
                 Globals.setWIP([self.mouldToBeCreated])
                 # read the activeObjectQueue again as it has been updated by the setWIP()
                 activeObjectQueue=activeObject.getActiveObjectQueue()
@@ -209,7 +209,7 @@ class MouldAssemblyManaged(MachineManagedJob):
             else:
                 raise AssembleMouldError('There is no mould to be assembled')
         except AssembleMouldError as mouldError:
-            print 'Mould Assembly Error: {0}'.format(mouldError)
+            print(('Mould Assembly Error: {0}'.format(mouldError)))
             
     # =======================================================================
     # creates the mould
@@ -230,7 +230,7 @@ class MouldAssemblyManaged(MachineManagedJob):
                          'the assembler must be in the mould-to-be-created route\' initial step'
             processingTime=firstStep['processingTime']  
             # update the activeObject's processing time according to the readings in the mould's route
-            self.distType=processingTime.keys()[0]
+            self.distType=list(processingTime.keys())[0]
             self.procTime=float(processingTime[self.distType].get('mean', 0))
             # update the first step of the route with the activeObjects id as sole element of the stationIdsList
             route.insert(0, {'stationIdsList':[str(self.id)],'processingTime':{str(self.distType):{'mean':str(self.procTime)}}})
@@ -258,7 +258,7 @@ class MouldAssemblyManaged(MachineManagedJob):
                 if key not in ('_class', 'id'):
                     extraPropertyDict[key] = value
             # create and initiate the OrderComponent
-            from Mould import Mould
+            from .Mould import Mould
             M=Mould(id, name, route, \
                               priority=self.mouldParent.priority, \
                               order=self.mouldParent,\
@@ -276,6 +276,6 @@ class MouldAssemblyManaged(MachineManagedJob):
             M.initialize()
         except:
             # added for testing
-            print 'the mould to be created', component.get('name', 'not found'), 'cannot be created', 'time', self.env.now
+            print(('the mould to be created', component.get('name', 'not found'), 'cannot be created', 'time', self.env.now))
             raise
         

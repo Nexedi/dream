@@ -162,7 +162,7 @@ class ReadJSShifts(plugin.InputPreparationPlugin, TimeSupportMixin):
         timeStartList.append(shiftStart)
         timeEndList.append(shiftEnd)
       #for every operator (can be also machine) create an entry on the defaultShiftPattern 
-      for node, node_data in nodes.iteritems():
+      for node, node_data in nodes.items():
         #if the node is an operator
         if node_data.get('_class', None) == 'Dream.Operator':
           for index, start in enumerate(timeStartList):

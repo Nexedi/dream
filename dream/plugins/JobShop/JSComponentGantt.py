@@ -100,10 +100,10 @@ class JSComponentGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
                 )           
            
       # sort the tasks for an order according to the entrance time of the first component
-      for task_id, task in task_dict.iteritems():
+      for task_id, task in task_dict.items():
           if not task.get('entranceTime',None):
               childrenTimes=[]
-              for t_id, t in task_dict.iteritems():
+              for t_id, t in task_dict.items():
                   if t.get('parent',None)==task_id and not (t.get('entranceTime',None)==None):
                       childrenTimes.append(t['entranceTime'])
               if childrenTimes:
@@ -113,7 +113,7 @@ class JSComponentGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
       result[self.configuration_dict['output_id']] = dict(
         time_unit=self.getTimeUnitText(),
         task_list=sorted(task_dict.values(),
-          key=lambda task: (task.get('parent'),
+          key=lambda task: (task.get('parent') or '',
                             task.get('type') == 'project',
-                            task.get('entranceTime'),task.get('id'))))
+                            task.get('entranceTime') or 0, task.get('id') or '')))
     return data

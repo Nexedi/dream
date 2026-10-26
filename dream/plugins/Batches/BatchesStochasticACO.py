@@ -5,7 +5,7 @@ import json
 import time
 import random
 import operator
-import xmlrpclib
+import xmlrpc.client
 
 from dream.simulation.Queue import Queue
 from dream.simulation.Operator import Operator
@@ -13,7 +13,8 @@ from dream.simulation.Globals import getClassFromName
 from dream.plugins.Batches.BatchesACO import BatchesACO
 
 import xlwt
-import StringIO
+import io
+import base64
 
 
 class BatchesStochasticACO(BatchesACO):
@@ -21,7 +22,7 @@ class BatchesStochasticACO(BatchesACO):
   # changes all processing time distributions to stochastic
   def createStochasticData(self, data):
     nodes=data['graph']['node']
-    for node_id,node in nodes.iteritems():
+    for node_id,node in nodes.items():
         processingTime=node.get('processingTime',{})
         distribution=processingTime.get("Fixed",{})
         if distribution:
@@ -76,7 +77,7 @@ class BatchesStochasticACO(BatchesACO):
     distributor_url = data['general'].get('distributorURL')
     distributor = None
     if distributor_url:
-        distributor = xmlrpclib.Server(distributor_url)
+        distributor = xmlrpc.client.Server(distributor_url)
         
     # create a stochastic set of data
     stochasticData=deepcopy(data)
@@ -311,9 +312,9 @@ class BatchesStochasticACO(BatchesACO):
     self.rowIndex+=1
     
     # return the workbook as encoded
-    outputStringIO = StringIO.StringIO()
+    outputBytesIO = io.BytesIO()
     self.outputFile.save(outputStringIO)
-    encodedOutputFile=outputStringIO.getvalue().encode('base64') 
+    encodedOutputFile=base64.b64encode(outputBytesIO.getvalue()).decode('ascii') 
     data['result']['result_list'][-1]['output_ACO_spreadsheet'] = {
           'name': 'ACO details.xls',
           'mime_type': 'application/vnd.ms-excel',

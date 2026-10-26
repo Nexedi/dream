@@ -41,7 +41,7 @@ class JSONOutput(object):
            
         nodes=data['graph']['node'] 
         batchWIP={}
-        for (element_id,element) in nodes.iteritems():
+        for (element_id,element) in nodes.items():
             name=element.get('name')
             wip=element.get('wip',[])
             for key in list3.keys():    # conduct a loop statement in the keys of the list3, which actually is the WIP dict

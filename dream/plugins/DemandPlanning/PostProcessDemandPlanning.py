@@ -1,4 +1,5 @@
 from dream.plugins import plugin
+import base64
 
 class PostProcessDemandPlanning(plugin.OutputPreparationPlugin):
   """ Output the result of demand planning in a format compatible with
@@ -12,6 +13,6 @@ class PostProcessDemandPlanning(plugin.OutputPreparationPlugin):
     data['result']['result_list'][-1][self.configuration_dict['output_id']] = {
       'name': 'Result.xlsx',
       'mime_type': 'application/vnd.ms-excel',
-      'data': G.reportResults.xlsx.encode('base64')
+      'data': base64.b64encode(G.reportResults.xlsx).decode('ascii')
     }
     return data

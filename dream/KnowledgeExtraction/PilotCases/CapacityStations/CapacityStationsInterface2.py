@@ -22,10 +22,10 @@ Created on 20 March 2015
 @author: Panos
 '''
 
-import Tkinter as tk
-from Tkinter import *
+import tkinter as tk
+from tkinter import *
 import pyodbc
-import tkMessageBox
+import tkinter.messagebox
 from datetime import datetime 
 
 class Demo1(Frame):
@@ -130,12 +130,12 @@ class MainWindow(Frame):
         
     def recordStartDate(self):
         self.startdate = str(datetime.now())
-        print self.startdate
+        print((self.startdate))
         return
     
     def recordEndDate(self):
         self.endDate = str(datetime.now())
-        print self.endDate
+        print((self.endDate))
         return   
        
     def checkInsertedProject(self):

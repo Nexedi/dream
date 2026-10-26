@@ -2849,22 +2849,22 @@
      {
       "entranceTime": 0.0, 
       "exitTime": 1.0, 
-      "stationId": "EEP"
-     }, 
-     {
-      "entranceTime": 0.0, 
-      "exitTime": 1.0, 
-      "stationId": "SMF"
-     }, 
-     {
-      "entranceTime": 0.0, 
-      "exitTime": 1.0, 
       "stationId": "CNC"
      }, 
      {
       "entranceTime": 0.0, 
       "exitTime": 1.0, 
+      "stationId": "EEP"
+     }, 
+     {
+      "entranceTime": 0.0, 
+      "exitTime": 1.0, 
       "stationId": "MCH"
+     }, 
+     {
+      "entranceTime": 0.0, 
+      "exitTime": 1.0, 
+      "stationId": "SMF"
      }, 
      {
       "entranceTime": 1.0, 
@@ -2898,12 +2898,12 @@
      {
       "entranceTime": 0.0, 
       "exitTime": 1.0, 
-      "stationId": "EEP"
+      "stationId": "CNC"
      }, 
      {
       "entranceTime": 0.0, 
       "exitTime": 1.0, 
-      "stationId": "CNC"
+      "stationId": "EEP"
      }, 
      {
       "entranceTime": 0.0, 
@@ -2996,12 +2996,12 @@
      {
       "entranceTime": 0.0, 
       "exitTime": 1.0, 
-      "stationId": "EEP"
+      "stationId": "CNC"
      }, 
      {
       "entranceTime": 0.0, 
       "exitTime": 1.0, 
-      "stationId": "CNC"
+      "stationId": "EEP"
      }, 
      {
       "entranceTime": 0.0, 
@@ -3044,23 +3044,23 @@
     "schedule": [
      {
       "entranceTime": 0.0, 
-      "exitTime": 1.0, 
-      "stationId": "EEP"
-     }, 
-     {
-      "entranceTime": 0.0, 
       "exitTime": 2.0, 
       "stationId": "CNC"
      }, 
      {
-      "entranceTime": 1.0, 
-      "exitTime": 7.0, 
-      "stationId": "SMF"
+      "entranceTime": 0.0, 
+      "exitTime": 1.0, 
+      "stationId": "EEP"
      }, 
      {
       "entranceTime": 1.0, 
       "exitTime": 2.0, 
       "stationId": "MCH"
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "exitTime": 7.0, 
+      "stationId": "SMF"
      }, 
      {
       "entranceTime": 2.0, 
@@ -3094,12 +3094,12 @@
      {
       "entranceTime": 0.0, 
       "exitTime": 1.0, 
-      "stationId": "EEP"
+      "stationId": "CNC"
      }, 
      {
       "entranceTime": 0.0, 
       "exitTime": 1.0, 
-      "stationId": "CNC"
+      "stationId": "EEP"
      }, 
      {
       "entranceTime": 1.0, 
@@ -3142,23 +3142,23 @@
     "schedule": [
      {
       "entranceTime": 0.0, 
-      "exitTime": 1.0, 
-      "stationId": "EEP"
-     }, 
-     {
-      "entranceTime": 0.0, 
       "exitTime": 2.0, 
       "stationId": "CNC"
      }, 
      {
-      "entranceTime": 1.0, 
-      "exitTime": 7.0, 
-      "stationId": "SMF"
+      "entranceTime": 0.0, 
+      "exitTime": 1.0, 
+      "stationId": "EEP"
      }, 
      {
       "entranceTime": 1.0, 
       "exitTime": 2.0, 
       "stationId": "MCH"
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "exitTime": 7.0, 
+      "stationId": "SMF"
      }, 
      {
       "entranceTime": 2.0, 
@@ -5057,19 +5057,19 @@
     "ticks": [
      [
       0, 
-      "EEP"
+      "ASBTST"
      ], 
      [
       1, 
-      "SMF"
+      "CNC"
      ], 
      [
       2, 
-      "WELD"
+      "EEP"
      ], 
      [
       3, 
-      "ASBTST"
+      "MCH"
      ], 
      [
       4, 
@@ -5077,15 +5077,15 @@
      ], 
      [
       5, 
-      "CNC"
+      "PPASB"
      ], 
      [
       6, 
-      "MCH"
+      "SMF"
      ], 
      [
       7, 
-      "PPASB"
+      "WELD"
      ]
     ]
    }, 
@@ -5098,19 +5098,19 @@
     "data": [
      [
       0, 
-      1.127450980392157
+      21.696047258331
      ], 
      [
       1, 
-      10.866013071895425
+      2.611044417767107
      ], 
      [
       2, 
-      11.909791397248146
+      1.127450980392157
      ], 
      [
       3, 
-      21.696047258331
+      7.352941176470589
      ], 
      [
       4, 
@@ -5118,15 +5118,15 @@
      ], 
      [
       5, 
-      2.611044417767107
+      50.30969550865745
      ], 
      [
       6, 
-      7.352941176470589
+      10.866013071895425
      ], 
      [
       7, 
-      50.30969550865745
+      11.909791397248146
      ]
     ], 
     "label": "Utilized"
@@ -5135,19 +5135,19 @@
     "data": [
      [
       0, 
-      98.87254901960785
+      78.30395274166901
      ], 
      [
       1, 
-      89.13398692810458
+      97.3889555822329
      ], 
      [
       2, 
-      88.09020860275186
+      98.87254901960785
      ], 
      [
       3, 
-      78.30395274166901
+      92.64705882352942
      ], 
      [
       4, 
@@ -5155,15 +5155,15 @@
      ], 
      [
       5, 
-      97.3889555822329
+      49.69030449134255
      ], 
      [
       6, 
-      92.64705882352942
+      89.13398692810458
      ], 
      [
       7, 
-      49.69030449134255
+      88.09020860275186
      ]
     ], 
     "label": "Idle"

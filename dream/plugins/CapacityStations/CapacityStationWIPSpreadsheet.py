@@ -19,7 +19,7 @@ class CapacityStationWIPSpreadsheet(plugin.InputPreparationPlugin):
         if wipData:
             node=data['graph']['node']
             # create an empty wip list in all CapacityStationBuffers
-            for (node_id,node_data) in node.iteritems():
+            for (node_id,node_data) in node.items():
                 if node_data['_class']=='dream.simulation.applications.CapacityStations.CapacityStationBuffer.CapacityStationBuffer':
                     node_data['wip']=[]
             # get the number of projects
@@ -47,7 +47,7 @@ class CapacityStationWIPSpreadsheet(plugin.InputPreparationPlugin):
 
     # gets the data and the station id and returns the buffer id of this station    
     def getBuffer(self,data,stationId):
-        for (edge_id, edge) in data['graph']['edge'].iteritems():
+        for (edge_id, edge) in data['graph']['edge'].items():
             if edge['destination']==stationId:
                 return edge['source']
     

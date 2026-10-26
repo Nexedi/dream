@@ -28,8 +28,8 @@ models an one time scheduled maintenance. It happens and stops at fixed times an
 
 # from SimPy.Simulation import now, Process, hold, request, release, infinity
 import simpy
-from RandomNumberGenerator import RandomNumberGenerator
-from ObjectInterruption import ObjectInterruption
+from .RandomNumberGenerator import RandomNumberGenerator
+from .ObjectInterruption import ObjectInterruption
 
 # ===========================================================================
 # the scheduled maintenance class
@@ -111,7 +111,7 @@ class ScheduledMaintenance(ObjectInterruption):
             self.victim.timeLastFailure=self.env.now
             self.outputTrace(self.victim.name,"is down")
         except AttributeError:
-            print "AttributeError1"
+            print("AttributeError1")
             
         yield self.env.timeout(self.duration)           # wait for the defined duration of the interruption 
         self.victim.totalFailureTime+=self.duration-waitTime
@@ -122,7 +122,7 @@ class ScheduledMaintenance(ObjectInterruption):
             self.victim.Up=True              
             self.outputTrace(self.victim.name,"is up")                                           
         except AttributeError:
-            print "AttributeError2"    
+            print("AttributeError2")    
         
 
         

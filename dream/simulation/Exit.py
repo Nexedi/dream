@@ -28,7 +28,7 @@ models the exit of the model
 # from SimPy.Simulation import now, Process, Resource, infinity, waituntil, waitevent
 import simpy
 import xlwt
-from CoreObject import CoreObject
+from .CoreObject import CoreObject
 
 # ===========================================================================
 #                            The exit object
@@ -46,7 +46,7 @@ class Exit(CoreObject):
         self.TaktTime=[]   
         # if input is given in a dictionary
         CoreObject.__init__(self, id, name) 
-        from Globals import G
+        from .Globals import G
         G.ExitList.append(self)     
         self.cancelCondition=cancelCondition   
                    
@@ -107,7 +107,7 @@ class Exit(CoreObject):
     def getEntity(self): 
         activeEntity = CoreObject.getEntity(self)           #run the default method
         # if the entity is in the G.pendingEntities list then remove it from there
-        from Globals import G
+        from .Globals import G
 #         G.pendingEntities[:]=(entity for entity in G.pendingEntities if not entity is activeEntity)
         if G.RouterList:
             if activeEntity in G.pendingEntities:
@@ -132,7 +132,7 @@ class Exit(CoreObject):
     
     @staticmethod
     def clear(entity):
-        from Globals import G
+        from .Globals import G
         def deleteEntityfromlist(entity, list):            
             if entity in list:
                 list.remove(entity)
@@ -153,7 +153,7 @@ class Exit(CoreObject):
     #            actions to be taken after the simulation ends
     # =======================================================================
     def postProcessing(self, MaxSimtime=None):
-        from Globals import G
+        from .Globals import G
         if MaxSimtime==None:
             MaxSimtime=G.maxSimTime
         # hold the numberOfExits of each replication
@@ -172,7 +172,7 @@ class Exit(CoreObject):
     #                        outputs results to JSON File
     # =======================================================================
     def outputResultsJSON(self):
-        from Globals import G
+        from .Globals import G
         json = { '_class': 'Dream.%s' % self.__class__.__name__,
                   'id': self.id,
                   'family': self.family,

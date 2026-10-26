@@ -3,12 +3,12 @@ Created on 22 Apr 2015
 
 @author: Anna
 '''
-from Globals import G
-from Allocation_3 import Allocation2
+from .Globals import G
+from .Allocation_3 import Allocation2
 from copy import deepcopy
 from numpy import mean, array, absolute, std
 from operator import itemgetter
-from UtilisationCalculation import utilisationCalc2, utilisationCalc1, utilisationCalc3
+from .UtilisationCalculation import utilisationCalc2, utilisationCalc1, utilisationCalc3
 
 def AllocationRoutine_Final(initialWeek, itemList, itemType, ant):
         

@@ -5,15 +5,15 @@ Created on 14 Aug 2015
 '''
 
 from operator import itemgetter
-from Globals import G
+from .Globals import G
 
 def findSequence(Projects, seqPrjDone, idDone):
     
     opReady = []
     
-    for proj in seqPrjDone.keys():
+    for proj in list(seqPrjDone.keys()):
         
-        for part in seqPrjDone[proj].keys():
+        for part in list(seqPrjDone[proj].keys()):
             
             if seqPrjDone[proj][part] < len(Projects[proj][part]):
                 

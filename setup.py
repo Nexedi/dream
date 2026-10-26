@@ -10,7 +10,7 @@ setup(
     install_requires=[
         'flask',
         'SimPy>=3',
-        'xlrd',
+        'xlrd<2',
         'xlwt',
         'pyparsing',
         'pydot',
@@ -19,7 +19,7 @@ setup(
         'rpy2',
         'pulp',
         'tablib',
-        'mysqlclient',
+    #   'mysqlclient',
     ],
     entry_points=("""
     [console_scripts]

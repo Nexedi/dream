@@ -26,7 +26,7 @@ auxiliary script to handle excel related methods
 '''
 
 
-from Globals import G
+from .Globals import G
 
 import xlwt
 import xlrd

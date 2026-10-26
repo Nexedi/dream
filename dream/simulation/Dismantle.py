@@ -31,8 +31,8 @@ it gathers frames that have parts loaded, unloads the parts and sends the frame 
 # from SimPy.Simulation import waitevent, now, hold, infinity
 import simpy
 import xlwt
-from RandomNumberGenerator import RandomNumberGenerator
-from CoreObject import CoreObject
+from .RandomNumberGenerator import RandomNumberGenerator
+from .CoreObject import CoreObject
 
 #===============================================================================
 # the Dismantle object
@@ -65,7 +65,7 @@ class Dismantle(CoreObject):
                                                         # then the giverObjects have to be blocked for the time
                                                         # that the machine is being loaded 
         CoreObject.__init__(self, id, name)
-        from Globals import G
+        from .Globals import G
         if not processingTime:
             processingTime = {'Fixed':{'mean': 0 }}
         if 'Normal' in processingTime.keys() and\
@@ -108,7 +108,7 @@ class Dismantle(CoreObject):
         self.nameLastFrameWasFull=""    #holds the name of the last frame that was full, ie that assembly process started
         self.nameLastEntityEntered=""   #holds the name of the last frame that entered processing in the object
         self.nameLastEntityEnded=""     #holds the name of the last frame that ended processing in the object            
-        self.Res=simpy.Resource(self.env, capacity='inf')    
+        self.Res=simpy.Resource(self.env, capacity=float('inf'))    
         self.Res.users=[]  
 #         self.Res.waitQ=[]
         
@@ -307,7 +307,7 @@ class Dismantle(CoreObject):
     #       Format is (Simulation Time | Entity or Frame Name | message)
     #===========================================================================
     def outputTrace(self, name, message):
-        from Globals import G
+        from .Globals import G
         if(G.trace=="Yes"):         #output only if the user has selected to
             #handle the 3 columns
             G.traceSheet.write(G.traceIndex,0,str(self.env.now))
@@ -325,7 +325,7 @@ class Dismantle(CoreObject):
     # outputs results to JSON File
     #===========================================================================
     def outputResultsJSON(self):
-        from Globals import G
+        from .Globals import G
         json = {'_class': self.class_name,
                 'id': self.id,
                 'results': {}}

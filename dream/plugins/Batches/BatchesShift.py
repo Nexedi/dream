@@ -24,7 +24,7 @@ class BatchesShift(ReadShiftFromSpreadsheet):
      
     # create a string with all station ids separated by commas
     allString=''
-    for node_id, node in nodes.iteritems():
+    for node_id, node in nodes.items():
         if node['_class'].startswith('Dream.BatchScrapMachine') or node['_class']=='Dream.M3':
             allString+=node_id
             allString+=','
@@ -35,7 +35,7 @@ class BatchesShift(ReadShiftFromSpreadsheet):
             
     # create a string with all operator ids separated by commas
     allString=''
-    for node_id, node in nodes.iteritems():
+    for node_id, node in nodes.items():
         if node['_class']=='Dream.Operator':
             allString+=node_id
             allString+=','
@@ -49,7 +49,7 @@ class BatchesShift(ReadShiftFromSpreadsheet):
     data=ReadShiftFromSpreadsheet.preprocess(self, data)
 
     # set attributes to shifts
-    for node_id, node in nodes.iteritems():
+    for node_id, node in nodes.items():
         if "BatchScrapMachine" in node['_class'] or "M3" in node['_class'] or node['_class']=="Dream.Operator": 
             shiftExists=False
             interruptions=node.get('interruptions',None)

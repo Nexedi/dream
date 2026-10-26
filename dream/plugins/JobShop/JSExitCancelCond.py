@@ -19,7 +19,7 @@ class JSExitCancelCond(plugin.InputPreparationPlugin):
     """ Read the exits end update them to cancelCondition-empty exits. The simulation run should stop by the time all components have been cleared from the model 
     """
     nodes=data["graph"]["node"]
-    for node, node_data in nodes.iteritems():
+    for node, node_data in nodes.items():
       if node_data.get("_class", None) == "Dream.ExitJobShop":
         node_data["cancelCondition"] = {"reason": "empty"}
     return data

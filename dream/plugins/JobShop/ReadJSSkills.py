@@ -54,7 +54,7 @@ class ReadJSSkills(plugin.InputPreparationPlugin):
           "setup": []
         }
         for skill in skills:
-          for operation, availableSkills in SKILLS_DICT.iteritems():
+          for operation, availableSkills in SKILLS_DICT.items():
             if skill in availableSkills:
               skillDict[operation].append(skill)
         # if EDM-SET in in skillDict['setup'] then add EDM to skillDict['process']

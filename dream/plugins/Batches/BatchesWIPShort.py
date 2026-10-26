@@ -22,7 +22,7 @@ class BatchesWIPShort(plugin.InputPreparationPlugin):
         batchCounter=0
         # get the number of units for a standard batch
         standardBatchUnits=0
-        for node_id, node in nodes.iteritems():
+        for node_id, node in nodes.items():
             if node['_class']=='Dream.BatchSource':
                 standardBatchUnits=int(node['batchNumberOfUnits']) 
             node['wip']=[]

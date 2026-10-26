@@ -32,7 +32,7 @@ class UpdateStationList(plugin.InputPreparationPlugin):
   def getStationInitials(self,technology):
     '''get the stations that correspond to that technology'''
     initialsList = []
-    for initials, corresponding_tech_list in self.getStationTechnologies().iteritems():
+    for initials, corresponding_tech_list in self.getStationTechnologies().items():
       for tech in corresponding_tech_list:
         if tech == technology and not initials in initialsList:
           initialsList.append(initials)

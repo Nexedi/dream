@@ -47,11 +47,11 @@ e.g. if the sequence given is -queue - machine then a queue must be placed in fr
 '''
 
 from SimPy.Simulation import Process, Resource, now, activate, passivate, waituntil, hold
-from CoreObject import CoreObject
+from .CoreObject import CoreObject
 # from SimpleOperatedMachine2 import OperatedMachine
 from OperatedMachine import OperatedMachine
-from Queue import Queue
-from Operator import Operator
+from .Queue import Queue
+from .Operator import Operator
 
 class RoutingTypeError(Exception):
     def __init__(self, routingError):
@@ -257,7 +257,7 @@ class CompoundObject(CoreObject,Queue):
                 else:
                     raise RoutingTypeError("The type of the routing is neither Parallel or Series")
         except RoutingTypeError as routingError:
-            print "Routing type error: {0}".format(routingError)
+            print(("Routing type error: {0}".format(routingError)))
         
     # =======================================================================
     # initialize the compound object
@@ -345,10 +345,10 @@ class CompoundObject(CoreObject,Queue):
                 # update the time the last entity left
                 self.timeLastEntityLeft = now()
             else:
-                raise ReceiverObjectError("""the receiver has not been defined, the composite object needs info on the receiver\ 
+                raise ReceiverObjectError("""the receiver has not been defined, the composite object needs info on the receiver\
                                             in order to decide where to deliver""")
         except ReceiverObjectError as receiverError:
-            print "Receiver object error: {0}".format(receiverError)
+            print(("Receiver object error: {0}".format(receiverError)))
             
         try:
             self.outputTrace(activeEntity.name, "released "+ self.objName)
@@ -424,7 +424,7 @@ class CompoundObject(CoreObject,Queue):
             else:
                 raise NoneCallerObjectError("The caller of a CompoundObject method have to dispose cannot be None")
         except NoneCallerObjectError as callerError:
-            print "None-Caller object error: {0}".format(callerError)
+            print(("None-Caller object error: {0}".format(callerError)))
     
     # =======================================================================
     # the canAcceptAndIsRequested method that implements the 

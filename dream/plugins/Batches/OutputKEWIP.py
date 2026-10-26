@@ -23,13 +23,13 @@ class OutputKEWIP(plugin.OutputPreparationPlugin):
         nodes=data['graph']['node']
         
         # create rows for all the stations
-        for node_id, node in nodes.iteritems():       
+        for node_id, node in nodes.items():       
             if 'Machine' in node['_class'] or 'M3' in node['_class']:        
                 outPutSpreadsheet.append([node_id,0])
         
         # read the input and for the queues that have WIP set the total number of units to the next station
         # WIP from KE tool now is only in Queues but the manual input is done as '# units awaiting processing' in station
-        for node_id, node in nodes.iteritems():       
+        for node_id, node in nodes.items():       
             if 'Queue' in node['_class'] or 'Clearance' in node['_class']:
                 wip=node.get('wip',[])
                 stationId=self.getNextStation(data, node_id)
