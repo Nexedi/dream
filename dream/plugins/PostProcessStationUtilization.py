@@ -56,7 +56,7 @@ class PostProcessStationUtilization(plugin.OutputPreparationPlugin):
     }
 
     i = 0
-    for obj in result['elementList']:
+    for obj in sorted(result['elementList'], key=lambda obj: obj['id']):
       if obj.get('family') == self.configuration_dict.get('family'):
         if obj['results']['working_ratio']:
           working_data.append((i, obj['results']['working_ratio'][0]))
