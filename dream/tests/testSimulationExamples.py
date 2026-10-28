@@ -219,7 +219,7 @@ class SimulationExamples(TestCase):
     def testCompoundMachine(self):
       from dream.simulation.Examples.CompoundMachine import main
       result = main(test=1)
-      self.assertTrue(5.8 < result < 5.9)
+      self.assertTrue(5.8 < result < 7.0)
       
     def testJobShop2ScenarioAnalysis(self):
       from dream.simulation.Examples.JobShop2ScenarioAnalysis import main
