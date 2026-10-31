@@ -92,13 +92,13 @@ class KnowledgeExtractionExamples(TestCase):
         result_data = result
         result_data=result_data['graph']
         nodes=result_data.get('node',{})
-        for element_id,element in nodes.iteritems():
+        for element_id,element in list(nodes.items()):
             if element_id=='M1':
-                self.assertEqual(element['processingTime'].keys()[0],'Logistic')
+                self.assertEqual(list(element['processingTime'].keys())[0],'Logistic')
             if element_id=='M2':
-                self.assertEqual(element['processingTime'].keys()[0],'Logistic')
+                self.assertEqual(list(element['processingTime'].keys())[0],'Logistic')
             if element_id=='S1':
-                self.assertEqual(element['interarrivalTime'].keys()[0],'Exp')
+                self.assertEqual(list(element['interarrivalTime'].keys())[0],'Exp')
         jsonFile.close()
     
     def testConfidenceIntervals(self):
