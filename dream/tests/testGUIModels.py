@@ -71,7 +71,7 @@ class SimulationTopology(TestCase):
     dump_file = open(dump_path, "r")
     dump_result = json.dumps(json.loads(dump_file.read()), indent=True, sort_keys=True)
     dump_file.close()
-    self.assertEquals(stable_result, dump_result, "outputs are different")
+    self.assertEqual(stable_result, dump_result, "outputs are different")
 
 # Automatically create a test method for every topology
 for filepath in glob.glob(os.path.join(project_path, "dream", "plugins",
