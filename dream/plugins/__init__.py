@@ -16,12 +16,6 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
 # ===========================================================================
-# See http://peak.telecommunity.com/DevCenter/setuptools#namespace-packages
-try:
-    __import__('pkg_resources').declare_namespace(__name__)
-except ImportError:
-    from pkgutil import extend_path
-    __path__ = extend_path(__path__, __name__)
 
 # BBB Add compatibility names for plugins that moved.
 from .DemandPlanning import AddDemandPlannerGenerator
