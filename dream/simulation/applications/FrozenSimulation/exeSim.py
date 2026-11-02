@@ -4,13 +4,14 @@ Created on 20 Aug 2015
 @author: Anna
 '''
 
-from jsonReader import importInput, initGlobals
-from findSequence import findSequence
-from timeCalculations import availableTimeInterval_MA, updateAvailTime, availableTimeInterval_MM, availableTimeInterval_Manual
+from .jsonReader import importInput, initGlobals
+from .findSequence import findSequence
+from .timeCalculations import availableTimeInterval_MA, updateAvailTime, availableTimeInterval_MM, availableTimeInterval_Manual
 from operator import itemgetter
 from copy import deepcopy
-from Globals import G
+from .Globals import G
 import datetime as dt
+import base64
 
 
 def manual_allocation(currentOp):
@@ -164,11 +165,11 @@ def MAM_allocation(currentOp):
 def exeSim(jsonInput, workplanInput, algorithmAttributes):
     
     mime_type, attachement_data = jsonInput[len('data:'):].split(';base64,', 1)
-    attachement_data = attachement_data.decode('base64')
+    attachement_data = attachement_data=base64.b64decode(attachement_data)
     jInput = attachement_data
     
     mime_type, attachement_data = workplanInput[len('data:'):].split(';base64,', 1)
-    attachement_data = attachement_data.decode('base64')
+    attachement_data = attachement_data=base64.b64decode(attachement_data)
     excelInput = attachement_data
     
     # read input data

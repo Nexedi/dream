@@ -51,7 +51,7 @@ from Globals import G
 from Source import Source
 from Machine import Machine
 from Exit import Exit
-from Queue import Queue
+from queue import Queue
 # from QueueLIFO import QueueLIFO
 from Repairman import Repairman
 from Part import Part
@@ -436,8 +436,8 @@ def main(argv=[], input_data=None):
         filename = argv[0]
         try:                                          # try to open the file with the inputs
             G.CMSDFile=open(filename, "r")            # global variable holding the file to be opened
-        except IOError, IndexError:                               
-            print "%s could not be open" % filename
+        except IOError:
+            print(("%s could not be open" % filename))
             return "ERROR"
         G.InputData=G.CMSDFile.read()                 # pass the contents of the input file to the global var InputData
     else:
@@ -561,7 +561,7 @@ def main(argv=[], input_data=None):
     
     #run the experiment (replications)          
     for i in range(G.numberOfReplications):
-        print "start run number "+str(i+1) 
+        print(("start run number "+str(i+1))) 
         G.env=simpy.Environment()    
         G.seed+=1
         G.Rnd=Random(G.seed)         
@@ -595,7 +595,7 @@ def main(argv=[], input_data=None):
         object.outputResultsXL(G.maxSimTime)    
 
     G.outputFile.save("output.xls")      
-    print "execution time="+str(time.time()-start) 
+    print(("execution time="+str(time.time()-start))) 
     
     G.outputJSONFile=open('outputJSONFromCMSD.json', mode='w')
     G.outputJSON['_class'] = 'Dream.Simulation';

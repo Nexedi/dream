@@ -10,9 +10,9 @@ import datetime as dt
 import xlrd
 from operator import itemgetter
 from copy import deepcopy
-from shiftGeneration import shiftGenerator
-from timeCalculations import availableTime_Shift
-from Globals import G
+from .shiftGeneration import shiftGenerator
+from .timeCalculations import availableTime_Shift
+from .Globals import G
 
 def dateToOrdinal(entry, formatDate):
     rec = dt.datetime.strptime(entry,formatDate)
@@ -47,14 +47,14 @@ def offShiftFormat(colEntry):
 def offShiftFormat_2(colEntry, dateNow):
     periods = {}
     sprtdRec = colEntry.split(';'+' ')
-    print 'col entry', colEntry
-    print 'date', dateNow
+    print(('col entry', colEntry))
+    print(('date', dateNow))
     for startANDend in sprtdRec:
         splitstartANDend = str(startANDend).split('-')
-        print 'splitstartANDend', splitstartANDend
+        print(('splitstartANDend', splitstartANDend))
         
         for num,stAstP in enumerate(splitstartANDend):
-            print 'st ast', stAstP
+            print(('st ast', stAstP))
             falseTime = dt.datetime.strptime(stAstP,'%H:%M')
             if num == 0:
                 startTime = dt.datetime(year=dateNow.year, month=dateNow.month, day=dateNow.day, hour=falseTime.hour, minute=falseTime.minute)
@@ -71,7 +71,7 @@ def combSchedules(bothSchedList,combData):
                 cell = list(cell)
                 cell.extend(['Not Frozen'])
             combData.append(cell)
-    print combData['Date']
+    print((combData['Date']))
     combData = combData.sort('Date')
     with open('Results\\Combined Schedule.xlsx', 'wb') as h: #completion time, cycle time and delay info in json format
         h.write(combData.xlsx)
@@ -191,7 +191,7 @@ def importInput(jInput, excelInput, algorithmAttributes):
                                                                               'project':current, 'part':WorkPlan.cell_value(i,2)}) #'personnel':str(WorkPlan.cell_value(i,10)), 'sequence':WorkPlan.cell_value(i,9), 
             seqPrjDone[current].setdefault(WorkPlan.cell_value(i,2),0)
     
-    maxODate = min(OrderDates.iteritems(), key=itemgetter(1))[1]
+    maxODate = min(iter(list(OrderDates.items())), key=itemgetter(1))[1]
     
     #==================================
     # Import shift data from json file
@@ -351,7 +351,7 @@ def importInput(jInput, excelInput, algorithmAttributes):
     G.seqPrjDoneOrig = deepcopy(seqPrjDone) 
     G.resAvailabilityOrig = deepcopy(resAvailability)
     G.MachPool = deepcopy(MachPool)
-    print 'mach pool',G.MachPool
+    print(('mach pool',G.MachPool))
     G.PMPool = deepcopy(PMPool)
     G.Projects = deepcopy(Projects)
     G.OrderDates = deepcopy(OrderDates)

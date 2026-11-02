@@ -22,7 +22,7 @@ Created on 19 Feb 2014
 
 @author: Panos
 '''
-from StatisticalMeasures import StatisticalMeasures
+from .StatisticalMeasures import StatisticalMeasures
 
 #The ReplaceMissingValues object
 class ReplaceMissingValues(StatisticalMeasures):

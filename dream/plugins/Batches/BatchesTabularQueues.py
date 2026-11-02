@@ -3,7 +3,7 @@ import json
 import time
 import random
 import operator
-import StringIO
+import io
 import xlrd
 import math
 
@@ -35,15 +35,15 @@ class BatchesTabularQueues(plugin.OutputPreparationPlugin):
                     totalLevel=0
                     minLevel=float('inf')
                     # count the minimum that has no zero duration
-                    for level, duration in timeListDict.iteritems():
+                    for level, duration in timeListDict.items():
                         if duration and (level<minLevel):
                             minLevel=level
                             
-                    for level, duration in timeListDict.iteritems():
+                    for level, duration in timeListDict.items():
                         totalLevel+=level*duration
                     averageLevel=totalLevel/float(maxSimTime)
                     totalDistance=0
-                    for level, duration in timeListDict.iteritems():
+                    for level, duration in timeListDict.items():
                         totalDistance+=((level-averageLevel)*(level-averageLevel))*duration
                     stdevLevel=math.sqrt(totalDistance/float(maxSimTime-1))
                     data['result']['result_list'][-1]['buffer_output'].append([bufferId,finalValue,

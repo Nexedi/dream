@@ -38,11 +38,11 @@ class ConnectionData(object):
         '''
     def __init__(self, seekName='ServerData', file_path='',implicitExt='txt', number_of_cursors=0):
         if file_path=='':
-            file_path=raw_input('insert the path to the file containing the connection data:')
+            file_path=eval(input('insert the path to the file containing the connection data:'))
         self.number_of_cursors=number_of_cursors
         self.cursors=[]                             # list of cursors
         self.file_path=file_path
-        print self.file_path
+        print((self.file_path))
         self.file_name=seekName
         self.file_extension=implicitExt
         cnxnInfo=self.getConnectionInfo()

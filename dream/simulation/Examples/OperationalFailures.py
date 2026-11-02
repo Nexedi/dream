@@ -241,21 +241,21 @@ runSimulation(objectList, maxSimTime, numberOfReplications=20,trace='No')
 PRt=sum(E.Exits)/float(len(E.Exits))
 PRg=sum(E.GoodExits)/float(len(E.GoodExits))
 # B123ABF=sum(B123.BufferLevel)/float(len(B123.BufferLevel))
-print E.Exits
-print E.GoodExits
-print G.AverageWIP
-print 'PRt=',PRt/float(maxSimTime)
-print 'PRg=',PRg/float(maxSimTime)
+print((E.Exits))
+print((E.GoodExits))
+print((G.AverageWIP))
+print(('PRt=',PRt/float(maxSimTime)))
+print(('PRg=',PRg/float(maxSimTime)))
 # print 'B123 average buffer level=',B123ABF
 for M in [M1,M2,M3]:
     GE=sum(M.GoodExits)/float(len(M.GoodExits))
-    print 'PRg'+M.id,'=',GE/float(maxSimTime)
+    print(('PRg'+M.id,'=',GE/float(maxSimTime)))
     
 AVGWIP=sum(G.AverageWIP)/float(len(G.AverageWIP))
-print 'AVGWIP=',AVGWIP
+print(('AVGWIP=',AVGWIP))
     
 # ExcelHandler.outputTrace('OperationalFailures')
-print "running time=",time.time()-start
+print(("running time=",time.time()-start))
 
 from rpy2 import robjects
 from rpy2.robjects.vectors import IntVector, FloatVector, StrVector

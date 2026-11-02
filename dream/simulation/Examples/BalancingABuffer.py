@@ -6,11 +6,11 @@ def balanceQueue(buffer, refillLevel=1):
     # get the internal queue of the buffer
     objectQueue=buffer.getActiveObjectQueue()
     numInQueue=len(objectQueue)
-    print '-'*50
-    print 'at time=', G.env.now
+    print(('-'*50))
+    print(('at time=', G.env.now))
     # check if the buffer is empty and if yes fill it with 5 parts
     if numInQueue==0:
-        print 'buffer is starving, I will bring 5 parts'
+        print('buffer is starving, I will bring 5 parts')
         for i in range(refillLevel):
             # calculate the id and name of the new part
             partId='P'+str(G.numOfParts)
@@ -22,7 +22,7 @@ def balanceQueue(buffer, refillLevel=1):
             G.numOfParts+=1
     # else do nothing        
     else:
-        print 'buffer has', numInQueue, 'parts. No need to bring more'
+        print(('buffer has', numInQueue, 'parts. No need to bring more'))
 
 #define the objects of the model 
 Q=Queue('Q1','Queue', capacity=float('inf'))
@@ -56,9 +56,9 @@ def main(test=0):
               "working_ratio": working_ratio}
 
     #print the results
-    print '='*50
-    print "the system produced", E.numOfExits, "parts"
-    print "the total working ratio of the Machine is", working_ratio, "%"
+    print(('='*50))
+    print(("the system produced", E.numOfExits, "parts"))
+    print(("the total working ratio of the Machine is", working_ratio, "%"))
 
 
 if __name__ == '__main__':

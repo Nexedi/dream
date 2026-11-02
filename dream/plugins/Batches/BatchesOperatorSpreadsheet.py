@@ -1,6 +1,7 @@
 from dream.plugins import plugin
 import xlwt
-import StringIO
+import io
+import base64
 
 class BatchesOperatorSpreadsheet(plugin.OutputPreparationPlugin):
   """ Output the schedule of operators in an Excel file to be downloaded
@@ -70,9 +71,9 @@ class BatchesOperatorSpreadsheet(plugin.OutputPreparationPlugin):
                 rowIndex+=1
     
     # return the workbook as encoded
-    scheduleStringIO = StringIO.StringIO()
-    scheduleFile.save(scheduleStringIO)
-    encodedScheduleFile=scheduleStringIO.getvalue().encode('base64') 
+    scheduleBytesIO = io.BytesIO()
+    scheduleFile.save(scheduleBytesIO)
+    encodedScheduleFile=base64.b64encode(scheduleBytesIO.getvalue()).decode('ascii') 
     data['result']['result_list'][-1][self.configuration_dict['output_id']] = {
       'name': 'Operator_Schedule.xls',
       'mime_type': 'application/vnd.ms-excel',

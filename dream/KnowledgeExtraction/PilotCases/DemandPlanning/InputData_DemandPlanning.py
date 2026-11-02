@@ -31,7 +31,7 @@ from xlwt import Workbook
 import json
 import xlrd
 import random
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 def generateDemandPlanning(input_url, PPOSQuantity=1000, PlannedWeek=1, PPOSToBeDisaggregated='PPOS1', 
                            MinPackagingSize=10, planningHorizon=10):
@@ -43,7 +43,7 @@ def generateDemandPlanning(input_url, PPOSQuantity=1000, PlannedWeek=1, PPOSToBe
     
     # Read data from the exported Excel file from RapidMiner and call the Import_Excel object of the KE tool to import this data in the tool
 
-    demand_data = urllib.urlopen(input_url).read()
+    demand_data = urllib.request.urlopen(input_url).read()
     workbook = xlrd.open_workbook(file_contents=demand_data)
 
     worksheets = workbook.sheet_names()
@@ -70,7 +70,7 @@ def generateDemandPlanning(input_url, PPOSQuantity=1000, PlannedWeek=1, PPOSToBe
         """Return a randomly chosen list of n positive integers summing to total.
         Each such list is equally likely to occur."""
      
-        dividers = sorted(random.sample(xrange(1, total), n - 1))
+        dividers = sorted(random.sample(range(1, total), n - 1))
         return [a - b for a, b in zip(dividers + [total], [0] + dividers)]
 
     def constrained_sum_sample_nonneg(n, total):
@@ -216,8 +216,8 @@ def generateDemandPlanning(input_url, PPOSQuantity=1000, PlannedWeek=1, PPOSToBe
     #write json file
     PPOSProfileFile.write(PPOSProfileString)
     
-    import StringIO
-    out = StringIO.StringIO()
+    import io
+    out = io.StringIO()
     book.save(out)
     book.save('DP.xls')
     return out.getvalue()

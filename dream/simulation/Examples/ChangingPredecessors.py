@@ -21,7 +21,7 @@ def changeMachinePredecessor(machine, possiblePredecessors):
         # a succeed function on an event must always take attributes the transmitter and the time of the event
         succeedTuple=(machine, G.env.now)
         machine.previous[0].canDispose.succeed(succeedTuple)
-    print G.env.now, 'from now on the machine will take from', machine.previous[0].id
+    print((G.env.now, 'from now on the machine will take from', machine.previous[0].id))
         
 #define the objects of the model 
 Q1=Queue('Q1','Queue1', capacity=float('inf'))
@@ -66,9 +66,9 @@ def main(test=0):
             "simulationTime":E.timeLastEntityLeft,
             "working_ratio": working_ratio}
     #print the results
-    print '='*50
-    print "the system produced", E.numOfExits, "parts in", E.timeLastEntityLeft, "minutes"
-    print "the total working ratio of the Machine is", working_ratio, "%"
+    print(('='*50))
+    print(("the system produced", E.numOfExits, "parts in", E.timeLastEntityLeft, "minutes"))
+    print(("the total working ratio of the Machine is", working_ratio, "%"))
     ExcelHandler.outputTrace('ChangingPredecessors')
 
 if __name__ == '__main__':

@@ -27,7 +27,7 @@ Class that acts as an abstract. It should have no instances. All the Entities sh
 
 # from SimPy.Simulation import now
 import simpy
-from ManPyObject import ManPyObject
+from .ManPyObject import ManPyObject
 
 # ===========================================================================
 # The entity object 
@@ -59,7 +59,7 @@ class Entity(ManPyObject):
         self.currentStation=currentStation
         #         values to be used in the internal processing of compoundObjects
         self.internal = False               # informs if the entity is being processed internally
-        if isinstance(isCritical, unicode):
+        if isinstance(isCritical, str):
             self.isCritical=bool(int(isCritical))
         elif isinstance(isCritical, int): 
             self.isCritical=bool(isCritical)          # flag to inform weather the entity is critical -> preemption

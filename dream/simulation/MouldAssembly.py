@@ -61,10 +61,10 @@ as a dictionary with the following layout if the mould is not already in WIP
 There is no need to assign an exit, exit is assigned automatically by the createMould method
 TODOs: check the case when a mould is already in the WIP by the beginning of the simulation
 '''
-from MachineJobShop import MachineJobShop
+from .MachineJobShop import MachineJobShop
 import simpy
-from Globals import G
-from RandomNumberGenerator import RandomNumberGenerator
+from .Globals import G
+from .RandomNumberGenerator import RandomNumberGenerator
 
 # =======================================================================
 # Error in the assembling of the mould
@@ -82,7 +82,7 @@ class MouldAssembly(MachineJobShop):
     # parses inputs if they are given in a dictionary
     # =======================================================================       
     def parseInputs(self, **kw):
-        from Globals import G
+        from .Globals import G
         G.MouldAssemblyList.append(self)
 
     # =======================================================================
@@ -145,7 +145,7 @@ class MouldAssembly(MachineJobShop):
                     raise AssembleMouldError('The orderComponents received by the assembler must have the\
                                                 same parent order')
             except AssembleMouldError as mouldError:
-                print 'Mould Assembly Error: {0}'.format(mouldError)
+                print(('Mould Assembly Error: {0}'.format(mouldError)))
                 return False
         # perform the assembly-action and return the assembled mould
         activeEntity = activeObject.assemble()
@@ -207,7 +207,7 @@ class MouldAssembly(MachineJobShop):
                 # check if there is a need for manual processing
                 self.checkForManualOperation(type='Setup',entity=self.mouldToBeCreated)
                 # set the created mould as WIP
-                import Globals
+                from . import Globals
                 Globals.setWIP([self.mouldToBeCreated])
                 # read the activeObjectQueue again as it has been updated by the setWIP()
                 activeObjectQueue=activeObject.getActiveObjectQueue()
@@ -219,7 +219,7 @@ class MouldAssembly(MachineJobShop):
             else:
                 raise AssembleMouldError('There is no mould to be assembled')
         except AssembleMouldError as mouldError:
-            print 'Mould Assembly Error: {0}'.format(mouldError)
+            print(('Mould Assembly Error: {0}'.format(mouldError)))
             
     # =======================================================================
     # creates the mould
@@ -243,7 +243,7 @@ class MouldAssembly(MachineJobShop):
             self.rng=RandomNumberGenerator(self, processingTime)
             self.procTime=self.rng.generateNumber()
             # update the activeObject's processing time according to the readings in the mould's route
-            processDistType=processingTime.keys()[0]
+            processDistType=list(processingTime.keys())[0]
             procTime=float(processingTime[processDistType].get('mean', 0))
             processOpType=firstStep.get('operationType',{}).get('Processing','not found') # can be manual/automatic
             # task_id
@@ -262,7 +262,7 @@ class MouldAssembly(MachineJobShop):
                 setupTime=self.getOperationTime(setupTime)
                 self.stpRng=RandomNumberGenerator(self, setupTime)
                 # update the activeObject's processing time according to the readings in the mould's route
-                setupDistType=setupTime.keys()[0]
+                setupDistType=list(setupTime.keys())[0]
                 setTime=float(setupTime[setupDistType].get('mean', 0))
                 setupOpType=firstStep.get('operationType',{}).get('Setup','not found') # can be manual/automatic
                 # update the first step of the route with the activeObjects id as sole element of the stationIdsList
@@ -314,7 +314,7 @@ class MouldAssembly(MachineJobShop):
                 if key not in ('_class', 'id'):
                     extraPropertyDict[key] = value
             # create and initiate the OrderComponent
-            from Mould import Mould
+            from .Mould import Mould
             M=Mould(id, name, route, \
                               priority=self.mouldParent.priority, \
                               order=self.mouldParent,\
@@ -332,6 +332,6 @@ class MouldAssembly(MachineJobShop):
             M.initialize()
         except:
             # added for testing
-            print 'the mould to be created', component.get('name', 'not found'), 'cannot be created', 'time', self.env.now
+            print(('the mould to be created', component.get('name', 'not found'), 'cannot be created', 'time', self.env.now))
             raise
         

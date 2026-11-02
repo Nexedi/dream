@@ -63,8 +63,8 @@ def main(test=0):
     # print the results
     for job in [J1,J2,J3]: 
         for record in job.schedule:
-            print job.name, "got into", record["station"].objName, "at", record["entranceTime"]
-        print "-"*30    
+            print((job.name, "got into", record["station"].objName, "at", record["entranceTime"]))
+        print(("-"*30))    
         
 if __name__ == '__main__':
     main()

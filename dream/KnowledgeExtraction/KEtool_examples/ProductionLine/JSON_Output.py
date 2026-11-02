@@ -31,7 +31,7 @@ def JSON_example(list1,list2):
     jsonFile.close()
        
     nodes=data.get('nodes',{})        
-    for (element_id,element) in nodes.iteritems():
+    for (element_id,element) in nodes.items():
         name=element.get('name')
         scrapQuantity=element.get('scrapQuantity',{})
         processingTime=element.get('processingTime',{})

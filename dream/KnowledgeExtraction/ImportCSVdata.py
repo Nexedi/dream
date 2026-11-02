@@ -27,7 +27,7 @@ class ImportCSVdata(object):
 #This object reads data from a CSV document
     def Input_data(self,fileName):         #This method takes as an argument the Name of the CSV file
         #Opens the CSV for the reader to use
-        reader = csv.reader(open(fileName, "rb"), delimiter = ',')
+        reader = csv.reader(open(fileName, "r"), delimiter = ',')
         headers=[]   #Create a new list to insert the labels of the data sets
         csvInput=list(reader)
         for element in csvInput[0]:

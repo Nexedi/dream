@@ -1,3 +1,4 @@
+import base64
 '''
 Created on 1 Aug 2015
 
@@ -18,6 +19,6 @@ class PostProcessingOfferPhase(plugin.OutputPreparationPlugin):
     data['result']['result_list'][-1][self.configuration_dict['output_id']] = {
       'name': 'Result.xlsx',
       'mime_type': 'application/vnd.ms-excel',
-      'data': G.tabSchedule.xlsx.encode('base64')
+      'data': base64.b64encode(G.tabSchedule.xlsx).decode('ascii')
     }
     return data
