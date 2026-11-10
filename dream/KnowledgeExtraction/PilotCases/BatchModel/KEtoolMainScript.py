@@ -22,14 +22,14 @@ Created on 17 Apr 2015
 # along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
 # ===========================================================================
 
-from __future__ import division
+
 from dream.KnowledgeExtraction.StatisticalMeasures import StatisticalMeasures
 from dream.KnowledgeExtraction.DistributionFitting import Distributions
 from dream.KnowledgeExtraction.DistributionFitting import DistFittest
 from dream.KnowledgeExtraction.ReplaceMissingValues import ReplaceMissingValues
 from dream.KnowledgeExtraction.ImportDatabase import ConnectionData
 from dream.KnowledgeExtraction.DetectOutliers import DetectOutliers
-from JSONOutput import JSONOutput
+from dream.KnowledgeExtraction.JSONOutput import JSONOutput
 from dream.KnowledgeExtraction.CMSDOutput import CMSDOutput
 from xml.etree import ElementTree as et
 # from WIP_Identifier import currentWIP
@@ -38,7 +38,7 @@ from dateutil.parser import *
 import datetime
 from time import mktime
 
-cnxn=ConnectionData(seekName='ServerData', file_path='C:\Users\Panos\Documents\DB_Approach\BatchModel', implicitExt='txt', number_of_cursors=3)
+cnxn=ConnectionData(seekName='ServerData', file_path=r'C:\Users\Panos\Documents\DB_Approach\BatchModel', implicitExt='txt', number_of_cursors=3)
 cursors=cnxn.getCursors()
 
 mesExtract=cursors[0].execute("""

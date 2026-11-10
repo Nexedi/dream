@@ -2849,22 +2849,22 @@
      {
       "entranceTime": 0.0, 
       "exitTime": 1.0, 
-      "stationId": "EEP"
-     }, 
-     {
-      "entranceTime": 0.0, 
-      "exitTime": 1.0, 
-      "stationId": "SMF"
-     }, 
-     {
-      "entranceTime": 0.0, 
-      "exitTime": 1.0, 
       "stationId": "CNC"
      }, 
      {
       "entranceTime": 0.0, 
       "exitTime": 1.0, 
+      "stationId": "EEP"
+     }, 
+     {
+      "entranceTime": 0.0, 
+      "exitTime": 1.0, 
       "stationId": "MCH"
+     }, 
+     {
+      "entranceTime": 0.0, 
+      "exitTime": 1.0, 
+      "stationId": "SMF"
      }, 
      {
       "entranceTime": 1.0, 
@@ -2898,12 +2898,12 @@
      {
       "entranceTime": 0.0, 
       "exitTime": 1.0, 
-      "stationId": "EEP"
+      "stationId": "CNC"
      }, 
      {
       "entranceTime": 0.0, 
       "exitTime": 1.0, 
-      "stationId": "CNC"
+      "stationId": "EEP"
      }, 
      {
       "entranceTime": 0.0, 
@@ -2996,12 +2996,12 @@
      {
       "entranceTime": 0.0, 
       "exitTime": 1.0, 
-      "stationId": "EEP"
+      "stationId": "CNC"
      }, 
      {
       "entranceTime": 0.0, 
       "exitTime": 1.0, 
-      "stationId": "CNC"
+      "stationId": "EEP"
      }, 
      {
       "entranceTime": 0.0, 
@@ -3044,23 +3044,23 @@
     "schedule": [
      {
       "entranceTime": 0.0, 
-      "exitTime": 1.0, 
-      "stationId": "EEP"
-     }, 
-     {
-      "entranceTime": 0.0, 
       "exitTime": 2.0, 
       "stationId": "CNC"
      }, 
      {
-      "entranceTime": 1.0, 
-      "exitTime": 7.0, 
-      "stationId": "SMF"
+      "entranceTime": 0.0, 
+      "exitTime": 1.0, 
+      "stationId": "EEP"
      }, 
      {
       "entranceTime": 1.0, 
       "exitTime": 2.0, 
       "stationId": "MCH"
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "exitTime": 7.0, 
+      "stationId": "SMF"
      }, 
      {
       "entranceTime": 2.0, 
@@ -3094,12 +3094,12 @@
      {
       "entranceTime": 0.0, 
       "exitTime": 1.0, 
-      "stationId": "EEP"
+      "stationId": "CNC"
      }, 
      {
       "entranceTime": 0.0, 
       "exitTime": 1.0, 
-      "stationId": "CNC"
+      "stationId": "EEP"
      }, 
      {
       "entranceTime": 1.0, 
@@ -3142,23 +3142,23 @@
     "schedule": [
      {
       "entranceTime": 0.0, 
-      "exitTime": 1.0, 
-      "stationId": "EEP"
-     }, 
-     {
-      "entranceTime": 0.0, 
       "exitTime": 2.0, 
       "stationId": "CNC"
      }, 
      {
-      "entranceTime": 1.0, 
-      "exitTime": 7.0, 
-      "stationId": "SMF"
+      "entranceTime": 0.0, 
+      "exitTime": 1.0, 
+      "stationId": "EEP"
      }, 
      {
       "entranceTime": 1.0, 
       "exitTime": 2.0, 
       "stationId": "MCH"
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "exitTime": 7.0, 
+      "stationId": "SMF"
      }, 
      {
       "entranceTime": 2.0, 

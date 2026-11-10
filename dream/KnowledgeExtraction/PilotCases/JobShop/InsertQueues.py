@@ -54,7 +54,7 @@ class InsertQueues(plugin.InputPreparationPlugin):
     """returns the exits of the system"""
     nodes = self.data["graph"]["node"]
     exitList = []
-    for nodeID, node in nodes.iteritems():
+    for nodeID, node in nodes.items():
       if node["_class"] in EXIT_TYPE_SET:
         exitList.append(nodeID)
     return exitList

@@ -12,7 +12,7 @@ class InsertWIP(plugin.InputPreparationPlugin):
     """ updates the Work in Process of each station according to the BOM
     """
     WIP = data["input"].get("BOM",{}).get("WIP", {})
-    for partID, work in WIP.iteritems():
+    for partID, work in WIP.items():
       stationID = work.get("station", None).replace(' ','').split('-')[0]
       if not stationID:
         break

@@ -6,6 +6,7 @@ import xlrd
 from zope.dottedname.resolve import resolve
 
 from dream.simulation.LineGenerationJSON import main as simulate_line_json
+import base64
 
 class Plugin(object):
   """Base class for pre-post processing Plugin.
@@ -19,7 +20,7 @@ class Plugin(object):
     predecessors=[]
     from copy import copy    
     edges=copy(data['graph']['edge'])
-    for edge_id,edge in edges.iteritems():
+    for edge_id,edge in edges.items():
         if edge['destination']==node_id:
             predecessors.append(edge['source'])
     return predecessors
@@ -29,7 +30,7 @@ class Plugin(object):
     successors=[]
     from copy import copy    
     edges=copy(data['graph']['edge'])
-    for edge_id,edge in edges.iteritems():
+    for edge_id,edge in edges.items():
         if edge['source']==node_id:
             successors.append(edge['destination'])
     return successors
@@ -81,7 +82,7 @@ class Plugin(object):
   # sheet to the DREAM JSON format for spreadsheets
   def convertExcelToList(self, ExcelData, sheetName):
     mime_type, attachement_data = ExcelData[len('data:'):].split(';base64,', 1)
-    attachement_data = attachement_data.decode('base64')
+    attachement_data = attachement_data=base64.b64decode(attachement_data)
     wbin = xlrd.open_workbook(file_contents=attachement_data)
     sheet = wbin.sheet_by_name(sheetName)
     listData=[]

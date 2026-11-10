@@ -25,7 +25,7 @@ Created on 26 Aug 2014
 Inherits from QueueJobShop. Checks the condition of (a) order component(s) before it can dispose them/it
 '''
 
-from QueueJobShop import QueueJobShop
+from .QueueJobShop import QueueJobShop
 
 # ===========================================================================
 # Error in the setting up of the WIP
@@ -76,7 +76,7 @@ class ConditionalBuffer(QueueJobShop):
     #===========================================================================
     def getEntity(self):
         activeEntity=QueueJobShop.getEntity(self)
-        from Globals import G
+        from .Globals import G
         # for all the entities in the EntityList
         for entity in G.EntityList:
             requiredParts=entity.getRequiredParts()

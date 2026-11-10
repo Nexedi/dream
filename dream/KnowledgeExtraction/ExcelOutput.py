@@ -24,8 +24,8 @@ Created on 19 Feb 2014
 '''
 from xlwt import Workbook
 import rpy2.robjects as robjects
-from StatisticalMeasures import StatisticalMeasures
-from DistributionFitting import DistFittest
+from .StatisticalMeasures import StatisticalMeasures
+from .DistributionFitting import DistFittest
 
 #=========================================== The ExcelOutput object =============================================================#
 #The ExcelOutput object export in Excel document both the calculated statistical measures and the distribution fitting test of a dataset 
@@ -239,20 +239,20 @@ class ExcelOutput(StatisticalMeasures,DistFittest):
             del A['min']
             del A['max']
             del A['distributionType']
-            sheet2.write(13,11,(A.keys()[0]))
-            sheet2.write(13,12,(A.keys()[1]))
-            sheet2.write(14,11,(A.values()[0]))
-            sheet2.write(14,12,(A.values()[1]))
+            sheet2.write(13,11,(list(A.keys())[0]))
+            sheet2.write(13,12,(list(A.keys())[1]))
+            sheet2.write(14,11,(list(A.values())[0]))
+            sheet2.write(14,12,(list(A.values())[1]))
         elif A['distributionType']=='Exp' or A['distributionType']=='Poisson' or A['distributionType']=='Geometric':
             del A['distributionType']
-            sheet2.write(13,11,(A.keys()[0]))
-            sheet2.write(14,11,(A.values()[0]))
+            sheet2.write(13,11,(list(A.keys())[0]))
+            sheet2.write(14,11,(list(A.values())[0]))
              
         else:
             del A['distributionType']
-            sheet2.write(13,11,(A.keys()[0]))
-            sheet2.write(13,12,(A.keys()[1]))
-            sheet2.write(14,11,(A.values()[0]))
-            sheet2.write(14,12,(A.values()[1]))
+            sheet2.write(13,11,(list(A.keys())[0]))
+            sheet2.write(13,12,(list(A.keys())[1]))
+            sheet2.write(14,11,(list(A.values())[0]))
+            sheet2.write(14,12,(list(A.values())[1]))
         
         book.save(fileName)    #Save the excel document 

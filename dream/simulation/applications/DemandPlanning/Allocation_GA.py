@@ -26,11 +26,11 @@ Implements GA for identifying best SP sequence order in forecast disaggregation.
 Equivalent of Allocation_ACO for orders disaggregation
 '''
 
-from AllocationRoutine_ForecastGA import AllocationRoutine_ForecastGA
-from AllocationRoutine_Forecast import AllocationRoutine_Forecast
-from Globals import G
-from RankingAlgorithms import rankingElitist, compareChromosomes, finalRanking
-from GAoperators import order2x, displacement
+from .AllocationRoutine_ForecastGA import AllocationRoutine_ForecastGA
+from .AllocationRoutine_Forecast import AllocationRoutine_Forecast
+from .Globals import G
+from .RankingAlgorithms import rankingElitist, compareChromosomes, finalRanking
+from .GAoperators import order2x, displacement
 from numpy import random
 from copy import deepcopy
 
@@ -53,7 +53,7 @@ def Allocation_GA(initialWeek, itemList, itemType,GAresults):
     #===========================
     # generate first population
     #===========================
-    print 'generation 0'
+    print('generation 0')
     while chromoID < G.popSizeGA:        
         
         # generate new order sequence
@@ -82,7 +82,7 @@ def Allocation_GA(initialWeek, itemList, itemType,GAresults):
     # start optimisation cycle    
     for gen in range(1,G.noGenGA):
         
-        print 'generation', gen
+        print('generation', gen)
         
         # selection: elitist selection with linear ranking procedure for completing the population
         chromosomes, bc = rankingElitist(chromosomes,G.elitistSelection)

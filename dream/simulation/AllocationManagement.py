@@ -11,11 +11,11 @@ Equivalent to M2 in MATLAB functions
 
 import xlwt
 import xlrd
-from AllocationRoutine import AllocationRoutine
-from CoreObject import CoreObject
-from Globals import G
-from ObjectInterruption import ObjectInterruption
-from FutureDemandCreator import FutureDemandCreator
+from .AllocationRoutine import AllocationRoutine
+from .CoreObject import CoreObject
+from .Globals import G
+from .ObjectInterruption import ObjectInterruption
+from .FutureDemandCreator import FutureDemandCreator
 
 class AllocationManagement(ObjectInterruption): 
     def __init__(self, id=id, name=None, argumentDict={}):
@@ -29,7 +29,7 @@ class AllocationManagement(ObjectInterruption):
         ObjectInterruption.initialize(self)
         self.readData()
         self.FDC=FutureDemandCreator()
-        from Globals import G
+        from .Globals import G
         G.AllocationManagementList.append(self)
         
     def run(self):

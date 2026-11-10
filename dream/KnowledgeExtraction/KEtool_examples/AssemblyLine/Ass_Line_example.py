@@ -23,17 +23,17 @@ Created on 23 Sep 2014
 # ===========================================================================
 
 #================= Main script of KE tool  =====================================#
-from __future__ import division
+
 from dream.KnowledgeExtraction.StatisticalMeasures import StatisticalMeasures
 from dream.KnowledgeExtraction.DistributionFitting import Distributions
 from dream.KnowledgeExtraction.DistributionFitting import DistFittest
 from dream.KnowledgeExtraction.ReplaceMissingValues import ReplaceMissingValues
 from dream.KnowledgeExtraction.ImportExceldata import ImportExceldata
 from dream.KnowledgeExtraction.DetectOutliers import DetectOutliers
-from JSONOutput import JSONOutput
+from .JSONOutput import JSONOutput
 from dream.KnowledgeExtraction.CMSDOutput import CMSDOutput
 from xml.etree import ElementTree as et
-from WIP_Identifier import currentWIP
+from .WIP_Identifier import currentWIP
 import xlrd
 from dateutil.parser import *
 import datetime

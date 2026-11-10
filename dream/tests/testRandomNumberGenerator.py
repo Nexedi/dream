@@ -26,8 +26,8 @@ obj = Source(id='dummy_obj', name="Dummy obj to instanciate RNG")
 class RandomNumberGeneratorTestCase(TestCase):
     def testFixed(self):
         rng = RandomNumberGenerator(obj, distribution={'Fixed': {'mean':32}})
-        self.assertEquals(rng.generateNumber(), 32)
-        self.assertEquals(rng.generateNumber(), 32)
+        self.assertEqual(rng.generateNumber(), 32)
+        self.assertEqual(rng.generateNumber(), 32)
 
     def testExp(self):
         rng = RandomNumberGenerator(obj, distribution={'Exp': {'mean':10}})

@@ -28,8 +28,8 @@ def main(test=0):
               "working_ratio": working_ratio}
 
     #print the results
-    print "the system produced", E.numOfExits, "batches"
-    print "the total working ratio of the Machine is", working_ratio, "%"
+    print("the system produced", E.numOfExits, "batches")
+    print("the total working ratio of the Machine is", working_ratio, "%")
 
 if __name__ == '__main__':
     main()

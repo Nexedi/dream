@@ -20,7 +20,7 @@ class AvailableCapacitySpreadsheet(plugin.InputPreparationPlugin):
         now = strptime(data['general']['currentDate'], '%Y/%m/%d')
         if capacityData:           
             poolDict={}
-            for node_id, node in nodes.iteritems():
+            for node_id, node in nodes.items():
                 pool=node.get('pool',None)
                 if pool and not pool in nodes.keys():
                     if not poolDict.get(pool,None):

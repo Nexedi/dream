@@ -30,7 +30,7 @@ Models an Interruption that schedules the operation of the machines by different
 # from SimPy.Simulation import Process, Resource, SimEvent
 import simpy
 
-from OperatorRouter import Router
+from .OperatorRouter import Router
 # from SimPy.Simulation import waituntil, now, hold, request, release, waitevent
 
 
@@ -182,7 +182,7 @@ class RouterManaged(Router):
     # signal stations that wait for load operators
     #===========================================================================
     def signalOperatedStations(self):
-        from Globals import G
+        from .Globals import G
         for operator in self.candidateOperators:
             station=operator.isAssignedTo()
             if station:
@@ -208,7 +208,7 @@ class RouterManaged(Router):
     # find the stations that can be signalled by the router
     #===========================================================================
     def findPendingObjects(self):
-        from Globals import G
+        from .Globals import G
         for entity in G.pendingEntities:
             if entity.currentStation in G.MachineList:
                 if entity.currentStation.broker.waitForOperator:
@@ -228,7 +228,7 @@ class RouterManaged(Router):
     # finding the entities that require manager now
     #===========================================================================
     def findPendingEntities(self):
-        from Globals import G
+        from .Globals import G
         self.pending=[]             # list of entities that are pending
         for machine in self.pendingMachines:
             self.pending.append(machine.currentEntity)
@@ -280,7 +280,7 @@ class RouterManaged(Router):
     #     and by which machines
     #=======================================================================
     def sortCandidateEntities(self):
-        from Globals import G
+        from .Globals import G
         
         # TODO: the operator here actually chooses entity. This may pose a problem as two entities may be equivalent
         #       and as the operators chooses the sorting of the queue (if they do reside in the same queue is not taken into account)

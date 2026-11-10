@@ -25,8 +25,8 @@ Created on 20 Dec 2013
 OrderComponent is an Entity that is a component of a broader order
 '''
 
-from Globals import G
-from Job import Job
+from .Globals import G
+from .Job import Job
 
 # ===========================================================================
 # The OrderComponent object

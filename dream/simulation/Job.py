@@ -26,8 +26,8 @@ Job is an Entity that implements the logic of a job shop. Job carries attributes
 in the system and also in the processing times at each station
 '''
 
-from Globals import G
-from Entity import Entity
+from .Globals import G
+from .Entity import Entity
 
 # =======================================================================
 # The job object 
@@ -77,7 +77,7 @@ class Job(Entity):                                  # inherits from the Entity c
     # outputs results to JSON File 
     # =======================================================================
     def outputResultsJSON(self):
-        from Globals import G
+        from .Globals import G
         if(G.numberOfReplications==1):              #if we had just one replication output the results to excel
             json = { '_class': 'Dream.%s' % self.__class__.__name__,
                   'id': self.id,
@@ -162,13 +162,13 @@ class Job(Entity):                                  # inherits from the Entity c
             objectIds = self.route[0].get('stationIdsList',[])
             try:
                 if len(objectIds)==1:
-                    from Globals import findObjectById
+                    from .Globals import findObjectById
                     self.currentStation=findObjectById(objectIds[0])
                 else:
-                    from Globals import SetWipTypeError
+                    from .Globals import SetWipTypeError
                     raise SetWipTypeError('The starting station of the the entity is not defined uniquely')
             except SetWipTypeError as setWipError:
-                print 'WIP definition error: {0}'.format(setWipError)
+                print(('WIP definition error: {0}'.format(setWipError)))
     
     #===========================================================================
     # check if the requireParts of the entity next step sequence (route) have
@@ -204,7 +204,7 @@ class Job(Entity):                                  # inherits from the Entity c
                 # it means that the part has exhausted its route 
                 # if the sequence of the required part next step is smaller than the sequence of activeEntity's next step
                 # the activeEntity cannot proceed
-                if partNextSeq>nextSequence or not partNextSeq:
+                if (partNextSeq is not None and partNextSeq>nextSequence) or not partNextSeq:
                     # if the sequence of the requiredPart's currentStation is not zero then the 
                     # required part is currently being processed and thus the activeEntity cannot proceed
                     if not partCurrentSeq:
@@ -232,7 +232,7 @@ class Job(Entity):                                  # inherits from the Entity c
             requiredPartsIDs=self.remainingRoute[0].get('requiredParts',[])
             # if there are requested parts
             if requiredPartsIDs:
-                from Globals import findObjectById
+                from .Globals import findObjectById
                 for partID in requiredPartsIDs:
                     # find the objects with the corresponding IDs
                     part=findObjectById(partID)
@@ -256,7 +256,7 @@ class Job(Entity):                                  # inherits from the Entity c
         currentStation=self.currentStation  # the current station of the part
         curStepSeq=0                        # the sequence of the current process in the parts route
         # if the part is being currently processed in a Station
-        from Machine import Machine
+        from .Machine import Machine
         if issubclass(currentStation.__class__, Machine):
             for routeStep in self.route:
                 stepSeq=routeStep.get('sequence',0)
@@ -290,7 +290,7 @@ class Job(Entity):                                  # inherits from the Entity c
     
         '''
         currentStation=self.currentStation
-        from Machine import Machine
+        from .Machine import Machine
         if issubclass(currentStation.__class__, Machine):
             for routeStep in self.route:
                 stepResponsible=routeStep.get('operator',None)
@@ -300,14 +300,14 @@ class Job(Entity):                                  # inherits from the Entity c
                     break
         else:
             responsibleID=self.remainingRoute[0].get('operator',None)
-        from Globals import findObjectById
+        from .Globals import findObjectById
         responsible=findObjectById(responsibleID)
         return responsible
     #===========================================================================
     # method that finds a receiver for a candidate entity
     #===========================================================================
     def findCandidateReceiver(self):
-        from Globals import G
+        from .Globals import G
         router=G.RouterList[0]
         # initiate the local list variable available receivers
         availableReceivers=[x for x in self.candidateReceivers\

@@ -25,7 +25,7 @@ Created on 09 10 2014
 Customization of BatchReassembly so that it sends isRequested to the first Queue before
 '''
 
-from BatchReassembly import BatchReassembly
+from .BatchReassembly import BatchReassembly
 
 class BatchReassemblyBlocking(BatchReassembly):
 
@@ -34,7 +34,7 @@ class BatchReassemblyBlocking(BatchReassembly):
     # =======================================================================
     def removeEntity(self, entity=None):
         activeEntity=BatchReassembly.removeEntity(self, entity)
-        from Queue import Queue
+        from .Queue import Queue
         station=self
         # loop through the previous stations until a Queue is reached
         while 1:
@@ -56,8 +56,8 @@ class BatchReassemblyBlocking(BatchReassembly):
     def addBlockage(self): 
         # find the previous station
         station=self.previous[0]
-        from Globals import G
-        from ShiftScheduler import ShiftScheduler          
+        from .Globals import G
+        from .ShiftScheduler import ShiftScheduler          
         if self.timeLastBlockageStarted:
             # calculate how much time the previous station was offShift 
             offShift=0

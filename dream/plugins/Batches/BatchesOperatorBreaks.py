@@ -42,7 +42,7 @@ class BatchesOperatorBreaks(plugin.InputPreparationPlugin, TimeSupportMixin):
         # if element has spaces in beginning or in end remove them
         operators=self.stripStringsOfList(operators)
         # remove empty strings
-        operators = filter(bool, operators) 
+        operators = list(filter(bool, operators)) 
 
         i=4
         while row[i] not in ['', None]:

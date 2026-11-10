@@ -37,10 +37,10 @@ def main(test=0):
               "waiting_ratio": waiting_ratio}
         
     # print the results 
-    print "the system produced", E.numOfExits, "subbatches"        
-    print "the working ratio of", M.objName, "is", working_ratio
-    print "the blockage ratio of", M.objName, "is", blockage_ratio
-    print "the waiting ratio of", M.objName, "is", waiting_ratio
+    print("the system produced", E.numOfExits, "subbatches")        
+    print("the working ratio of", M.objName, "is", working_ratio)
+    print("the blockage ratio of", M.objName, "is", blockage_ratio)
+    print("the waiting ratio of", M.objName, "is", waiting_ratio)
 
     
 if __name__ == '__main__':

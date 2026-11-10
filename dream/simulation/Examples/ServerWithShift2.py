@@ -12,7 +12,7 @@ i = 0
 while i<100:
     shiftPattern.append([i,i+5])
     i+=10
-print shiftPattern
+print(shiftPattern)
 
 #create the shift
 SS=ShiftScheduler(victim=M, shiftPattern=shiftPattern) 
@@ -41,9 +41,9 @@ def main(test=0):
               "working_ratio": working_ratio}
         
     #print the results
-    print "the system produced", E.numOfExits, "parts"
-    print "the total working ratio of the Machine is", working_ratio, "%"
-    print "the total off-shift ratio of the Machine is", off_shift_ratio, "%"
+    print("the system produced", E.numOfExits, "parts")
+    print("the total working ratio of the Machine is", working_ratio, "%")
+    print("the total off-shift ratio of the Machine is", off_shift_ratio, "%")
 
 if __name__ == '__main__':
     main()

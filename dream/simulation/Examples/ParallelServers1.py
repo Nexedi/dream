@@ -36,9 +36,9 @@ def main(test=0):
               "working_ratio_M2": working_ratio_M2}
 
     #print the results
-    print "the system produced", E.numOfExits, "parts"
-    print "the working ratio of", M1.objName,  "is", working_ratio_M1, "%"
-    print "the working ratio of", M2.objName,  "is", working_ratio_M2, "%"
+    print("the system produced", E.numOfExits, "parts")
+    print("the working ratio of", M1.objName,  "is", working_ratio_M1, "%")
+    print("the working ratio of", M2.objName,  "is", working_ratio_M2, "%")
 
 if __name__ == '__main__':
     main()
