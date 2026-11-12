@@ -59,6 +59,6 @@ for  productId in E.finishedProductDict:
     totalFat=E.finishedProductDict[productId]['totalFat']
     exitTime=E.finishedProductDict[productId]['exitTime']
     fat=totalFat/float(volume)
-    print 'from', productId, volume, 'liters were produced of', fat, '% fat. Product ready at t=',exitTime
+    print('from', productId, volume, 'liters were produced of', fat, '% fat. Product ready at t=',exitTime)
     
-print 'Execution Time=',time.time()-start
+print('Execution Time=',time.time()-start)

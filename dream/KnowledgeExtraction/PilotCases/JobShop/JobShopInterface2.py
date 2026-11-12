@@ -22,10 +22,10 @@ Created on 9 Apr 2015
 # along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
 # ===========================================================================
 
-import Tkinter as tk
-from Tkinter import *
+import tkinter as tk
+from tkinter import *
 import pyodbc
-import tkMessageBox
+import tkinter.messagebox
 from datetime import datetime
  
 class Demo1( Frame ):
@@ -134,12 +134,12 @@ class TIMEIN(Frame):
     
     def recordTimeIn(self):
         self.timeIN = str(datetime.now())
-        print self.timeIN
+        print((self.timeIN))
         return   
 
     def recordStartTime(self):
         self.startTime = str(datetime.now())
-        print self.startTime
+        print((self.startTime))
         return
     
     def checkInsertedWP(self):
@@ -267,12 +267,12 @@ class TIMEOUT(Frame):
 
     def recordTimeIn(self):
         self.timeIN = str(datetime.now())
-        print self.timeIN
+        print((self.timeIN))
         return   
     
     def recordStartTime(self):
         self.startTime = str(datetime.now())
-        print self.startTime
+        print((self.startTime))
         return
     
     def checkInsertedWP(self):

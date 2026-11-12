@@ -41,9 +41,9 @@ def main(test=0):
               "working_ratio": working_ratio}
 
     #print the results
-    print "the system produced", E.numOfExits, "parts"
-    print "the blockage ratio of", M1.objName,  "is", blockage_ratio, "%"
-    print "the working ratio of", R.objName,"is", working_ratio, "%"
+    print("the system produced", E.numOfExits, "parts")
+    print("the blockage ratio of", M1.objName,  "is", blockage_ratio, "%")
+    print("the working ratio of", R.objName,"is", working_ratio, "%")
 
     #create a graph object
     from dream.KnowledgeExtraction.Plots import Graphs

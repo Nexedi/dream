@@ -22,7 +22,7 @@ Created on 19 Feb 2014
 
 @author: Panos
 '''
-from StatisticalMeasures import StatisticalMeasures
+from .StatisticalMeasures import StatisticalMeasures
 
 #The ReplaceMissingValues object
 class ReplaceMissingValues(StatisticalMeasures):
@@ -30,7 +30,7 @@ class ReplaceMissingValues(StatisticalMeasures):
     def ReplaceWithZero(self,mylist):          #Replace in the given list the missing values with zero
         i=0   
         for value in mylist:                    
-            if value is '' :
+            if value == '' :
                 mylist[i]=0.0                  #For the values in the list if there is a missing value replace it with zero
             i+=1  
         return mylist                          #Return the replaced list 
@@ -49,7 +49,7 @@ class ReplaceMissingValues(StatisticalMeasures):
         mean=self.mean(list1)
         i=0
         for value in mylist:
-            if value is '' :
+            if value == '' :
                 mylist[i]=mean                #For the values in the initial given list if there is a missing value replace it with the mean value of the new list
             i+=1 
         return mylist                         #Return the given list, in which the missing values are replaced with the mean value 
@@ -59,7 +59,7 @@ class ReplaceMissingValues(StatisticalMeasures):
         median=self.median(list1)                #Calculate the median value of the new list
         i=0
         for value in mylist:
-            if value is '' :
+            if value == '' :
                 mylist[i]=median                #For the values in the initial given list if there is a missing value replace it with the mean value of the new list
             i+=1 
         return mylist                         #Return the given list, in which the missing values are replaced with the mean value

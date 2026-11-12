@@ -23,7 +23,7 @@ Created on 30 Jan 2015
 @author: Anna
 '''
 
-from Globals import G
+from .Globals import G
 from numpy import array, mean, std, absolute
 
 def utilisationCalc1(ACOcapacityDict, initialWeek, ind):

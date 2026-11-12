@@ -32,20 +32,20 @@ class DateTimeConvert(plugin.InputPreparationPlugin, TimeSupportMixin):
         orders = BOM.get('productionOrders', [])
         wip = BOM.get('WIP', {})
         
-        for ent_key, entity in wip.iteritems():
+        for ent_key, entity in wip.items():
             task_id = entity.get('task_id', None)
             proc_time = 0;
             timeOut = entity.pop('timeOut', None)
             timeIn = entity.pop('timeIn', 'NA')
             if not timeIn=='NA':
                 timeIn = strptime(timeIn, '%Y-%m-%d %H:%M:%S')
-                print timeIn
+                print(timeIn)
             if timeOut:
                 entity['remainingProcessingTime'] = 0
             else:
                 #calculate the time difference between the TIMEIN and the moment the user wants to run the simulation (e.g. datetime.now())
                 timeDelta= now - timeIn
-                print timeDelta
+                print(timeDelta)
                 if self.timeUnit == 'second':
                   timeDiff = timeDelta.total_seconds() #24 * 60 * 60
                 elif self.timeUnit == 'minute':
@@ -62,7 +62,7 @@ class DateTimeConvert(plugin.InputPreparationPlugin, TimeSupportMixin):
                   timeDiff = timeDelta.total_seconds()/(60*60*24*7*30*360) #1 / 360.
                 else:
                   raise ValueError("Unsupported time unit %s" % self.timeUnit)
-                print timeDiff
+                print(timeDiff)
                 for order in orders:
                     comps = order.get('componentsList', [])
                     for comp in comps:

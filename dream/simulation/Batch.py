@@ -25,8 +25,8 @@ Created on 22 Oct 2013
 Batch is an Entity that contains a number of units
 '''
 
-from Entity import Entity
-from SubBatch import SubBatch
+from .Entity import Entity
+from .SubBatch import SubBatch
 
 #===============================================================================
 # The batch object

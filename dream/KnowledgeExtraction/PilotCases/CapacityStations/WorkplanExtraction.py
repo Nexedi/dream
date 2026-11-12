@@ -66,8 +66,8 @@ def dataExtraction(File):
                     workplan[orderId][wpId].insert(3, capacityRequired)
                     workplan[orderId][wpId].insert(4, earliestStart)
 #pop-up message that inform the user that he should insert the directory where he stores the workplans
-folder_path=raw_input('insert the path to the folder containing the required files:')
-print folder_path
+folder_path=input('insert the path to the folder containing the required files:')
+print(folder_path)
 os.chdir(folder_path)
 #create a list that hold the already inserted orders
 alreadyInserted=[]
@@ -76,7 +76,7 @@ cnxn=ConnectionData(seekName='ServerData', implicitExt='txt', number_of_cursors=
 cursor=cnxn.getCursors()
 #loop that searches the files in the given directory 
 for fileName in os.listdir("."):
-    print fileName
+    print(fileName)
     #using the xlrd python library, we open the documents
     xls_workbook = xlrd.open_workbook(fileName)
     #define Main the first sheet - sheet with the name 'Workplan'

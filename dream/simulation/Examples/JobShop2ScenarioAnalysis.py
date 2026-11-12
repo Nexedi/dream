@@ -39,7 +39,7 @@ def main(test=0):
         if test:
             return totalDelay    
         # print the total delay
-        print "running with", schedulingRule, "total delay is",totalDelay 
+        print("running with", schedulingRule, "total delay is",totalDelay) 
 
 if __name__ == '__main__':
     main()

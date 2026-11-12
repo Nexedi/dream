@@ -24,8 +24,8 @@ Created on 28 Feb 2014
 
 import xlrd
 import json
-from DistributionFitting import DistFittest
-from ImportExceldata import ImportExceldata
+from dream.KnowledgeExtraction.DistributionFitting import DistFittest
+from dream.KnowledgeExtraction.ImportExceldata import ImportExceldata
 
 workbook = xlrd.open_workbook('Mockup_ProcessingTimes.xls')      #Using xlrd library opens the Excel document with the input data 
 worksheets = workbook.sheet_names()
@@ -41,7 +41,7 @@ jsonFile.close()
 nodes = data['nodes'] 
 
 lista=[]
-for (element_id, element) in nodes.iteritems():  #This loop appends in a list the id's of the json file
+for (element_id, element) in nodes.items():  #This loop appends in a list the id's of the json file
     element['id'] = element_id 
     lista.append(element ['id'])
 
@@ -50,7 +50,7 @@ for element in ProcessingTimes:             #This loop searches the elements of 
     if element in lista:
         fittingDict[element]=B.ks_test(ProcessingTimes[element])
 
-for (element_id, element) in nodes.iteritems():  #This loop searches the ids in the json file and if the id exist in the dictionary with the distribution fitting results, replace the processing time node
+for (element_id, element) in nodes.items():  #This loop searches the ids in the json file and if the id exist in the dictionary with the distribution fitting results, replace the processing time node
     if element_id in fittingDict:
         element['processingTime']=fittingDict[element_id]
            

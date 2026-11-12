@@ -26,7 +26,7 @@ extends the Queue object so that it can act as a jobshop station. Preceding stat
 '''
 
 import simpy
-from Queue import Queue
+from .Queue import Queue
 
 # ===========================================================================
 # the QueueJobShop object
@@ -37,7 +37,7 @@ class QueueJobShop(Queue):
     # set all the objects in previous and next
     # =======================================================================
     def initialize(self):
-        from Globals import G
+        from .Globals import G
         self.previous=G.ObjList
         self.next=[]
         Queue.initialize(self)  #run default behaviour
@@ -121,7 +121,7 @@ class QueueJobShop(Queue):
     def updateNext(self,entity=None):
         activeEntity=entity
         # read the possible receivers - update the next list
-        import Globals
+        from . import Globals
         nextObjectIds=activeEntity.remainingRoute[1].get('stationIdsList',[])
         nextObjects = []
         for nextObjectId in nextObjectIds:
@@ -165,7 +165,7 @@ class QueueJobShop(Queue):
             activeObjectQueue.sort(key=lambda x: x==operator.candidateEntity, reverse=True)
         else:
             # added for testing
-            print 'there must be a caller defined for this kind of Queue sorting'
+            print('there must be a caller defined for this kind of Queue sorting')
     
     #===========================================================================
     # sort the entities of the queue for the receiver
@@ -173,7 +173,7 @@ class QueueJobShop(Queue):
     def sortEntitiesForReceiver(self, receiver=None):
         # TODO: if the receiver is already assigned an operator then the giver should sort for that manager
         activeObject=self.getActiveObject()
-        from Globals import G
+        from .Globals import G
         for operator in G.OperatorsList:
             if operator.isAssignedTo()==receiver:
                 activeObject.sortEntitiesForOperator(operator)

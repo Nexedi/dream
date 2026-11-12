@@ -31,8 +31,8 @@ def main(test=0):
       "working_ratio": working_ratio}
 
     #print the results
-    print "the system produced", E.numOfExits, "parts in", E.timeLastEntityLeft, "minutes"
-    print "the total working ratio of the Machine is", working_ratio, "%"
+    print("the system produced", E.numOfExits, "parts in", E.timeLastEntityLeft, "minutes")
+    print("the total working ratio of the Machine is", working_ratio, "%")
     ExcelHandler.outputTrace('Wip1')
 
 if __name__ == '__main__':
