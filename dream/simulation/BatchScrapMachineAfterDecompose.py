@@ -25,7 +25,7 @@ Created on 09 10 2014
 Customization of BatchReassembly so that it sends isRequested to the first Queue before
 '''
 
-from BatchScrapMachine import BatchScrapMachine
+from .BatchScrapMachine import BatchScrapMachine
 
 class BatchScrapMachineAfterDecompose(BatchScrapMachine):
 
@@ -34,7 +34,7 @@ class BatchScrapMachineAfterDecompose(BatchScrapMachine):
     # =======================================================================
     def removeEntity(self, entity=None):
         activeEntity=BatchScrapMachine.removeEntity(self, entity)
-        from BatchDecompositionBlocking import BatchDecompositionBlocking
+        from .BatchDecompositionBlocking import BatchDecompositionBlocking
         decomposition = self.previous[0]
         if decomposition.__class__ is BatchDecompositionBlocking:
             buffer=decomposition.previous[0]

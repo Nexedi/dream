@@ -23,9 +23,9 @@ Created on 15 Dec 2014
 @author: Anna
 '''
 from copy import deepcopy
-from Globals import G
-from AllocationForecast_IP import Allocation_IP
-from Allocation_3 import Allocation2
+from .Globals import G
+from .AllocationForecast_IP import Allocation_IP
+from .Allocation_3 import Allocation2
 
 def AllocationRoutine_Forecast(initialWeek, itemList, itemType, seq):
     

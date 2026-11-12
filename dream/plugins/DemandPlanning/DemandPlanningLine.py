@@ -13,11 +13,11 @@ class DemandPlanningLine(plugin.OutputPreparationPlugin, TimeSupportMixin):
     result = data['result']['result_list'][-1]
     bottleNeckUtilizationDict = result['bottleneck_utilization'] = {}
 
-    for bottleneck, bottleNeckUtilization in G.Utilisation.iteritems():
+    for bottleneck, bottleNeckUtilization in G.Utilisation.items():
 
         dateList=[]
         # get the current date from the data
-        for record_id,record in bottleNeckUtilization.iteritems():
+        for record_id,record in bottleNeckUtilization.items():
             year=str(record_id)[0:4]
             week=str(record_id)[4:]
             fullDate=datetime.strptime(year+'-'+week+'-0', '%Y-%W-%w')
@@ -54,7 +54,7 @@ class DemandPlanningLine(plugin.OutputPreparationPlugin, TimeSupportMixin):
                 ( 'averageUtilization', 'Actual Utilization' ),
                 ( 'maxUtilization', 'Target Utilization' ) ]:
             utilizationList=[]
-            for record_id, record in bottleNeckUtilization.iteritems():
+            for record_id, record in bottleNeckUtilization.items():
                 year=str(record_id)[0:4]
                 week=str(record_id)[4:]
                 fullDate=datetime.strptime(year+'-'+week+'-0', '%Y-%W-%w')
@@ -83,8 +83,8 @@ class BottleNeckByWeek(plugin.OutputPreparationPlugin, TimeSupportMixin):
 
     by_week = {}
     # change {bottleneck: {week: data }} in {week: {bottleneck: data}}
-    for bottleneck, bottleNeckUtilization in G.Utilisation.iteritems():
-      for record_id, record in bottleNeckUtilization.iteritems():
+    for bottleneck, bottleNeckUtilization in G.Utilisation.items():
+      for record_id, record in bottleNeckUtilization.items():
         by_week.setdefault(record_id, {})[bottleneck] = record
 
     for week, bottleneckData in by_week.items():
@@ -144,9 +144,9 @@ class BottleNeckLoadByWeek(plugin.OutputPreparationPlugin, TimeSupportMixin):
     by_week = {}
     # change {bottleneck: {ma: {week:data }}} in {(bottleneck, week): {ma: data}}
     maxUtilisation = 0
-    for bottleneck, bottleNeckUtilization in G.Butilisation.iteritems():
-      for ma, record in bottleNeckUtilization.iteritems():
-          for week, value in record.iteritems():
+    for bottleneck, bottleNeckUtilization in G.Butilisation.items():
+      for ma, record in bottleNeckUtilization.items():
+          for week, value in record.items():
               by_week.setdefault((bottleneck, week), {})[ma] = value
               if value > maxUtilisation:
                 maxUtilisation = value

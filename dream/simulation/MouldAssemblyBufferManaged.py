@@ -26,7 +26,7 @@ Inherits from QueueManagedJob. It is the buffer before the MouldAssembly.
 Only if all the mould (order) components are present, will it be able to dispose them
 '''
 
-from QueueManagedJob import QueueManagedJob
+from .QueueManagedJob import QueueManagedJob
 # from SimPy.Simulation import now
 import simpy
 

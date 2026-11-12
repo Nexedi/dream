@@ -77,11 +77,11 @@ def main(test=0):
               "NumM2":G.NumM2}
 
     #print the results
-    print "the system produced", E.numOfExits, "parts"
-    print "the working ratio of", M1.objName,  "is", working_ratio_M1, "%"
-    print "the working ratio of", M2.objName,  "is", working_ratio_M2, "%"
-    print M1.objName, "produced", G.NumM1, "parts"
-    print M2.objName, "produced", G.NumM2, "parts"
+    print("the system produced", E.numOfExits, "parts")
+    print("the working ratio of", M1.objName,  "is", working_ratio_M1, "%")
+    print("the working ratio of", M2.objName,  "is", working_ratio_M2, "%")
+    print(M1.objName, "produced", G.NumM1, "parts")
+    print(M2.objName, "produced", G.NumM2, "parts")
 
 if __name__ == '__main__':
     main()

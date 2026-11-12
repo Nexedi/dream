@@ -26,12 +26,12 @@ class ReadSkilledOperators(plugin.InputPreparationPlugin):
             if not PBId:
                 continue
             skills=PBitem[1].split(',')
-            skills = filter(bool, skills) 
+            skills = list(filter(bool, skills)) 
             # if element has spaces in beginning or in end remove them
             skills=self.stripStringsOfList(skills)
             
             newSkills=[]
-            for n_id,n in node.iteritems():
+            for n_id,n in node.items():
                 technology=n.get('technology',None)
                 if technology in skills and n_id not in newSkills:    
                     newSkills.append(n_id)      
@@ -50,7 +50,7 @@ class ReadSkilledOperators(plugin.InputPreparationPlugin):
         # if there is at least one operator
         if operatorPresent:
             nodes=data['graph']['node']
-            for station_id,station in nodes.iteritems():
+            for station_id,station in nodes.items():
                 # set the operation type of all machines to MT-Load-Processing
                 if station['_class'] in ['Dream.BatchScrapMachine','Dream.BatchScrapMachineBeforeReassembly',
                                       'Dream.BatchScrapMachineAfterDecompose','Dream.M3']:

@@ -24,7 +24,7 @@ class BatchesWIPSpreadsheet(plugin.InputPreparationPlugin):
 
     # get the number of units for a standard batch
     standardBatchUnits=0
-    for node_id, node in nodes.iteritems():
+    for node_id, node in nodes.items():
         if node['_class']=='Dream.BatchSource':
             standardBatchUnits=int(node['batchNumberOfUnits']) 
         node['wip']=[]
@@ -82,8 +82,8 @@ class BatchesWIPSpreadsheet(plugin.InputPreparationPlugin):
             if nodes[nextObject]['_class'].startswith('Dream.BatchReassembly')\
                 and nodes[previousObject]['_class'].startswith('Dream.BatchDecomposition'):
                 sbId=0
-                SBinReassembly=(int(numberOfUnits)-int(unitsToProcess))/workingBatchSize
-                SBinDecomposition=int(unitsToProcess)/workingBatchSize
+                SBinReassembly=(int(numberOfUnits)-int(unitsToProcess))//workingBatchSize
+                SBinDecomposition=int(unitsToProcess)//workingBatchSize
                 for i in range(SBinReassembly):
                     nodes[nextObject]['wip'].append({
                       "_class": 'Dream.SubBatch',
@@ -120,8 +120,8 @@ class BatchesWIPSpreadsheet(plugin.InputPreparationPlugin):
             elif nodes[nextObject]['_class'].startswith('Dream.BatchReassembly')\
                 and nodes[previousObject]['_class'].startswith('Dream.RoutingQueue'):    
                 sbId=0
-                SBinReassembly=(int(numberOfUnits)-int(unitsToProcess))/workingBatchSize
-                SBinDecomposition=int(unitsToProcess)/workingBatchSize
+                SBinReassembly=(int(numberOfUnits)-int(unitsToProcess))//workingBatchSize
+                SBinDecomposition=int(unitsToProcess)//workingBatchSize
                 for i in range(SBinReassembly):
                     nodes[nextObject]['wip'].append({
                       "_class": 'Dream.SubBatch',
@@ -159,8 +159,8 @@ class BatchesWIPSpreadsheet(plugin.InputPreparationPlugin):
             elif nodes[nextObject]['_class'].startswith('Dream.RoutingQueue')\
                 and nodes[previousObject]['_class'].startswith('Dream.BatchDecomposition'): 
                 sbId=0
-                SBinReassembly=(int(numberOfUnits)-int(unitsToProcess))/workingBatchSize
-                SBinDecomposition=int(unitsToProcess)/workingBatchSize
+                SBinReassembly=(int(numberOfUnits)-int(unitsToProcess))//workingBatchSize
+                SBinDecomposition=int(unitsToProcess)//workingBatchSize
                 for i in range(SBinReassembly):
                     nodes[nextObject]['wip'].append({
                       "_class": 'Dream.SubBatch',

@@ -25,7 +25,7 @@ Created on 16 Sep 2014
 auxiliary script to search for specific code in the simulation folder
 '''
 
-keyString=raw_input('give the string to find:')
+keyString=input('give the string to find:')
 numberFound=0
 import os
 for filename in os.listdir(os.getcwd()):
@@ -35,10 +35,10 @@ for filename in os.listdir(os.getcwd()):
         i=1
         for line in content:
             if keyString in line:
-                print 'found in', filename, 'line',i 
-                print '---->', line
+                print('found in', filename, 'line',i) 
+                print('---->', line)
                 numberFound+=1
             i+=1
-print 'search ended. Found', numberFound, 'instances'
+print('search ended. Found', numberFound, 'instances')
    
    

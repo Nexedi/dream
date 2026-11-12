@@ -46,8 +46,8 @@ def main(test=0):
                             )
         E.Exits=[]
     solutionList.sort(key=lambda x: x.get("throughput",0), reverse=True)
-    print "the best allocation is for Q2",solutionList[0]['Q2'],"units and Q3",solutionList[0]['Q2'],\
-            "units, with a predicted throughput of",solutionList[0]['throughput']
+    print("the best allocation is for Q2",solutionList[0]['Q2'],"units and Q3",solutionList[0]['Q2'],\
+            "units, with a predicted throughput of",solutionList[0]['throughput'])
 
 if __name__ == '__main__':
     main()

@@ -26,15 +26,15 @@ test script to test the generator
 '''
 
 from SimPy.Simulation import now, activate,simulate, infinity,initialize
-from EventGenerator import EventGenerator
-from Machine import Machine
-from Source import Source
-from Exit import Exit
-from Part import Part
-from Queue import Queue
-from Globals import G
-import ExcelHandler
-import Globals
+from .EventGenerator import EventGenerator
+from .Machine import Machine
+from .Source import Source
+from .Exit import Exit
+from .Part import Part
+from .Queue import Queue
+from .Globals import G
+from . import ExcelHandler
+from . import Globals
 
 
 G.trace="Yes"           
@@ -74,9 +74,9 @@ for object in G.ObjList:
 
 ExcelHandler.outputTrace('TRACE')
 
-print "the system produced", E.numOfExits, "parts"
-print "the waiting ratio of", M1.objName,  "is", (M1.totalWaitingTime/G.maxSimTime)*100, "%"
-print "the waiting ratio of", M2.objName,  "is", (M2.totalWaitingTime/G.maxSimTime)*100, "%"
+print("the system produced", E.numOfExits, "parts")
+print("the waiting ratio of", M1.objName,  "is", (M1.totalWaitingTime/G.maxSimTime)*100, "%")
+print("the waiting ratio of", M2.objName,  "is", (M2.totalWaitingTime/G.maxSimTime)*100, "%")
 
 
 

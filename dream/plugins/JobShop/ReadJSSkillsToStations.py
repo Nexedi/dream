@@ -23,11 +23,11 @@ class ReadJSSkillsToStations(UpdateStationList.UpdateStationList):
     # if there are nodes defined
     if nodes:
       # scan the nodes available
-      for ID, node_data in nodes.iteritems():
+      for ID, node_data in nodes.items():
         # if the node class is operator (if it has skillDict)
         skillDict = node_data.get("skillDict", {})
         if skillDict:
-          for operation, technologyList in skillDict.iteritems():
+          for operation, technologyList in skillDict.items():
             stationList = []
             for technology in technologyList:
               tech = technology.split("-")[0]

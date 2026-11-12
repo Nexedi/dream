@@ -16,7 +16,7 @@ class ReadEntryData(plugin.InputPreparationPlugin):
     """ read the entries data and change the class key of the entityData dict to _class
     """
     node=data['graph']['node']
-    for stationKey, stationData in node.iteritems():
+    for stationKey, stationData in node.items():
       entityData = stationData.pop("entityData", None)
       if entityData:
         entityClass = entityData.pop("class", None)

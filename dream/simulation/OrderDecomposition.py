@@ -30,14 +30,14 @@ dummy object: infinite capacity no processing time
 # from SimPy.Simulation import waituntil, now, hold, infinity, waitevent
 import simpy
 
-from Globals import G
-from CoreObject import CoreObject
-from RandomNumberGenerator import RandomNumberGenerator
-from Entity import Entity
+from .Globals import G
+from .CoreObject import CoreObject
+from .RandomNumberGenerator import RandomNumberGenerator
+from .Entity import Entity
 
-from Order import Order
-from OrderDesign import OrderDesign
-from OrderComponent import OrderComponent
+from .Order import Order
+from .OrderDesign import OrderDesign
+from .OrderComponent import OrderComponent
 
 # ===========================================================================
 # Error in the setting up of the WIP
@@ -59,7 +59,7 @@ class OrderDecomposition(CoreObject):
         self.previous=G.ObjList
         self.next=[]
         CoreObject.initialize(self)                 # using the default CoreObject Functionality
-        self.Res=simpy.Resource(self.env, 'inf')    # initialize the Internal resource (Queue) functionality. This is a dummy object so 
+        self.Res=simpy.Resource(self.env, float('inf'))    # initialize the Internal resource (Queue) functionality. This is a dummy object so 
                                                     # infinite capacity is assumed
         self.newlyCreatedComponents=[]              # a list to hold components just after decomposition
         self.orderToBeDecomposed=None
@@ -143,7 +143,7 @@ class OrderDecomposition(CoreObject):
             return False
 
         activeEntity=activeObjectQueue[0]
-        import Globals
+        from . import Globals
         # update the next list of the object
         nextObjectIds=activeEntity.remainingRoute[0].get('stationIdsList',[])
         nextObjects = []
@@ -212,7 +212,7 @@ class OrderDecomposition(CoreObject):
                                 reqComponent.auxiliaryList.append(auxComponent)
         #if there is an order for decomposition
         if self.orderToBeDecomposed:
-            import Globals
+            from . import Globals
             Globals.setWIP(self.newlyCreatedComponents)     #set the new components as wip
             # TODO: consider signalling the receivers if any WIP is set now
             #reset attributes
