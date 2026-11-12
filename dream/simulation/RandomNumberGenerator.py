@@ -58,12 +58,12 @@ class RandomNumberGenerator(object):
                 raise ValueError("Unknown distribution %r used in %s %s" %
                             (distribution, obj.__class__, obj.id)) 
         # pop irrelevant keys
-        for key in list(distribution.keys()):
+        for key in list(distribution):
             if key not in ['Fixed', 'Normal','Exp','Gamma','Logistic','Erlang',
                            'Geometric','Lognormal','Weibull','Cauchy', 'Triangular']:
                 distribution.pop(key, None)
         self.distribution=distribution
-        self.distributionType = list(distribution.keys())[0]
+        self.distributionType = list(distribution)[0]
         parameters=distribution[self.distributionType]
         # if a parameter is passed as None or empty string set it to 0
         for key in parameters:

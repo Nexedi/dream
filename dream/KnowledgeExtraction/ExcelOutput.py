@@ -239,19 +239,19 @@ class ExcelOutput(StatisticalMeasures,DistFittest):
             del A['min']
             del A['max']
             del A['distributionType']
-            sheet2.write(13,11,(list(A.keys())[0]))
-            sheet2.write(13,12,(list(A.keys())[1]))
+            sheet2.write(13,11,(list(A)[0]))
+            sheet2.write(13,12,(list(A)[1]))
             sheet2.write(14,11,(list(A.values())[0]))
             sheet2.write(14,12,(list(A.values())[1]))
         elif A['distributionType']=='Exp' or A['distributionType']=='Poisson' or A['distributionType']=='Geometric':
             del A['distributionType']
-            sheet2.write(13,11,(list(A.keys())[0]))
+            sheet2.write(13,11,(list(A)[0]))
             sheet2.write(14,11,(list(A.values())[0]))
              
         else:
             del A['distributionType']
-            sheet2.write(13,11,(list(A.keys())[0]))
-            sheet2.write(13,12,(list(A.keys())[1]))
+            sheet2.write(13,11,(list(A)[0]))
+            sheet2.write(13,12,(list(A)[1]))
             sheet2.write(14,11,(list(A.values())[0]))
             sheet2.write(14,12,(list(A.values())[1]))
         

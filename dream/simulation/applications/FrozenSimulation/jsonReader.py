@@ -127,7 +127,7 @@ def importInput(jInput, excelInput, algorithmAttributes):
     
     # extract resource availability
     for item in PMschedule:
-        if 'parent' in item.keys():
+        if 'parent' in item:
             pm = item['parent']
             startDate = dateToOrdinal(item['start_date'], "%d-%m-%Y %H:%M")
             stopDate = dateToOrdinal(item['stop_date'], "%d-%m-%Y %H:%M")
@@ -191,7 +191,7 @@ def importInput(jInput, excelInput, algorithmAttributes):
                                                                               'project':current, 'part':WorkPlan.cell_value(i,2)}) #'personnel':str(WorkPlan.cell_value(i,10)), 'sequence':WorkPlan.cell_value(i,9), 
             seqPrjDone[current].setdefault(WorkPlan.cell_value(i,2),0)
     
-    maxODate = min(iter(list(OrderDates.items())), key=itemgetter(1))[1]
+    maxODate = min(OrderDates.items(), key=itemgetter(1))[1]
     
     #==================================
     # Import shift data from json file

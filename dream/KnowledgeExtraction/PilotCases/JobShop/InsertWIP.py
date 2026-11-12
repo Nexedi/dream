@@ -33,7 +33,7 @@ class InsertWIP(plugin.InputPreparationPlugin):
                 endOfRoute = True
             # find the Mould component of the order and see it is already in the WIP
             if component.get('_class', None) == 'Dream.Mould':
-              if component.get('id', None) in WIP.keys():
+              if component.get('id', None) in WIP:
                 mouldCreated = True
       # if the part reached the end of its route (an assembly buffer) and the mould is already created
       if endOfRoute and mouldCreated:

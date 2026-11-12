@@ -36,11 +36,11 @@ def JSON_example(list1,list2):
         scrapQuantity=element.get('scrapQuantity',{})
         processingTime=element.get('processingTime',{})
         
-        if name in list1.keys(): 
+        if name in list1: 
             element['processingTime']= list1[name]
         else:
             continue
-        if name in list2.keys():
+        if name in list2:
             element['scrapQuantity']= list2[name]
         else:
             continue

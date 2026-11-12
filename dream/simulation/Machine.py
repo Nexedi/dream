@@ -207,7 +207,7 @@ class Machine(CoreObject):
         '''returns the dictionary updated'''
         if not time:
             time = {'Fixed':{'mean': 0 }}
-        if 'Normal' in time.keys() and\
+        if 'Normal' in time and\
                 time['Normal'].get('max', None) is None:
             time['Normal']['max'] = float(time['Normal']['mean']) + 5 * float(time['Normal']['stdev'])
         return time

@@ -12,7 +12,7 @@ STATIONNAME=16
 WORKCELL=17
 
 def findStation(dictStory):
-    for key,value in list(dictStory.items()):
+    for key,value in dictStory.items():
         if value[0]=="Proximal Balloon Attach-CREFW" and value[1]=="CRE FW FRONT END LINE 1":
             dictStory[key]="2_P_B_A_A"
         elif value[0]=="Proximal Balloon Attach-CREFW" and value[1]=="CRE FW FRONT END LINE 2":

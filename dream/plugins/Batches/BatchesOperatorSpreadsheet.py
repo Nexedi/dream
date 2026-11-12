@@ -42,7 +42,7 @@ class BatchesOperatorSpreadsheet(plugin.OutputPreparationPlugin):
                 time=record['time']
                 allocation=record['allocation']
                 machineId=None
-                if operator in allocation.keys():
+                if operator in allocation:
                     machineId=allocation[operator]
                 operatorSchedule.append([time,machineId])
     

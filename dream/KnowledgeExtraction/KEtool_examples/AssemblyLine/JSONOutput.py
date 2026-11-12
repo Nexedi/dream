@@ -60,11 +60,11 @@ class JSONOutput(object):
                         batchWIP={} 
                 else:
                     continue             
-            if name in list1.keys():       # condition that checks if the element in the list1 is the same as the name of the element in JSON file  
+            if name in list1:       # condition that checks if the element in the list1 is the same as the name of the element in JSON file  
                 element['processingTime']= self.Distributions(list1[name])   # input the attributes of list1[name] to the JSON's element 'processingTime'
             else:
                 continue
-            if name in list2.keys():# condition that checks if the element in the list2 is the same as the name of the element in JSON file  
+            if name in list2:# condition that checks if the element in the list2 is the same as the name of the element in JSON file  
                 element['scrapQuantity']= self.Distributions(list2[name])    # input the attributes of list2[name] to the JSON's element 'scrapQuantity'
             else:
                 continue       

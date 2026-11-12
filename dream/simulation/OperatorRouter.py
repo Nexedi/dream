@@ -139,7 +139,7 @@ class Router(ObjectInterruption):
         # un-assign exits of objects previous to objects to be operated by operators 
         #     while their exit is not assigned to the object the operator will operate 
         for operator in [x for x in self.candidateOperators if x.isAssignedTo()]:
-            if not operator.isAssignedTo() in list(self.pendingMachines+self.pendingQueues):
+            if operator.isAssignedTo() not in self.pendingMachines+self.pendingQueues:
                 for object in [x for x in operator.isAssignedTo().previous if x.exitIsAssignedTo()]:
                     if object.exitIsAssignedTo()!=operator.isAssignedTo():
                         object.unAssignExit()

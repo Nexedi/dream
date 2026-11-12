@@ -94,11 +94,11 @@ class KnowledgeExtractionExamples(TestCase):
         nodes=result_data.get('node',{})
         for element_id,element in nodes.items():
             if element_id=='M1':
-                self.assertEqual(list(element['processingTime'].keys())[0],'Logistic')
+                self.assertEqual(list(element['processingTime'])[0],'Logistic')
             if element_id=='M2':
-                self.assertEqual(list(element['processingTime'].keys())[0],'Logistic')
+                self.assertEqual(list(element['processingTime'])[0],'Logistic')
             if element_id=='S1':
-                self.assertEqual(list(element['interarrivalTime'].keys())[0],'Exp')
+                self.assertEqual(list(element['interarrivalTime'])[0],'Exp')
         jsonFile.close()
     
     def testConfidenceIntervals(self):

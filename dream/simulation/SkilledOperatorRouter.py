@@ -216,7 +216,7 @@ class SkilledRouter(Router):
                         # remove all the blocked machines from the available stations
                         # and create another dict only with them
                         machinesForSecondPhaseDict={}
-                        for stationId in list(self.availableStationsDict.keys()):
+                        for stationId in list(self.availableStationsDict):
                             machine = Globals.findObjectById(stationId)
                             nextObject = machine.next[0]
                             nextObjectClassName = nextObject.__class__.__name__
@@ -257,7 +257,7 @@ class SkilledRouter(Router):
                         # create a list with the operators that were sent to the LP but did not get allocated
                         operatorsForSecondPhaseList=[]
                         for operatorId in self.availableOperatorList:
-                            if operatorId not in solution.keys():
+                            if operatorId not in solution:
                                 operatorsForSecondPhaseList.append(operatorId)
                         # in case there is some station that did not get operator even if it was not blocked
                         # add them alos for the second fail (XXX do not think there is such case)
@@ -280,7 +280,7 @@ class SkilledRouter(Router):
                     # if the LP is not called keep the previous solution
                     # if there are no available operators though, remove those
                     solution=self.previousSolution
-                    for operatorID in list(solution.keys()):
+                    for operatorID in list(solution):
                         if not operatorID in self.availableOperatorList:
                             del solution[operatorID]
                     

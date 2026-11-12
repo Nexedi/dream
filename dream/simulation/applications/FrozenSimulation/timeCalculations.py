@@ -13,7 +13,7 @@ def availableTimeInterval_Manual(manualTime, tStart, availTime):
     # suitable for manual operations...returns available time until the end 
     
     # sort time intervals according to ascending start date
-    sortedTime = sorted(availTime.keys())
+    sortedTime = sorted(availTime)
     
     # find the interval for which the start date is just above tStart
     i = 0
@@ -41,7 +41,7 @@ def availableTimeInterval_MM(manualTime, autoTime, tStart, availTime):
     
     # suitable for MM operations...requires continuous availability over consecutive shifts
     
-    sortedTime = sorted(availTime.keys())
+    sortedTime = sorted(availTime)
     
     i = 0
     while i<len(sortedTime) and sortedTime[i] <= tStart:
@@ -84,7 +84,7 @@ def availableTimeInterval_MM(manualTime, autoTime, tStart, availTime):
 
 def availableTimeInterval_MA(manualTime, autoTime, tStart, availTime):
     
-    sortedTime = sorted(availTime.keys())
+    sortedTime = sorted(availTime)
     
     i = 0
     while i<len(sortedTime) and sortedTime[i] <= tStart:
@@ -174,7 +174,7 @@ def updateAvailTime(keyStart, reqTime, tStart, availTime):
 
     # case of interval ending after previous end (i.e. automatic operations)...check if goes into following available interval    
     elif tStart+reqTime > tempSave['end']:
-        sortedTime = sorted(availTime.keys())
+        sortedTime = sorted(availTime)
         i=0
         while i<len(sortedTime) and sortedTime[i]<=keyStart:
             i+=1
@@ -195,7 +195,7 @@ def updateAvailTime(keyStart, reqTime, tStart, availTime):
     
 def availableTime_Shift(tStart, tEnd, availTime):
     
-    sortedTime = sorted(availTime.keys())
+    sortedTime = sorted(availTime)
     
     i = 0
     while i<len(sortedTime) and availTime[sortedTime[i]]['end'] <= tStart:

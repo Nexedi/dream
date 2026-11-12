@@ -32,7 +32,7 @@ class CapacityStationWIPSpreadsheet(plugin.InputPreparationPlugin):
                 # loop through all the rows>0
                 for row in range(1,numberOfOperations+1):
                     stationId=wipData[row][0]
-                    assert stationId in node.keys(), 'wip spreadsheet has station id that does not exist in production line'
+                    assert stationId in node, 'wip spreadsheet has station id that does not exist in production line'
                     requiredCapacity=float(wipData[row][col])
                     # if the cell has a requiredCapacity>0 create the entity
                     if requiredCapacity:

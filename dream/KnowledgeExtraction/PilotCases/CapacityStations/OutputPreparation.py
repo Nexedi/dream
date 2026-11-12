@@ -42,7 +42,7 @@ def OutputPreparation(data,extractedData):
     earliestStartDict={}
     for order in orders:
         for operation in order['sequence']: 
-            operationId=list(operation.keys())[0]
+            operationId=list(operation)[0]
             capacityRequirementDict[operationId]=operation[operationId]['requiredCapacity']
             earliestStart=operation[operationId].get('earliestStart',None)
             try:

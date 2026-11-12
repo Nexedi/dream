@@ -124,7 +124,7 @@ def importInput():
     
     
     for item in PMschedule:
-        if 'parent' in item.keys():
+        if 'parent' in item:
             pm = item['parent']
             startDate = dateToOrdinal(item['start_date'], "%d-%m-%Y %H:%M")
             stopDate = dateToOrdinal(item['stop_date'], "%d-%m-%Y %H:%M")
@@ -264,9 +264,9 @@ def importInput():
             
     print('off shift time', offShiftTimes)
         
-    offShifts = dict((k,{}) for k in list(offShiftTimes.keys()) + list(takenPeriods.keys()))
+    offShifts = dict((k,{}) for k in list(offShiftTimes) + list(takenPeriods))
     
-    for rsce in list(offShifts.keys()):
+    for rsce in offShifts:
         if rsce in takenPeriods:
             offShifts[rsce] = takenPeriods[rsce] #directly copy everything from the extracted dict
         if rsce in offShiftTimes:#if that resource is present in the directly specified

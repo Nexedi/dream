@@ -110,7 +110,7 @@ class CreateCapacityStations(plugin.InputPreparationPlugin):
     def findNotRequiredOperations(self,data,stationId):
         requiredOperations=[]
         nodes=data['graph']['node']
-        notRequiredOperations=list(nodes.keys())
+        notRequiredOperations=list(nodes)
         for node_id, node in nodes.items():
             currentId=node_id
             while 1:

@@ -68,7 +68,7 @@ class BatchesTabularQueues(plugin.OutputPreparationPlugin):
             except IndexError:
                 nextTime=maxSimTime
             i+=1
-            if not (level in timeListDict.keys()):
+            if not (level in timeListDict):
                 timeListDict[level]=0
             timeListDict[level]+=nextTime-time
         return timeListDict

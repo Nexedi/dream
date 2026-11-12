@@ -14,9 +14,9 @@ def findSequence(Projects, seqPrjDone, idDone):
     print('find sequence', Projects)
     print('find sequence', seqPrjDone)
     
-    for proj in list(seqPrjDone.keys()):
+    for proj in seqPrjDone:
         
-        for part in list(seqPrjDone[proj].keys()):
+        for part in seqPrjDone[proj]:
             
             if seqPrjDone[proj][part] < len(Projects[proj][part]):
                 
@@ -24,7 +24,7 @@ def findSequence(Projects, seqPrjDone, idDone):
                 
                 print('part', part, Projects[proj][part][seqPrjDone[proj][part]]['id'])
                 
-                if seqPrjDone[proj][part]==0 or Projects[proj][part][seqPrjDone[proj][part]-1]['id'] not in G.Schedule.keys():
+                if seqPrjDone[proj][part]==0 or Projects[proj][part][seqPrjDone[proj][part]-1]['id'] not in G.Schedule:
                     minStartTime = max(G.xlreftime, G.OrderDates[proj])
                 else:
                     minStartTime = G.Schedule[Projects[proj][part][seqPrjDone[proj][part]-1]['id']]['endDate']
